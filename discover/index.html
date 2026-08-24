@@ -45,15 +45,8 @@
     <div class="discover-hero-intro">
       <p class="eyebrow">Find the Gospel in your language</p>
       <h1 style="margin:8px 0 14px;">Discover</h1>
-      <p style="max-width:520px;">Search by language name, filter by format, pick a translation if more than one team has published it, and read, listen, watch, or download right here.</p>
+      <p style="max-width:520px;">Search for Open Bible Stories in your language. Read, listen, watch, or download available translations.</p>
 
-      <!-- MOBILE APP: small, near the top so it doesn't get lost below the
-           language list — not a full promo section, just a compact highlight
-           linking out to the Play Store listing. -->
-      <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="app-highlight">
-        <svg viewBox="0 0 48 48" width="18" height="18" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="14" y="4" width="20" height="40" rx="4"></rect><line x1="14" y1="34" x2="34" y2="34"></line></svg>
-        Read Open Bible Stories on your phone with the free OBS app &mdash; available on Android.
-      </a>
       <!-- Placed last in the DOM on purpose: it's position:absolute on desktop
            (so DOM order doesn't affect the layered look there), but on mobile
            it drops to position:relative and flows in normal document order —
@@ -63,17 +56,26 @@
     </div>
 
     <div id="lang-browse" style="margin-top:60px;">
-      <div class="library-tools" style="margin-bottom:20px;">
-        <div class="search-box">
-          <span aria-hidden="true">&#128269;</span>
-          <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili">
+      <div class="discover-toolbar">
+        <div class="library-tools" style="margin:0;">
+          <div class="search-box">
+            <span aria-hidden="true">&#128269;</span>
+            <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili">
+          </div>
+          <div class="format-filters">
+            <button type="button" class="filter-chip active" data-format="all">All</button>
+            <button type="button" class="filter-chip" data-format="pdf">Print</button>
+            <button type="button" class="filter-chip" data-format="audio">Audio</button>
+            <button type="button" class="filter-chip" data-format="video">Video</button>
+          </div>
         </div>
-        <div class="format-filters">
-          <button type="button" class="filter-chip active" data-format="all">All</button>
-          <button type="button" class="filter-chip" data-format="pdf">Print</button>
-          <button type="button" class="filter-chip" data-format="audio">Audio</button>
-          <button type="button" class="filter-chip" data-format="video">Video</button>
-        </div>
+
+        <!-- MOBILE APP: a compact card in the empty space beside the search
+             tools, rather than a full-width promo section further down. -->
+        <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="app-card">
+          <p class="app-card-text">Get the free Open Bible Stories app for Android.</p>
+          <span class="app-card-cta">Install app</span>
+        </a>
       </div>
       <p id="lib-status" class="lib-status"></p>
       <div id="lang-list" class="lang-list"></div>
