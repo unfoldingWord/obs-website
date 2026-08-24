@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Open Bible Stories</title>
+<meta name="description" content="Open Bible Stories helps churches, ministries, and translation teams make the Gospel accessible in every language through a simple collection of illustrated Bible stories.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">
+      <img src="/assets/img/uw-mark.png" alt="">
+      Open Bible Stories
+    </a>
+    <nav class="links" id="nav-links">
+      
+        <a href="/features/">Why OBS</a>
+      
+        <a href="/discover/">Discover</a>
+      
+        <a href="/translate/">Translate</a>
+      
+        <a href="/create/">Create</a>
+      
+      
+        <a href="/contact/">Contact</a>
+      
+      <a href="/discover/" class="mobile-cta-link">Discover</a>
+    </nav>
+    <a href="/discover/" class="nav-cta">Discover</a>
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="hero-inner">
+    <div>
+      <p class="eyebrow">unfoldingWord&reg; Open Bible Stories</p>
+      <h1>The Gospel for every people group</h1>
+      <p class="sub">Open Bible Stories helps churches, ministries, and translation teams make the Gospel accessible in every language through a simple collection of illustrated Bible stories.</p>
+      <div class="cta-row">
+        <a href="/discover/" class="btn btn-primary">Find your language</a>
+        <a href="/translate/" class="btn btn-outline">Start Translating</a>
+        <!-- MOBILE APP: third CTA in the row, rather than a separate section
+             further down the page, so it's seen without scrolling. -->
+        <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="btn btn-outline">OBS Mobile App</a>
+      </div>
+    </div>
+    <div class="hero-art" aria-hidden="true">
+      <div class="hero-stack" id="hero-stack">
+        <img src="/assets/img/story-boat.jpg" alt="" class="stack-pos-0">
+        <img src="/assets/img/story-garden.jpg" alt="" class="stack-pos-1">
+        <img src="/assets/img/story-crowd.jpg" alt="" class="stack-pos-2">
+        <img src="/assets/img/story-mountain.jpg" alt="" class="stack-pos-3">
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  (function () {
+    const stack = document.getElementById("hero-stack");
+    if (!stack) return;
+    const images = Array.from(stack.querySelectorAll("img"));
+    const classes = ["stack-pos-0", "stack-pos-1", "stack-pos-2", "stack-pos-3"];
+
+    function cycle() {
+      images.forEach((img) => {
+        const current = classes.findIndex((c) => img.classList.contains(c));
+        const next = (current + 1) % classes.length;
+        img.classList.remove(classes[current]);
+        img.classList.add(classes[next]);
+      });
+    }
+
+    stack.addEventListener("mouseenter", cycle);
+    stack.addEventListener("click", cycle);
+  })();
+</script>
+
+<section class="stats-section">
+  <div class="wrap stats-inner" style="text-align:center;">
+    <div class="big-stat">
+      <span class="big-stat-num" id="lang-count" data-target="198">0</span>
+      <span class="big-stat-label">Languages<br>Already Available</span>
+    </div>
+    <p style="color:var(--tech); font-size:1.15rem; max-width:560px; margin:28px auto 10px; font-weight:600;">Every translation represents a community reached, a church equipped, and lives being transformed by the Gospel.</p>
+    <p style="color:var(--kindle); font-size:1.2rem; font-weight:800; margin:0;">The next language could be yours.</p>
+  </div>
+</section>
+
+<section id="story">
+  <div class="wrap">
+    <div class="section-head">
+      <p class="eyebrow">Free to use, to translate, to share</p>
+      <h2>Open, for everyone</h2>
+      <p>Open Bible Stories is available under an open license that gives you freedom to download, copy, share, translate, record audio, create video, print, and publish &mdash; see the <a href="https://www.openbiblestories.org/license" style="color:var(--inspire); text-decoration:underline;">license</a> for details.</p>
+    </div>
+
+    <div class="card-grid">
+      <div class="card">
+        <h3>Discover</h3>
+        <p>Search by language to see if Open Bible Stories is available, and read it right in your browser.</p>
+        <a href="/discover/" class="btn btn-outline" style="margin-top:14px;">Browse Discover</a>
+      </div>
+      <div class="card">
+        <h3>Translate</h3>
+        <p>Help make the Gospel available in another language, with the tools and steps built for translation teams.</p>
+        <a href="/translate/" class="btn btn-outline" style="margin-top:14px;">Start translating</a>
+      </div>
+      <div class="card">
+        <h3>Create</h3>
+        <p>Turn Open Bible Stories into videos, audio, training material, and more for the people you serve.</p>
+        <a href="/create/" class="btn btn-outline" style="margin-top:14px;">Start creating</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta" id="cta">
+  <div class="wrap final-cta-inner">
+    <h2>Help bring it to the next language</h2>
+    <p>Every new translation creates an opportunity for someone to encounter Jesus in the language they understand best. That next language could start with you.</p>
+    <div class="cta-row">
+      <a href="/translate/" class="btn btn-primary">Start translating</a>
+      <a href="/discover/" class="btn btn-outline">Find your language first</a>
+    </div>
+  </div>
+</section>
+
+<script>
+  function animateCount(el, target) {
+    const duration = 1400;
+    const start = performance.now();
+    function tick(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      el.textContent = Math.round(eased * target);
+      if (progress < 1) requestAnimationFrame(tick);
+    }
+    requestAnimationFrame(tick);
+  }
+
+  const countEl = document.getElementById("lang-count");
+  const fallbackTarget = parseInt(countEl.dataset.target, 10);
+  let liveTarget = null; // unknown until the stats-ext fetch settles (success or failure)
+  let intersected = false;
+  let animated = false;
+
+  // Waits for BOTH conditions — the stat scrolled into view, and the live
+  // count resolved — before animating, in either order. Fixes a real bug:
+  // the previous version animated as soon as the section was visible using
+  // whatever was in data-target at that instant (the hardcoded fallback),
+  // completely independent of whether the live fetch below had finished.
+  // On a fast page load where the stat is visible without scrolling, that
+  // meant visitors could see the stale fallback number settle in before the
+  // network round-trip to Door43 came back — the exact stale-198 bug seen
+  // in testing. Falling back to the hardcoded number now only happens if
+  // the endpoint genuinely fails, not as a race-losing default.
+  function maybeAnimate() {
+    if (animated || !intersected || liveTarget === null) return;
+    animated = true;
+    animateCount(countEl, liveTarget);
+  }
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      if (entries[0].isIntersecting) {
+        intersected = true;
+        maybeAnimate();
+        observer.disconnect();
+      }
+    },
+    { threshold: 0.4 }
+  );
+  observer.observe(countEl);
+
+  // Sourced from the DCS catalog's stats-ext endpoint rather than pulling
+  // every OBS catalog entry just to count distinct language codes client-side
+  // (the earlier approach here). stats-ext computes lang_count server-side,
+  // so this stays accurate and in sync with what's actually published,
+  // without shipping the full ~200+ entry catalog payload just for a number.
+  // No `metadataType` filter, matching Library/Discover: 16 languages are
+  // published in the older "ts" format rather than Resource Container, and
+  // both are now readable, so both should count.
+  fetch("https://git.door43.org/api/v1/catalog/stats-ext?subject=Open%20Bible%20Stories&stage=prod")
+    .then((res) => res.json())
+    .then((stats) => {
+      const count = stats && stats.lang_count;
+      liveTarget = Number.isFinite(count) && count > 0 ? count : fallbackTarget;
+      countEl.dataset.target = liveTarget;
+      maybeAnimate();
+    })
+    .catch(() => {
+      // Endpoint genuinely unreachable — fall back so the section doesn't
+      // stay stuck at "0" forever, but this is now a last resort, not a
+      // race outcome.
+      liveTarget = fallbackTarget;
+      maybeAnimate();
+    });
+</script>
+
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <img src="/assets/img/uw-logo-color.png" alt="unfoldingWord">
+      <div class="footer-links">
+        
+          <a href="/features/">Why OBS</a>
+        
+          <a href="/discover/">Discover</a>
+        
+          <a href="/translate/">Translate</a>
+        
+          <a href="/create/">Create</a>
+        
+        
+          <a href="/contact/">Contact</a>
+        
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>unfoldingWord&reg; Open Bible Stories is developed by <a href="https://unfoldingword.org">unfoldingWord</a>&reg; and the <a href="https://door43.org/">Door43 Community</a>. Illustrations &copy; <a href="http://www.sweetpublishing.com/">Sweet Publishing</a>, used under a <a href="http://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a> license.</span>
+    </div>
+  </div>
+</footer>
+
+<script src="/assets/js/nav.js"></script>
+
+</body>
+</html>

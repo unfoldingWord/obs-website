@@ -1,0 +1,5 @@
+# Archived pages (Library browser removed in favor of /discover/, which has
+# its own search, format filters, and inline reader). These keep old
+# bookmarks/links/search results from 404ing.
+/create/library/*  /discover/  301
+/library/*         /discover/  301

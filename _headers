@@ -1,0 +1,16 @@
+# Images are effectively static under their current filenames — long,
+# immutable caching is safe for these.
+/assets/img/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# JS and CSS are actively edited under these SAME filenames (no
+# content-hashed filenames, since this is a plain static build with no
+# bundler step). An "immutable" cache here would let a visitor's browser
+# skip ever re-checking the server, so a later fix could silently never
+# reach anyone who already visited. "no-cache" means "always revalidate
+# with the server before using the cached copy" — not "don't cache".
+/assets/js/*
+  Cache-Control: public, no-cache
+
+/assets/css/*
+  Cache-Control: public, no-cache
