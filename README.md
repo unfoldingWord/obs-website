@@ -13,11 +13,10 @@ Then open `http://localhost:8080/`.
 
 ## Structure
 
-- `index.html`, `features/`, `discover/`, `translate/`, `create/`, `resources/`, `contact/`, and the license/terms/privacy pages — each a route.
+- `index.html`, `features/`, `discover/`, `translate/`, `create/`, `resources/`, `contact/` — each a route.
 - `assets/css/styles.css` — shared stylesheet.
 - `assets/js/` — small vanilla-JS behaviors (nav, tabs, discover/library filtering). No bundler; these are edited directly under their current filenames.
 - `assets/img/` — images and decorative SVGs.
-- `content/pages/` — legacy CMS content snippets kept for reference; **not** used by the live build (different image paths and class names from the current design system).
 
 ## Deployment
 
