@@ -47,6 +47,10 @@
       <h1 style="margin:8px 0 14px;">Discover</h1>
       <p style="max-width:520px;">Search for Open Bible Stories in your language. Read, listen, watch, or download available translations.</p>
 
+      <!-- MOBILE APP: a simple outline button, same style as the third CTA
+           in the Home page hero, instead of a boxed card further down. -->
+      <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:20px;">OBS Mobile App</a>
+
       <!-- Placed last in the DOM on purpose: it's position:absolute on desktop
            (so DOM order doesn't affect the layered look there), but on mobile
            it drops to position:relative and flows in normal document order —
@@ -56,26 +60,17 @@
     </div>
 
     <div id="lang-browse" style="margin-top:60px;">
-      <div class="discover-toolbar">
-        <div class="library-tools" style="margin:0;">
-          <div class="search-box">
-            <span aria-hidden="true">&#128269;</span>
-            <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili">
-          </div>
-          <div class="format-filters">
-            <button type="button" class="filter-chip active" data-format="all">All</button>
-            <button type="button" class="filter-chip" data-format="pdf">Print</button>
-            <button type="button" class="filter-chip" data-format="audio">Audio</button>
-            <button type="button" class="filter-chip" data-format="video">Video</button>
-          </div>
+      <div class="library-tools">
+        <div class="search-box">
+          <span aria-hidden="true">&#128269;</span>
+          <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili">
         </div>
-
-        <!-- MOBILE APP: a compact card in the empty space beside the search
-             tools, rather than a full-width promo section further down. -->
-        <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="app-card">
-          <p class="app-card-text">Get the free Open Bible Stories app for Android.</p>
-          <span class="app-card-cta">Install app</span>
-        </a>
+        <div class="format-filters">
+          <button type="button" class="filter-chip active" data-format="all">All</button>
+          <button type="button" class="filter-chip" data-format="pdf">Print</button>
+          <button type="button" class="filter-chip" data-format="audio">Audio</button>
+          <button type="button" class="filter-chip" data-format="video">Video</button>
+        </div>
       </div>
       <p id="lib-status" class="lib-status"></p>
       <div id="lang-list" class="lang-list"></div>
