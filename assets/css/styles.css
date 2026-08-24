@@ -1,0 +1,539 @@
+:root{
+  --ocean:#014263;
+  --ocean-deep:#012f47;
+  --inspire:#31ADE3;
+  --cultivate:#70C9CC;
+  --kindle:#E59D33;
+  --tech:#231F20;
+  --paper:#FFFFFF;
+  --panel:#E3F6F6;
+  --panel-deep:#CDEFF0;
+  --white:#FFFFFF;
+  --heading-font:'Montserrat', 'Avenir', sans-serif;
+  --body-font:'Nunito Sans', 'Avenir Book', sans-serif;
+  --max:1180px;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  font-family:var(--body-font);
+  color:var(--tech);
+  background:var(--paper);
+  line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+h1,h2,h3,h4{font-family:var(--heading-font);font-weight:900;line-height:1.12;letter-spacing:-0.01em;}
+a{color:inherit;text-decoration:none;}
+img{max-width:100%;display:block;}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 28px;}
+.eyebrow{
+  font-family:var(--heading-font);
+  font-weight:700;
+  font-size:0.72rem;
+  letter-spacing:0.18em;
+  text-transform:uppercase;
+  color:var(--inspire);
+}
+@media (prefers-reduced-motion: reduce){
+  *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
+}
+:focus-visible{outline:3px solid var(--kindle); outline-offset:2px;}
+
+/* ---------- NAV ---------- */
+header.site-nav{
+  position:sticky; top:0; z-index:50;
+  background:rgba(227,246,246,0.92);
+  backdrop-filter:blur(6px);
+  color:var(--ocean);
+  border-bottom:1px solid rgba(1,66,99,0.08);
+}
+.nav-inner{
+  display:flex; align-items:center; justify-content:space-between;
+  padding:14px 28px; max-width:var(--max); margin:0 auto;
+}
+.brand{display:flex; align-items:center; gap:10px; font-family:var(--heading-font); font-weight:800; font-size:1.05rem; color:var(--ocean);}
+.brand img{height:26px; width:auto;}
+nav.links{display:flex; gap:28px; font-weight:600; font-size:0.92rem;}
+nav.links a{opacity:0.82; transition:opacity 0.2s; color:var(--ocean);}
+nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
+.mobile-cta-link{display:none;}
+.nav-cta{
+  background:var(--inspire); color:var(--white); font-weight:800;
+  padding:9px 18px; border-radius:999px; font-size:0.88rem; white-space:nowrap;
+}
+.menu-btn{
+  display:none; background:none; border:none; color:var(--ocean);
+  font-size:1.5rem; cursor:pointer; line-height:1;
+  width:44px; height:44px; align-items:center; justify-content:center;
+  border-radius:8px;
+}
+.menu-btn:hover{background:rgba(1,66,99,0.06);}
+
+@media (max-width:820px){
+  nav.links{
+    display:none; flex-direction:column; align-items:flex-start; gap:4px;
+    position:absolute; top:100%; left:0; right:0;
+    background:var(--panel); padding:12px 28px 20px;
+    box-shadow:0 12px 24px rgba(1,66,99,0.12);
+    border-bottom:1px solid rgba(1,66,99,0.1);
+  }
+  nav.links.open{display:flex;}
+  nav.links a{padding:10px 0; width:100%; font-size:1rem;}
+  .mobile-cta-link{
+    display:block; margin-top:8px; padding:12px 20px !important;
+    background:var(--inspire); color:var(--white) !important; font-weight:800;
+    border-radius:999px; text-align:center; width:100%; opacity:1 !important;
+  }
+  .nav-cta{display:none;}
+  .menu-btn{display:flex;}
+}
+
+/* ---------- HERO ---------- */
+.hero{
+  position:relative;
+  background:linear-gradient(160deg, #FBFEFE 0%, var(--panel) 65%, var(--panel-deep) 100%);
+  color:var(--tech);
+  padding:96px 0 80px;
+  overflow:hidden;
+}
+.hero-inner{
+  max-width:var(--max); margin:0 auto; padding:0 28px;
+  display:grid; grid-template-columns:1fr 1.05fr; gap:40px; align-items:center;
+}
+.hero h1{font-size:clamp(2.4rem, 5vw, 3.6rem); margin:16px 0 22px; color:var(--ocean);}
+.hero p.sub{font-size:1.12rem; max-width:520px; color:#3d4b52; margin-bottom:32px;}
+.cta-row{display:flex; gap:16px; flex-wrap:wrap;}
+.btn{
+  display:inline-flex; align-items:center; justify-content:center; gap:8px;
+  padding:14px 28px; border-radius:999px; font-weight:800; font-size:0.98rem;
+  transition:transform 0.18s ease, box-shadow 0.18s ease; cursor:pointer; border:2px solid transparent;
+}
+.btn:hover{transform:translateY(-2px);}
+.btn-primary{background:var(--inspire); color:var(--ocean-deep); box-shadow:0 8px 24px rgba(49,173,227,0.35);}
+.btn-primary:hover{box-shadow:0 12px 28px rgba(49,173,227,0.45);}
+.btn-outline{border-color:rgba(1,66,99,0.35); color:var(--ocean);}
+.btn-outline:hover{background:rgba(1,66,99,0.06);}
+  .btn:disabled{opacity:0.4; cursor:not-allowed; transform:none !important;}
+.btn-kindle{background:var(--kindle); color:var(--ocean-deep); box-shadow:0 8px 24px rgba(229,157,51,0.35);}
+
+.hero-art{position:relative; display:flex; justify-content:center; padding:16px 40px 40px 16px;}
+.hero-stack{
+  position:relative; width:100%; max-width:600px; aspect-ratio:16/9;
+  cursor:pointer;
+}
+.hero-stack img{
+  position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+  border-radius:20px; border:1px solid rgba(1,66,99,0.12);
+  box-shadow:0 24px 48px rgba(1,66,99,0.16);
+  transition:transform 0.7s cubic-bezier(0.4,0,0.2,1), opacity 0.7s ease, z-index 0s 0.35s;
+}
+.hero-stack .stack-pos-0{transform:rotate(0deg) translate(0,0) scale(1); z-index:4; opacity:1;}
+.hero-stack .stack-pos-1{transform:rotate(3.5deg) translate(14px,14px) scale(0.97); z-index:3; opacity:0.9;}
+.hero-stack .stack-pos-2{transform:rotate(7deg) translate(28px,28px) scale(0.94); z-index:2; opacity:0.78;}
+.hero-stack .stack-pos-3{transform:rotate(10.5deg) translate(42px,42px) scale(0.91); z-index:1; opacity:0.62;}
+
+@media (max-width:900px){
+  .hero-inner{grid-template-columns:1fr;}
+  .hero-art{order:-1; margin-bottom:8px;}
+}
+
+@media (max-width:520px){
+  .hero-art{padding:8px 24px 24px 8px;}
+}
+
+/* ---------- PAGE HEADER (non-hero pages) ---------- */
+.page-header{
+  background:linear-gradient(160deg, #FBFEFE 0%, var(--panel) 100%);
+  padding:72px 0 56px;
+}
+.page-header h1{font-size:clamp(2rem, 4vw, 2.8rem); color:var(--ocean); margin:10px 0 16px;}
+.page-header p{font-size:1.08rem; max-width:640px; color:#3d4b52;}
+
+/* ---------- PAGE-LEVEL TABS (e.g. Translate: How to Translate / Resources) ---------- */
+/* Underline style, attached to the bottom of the page header rather than
+   floating in its own whitespace — reads as primary in-page navigation
+   rather than a search filter (which is what the pill/chip style elsewhere
+   on this site is reserved for). */
+.page-tabs{display:flex; gap:32px; border-bottom:2px solid rgba(1,66,99,0.12);}
+.page-tab{
+  appearance:none; background:none; border:none; cursor:pointer;
+  font-family:inherit; font-weight:700; font-size:1rem; color:#5b6b72;
+  padding:0 0 14px; border-bottom:3px solid transparent; margin-bottom:-2px;
+  transition:color .15s ease, border-color .15s ease;
+}
+.page-tab:hover{color:var(--ocean);}
+.page-tab.active{color:var(--ocean); border-bottom-color:var(--inspire);}
+
+/* ---------- SECTION GENERIC ---------- */
+section{padding:80px 0;}
+.section-head{max-width:640px; margin-bottom:48px;}
+.section-head h2{font-size:clamp(1.6rem, 3vw, 2.2rem); margin:10px 0 16px; color:var(--ocean);}
+.section-head p{font-size:1.05rem; color:#3d4b52;}
+
+/* ---------- CARD GRID (reused for features/steps) ---------- */
+.card-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:24px;}
+.card-grid.cols-2{grid-template-columns:repeat(2,1fr);}
+.card{
+  background:var(--white); border-radius:16px; padding:28px 26px;
+  border:1px solid #e2eef1;
+}
+.card h3{font-size:1.15rem; color:var(--ocean); margin-bottom:10px;}
+.card p{color:#4a5960; font-size:0.96rem;}
+.card ul{margin:12px 0 0 18px; color:#4a5960; font-size:0.94rem;}
+.card li{margin-bottom:6px;}
+
+@media (max-width:900px){
+  .card-grid, .card-grid.cols-2{grid-template-columns:1fr;}
+}
+
+/* ---------- STATS ---------- */
+.big-stat{
+  display:inline-flex; flex-direction:column; align-items:center; gap:2px;
+  padding:8px 48px; position:relative;
+}
+.big-stat::before{
+  content:""; position:absolute; inset:0;
+  background:radial-gradient(circle, rgba(49,173,227,0.14), transparent 70%);
+  z-index:-1;
+}
+.big-stat-num{
+  font-family:var(--heading-font); font-weight:900;
+  font-size:clamp(4.5rem, 12vw, 7.5rem); line-height:1;
+  background:linear-gradient(135deg, var(--ocean), var(--inspire));
+  -webkit-background-clip:text; background-clip:text; color:transparent;
+  letter-spacing:-0.02em;
+}
+.big-stat-label{
+  font-family:var(--heading-font); font-weight:800; font-size:1.05rem;
+  letter-spacing:0.06em; text-transform:uppercase; color:var(--ocean);
+  line-height:1.4;
+}
+
+/* ---------- APP HIGHLIGHT (small inline mention of the OBS Android app) ----------
+   Deliberately not a full promo section — a compact, early-on-the-page
+   pill so it doesn't get lost below the fold, used the same way on both
+   the homepage hero and the top of Discover. */
+.app-highlight{
+  display:inline-flex; align-items:center; gap:10px;
+  margin-top:18px; padding:10px 16px; border-radius:12px;
+  background:rgba(49,173,227,0.1); color:var(--ocean);
+  font-weight:700; font-size:0.92rem; line-height:1.4; text-decoration:none;
+  border:1px solid rgba(49,173,227,0.25); max-width:440px;
+  transition:background 0.15s ease, transform 0.15s ease;
+}
+.app-highlight:hover{background:rgba(49,173,227,0.18); transform:translateY(-1px);}
+.app-highlight svg{flex-shrink:0; color:var(--inspire);}
+@media (max-width:480px){.app-highlight{font-size:0.85rem; max-width:none;}}
+.stats-section{
+  background:var(--panel); color:var(--tech); position:relative; overflow:hidden;
+}
+.stats-section::before{
+  content:""; position:absolute; inset:0;
+  background-image:radial-gradient(circle at 15% 20%, rgba(229,157,51,0.1), transparent 40%),
+                    radial-gradient(circle at 85% 80%, rgba(49,173,227,0.12), transparent 45%);
+}
+.stats-inner{position:relative; z-index:1;}
+.stats-section .eyebrow{color:var(--inspire);}
+.stats-section h2{color:var(--ocean); margin:10px 0 48px; font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:620px;}
+.stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:32px;}
+.stat{border-left:3px solid var(--inspire); padding-left:18px;}
+.stat .num{font-family:var(--heading-font); font-weight:900; font-size:clamp(1.6rem,3vw,2.2rem); color:var(--ocean);}
+.stat .label{margin-top:6px; font-size:0.95rem; color:#3d4b52;}
+@media (max-width:900px){.stat-grid{grid-template-columns:1fr 1fr; row-gap:36px;}}
+@media (max-width:520px){.stat-grid{grid-template-columns:1fr;}}
+
+/* ---------- STUDY READER ---------- */
+@media (max-width:820px){
+  .study-reader{grid-template-columns:1fr !important;}
+}
+
+/* ---------- FULL LIBRARY ACCORDION ---------- */
+.full-lib-lang{
+  border:1px solid rgba(1,66,99,0.12); border-radius:10px; margin-bottom:8px; overflow:hidden;
+}
+.full-lib-lang > summary{
+  padding:16px 20px; font-weight:800; color:var(--ocean); cursor:pointer; background:var(--white);
+  list-style:none; display:flex; justify-content:space-between; align-items:center;
+}
+.full-lib-lang > summary::-webkit-details-marker{display:none;}
+.full-lib-lang[open] > summary{background:var(--panel);}
+.full-lib-lang-body{padding:0 20px 16px;}
+
+.full-lib-owner{
+  border:1px solid rgba(1,66,99,0.1); border-radius:8px; margin:10px 0; background:var(--white);
+}
+.full-lib-owner > summary{
+  padding:12px 16px; font-weight:700; color:var(--ocean); background:var(--ocean-deep); color:#fff;
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; border-radius:8px 8px 0 0;
+}
+.full-lib-owner > summary::-webkit-details-marker{display:none;}
+.full-lib-owner-body{padding:14px 16px;}
+
+.full-lib-resource{border:1px solid rgba(1,66,99,0.08); border-radius:6px; margin-bottom:10px;}
+.full-lib-resource > summary{
+  padding:10px 14px; font-weight:700; font-size:0.92rem; color:var(--ocean); background:var(--panel);
+  cursor:pointer; list-style:none; display:flex; justify-content:space-between; align-items:center; border-radius:6px 6px 0 0;
+}
+.full-lib-resource > summary::-webkit-details-marker{display:none;}
+.full-lib-resource-body{padding:12px 16px; display:flex; flex-direction:column; gap:6px;}
+.full-lib-link{font-size:0.88rem; color:var(--inspire); display:flex; align-items:center; gap:6px;}
+.full-lib-link .tag{color:#8a97a0; font-size:0.78rem;}
+
+.full-lib-other{border:1px solid rgba(1,66,99,0.08); border-radius:6px; margin-top:6px;}
+.full-lib-other > summary{
+  padding:8px 12px; font-weight:700; font-size:0.85rem; color:var(--ocean); background:#f1f8f8;
+  cursor:pointer; list-style:none; display:flex; align-items:center; gap:6px; border-radius:6px;
+}
+.full-lib-other > summary::-webkit-details-marker{display:none;}
+.full-lib-other-body{padding:8px 12px 4px; display:flex; flex-direction:column; gap:4px;}
+
+/* ---------- AUDIENCE / PILLS ---------- */
+#mission{
+  position:relative;
+  background-image:linear-gradient(rgba(255,255,255,0.93), rgba(255,255,255,0.93)), url('/assets/img/story-garden.jpg');
+  background-size:cover;
+  background-position:center 65%;
+}
+.audience-wrap{text-align:center;}
+.audience-wrap .section-head{margin-left:auto; margin-right:auto; text-align:center;}
+.pill-field{
+  display:flex; flex-wrap:wrap; justify-content:center; gap:14px; margin:12px 0 40px;
+}
+.pill{
+  font-family:var(--heading-font); font-weight:700; font-size:0.95rem;
+  padding:12px 24px; border-radius:999px; background:var(--white);
+  border:2px solid #d9ecef; color:var(--ocean);
+  transition:transform 0.2s ease, border-color 0.2s ease, background 0.2s ease;
+}
+.pill:hover{border-color:var(--inspire); background:rgba(49,173,227,0.08); transform:translateY(-2px);}
+
+.possibility-line{
+  font-style:italic; color:#3d4b52; font-size:1.05rem;
+  max-width:640px; margin:20px 0 0; line-height:1.7;
+}
+.audience-wrap .closing-line{
+  max-width:600px; margin:0 auto; font-size:1.15rem; color:var(--ocean); font-weight:600;
+}
+
+/* ---------- FINAL CTA ---------- */
+.final-cta{
+  background:linear-gradient(135deg, #FBFEFE, var(--panel) 55%, var(--panel-deep));
+  color:var(--tech); text-align:center; position:relative; overflow:hidden;
+}
+.final-cta::after{
+  content:""; position:absolute; bottom:-40%; left:50%; transform:translateX(-50%);
+  width:900px; height:900px; border-radius:50%;
+  background:radial-gradient(circle, rgba(229,157,51,0.14), transparent 60%);
+}
+.final-cta-inner{position:relative; z-index:1; max-width:700px; margin:0 auto;}
+.final-cta h2{font-size:clamp(1.9rem,4vw,2.6rem); color:var(--ocean); margin-bottom:18px;}
+.final-cta p{font-size:1.08rem; color:#3d4b52; margin-bottom:40px;}
+.final-cta .cta-row{justify-content:center;}
+
+/* ---------- LIBRARY PAGE ---------- */
+.library-tools{max-width:720px; margin:0 auto 40px;}
+.search-box{
+  display:flex; align-items:center; gap:10px; background:var(--white);
+  border:1px solid rgba(1,66,99,0.2); border-radius:999px; padding:12px 20px;
+  margin-bottom:16px;
+}
+.search-box input{
+  /* padding-block (not just the pill's own padding) so the input's real
+     focusable box fills the visible pill height, instead of leaving a
+     thin text-height strip as the only part that actually responds to a tap */
+  border:none; outline:none; font-size:1rem; flex:1; font-family:var(--body-font); color:var(--tech); background:transparent;
+  padding-block:8px; min-width:0; text-overflow:ellipsis;
+}
+.format-filters{display:flex; gap:10px; flex-wrap:wrap;}
+.filter-chip{
+  font-size:0.85rem; font-weight:700; padding:8px 16px; border-radius:999px;
+  border:1px solid rgba(1,66,99,0.25); background:var(--white); color:var(--ocean); cursor:pointer;
+}
+.filter-chip.active{background:var(--ocean); color:var(--white); border-color:var(--ocean);}
+.lib-status{text-align:center; color:#4a5960; font-size:0.9rem; margin-bottom:24px;}
+.lang-list{display:flex; flex-direction:column; gap:2px; max-width:820px; margin:0 auto;}
+.lang-row{
+  display:flex; align-items:center; justify-content:space-between; gap:16px;
+  padding:16px 20px; border-bottom:1px solid rgba(1,66,99,0.08); background:var(--white);
+  border-radius:10px; cursor:pointer; flex-wrap:wrap;
+}
+.lang-row:hover{background:var(--panel);}
+.lang-row .name{font-weight:700; color:var(--ocean); font-size:1rem;}
+.lang-row .code{font-size:0.82rem; color:#4a5960;}
+.lang-row .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
+.badge{font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:999px; background:var(--panel); color:var(--ocean);}
+.badge.audio{background:#FBEFDB; color:#7a4e10;}
+.badge.video{background:#F5E3EE; color:#7a1a52;}
+
+/* ---------- STEP LIST (Translate page) ---------- */
+.step-list{display:flex; flex-direction:column; gap:0; max-width:820px; margin:0 auto;}
+.step-item{
+  display:flex; gap:24px; padding:28px 4px; border-bottom:1px solid rgba(1,66,99,0.1);
+}
+.step-item:last-child{border-bottom:none;}
+.step-num{
+  flex:none; width:44px; height:44px; border-radius:50%; background:var(--ocean);
+  color:var(--white); font-family:var(--heading-font); font-weight:800; font-size:1.1rem;
+  display:flex; align-items:center; justify-content:center;
+}
+.step-item.celebrate .step-num{background:var(--kindle);}
+.step-body h3{font-size:1.1rem; color:var(--ocean); margin-bottom:6px;}
+.step-body p{color:#4a5960; font-size:0.96rem; margin-bottom:6px;}
+.step-body ul{margin:8px 0 0 18px; color:#4a5960; font-size:0.94rem;}
+.step-body a{color:var(--inspire); text-decoration:underline;}
+
+@media (max-width:600px){
+  .step-item{gap:16px;}
+}
+
+/* ---------- STORY ROW (Why OBS field-story blocks) ---------- */
+.story-row{display:grid; grid-template-columns:200px 1fr; gap:28px; align-items:center;}
+.story-row img{width:100%; height:150px; object-fit:cover; border-radius:12px;}
+@media (max-width:640px){
+  .story-row{grid-template-columns:1fr;}
+  .story-row img{height:200px;}
+}
+
+/* ---------- HERO STORY (Why OBS section 1 — banner image, then byline/heading on white) ---------- */
+.hero-story-inner{max-width:760px; margin:0 auto; text-align:center;}
+.hero-story-byline{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:32px;}
+.hero-story-byline img{width:84px; height:84px; border-radius:50%; object-fit:cover;}
+.hero-story-byline .name{font-weight:800; color:var(--ocean);}
+.hero-story-byline .role{font-size:0.95rem; font-weight:700; color:var(--ocean);}
+.hero-story-heading{font-size:clamp(1.8rem, 3.6vw, 2.4rem); color:var(--ocean); margin-bottom:8px;}
+.hero-story-subhead{
+  font-family:var(--heading-font); font-weight:700; color:var(--inspire);
+  font-size:0.95rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:20px;
+}
+.hero-story-teaser{font-size:1.12rem; line-height:1.7; color:#2b3a41;}
+
+/* ---------- STORY CONTINUED (Why OBS section 2 — full narrative) ---------- */
+.story-continued p{font-size:1.08rem; line-height:1.75; color:#2b3a41; margin-bottom:20px;}
+.story-bridge{font-weight:700; color:var(--ocean); font-size:1.1rem;}
+.section-kicker{font-size:clamp(1.6rem, 3vw, 2.2rem); color:var(--ocean); margin-bottom:28px;}
+
+/* ---------- SCROLL CARDS (Why OBS section 3 — horizontal outcome cards) ---------- */
+.scroll-cards-wrap{position:relative; margin-top:16px;}
+.scroll-cards{
+  display:flex; gap:20px; overflow-x:auto; scroll-snap-type:x proximity;
+  padding:8px 4px 20px; margin:0 -4px; scrollbar-width:thin;
+}
+.scroll-card{
+  flex:0 0 auto; scroll-snap-align:start; width:270px;
+  background:var(--white); border-radius:16px; padding:26px 24px;
+  border:1px solid #e2eef1; box-shadow:0 6px 18px rgba(1,66,99,0.06);
+}
+.scroll-card-icon{
+  width:52px; height:52px; border-radius:50%; background:rgba(49,173,227,0.12);
+  color:var(--inspire); display:flex; align-items:center; justify-content:center; margin-bottom:16px;
+}
+.scroll-card h3{font-size:1.1rem; color:var(--ocean); margin-bottom:10px; line-height:1.3;}
+.scroll-card p{font-size:0.92rem; color:#4a5960; line-height:1.55;}
+.scroll-arrow{
+  display:none; align-items:center; justify-content:center;
+  position:absolute; top:50%; transform:translateY(-50%);
+  width:42px; height:42px; border-radius:50%; background:var(--white);
+  border:1px solid rgba(1,66,99,0.2); color:var(--ocean); font-size:1.1rem; cursor:pointer;
+  box-shadow:0 6px 16px rgba(1,66,99,0.12); z-index:2;
+}
+.scroll-arrow-left{left:-21px;}
+.scroll-arrow-right{right:-21px;}
+.scroll-arrow:hover{background:var(--panel);}
+@media (min-width:1060px){
+  .scroll-arrow{display:flex;}
+}
+
+/* ---------- FIELD VOICES AUTO-ROTATING BANNER (Why OBS section 3 — around the world) ----------
+   No tab/button row — quotes fade in on their own timer. Each panel is a
+   centered card; the small dots below (.whyworks-dots) are the only manual
+   control, for a direct jump and for browsing without motion when
+   prefers-reduced-motion is set (see the script that drives this). */
+.whyworks-stage{min-height:220px;}
+.whyworks-panel{display:none;}
+.whyworks-panel.active{display:block; animation:whyworks-fade 0.3s ease;}
+.whyworks-copy{
+  max-width:640px; margin:0 auto; text-align:center;
+  background:var(--white); border-radius:16px; padding:36px 32px;
+  border:1px solid #e2eef1; box-shadow:0 8px 22px rgba(1,66,99,0.08);
+}
+.whyworks-copy .quote{font-style:italic; color:#2b3a41; font-size:1.15rem; margin-bottom:14px; line-height:1.65;}
+.whyworks-copy .attr{font-size:0.85rem; font-weight:700; color:#4a5960;}
+.whyworks-dots{display:flex; justify-content:center; gap:2px; margin-top:24px;}
+.whyworks-dot{
+  /* Visible dot stays a subtle 10px, but the button box itself is 24x24 —
+     a bare 10px tap target is well under the ~24px minimum for comfortable
+     touch, so the hit area is padded out around it via ::before. */
+  appearance:none; border:none; cursor:pointer; background:transparent;
+  width:24px; height:24px; padding:0;
+  display:inline-flex; align-items:center; justify-content:center;
+}
+.whyworks-dot::before{
+  content:""; display:block; width:10px; height:10px; border-radius:50%;
+  background:rgba(1,66,99,0.25); transition:background .2s ease, transform .2s ease;
+}
+.whyworks-dot:hover::before{background:rgba(1,66,99,0.45);}
+.whyworks-dot.active::before{background:var(--inspire); transform:scale(1.3);}
+@keyframes whyworks-fade{from{opacity:0; transform:translateY(4px);} to{opacity:1; transform:translateY(0);}}
+@media (max-width:640px){
+  .whyworks-copy{padding:28px 22px;}
+}
+
+/* ---------- DISCOVER HERO BACKDROP MAP (decorative only, not interactive) ----------
+   A single-color, low-opacity world map sits behind just the top intro text
+   (eyebrow/heading/subhead) as a subtle texture, rather than a clickable
+   region filter. There is no real geographic data behind the OBS catalog
+   (verified against the live Door43 API — no continent/region field exists
+   for any of the 213 published languages), so a functional map would either
+   be fake or broken; this purely visual treatment was explicitly OK'd
+   instead. Scoped to its own wrapper (not the shared .page-header class,
+   which also wraps the language list below) so the map stays anchored to
+   the intro only and never overlaps the search/list content underneath. */
+/* No overflow:hidden here on purpose — a previous version clipped most of
+   the map away (the container is only as tall as the 3-line intro text, so
+   hiding overflow chopped off everything below the equator: Africa, South
+   America, Oceania all disappeared, leaving two unrecognizable blobs). The
+   map is positioned fully inside the intro block's own width instead, so
+   nothing needs to be clipped for it to stay out of the way of the text. */
+.discover-hero-intro{position:relative; padding-right:24px;}
+.discover-hero-intro > *{position:relative; z-index:1;}
+.discover-map-backdrop{
+  position:absolute;
+  top:8px; right:0;
+  width:340px;
+  max-width:34vw;
+  opacity:0.18;
+  pointer-events:none;
+  z-index:0;
+}
+@media (max-width:900px){
+  .discover-map-backdrop{width:280px; max-width:44vw; top:12px;}
+}
+@media (max-width:700px){
+  .discover-map-backdrop{position:relative; width:100%; max-width:100%; margin:18px 0 0; opacity:0.16; top:0; right:0;}
+}
+
+/* ---------- FOOTER ---------- */
+footer{background:var(--panel); color:#3d4b52; padding:48px 0 28px; border-top:1px solid rgba(1,66,99,0.08);}
+.footer-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:32px; border-bottom:1px solid rgba(1,66,99,0.12);}
+.footer-top img{height:28px;}
+.footer-links{display:flex; gap:26px; font-size:0.9rem; font-weight:600; flex-wrap:wrap;}
+.footer-links a{color:var(--ocean);}
+.footer-bottom{padding-top:24px; font-size:0.82rem;}
+.footer-bottom a{color:var(--ocean); font-weight:600;}
+
+@media (max-width:600px){
+  section{padding:56px 0;}
+  .card-grid{grid-template-columns:1fr;}
+  /* iOS Safari auto-zooms on focus for inputs/selects under 16px */
+  input, select{font-size:16px !important;}
+}
+
+/* ---------- FULL-PAGE READER (/discover/read/) ---------- */
+/* Overrides the reader's inline max-height so the full-page view isn't
+   still capped to the same scrollable box used inline on Discover. */
+#full-reader .study-main{
+  max-height:none !important;
+  overflow-y:visible !important;
+}
