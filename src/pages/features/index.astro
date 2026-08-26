@@ -1,38 +1,7 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Why Open Bible Stories</title>
-<meta name="description" content="Real stories from the field: how Open Bible Stories reaches the unreached, trains new leaders, and opens the door to Bible translation.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/assets/css/styles.css">
-</head>
-<body>
-
-<header class="site-nav">
-  <div class="nav-inner">
-    <a class="brand" href="/">Open Bible Stories</a>
-    <nav class="links" id="nav-links">
-      
-        <a href="/features/" aria-current="page">Why OBS</a>
-      
-        <a href="/discover/">Discover</a>
-      
-        <a href="/translate/">Translate</a>
-      
-        <a href="/create/">Create</a>
-      
-      
-        <a href="/contact/">Contact</a>
-    </nav>
-    <button class="menu-btn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
-  </div>
-</header>
-
-<main>
+---
+import Base from '../../layouts/Base.astro';
+---
+<Base title="Why Open Bible Stories" description="Real stories from the field: how Open Bible Stories reaches the unreached, trains new leaders, and opens the door to Bible translation." active="features">
 
 <!-- SECTION 1 — HERO: the story. Headline is immediate (no "Story from Chad" quote-over-image / "Why this matters" framing layers stacked in front of it) — but the fuller narrative is restored below it per request, rather than the earlier trimmed 2-3 sentence version. -->
 <!-- PRIVACY: this story is anonymized on purpose — no name, no photo of the individual. -->
@@ -178,12 +147,12 @@
     <h2>Help Write the Next Story</h2>
     <p>Somewhere today, another church is preparing to share the gospel in its own language for the first time &mdash; your support helps make that possible.</p>
     <div class="cta-row">
-      <a href="https://unfoldingword.org/give" target="_blank" rel="noopener" class="btn btn-primary">Give today</a>
+      <a href="https://unfoldingword.org/give" target="_blank" rel="noopener" class="btn btn-primary">Give Today</a>
     </div>
   </div>
 </section>
 
-<script>
+<script is:inline>
   // Auto-rotating "field voices" banner — cycles through the country quotes
   // every few seconds on its own, no tab/button row required to see more
   // than one. The small dots below are the only manual control: a jump
@@ -243,7 +212,7 @@
   })();
 </script>
 
-<script>
+<script is:inline>
   // Same live-count mechanism as the homepage (see index.html) — sourced from
   // the DCS catalog's stats-ext endpoint so this never drifts into a stale
   // printed figure the way the "168 languages" number in older materials did.
@@ -299,32 +268,4 @@
   })();
 </script>
 
-</main>
-
-<footer>
-  <div class="wrap">
-    <div class="footer-top">
-      <img src="/assets/img/uw-logo-color.png" alt="unfoldingWord">
-      <div class="footer-links">
-        
-          <a href="/features/">Why OBS</a>
-        
-          <a href="/discover/">Discover</a>
-        
-          <a href="/translate/">Translate</a>
-        
-          <a href="/create/">Create</a>
-        
-        
-          <a href="/contact/">Contact</a>
-        
-      </div>
-    </div>
-    <p class="footer-credit">Open Bible Stories is an initiative of <a href="https://unfoldingword.org">unfoldingWord</a> and the <a href="https://door43.org/">Door43 Community</a>. Free to use, adapt, and share under <a href="http://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>. Illustrations &copy; <a href="http://www.sweetpublishing.com/">Sweet Publishing</a>.</p>
-  </div>
-</footer>
-
-<script src="/assets/js/nav.js"></script>
-
-</body>
-</html>
+</Base>

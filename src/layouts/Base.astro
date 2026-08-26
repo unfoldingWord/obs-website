@@ -1,0 +1,91 @@
+---
+// Shared page shell for every route. Markup is kept verbatim from the
+// original hand-written pages (including the resources-page nav variant,
+// which has a different link order and its own "Resources" item).
+//
+// Props:
+//   title, description — per-page <head> values
+//   active             — slug of the nav link that gets aria-current="page"
+//   navVariant         — "default" | "resources"
+//
+// Named slot "scripts" carries per-page script tags after nav.js.
+const { title, description, active = null, navVariant = 'default' } = Astro.props;
+const cur = (slug) => (active === slug ? 'page' : null);
+---
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>{title}</title>
+<meta name="description" content={description}>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:opsz,wght@6..12,400;6..12,600;6..12,700&family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
+<link rel="icon" href="/assets/img/favicon.ico" sizes="any">
+<link rel="stylesheet" href="/assets/css/styles.css">
+</head>
+<body>
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href="/">Open Bible Stories</a>
+    {navVariant === 'resources' ? (
+    <nav class="links" id="nav-links">
+        <a href="/features/" aria-current={cur('features')}>Why OBS</a>
+        <a href="/discover/" aria-current={cur('discover')}>Discover</a>
+        <a href="/create/" aria-current={cur('create')}>Create</a>
+        <a href="/translate/" aria-current={cur('translate')}>Translate</a>
+        <a href="/resources/" aria-current={cur('resources')}>Resources</a>
+        <a href="/contact/" aria-current={cur('contact')}>Contact</a>
+    </nav>
+    ) : (
+    <nav class="links" id="nav-links">
+        <a href="/features/" aria-current={cur('features')}>Why OBS</a>
+        <a href="/discover/" aria-current={cur('discover')}>Discover</a>
+        <a href="/translate/" aria-current={cur('translate')}>Translate</a>
+        <a href="/create/" aria-current={cur('create')}>Create</a>
+        <a href="/contact/" aria-current={cur('contact')}>Contact</a>
+    </nav>
+    )}
+    <button class="menu-btn" aria-label="Open menu" aria-expanded="false">&#9776;</button>
+  </div>
+</header>
+
+<main>
+<slot />
+</main>
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="https://unfoldingword.org"><img src="/assets/img/uw-logo-color.png" alt="unfoldingWord"></a>
+      {navVariant === 'resources' ? (
+      <div class="footer-links">
+          <a href="/features/">Why OBS</a>
+          <a href="/discover/">Discover</a>
+          <a href="/create/">Create</a>
+          <a href="/translate/">Translate</a>
+          <a href="/resources/">Resources</a>
+          <a href="/contact/">Contact</a>
+      </div>
+      ) : (
+      <div class="footer-links">
+          <a href="/features/">Why OBS</a>
+          <a href="/discover/">Discover</a>
+          <a href="/translate/">Translate</a>
+          <a href="/create/">Create</a>
+          <a href="/contact/">Contact</a>
+      </div>
+      )}
+    </div>
+    <p class="footer-credit">unfoldingWord&reg; Open Bible Stories is developed by <a href="https://unfoldingword.org">unfoldingWord&reg;</a> and the <a href="https://door43.org/">Door43 World Missions Community</a>. Free to use, adapt, and share under <a href="http://creativecommons.org/licenses/by-sa/4.0">CC BY-SA 4.0</a>. Original illustrations are &copy; <a href="http://www.sweetpublishing.com/">Sweet Publishing</a>.</p>
+    <p class="footer-legal"><a href="/license/">License</a> &middot; <a href="/privacy/">Privacy Policy</a> &middot; <a href="/terms-of-use/">Terms of Use</a></p>
+  </div>
+</footer>
+
+<script is:inline src="/assets/js/nav.js"></script>
+<slot name="scripts" />
+
+</body>
+</html>
