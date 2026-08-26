@@ -11,5 +11,5 @@
   // publish directory is the repo root. Pages serves clean URLs
   // (/features -> /features/index.html) by default, and reads `_redirects`
   // and `_headers` for routing/caching rules.
-  "pages_build_output_dir": "."
+  "pages_build_output_dir": "dist"
 }

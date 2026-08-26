@@ -1,36 +1,35 @@
 # Open Bible Stories — website
 
-Static site for Open Bible Stories (unfoldingWord). Plain HTML/CSS/JS, no build step — every page under a route folder (e.g. `features/index.html`) is already the built output.
+Static site for Open Bible Stories (unfoldingWord), built with [Astro](https://astro.build). Astro is used only for shared layouts — the output is plain HTML/CSS/JS with no client framework.
 
-## Local preview
+## Local development
 
 ```
-python3 -m http.server 8080
-# or: npx serve .
+npm install
+npm run dev      # dev server at http://localhost:4321/
+npm run build    # builds the site into dist/
+npm run preview  # serves the built dist/
 ```
 
-Then open `http://localhost:8080/`.
+Requires Node 18.20+ (Astro's minimum).
 
 ## Structure
 
-- `index.html`, `features/`, `discover/`, `translate/`, `create/`, `resources/`, `contact/` — each a route.
-- `assets/css/styles.css` — shared stylesheet.
-- `assets/js/` — small vanilla-JS behaviors (nav, tabs, discover/library filtering). No bundler; these are edited directly under their current filenames.
-- `assets/img/` — images and decorative SVGs.
+- `src/layouts/Base.astro` — the shared page shell: `<head>`, header/nav, footer, and the `nav.js` script tag. Nav highlighting comes from each page's `active` prop; the resources page uses the `navVariant="resources"` nav (different link order plus a Resources item).
+- `src/pages/` — one `.astro` file per route (`src/pages/features/index.astro` → `/features/`). Each page passes its title/description to the layout and supplies only its `<main>` content, plus any per-page script tags via the named `scripts` slot.
+- `public/` — copied to the site root verbatim at build time:
+  - `assets/css/styles.css` — shared stylesheet.
+  - `assets/js/` — small vanilla-JS behaviors (nav, tabs, discover filtering), loaded as plain script tags (`is:inline`), not bundled.
+  - `assets/img/` — images and decorative SVGs.
+  - `_redirects` / `_headers` — Cloudflare routing/caching rules (see below).
 
 ## Deployment
 
-Deployed to **Cloudflare Pages** — project **`obs-web`** (`obs-web-cgw.pages.dev`), production branch `main`.
+Deployed to **Cloudflare Pages** — project **`obs-web`** (`obs-web-cgw.pages.dev`), production branch `main`, via the Git integration.
 
-Config files, all read automatically by Cloudflare:
+Build settings: build command `npm run build`, output directory `dist` (also declared in `wrangler.jsonc` as `pages_build_output_dir`).
 
-- `wrangler.jsonc` — project name and `pages_build_output_dir: "."` (the repo root; there is no build step).
-- `_redirects` / `_headers` — redirects and cache headers, in Cloudflare's plain-text format.
-- `.assetsignore` — repo-only files (config, README) excluded from publishing.
-
-Deploys are either direct uploads (`npx wrangler pages deploy .`) or, once the repo is connected under the project's Settings → Build → Git repository, automatic on every push to `main`. Leave the build command empty in either case.
-
-Current rules:
+Current `_redirects` / `_headers` rules:
 - `/library/*` and `/create/library/*` redirect (301) to `/discover/` — the old Library browser was retired in favor of Discover, which now covers search, format filters, and the inline reader.
 - `/assets/img/*` is cached for 1 year (`immutable`) since filenames don't change.
-- `/assets/js/*` and `/assets/css/*` use `no-cache` (always revalidate) since these are edited in place under the same filenames — no content hashing/bundler here.
+- `/assets/js/*` and `/assets/css/*` use `no-cache` (always revalidate) since these are served in place under the same filenames — no content hashing.
