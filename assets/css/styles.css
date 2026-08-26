@@ -53,16 +53,10 @@ header.site-nav{
   display:flex; align-items:center; justify-content:space-between;
   padding:14px 28px; max-width:var(--max); margin:0 auto;
 }
-.brand{display:flex; align-items:center; gap:10px; font-family:var(--heading-font); font-weight:800; font-size:1.05rem; color:var(--ocean);}
-.brand img{height:26px; width:auto;}
+.brand{font-family:var(--heading-font); font-weight:800; font-size:1.05rem; color:var(--ocean);}
 nav.links{display:flex; gap:28px; font-weight:600; font-size:0.92rem;}
 nav.links a{opacity:0.82; transition:opacity 0.2s; color:var(--ocean);}
 nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
-.mobile-cta-link{display:none;}
-.nav-cta{
-  background:var(--inspire); color:var(--white); font-weight:800;
-  padding:9px 18px; border-radius:999px; font-size:0.88rem; white-space:nowrap;
-}
 .menu-btn{
   display:none; background:none; border:none; color:var(--ocean);
   font-size:1.5rem; cursor:pointer; line-height:1;
@@ -81,12 +75,6 @@ nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
   }
   nav.links.open{display:flex;}
   nav.links a{padding:10px 0; width:100%; font-size:1rem;}
-  .mobile-cta-link{
-    display:block; margin-top:8px; padding:12px 20px !important;
-    background:var(--inspire); color:var(--white) !important; font-weight:800;
-    border-radius:999px; text-align:center; width:100%; opacity:1 !important;
-  }
-  .nav-cta{display:none;}
   .menu-btn{display:flex;}
 }
 
@@ -100,11 +88,18 @@ nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
 }
 .hero-inner{
   max-width:var(--max); margin:0 auto; padding:0 28px;
-  display:grid; grid-template-columns:1fr 1.05fr; gap:40px; align-items:center;
+  display:grid; grid-template-columns:1.35fr 1fr; gap:40px; align-items:center;
 }
 .hero h1{font-size:clamp(2.4rem, 5vw, 3.6rem); margin:16px 0 22px; color:var(--ocean);}
 .hero p.sub{font-size:1.12rem; max-width:520px; color:#3d4b52; margin-bottom:32px;}
 .cta-row{display:flex; gap:16px; flex-wrap:wrap;}
+/* The hero's three-button row is tight for space (the text column shares
+   the hero grid with the illustration), so its buttons are sized a touch
+   smaller than the site default — enough to keep all three on one line
+   from mobile up through desktop instead of the third one wrapping under
+   the first two. */
+.hero .cta-row{gap:12px;}
+.hero .btn{padding:13px 22px; font-size:0.92rem;}
 .btn{
   display:inline-flex; align-items:center; justify-content:center; gap:8px;
   padding:14px 28px; border-radius:999px; font-weight:800; font-size:0.98rem;
@@ -134,7 +129,11 @@ nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
 .hero-stack .stack-pos-2{transform:rotate(7deg) translate(28px,28px) scale(0.94); z-index:2; opacity:0.78;}
 .hero-stack .stack-pos-3{transform:rotate(10.5deg) translate(42px,42px) scale(0.91); z-index:1; opacity:0.62;}
 
-@media (max-width:900px){
+@media (max-width:1040px){
+  /* Below this the two-column hero (text sharing the row with the
+     illustration) squeezes the CTA row too tight for all three buttons
+     to stay on one line — stack to a single column instead of shrinking
+     the buttons further. */
   .hero-inner{grid-template-columns:1fr;}
   .hero-art{order:-1; margin-bottom:8px;}
 }
@@ -499,20 +498,18 @@ section{padding:80px 0;}
   .discover-map-backdrop{position:relative; width:100%; max-width:100%; margin:18px 0 0; opacity:0.16; top:0; right:0;}
 }
 
-/* ---------- FOOTER ---------- */
-footer{background:var(--panel); color:#3d4b52; padding:48px 0 28px; border-top:1px solid rgba(1,66,99,0.08);}
-.footer-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:32px; border-bottom:1px solid rgba(1,66,99,0.12);}
+/* ---------- FOOTER ----------
+   One continuous block: logo+nav row, then a single small credit line
+   below — no second heading-weight section, so it doesn't read as two
+   stacked footers. The divider between them is intentionally light. */
+footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1px solid rgba(1,66,99,0.08);}
+.footer-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:20px; border-bottom:1px solid rgba(1,66,99,0.07);}
 .footer-top img{height:28px;}
 .footer-links{display:flex; gap:26px; font-size:0.9rem; font-weight:600; flex-wrap:wrap;}
 .footer-links a{color:var(--ocean);}
 
-.footer-license{display:flex; align-items:flex-start; gap:16px; padding-top:28px;}
-.footer-license-icon{height:26px; width:auto; flex-shrink:0; margin-top:2px;}
-.footer-license-heading{font-family:'Montserrat',sans-serif; font-weight:800; font-size:1.05rem; color:var(--ocean); margin:0 0 6px;}
-.footer-license-sub{font-size:0.88rem; margin:0 0 4px; color:#3d4b52;}
-.footer-license-sub a{color:var(--ocean); font-weight:700;}
-.footer-license-text{font-size:0.85rem; margin:4px 0 0; color:#5a6a71;}
-.footer-license-text a{color:var(--ocean); font-weight:700;}
+.footer-credit{margin:16px 0 0; font-size:0.85rem; color:#5a6a71; line-height:1.5;}
+.footer-credit a{color:var(--ocean); font-weight:700;}
 
 @media (max-width:600px){
   section{padding:56px 0;}
@@ -522,9 +519,15 @@ footer{background:var(--panel); color:#3d4b52; padding:48px 0 28px; border-top:1
 }
 
 /* ---------- FULL-PAGE READER (/discover/read/) ---------- */
-/* Overrides the reader's inline max-height so the full-page view isn't
-   still capped to the same scrollable box used inline on Discover. */
+/* Overrides the reader's inline fixed height so the full-page view isn't
+   still capped to the same small, internally-scrolling box used inline on
+   Discover (see the .study-main / .slide-content comment in discover.js —
+   that box is intentionally fixed-height so the Next/Back buttons don't
+   shift position between slides; the full-page reader has room to just
+   grow with the content instead). */
 #full-reader .study-main{
-  max-height:none !important;
-  overflow-y:visible !important;
+  height:auto !important;
+}
+#full-reader .slide-content{
+  overflow:visible !important;
 }
