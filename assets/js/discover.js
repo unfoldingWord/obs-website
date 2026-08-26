@@ -635,7 +635,7 @@
       </div>
       <div class="youtube-embed" style="margin-bottom:14px;"></div>
       <div class="story-media" style="display:flex; flex-direction:column; gap:4px; margin-bottom:14px;"></div>
-      <div class="study-main" style="border:1px solid rgba(1,66,99,0.12); border-radius:12px; padding:28px 24px; min-height:420px; max-height:80vh; overflow-y:auto; background:var(--white); text-align:center;">
+      <div class="study-main" style="border:1px solid rgba(1,66,99,0.12); border-radius:12px; padding:24px 24px 0; height:clamp(440px, 64vh, 620px); display:flex; flex-direction:column; background:var(--white); text-align:center;">
         <p style="color:#4a5960; font-size:0.9rem;">Loading story...</p>
       </div>
     `;
@@ -666,56 +666,70 @@
     // flipping right across a story boundary into the next/previous story
     // (rather than stopping and forcing a trip back to the dropdown) — the
     // "read straight through the whole book" experience a slide deck implies.
+    // The Prev/Next controls live in a fixed-position footer, separate from
+    // the image+text pane above them. Previously the whole slide (image,
+    // title, text) and the controls were rendered as one block inside a
+    // box that grew and shrank with content height — since image aspect
+    // ratio and paragraph length both vary slide to slide, the Next button
+    // ended up at a different vertical position after almost every click,
+    // forcing a mouse/trackpad reposition each time. Now `.study-main` has
+    // a fixed height (see renderReaderFor) and only the `.slide-content`
+    // pane scrolls internally when a frame's image+text don't fit — the
+    // `.slide-controls` footer below it never moves.
     function renderSlideDeck() {
       const frames = (currentStoryData && currentStoryData.frames) || [];
 
       if (frames.length === 0) {
         mainEl.innerHTML = `
-          ${
-            currentStoryData && currentStoryData.title
-              ? `<h3 style="color:var(--ocean); margin:0 0 16px;">${escapeHtml(
-                  currentStoryData.title
-                )}</h3>`
-              : ""
-          }
-          <p style="color:#4a5960; font-size:0.9rem;">This story couldn't be broken into slides automatically. <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire);">View the raw file on Door43</a>.</p>
+          <div class="slide-content" style="flex:1 1 auto; min-height:0; overflow-y:auto;">
+            ${
+              currentStoryData && currentStoryData.title
+                ? `<h3 style="color:var(--ocean); margin:0 0 16px;">${escapeHtml(
+                    currentStoryData.title
+                  )}</h3>`
+                : ""
+            }
+            <p style="color:#4a5960; font-size:0.9rem;">This story couldn't be broken into slides automatically. <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire);">View the raw file on Door43</a>.</p>
+          </div>
         `;
         return;
       }
 
       const frame = frames[slideIndex];
       mainEl.innerHTML = `
-        ${
-          currentStoryData.title
-            ? `<h3 style="color:var(--ocean); margin:0 0 18px;">${escapeHtml(
-                currentStoryData.title
-              )}</h3>`
-            : ""
-        }
-        ${
-          frame.image
-            ? `<img src="${frame.image}" alt="${escapeHtml(
-                frame.alt || ""
-              )}" loading="lazy" style="width:100%; max-width:460px; border-radius:10px; margin:0 auto 18px; display:block;">`
-            : ""
-        }
-        <div style="max-width:460px; margin:0 auto; font-size:1.02rem; line-height:1.6; color:var(--tech);">${
-          frame.text
-        }</div>
-        <div class="slide-controls" style="display:flex; align-items:center; justify-content:center; gap:18px; margin-top:26px;">
+        <div class="slide-content" style="flex:1 1 auto; min-height:0; overflow-y:auto; padding-bottom:8px;">
+          ${
+            currentStoryData.title
+              ? `<h3 style="color:var(--ocean); margin:0 0 18px;">${escapeHtml(
+                  currentStoryData.title
+                )}</h3>`
+              : ""
+          }
+          ${
+            frame.image
+              ? `<img src="${frame.image}" alt="${escapeHtml(
+                  frame.alt || ""
+                )}" loading="lazy" style="width:100%; max-width:460px; border-radius:10px; margin:0 auto 18px; display:block;">`
+              : ""
+          }
+          <div style="max-width:460px; margin:0 auto; font-size:1.02rem; line-height:1.6; color:var(--tech);">${
+            frame.text
+          }</div>
+          ${
+            currentStoryData.reference
+              ? `<p style="color:#8a97a0; font-size:0.82rem; font-style:italic; margin-top:20px;">${escapeHtml(
+                  currentStoryData.reference
+                )}</p>`
+              : ""
+          }
+        </div>
+        <div class="slide-controls" style="flex:0 0 auto; display:flex; align-items:center; justify-content:center; gap:18px; padding:16px 0; margin-top:auto; border-top:1px solid rgba(1,66,99,0.08);">
           <button class="slide-prev btn btn-outline" style="padding:8px 18px; font-size:0.85rem;">&larr; Back</button>
           <span style="color:#4a5960; font-size:0.85rem; font-weight:700; min-width:70px;">${
             slideIndex + 1
           } / ${frames.length}</span>
           <button class="slide-next btn btn-outline" style="padding:8px 18px; font-size:0.85rem;">Next &rarr;</button>
         </div>
-        ${
-          currentStoryData.reference
-            ? `<p style="color:#8a97a0; font-size:0.82rem; font-style:italic; margin-top:20px;">${escapeHtml(
-                currentStoryData.reference
-              )}</p>`
-            : ""
-        }
       `;
 
       const slidePrevBtn = mainEl.querySelector(".slide-prev");
