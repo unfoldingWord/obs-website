@@ -1,0 +1,15 @@
+{
+  // Cloudflare Pages config for the Open Bible Stories site.
+  //
+  // `name` MUST match the existing Cloudflare Pages project ("obs-web",
+  // served at obs-web-cgw.pages.dev) — that is what ties a deploy to the
+  // right project.
+  "name": "obs-web",
+  "compatibility_date": "2026-07-20",
+
+  // This site is already-built static output with no bundler step, so the
+  // publish directory is the repo root. Pages serves clean URLs
+  // (/features -> /features/index.html) by default, and reads `_redirects`
+  // and `_headers` for routing/caching rules.
+  "pages_build_output_dir": "."
+}

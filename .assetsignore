@@ -1,0 +1,7 @@
+# Files that live in the repo but must not be published as site assets.
+# (`_headers` and `_redirects` are consumed by Cloudflare as routing/caching
+# rules and are never served as files, so they don't need listing here.)
+wrangler.jsonc
+.assetsignore
+README.md
+.gitignore
