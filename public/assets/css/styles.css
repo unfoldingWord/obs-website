@@ -509,8 +509,6 @@ footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1
 .footer-links a{color:var(--ocean);}
 
 .footer-credit{margin:16px 0 0; font-size:0.85rem; color:#5a6a71; line-height:1.5;}
-.footer-legal{margin:8px 0 0; font-size:0.85rem; color:#5a6a71;}
-.footer-legal a{color:var(--ocean);}
 
 /* Legal pages (privacy policy, terms of use) */
 .legal{max-width:760px;}
