@@ -508,8 +508,9 @@ footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1
 .footer-links{display:flex; gap:26px; font-size:0.9rem; font-weight:600; flex-wrap:wrap;}
 .footer-links a{color:var(--ocean);}
 
-.footer-credit{margin:16px 0 0; font-size:0.85rem; color:#5a6a71; line-height:1.5;}
-.footer-legal-links{display:inline-block; margin-left:2.5em;}
+.footer-credit{margin:16px 0 0; font-size:0.85rem; color:#5a6a71; line-height:1.5; text-align:center;}
+.footer-legal{margin:8px 0 0; font-size:0.85rem; color:#5a6a71; text-align:center;}
+.footer-legal a{color:var(--ocean); font-weight:700;}
 
 /* Legal pages (privacy policy, terms of use) */
 .legal{max-width:760px;}
