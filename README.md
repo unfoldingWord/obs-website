@@ -25,7 +25,7 @@ Requires Node 18.20+ (Astro's minimum).
 
 ## Deployment
 
-Deployed to **Cloudflare Pages** — project **`obs-web`** (`obs-web-cgw.pages.dev`), production branch `main`, via the Git integration.
+Deployed to **Cloudflare Pages** — project **`obs-website`** (`obs-web-cgw.pages.dev`), production branch `main`, via the Git integration.
 
 Build settings: build command `npm run build`, output directory `dist` (also declared in `wrangler.jsonc` as `pages_build_output_dir`).
 

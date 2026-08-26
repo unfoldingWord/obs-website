@@ -1,10 +1,10 @@
 {
   // Cloudflare Pages config for the Open Bible Stories site.
   //
-  // `name` MUST match the existing Cloudflare Pages project ("obs-web",
-  // served at obs-web-cgw.pages.dev) — that is what ties a deploy to the
-  // right project.
-  "name": "obs-web",
+  // `name` MUST match the existing Cloudflare Pages project ("obs-website",
+  // still served at obs-web-cgw.pages.dev — renaming a Pages project does
+  // not change its pages.dev subdomain). A mismatch here fails the build.
+  "name": "obs-website",
   "compatibility_date": "2026-07-20",
 
   // This site is already-built static output with no bundler step, so the
