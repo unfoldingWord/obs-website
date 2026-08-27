@@ -156,7 +156,7 @@
           container.innerHTML = `
             <p style="color:#4a5960; font-size:0.85rem;">
               Couldn't find a readable structure for this one automatically.
-              <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire);">View the raw files on Door43</a>.
+              <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire-text);">View the raw files on Door43</a>.
             </p>`;
         }
       })
@@ -443,7 +443,12 @@
     listEl.querySelectorAll(".lang-row").forEach((row) => {
       row.addEventListener("click", () => showDetail(row.dataset.lang));
       row.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter") showDetail(row.dataset.lang);
+        // role="button" must respond to Space as well as Enter; preventDefault
+        // stops Space from also scrolling the page.
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          showDetail(row.dataset.lang);
+        }
       });
     });
   }
@@ -565,8 +570,17 @@
 
   // ---------- boot ----------
 
+  function renderLoadError() {
+    statusEl.innerHTML =
+      'The resource list couldn\'t be loaded — the Door43 catalog may be ' +
+      'unreachable from your network. ' +
+      '<button type="button" id="res-retry" class="btn btn-outline" style="padding:8px 18px; font-size:0.85rem; margin:10px 6px 0;">Try again</button>';
+    const retryBtn = document.getElementById("res-retry");
+    if (retryBtn) retryBtn.addEventListener("click", loadResources);
+  }
+
+  function loadResources() {
   statusEl.textContent = "Loading resources...";
-  searchEl.addEventListener("input", renderList);
 
   Promise.all(
     RESOURCE_TYPES.map((t) =>
@@ -576,7 +590,7 @@
     .then((resultsByType) => {
       const allFailed = resultsByType.every((r) => !r.ok);
       if (allFailed) {
-        statusEl.textContent = "Couldn't load resources right now. Try refreshing.";
+        renderLoadError();
         return;
       }
 
@@ -588,7 +602,9 @@
         showDetail(hashCode);
       }
     })
-    .catch(() => {
-      statusEl.textContent = "Couldn't load resources right now. Try refreshing.";
-    });
+    .catch(renderLoadError);
+  }
+
+  searchEl.addEventListener("input", renderList);
+  loadResources();
 })();

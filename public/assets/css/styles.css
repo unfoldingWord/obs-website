@@ -1,9 +1,56 @@
+/* ---------- SELF-HOSTED FONTS ----------
+   Variable woff2 files served from /assets/fonts/ (latin + latin-ext),
+   replacing the render-blocking fonts.googleapis.com request. Weight
+   ranges match what the site actually uses: Montserrat 700-900 for
+   headings, Nunito Sans 400-700 for body text. */
+@font-face{
+  font-family:'Montserrat';
+  font-style:normal;
+  font-weight:700 900;
+  font-display:swap;
+  src:url('/assets/fonts/montserrat-var-latin-ext.woff2') format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Montserrat';
+  font-style:normal;
+  font-weight:700 900;
+  font-display:swap;
+  src:url('/assets/fonts/montserrat-var-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+@font-face{
+  font-family:'Nunito Sans';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('/assets/fonts/nunito-sans-var-latin-ext.woff2') format('woff2');
+  unicode-range:U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face{
+  font-family:'Nunito Sans';
+  font-style:normal;
+  font-weight:400 700;
+  font-display:swap;
+  src:url('/assets/fonts/nunito-sans-var-latin.woff2') format('woff2');
+  unicode-range:U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 :root{
   --ocean:#014263;
   --ocean-deep:#012f47;
   --inspire:#31ADE3;
   --cultivate:#70C9CC;
   --kindle:#E59D33;
+  /* Text-safe variants of the two accent hues. Inspire (#31ADE3) and
+     Kindle (#E59D33) fail WCAG AA as TEXT on white/panel (2.6:1 and 2.3:1
+     against a 4.5:1 requirement) — they stay in use as fills (buttons,
+     icons, rules), but any text set in an accent color uses these darker
+     steps of the same hue instead:
+       --inspire-text on white 5.6:1, on panel 5.0:1
+       --kindle-text  on white 5.2:1, on panel 4.7:1 */
+  --inspire-text:#0F6E9E;
+  --kindle-text:#946200;
   --tech:#231F20;
   --paper:#FFFFFF;
   --panel:#E3F6F6;
@@ -34,12 +81,20 @@ img{max-width:100%;display:block;}
   font-size:0.72rem;
   letter-spacing:0.18em;
   text-transform:uppercase;
-  color:var(--inspire);
+  color:var(--inspire-text);
 }
 @media (prefers-reduced-motion: reduce){
   *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important;}
 }
 :focus-visible{outline:3px solid var(--kindle); outline-offset:2px;}
+
+/* Skip link: first tab stop on every page, visually hidden until focused. */
+.skip-link{
+  position:absolute; left:-9999px; top:0; z-index:100;
+  background:var(--ocean); color:var(--white); font-weight:700;
+  padding:12px 20px; border-radius:0 0 10px 0; text-decoration:underline;
+}
+.skip-link:focus{left:0;}
 
 /* ---------- NAV ---------- */
 header.site-nav{
@@ -133,9 +188,11 @@ nav.links a:hover, nav.links a[aria-current="page"]{opacity:1;}
   /* Below this the two-column hero (text sharing the row with the
      illustration) squeezes the CTA row too tight for all three buttons
      to stay on one line — stack to a single column instead of shrinking
-     the buttons further. */
+     the buttons further. The illustration follows the text (no order:-1):
+     putting it first pushed the headline to ~450px and the CTAs below the
+     fold on a phone, so the first screen was an unlabelled picture. */
   .hero-inner{grid-template-columns:1fr;}
-  .hero-art{order:-1; margin-bottom:8px;}
+  .hero-art{margin-top:8px;}
 }
 
 @media (max-width:520px){
@@ -219,7 +276,7 @@ section{padding:80px 0;}
                     radial-gradient(circle at 85% 80%, rgba(49,173,227,0.12), transparent 45%);
 }
 .stats-inner{position:relative; z-index:1;}
-.stats-section .eyebrow{color:var(--inspire);}
+.stats-section .eyebrow{color:var(--inspire-text);}
 .stats-section h2{color:var(--ocean); margin:10px 0 48px; font-size:clamp(1.8rem,3.4vw,2.4rem); max-width:620px;}
 .stat-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:32px;}
 .stat{border-left:3px solid var(--inspire); padding-left:18px;}
@@ -262,8 +319,8 @@ section{padding:80px 0;}
 }
 .full-lib-resource > summary::-webkit-details-marker{display:none;}
 .full-lib-resource-body{padding:12px 16px; display:flex; flex-direction:column; gap:6px;}
-.full-lib-link{font-size:0.88rem; color:var(--inspire); display:flex; align-items:center; gap:6px;}
-.full-lib-link .tag{color:#8a97a0; font-size:0.78rem;}
+.full-lib-link{font-size:0.88rem; color:var(--inspire-text); display:flex; align-items:center; gap:6px;}
+.full-lib-link .tag{color:#64747d; font-size:0.78rem;}
 
 .full-lib-other{border:1px solid rgba(1,66,99,0.08); border-radius:6px; margin-top:6px;}
 .full-lib-other > summary{
@@ -336,6 +393,12 @@ section{padding:80px 0;}
   border:1px solid rgba(1,66,99,0.25); background:var(--white); color:var(--ocean); cursor:pointer;
 }
 .filter-chip.active{background:var(--ocean); color:var(--white); border-color:var(--ocean);}
+@media (pointer:coarse){
+  /* 33px-tall chips clear the bare 24px minimum but sit well under the
+     ~44px comfortable touch target — and these are the primary filter
+     control on a page used heavily on phones. */
+  .filter-chip{padding:12px 18px;}
+}
 .lib-status{text-align:center; color:#4a5960; font-size:0.9rem; margin-bottom:24px;}
 .lang-list{display:flex; flex-direction:column; gap:2px; max-width:820px; margin:0 auto;}
 .lang-row{
@@ -366,7 +429,7 @@ section{padding:80px 0;}
 .step-body h3{font-size:1.1rem; color:var(--ocean); margin-bottom:6px;}
 .step-body p{color:#4a5960; font-size:0.96rem; margin-bottom:6px;}
 .step-body ul{margin:8px 0 0 18px; color:#4a5960; font-size:0.94rem;}
-.step-body a{color:var(--inspire); text-decoration:underline;}
+.step-body a{color:var(--inspire-text); text-decoration:underline;}
 
 @media (max-width:600px){
   .step-item{gap:16px;}
@@ -388,7 +451,7 @@ section{padding:80px 0;}
 .hero-story-byline .role{font-size:0.95rem; font-weight:700; color:var(--ocean);}
 .hero-story-heading{font-size:clamp(1.8rem, 3.6vw, 2.4rem); color:var(--ocean); margin-bottom:8px;}
 .hero-story-subhead{
-  font-family:var(--heading-font); font-weight:700; color:var(--inspire);
+  font-family:var(--heading-font); font-weight:700; color:var(--inspire-text);
   font-size:0.95rem; text-transform:uppercase; letter-spacing:0.06em; margin-bottom:20px;
 }
 .hero-story-teaser{font-size:1.12rem; line-height:1.7; color:#2b3a41;}
@@ -495,14 +558,18 @@ section{padding:80px 0;}
   .discover-map-backdrop{width:280px; max-width:44vw; top:12px;}
 }
 @media (max-width:700px){
-  .discover-map-backdrop{position:relative; width:100%; max-width:100%; margin:18px 0 0; opacity:0.16; top:0; right:0;}
+  /* On phones the map used to flow into the document (position:relative),
+     taking ~200px and pushing the search box — the whole point of the
+     page — below the fold. It's aria-hidden decoration, so it simply
+     goes away on small screens. */
+  .discover-map-backdrop{display:none;}
 }
 
 /* ---------- FOOTER ----------
    One continuous block: logo+nav row, then a single small credit line
    below — no second heading-weight section, so it doesn't read as two
    stacked footers. The divider between them is intentionally light. */
-footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1px solid rgba(1,66,99,0.08);}
+body > footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1px solid rgba(1,66,99,0.08);}
 .footer-top{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:24px; padding-bottom:20px; border-bottom:1px solid rgba(1,66,99,0.07);}
 .footer-top img{height:28px;}
 .footer-links{display:flex; gap:26px; font-size:0.9rem; font-weight:600; flex-wrap:wrap;}
@@ -519,7 +586,7 @@ footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; border-top:1
 .legal p{margin:0 0 14px; line-height:1.7;}
 .legal ul, .legal ol{margin:0 0 14px; padding-left:24px; line-height:1.7;}
 .legal li{margin-bottom:8px;}
-.legal a{color:var(--inspire); text-decoration:underline;}
+.legal a{color:var(--inspire-text); text-decoration:underline;}
 .footer-credit a{color:var(--ocean); font-weight:700;}
 
 @media (max-width:600px){

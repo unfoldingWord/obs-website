@@ -19,10 +19,10 @@ import Base from '../layouts/Base.astro';
     </div>
     <div class="hero-art" aria-hidden="true">
       <div class="hero-stack" id="hero-stack">
-        <img src="/assets/img/story-boat.jpg" alt="" class="stack-pos-0">
-        <img src="/assets/img/story-garden.jpg" alt="" class="stack-pos-1">
-        <img src="/assets/img/story-crowd.jpg" alt="" class="stack-pos-2">
-        <img src="/assets/img/story-mountain.jpg" alt="" class="stack-pos-3">
+        <img src="/assets/img/story-boat.jpg" alt="" width="1000" height="573" class="stack-pos-0">
+        <img src="/assets/img/story-garden.jpg" alt="" width="1000" height="565" class="stack-pos-1">
+        <img src="/assets/img/story-crowd.jpg" alt="" width="1000" height="567" class="stack-pos-2">
+        <img src="/assets/img/story-mountain.jpg" alt="" width="1000" height="562" class="stack-pos-3">
       </div>
     </div>
   </div>
@@ -52,11 +52,11 @@ import Base from '../layouts/Base.astro';
 <section class="stats-section">
   <div class="wrap stats-inner" style="text-align:center;">
     <div class="big-stat">
-      <span class="big-stat-num" id="lang-count" data-target="198">0</span>
+      <span class="big-stat-num" id="lang-count" data-target="214">214</span>
       <span class="big-stat-label">Languages<br>Already Available</span>
     </div>
     <p style="color:var(--tech); font-size:1.15rem; max-width:560px; margin:28px auto 10px; font-weight:600;">Every translation represents a community reached, a church equipped, and lives being transformed by the Gospel.</p>
-    <p style="color:var(--kindle); font-size:1.2rem; font-weight:800; margin:0;">The next language could be yours.</p>
+    <p style="color:var(--kindle-text); font-size:1.2rem; font-weight:800; margin:0;">The next language could be yours.</p>
   </div>
 </section>
 
@@ -65,7 +65,7 @@ import Base from '../layouts/Base.astro';
     <div class="section-head">
       <p class="eyebrow">Free to use, to translate, to share</p>
       <h2>Open, for everyone</h2>
-      <p>Open Bible Stories is available under an open license that gives you freedom to download, copy, share, translate, record audio, create video, print, and publish &mdash; see the <a href="/license/" style="color:var(--inspire); text-decoration:underline;">license</a> for details.</p>
+      <p>Open Bible Stories is available under an open license that gives you freedom to download, copy, share, translate, record audio, create video, print, and publish &mdash; see the <a href="/license/" style="color:var(--inspire-text); text-decoration:underline;">license</a> for details.</p>
     </div>
 
     <div class="card-grid">
@@ -99,76 +99,8 @@ import Base from '../layouts/Base.astro';
   </div>
 </section>
 
-<script is:inline>
-  function animateCount(el, target) {
-    const duration = 1400;
-    const start = performance.now();
-    function tick(now) {
-      const progress = Math.min((now - start) / duration, 1);
-      const eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(eased * target);
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
-  }
 
-  const countEl = document.getElementById("lang-count");
-  const fallbackTarget = parseInt(countEl.dataset.target, 10);
-  let liveTarget = null; // unknown until the stats-ext fetch settles (success or failure)
-  let intersected = false;
-  let animated = false;
-
-  // Waits for BOTH conditions — the stat scrolled into view, and the live
-  // count resolved — before animating, in either order. Fixes a real bug:
-  // the previous version animated as soon as the section was visible using
-  // whatever was in data-target at that instant (the hardcoded fallback),
-  // completely independent of whether the live fetch below had finished.
-  // On a fast page load where the stat is visible without scrolling, that
-  // meant visitors could see the stale fallback number settle in before the
-  // network round-trip to Door43 came back — the exact stale-198 bug seen
-  // in testing. Falling back to the hardcoded number now only happens if
-  // the endpoint genuinely fails, not as a race-losing default.
-  function maybeAnimate() {
-    if (animated || !intersected || liveTarget === null) return;
-    animated = true;
-    animateCount(countEl, liveTarget);
-  }
-
-  const observer = new IntersectionObserver(
-    (entries) => {
-      if (entries[0].isIntersecting) {
-        intersected = true;
-        maybeAnimate();
-        observer.disconnect();
-      }
-    },
-    { threshold: 0.4 }
-  );
-  observer.observe(countEl);
-
-  // Sourced from the DCS catalog's stats-ext endpoint rather than pulling
-  // every OBS catalog entry just to count distinct language codes client-side
-  // (the earlier approach here). stats-ext computes lang_count server-side,
-  // so this stays accurate and in sync with what's actually published,
-  // without shipping the full ~200+ entry catalog payload just for a number.
-  // No `metadataType` filter, matching Library/Discover: 16 languages are
-  // published in the older "ts" format rather than Resource Container, and
-  // both are now readable, so both should count.
-  fetch("https://git.door43.org/api/v1/catalog/stats-ext?subject=Open%20Bible%20Stories&stage=prod")
-    .then((res) => res.json())
-    .then((stats) => {
-      const count = stats && stats.lang_count;
-      liveTarget = Number.isFinite(count) && count > 0 ? count : fallbackTarget;
-      countEl.dataset.target = liveTarget;
-      maybeAnimate();
-    })
-    .catch(() => {
-      // Endpoint genuinely unreachable — fall back so the section doesn't
-      // stay stuck at "0" forever, but this is now a last resort, not a
-      // race outcome.
-      liveTarget = fallbackTarget;
-      maybeAnimate();
-    });
-</script>
-
+<Fragment slot="scripts">
+<script is:inline src="/assets/js/lang-count.js"></script>
+</Fragment>
 </Base>

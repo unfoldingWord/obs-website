@@ -3,3 +3,9 @@
 # bookmarks/links/search results from 404ing.
 /create/library/*  /discover/  301
 /library/*         /discover/  301
+
+# The Why OBS page moved from /features/ to /why-obs/ to match its nav label;
+# the standalone /resources/ page was folded into the Translate page's
+# Resources tab.
+/features/*   /why-obs/              301
+/resources/*  /translate/#resources  301
