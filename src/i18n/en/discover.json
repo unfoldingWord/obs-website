@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Discover — Open Bible Stories",
+    "description": "Read Open Bible Stories in your language, by any published team."
+  },
+  "hero": {
+    "eyebrow": "Find the Gospel in your language",
+    "title": "Discover",
+    "sub": "Search for Open Bible Stories in your language. Read, listen, watch, or download available translations.",
+    "ctaApp": "OBS Mobile App"
+  },
+  "browse": {
+    "searchPlaceholder": "Search by language name, e.g. Swahili",
+    "filterAll": "All",
+    "filterPrint": "Print",
+    "filterAudio": "Audio",
+    "filterVideo": "Video"
+  }
+}

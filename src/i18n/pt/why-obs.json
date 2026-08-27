@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Por que Open Bible Stories",
+    "description": "Histórias reais do campo: como Open Bible Stories alcança os não alcançados, treina novos líderes e abre a porta para a tradução da Bíblia."
+  },
+  "hero": {
+    "eyebrow": "Uma história do Chade",
+    "title": "Um tradutor e o imã irado",
+    "p1": "Dez milhões de pessoas no Chade ainda não ouviram o evangelho. Esta equipe de tradução percorre muitos quilômetros perigosos para verificar cada nova tradução com as comunidades que a usarão &mdash; desta vez, sob o olhar do imã da aldeia.",
+    "p2": "Do lado de fora, adolescentes aguardavam um sinal para apedrejar os visitantes. Mas, à medida que as histórias eram lidas em voz alta, a raiva na sala foi se abrandando. No final, o próprio imã se levantou: “Se alguém diz que Jesus não é o salvador, não é um verdadeiro muçulmano, e deveria ser apedrejado.”",
+    "quote": "“Bendigo o nome do Senhor pela unfoldingWord e por Open Bible Stories. Este instrumento é inspirado! Estamos semeando nos corações dos muçulmanos sementes que são como bombas, e um dia elas explodirão em vida.”",
+    "quoteAttr": "&mdash; Um parceiro de tradução da Bíblia, Chade",
+    "bridge": "Esse tipo de história não é único. Pela África, Ásia, América Latina e Oriente Médio, igrejas continuam escolhendo Open Bible Stories porque ele remove as barreiras para compartilhar a Palavra de Deus."
+  },
+  "why": {
+    "eyebrow": "Cinquenta histórias, da Criação ao Apocalipse",
+    "title": "Por que as igrejas continuam escolhendo Open Bible Stories",
+    "sub": "O primeiro passo de uma equipe rumo à tradução da Bíblia inteira.",
+    "cards": [
+      {
+        "title": "Comece mais cedo",
+        "body": "As igrejas podem começar a compartilhar e traduzir conteúdo bíblico antes de concluir uma Bíblia completa."
+      },
+      {
+        "title": "Liderado pela igreja local",
+        "body": "As próprias igrejas traduzem, revisam e usam as histórias."
+      },
+      {
+        "title": "Feito para ser compartilhado",
+        "body": "As histórias funcionam naturalmente na narração oral, na conversa e em diferentes contextos de alfabetização."
+      }
+    ]
+  },
+  "world": {
+    "eyebrow": "Ao redor do mundo",
+    "title": "Um recurso. Centenas de histórias.",
+    "dotsLabel": "Vozes do campo, por lugar",
+    "quotes": [
+      {
+        "id": "chad",
+        "quote": "“Ele não apenas supera o preconceito islâmico, mas está imediatamente disponível em formatos de áudio e vídeo para compartilhar com quem não sabe ler nem escrever.”",
+        "attr": "&mdash; Parceiro chadiano de tradução da Bíblia",
+        "dotLabel": "Chade"
+      },
+      {
+        "id": "sudan-leader",
+        "quote": "“Fico maravilhado ao ver nossos tradutores treinando novos líderes. São crentes de origem muçulmana, muito novos no cristianismo, mas o conhecimento deles cresce muito rápido.”",
+        "attr": "&mdash; Líder sudanês de tradução da Bíblia",
+        "dotLabel": "Sudão, líderes"
+      },
+      {
+        "id": "sudan-community",
+        "quote": "“O evangelho em forma de histórias é fácil de entender para os povos islâmicos. A comunidade aceita a tradução porque é obra dela mesma.”",
+        "attr": "&mdash; Líder sudanês de tradução da Bíblia",
+        "dotLabel": "Sudão, comunidade"
+      },
+      {
+        "id": "venezuela",
+        "quote": "“Quando o governo expulsou todos os missionários ocidentais, tivemos que encontrar um caminho. Open Bible Stories e a Tradução da Bíblia Centrada na Igreja nos dão essas ferramentas.”",
+        "attr": "&mdash; Parceiro venezuelano de tradução da Bíblia",
+        "dotLabel": "Venezuela"
+      },
+      {
+        "id": "iran",
+        "quote": "“Como está no idioma do meu coração, minha mãe pode ler este livro. De todo o coração, obrigado por tornarem isso possível.”",
+        "attr": "&mdash; Parceiro iraniano de tradução da Bíblia",
+        "dotLabel": "Irã"
+      },
+      {
+        "id": "eurasia",
+        "quote": "“Open Bible Stories comunica o evangelho tão bem que é minha ferramenta evangelística favorita nos países que já fizeram parte da União Soviética.”",
+        "attr": "&mdash; Parceiro eurasiano de tradução da Bíblia",
+        "dotLabel": "Eurásia"
+      }
+    ],
+    "statLabel": "Idiomas<br>e contando"
+  },
+  "finalCta": {
+    "title": "Ajude a escrever a próxima história",
+    "body": "Em algum lugar hoje, outra igreja está se preparando para compartilhar o evangelho no próprio idioma pela primeira vez &mdash; seu apoio ajuda a tornar isso possível.",
+    "cta": "Doe hoje"
+  }
+}

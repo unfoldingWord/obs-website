@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "翻译 — Open Bible Stories",
+    "description": "将 Open Bible Stories 翻译成您语言的 7 个步骤。"
+  },
+  "hero": {
+    "eyebrow": "帮助福音进入另一种语言",
+    "title": "如何翻译 Open Bible Stories",
+    "sub": "帮助福音进入另一种语言。按照下面的步骤，基于 unfoldingWord&reg; Open Bible Stories 开始一个新的翻译项目。",
+    "tabHowto": "如何翻译",
+    "tabResources": "资源"
+  },
+  "steps": [
+    {
+      "title": "预备",
+      "body": "<p>要预备开始翻译，请先安装 <a href=\"https://scribe.bible/\">Scribe SE</a>。关于 Scribe SE 的使用方法，可参阅 <a href=\"https://docs.scribe.bible/\">Scribe SE 文档</a>。</p><p>在 <a href=\"https://www.well.bible/\">Bible Well 应用</a>中获取翻译资源。</p>"
+    },
+    {
+      "title": "理解",
+      "body": "<p>学习翻译所需的<a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">基本原则</a>。</p><p>在 Scribe SE 中研读“创世”这个故事，熟悉它在源语言中的内容。</p>"
+    },
+    {
+      "title": "翻译",
+      "body": "<p>在 Scribe SE 中：</p><ul><li>打开您要翻译的那个圣经故事</li><li>与您的团队一起按照<a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">如何翻译</a>页面上的步骤完成初稿</li></ul>"
+    },
+    {
+      "title": "内部审核",
+      "body": "<p>按照<a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">审核</a>步骤，进行同伴审核与团队审核。</p>"
+    },
+    {
+      "title": "外部审核",
+      "body": "<ul><li>按照<a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">此页面</a>上的步骤进行外部审核</li><li>要进一步了解审核，请点击<a href=\"https://checking.my.canva.site\">这里</a></li></ul>"
+    },
+    {
+      "title": "发布",
+      "body": "<p>当译文的各个审核阶段都完成后，在 Scribe SE 中对故事做最后的修订，并发布到 <a href=\"https://door43.org\">Door43</a>。</p><p>按照<a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">这份清单</a>确认这些故事已经可以发布。</p>"
+    },
+    {
+      "title": "分发",
+      "body": "<p>您可以用<a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">多种形式</a>分享您的 Open Bible Stories 译本，用于布道和门徒训练——或者到<a href=\"/create/\">“创作”页面</a>获取底层源文件。</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "庆贺",
+    "body": "<p>请花时间为自己的语言有了 Open Bible Stories 而欢喜。把这好消息分享给每一个人，并为神所成就的一切赞美祂。</p>"
+  },
+  "questions": "有问题？请发邮件至 <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "装备他人理解并教导福音",
+    "title": "资源",
+    "body": "翻译注释、翻译问题、研经注释、研经问题，以及扩展版（神学造就版）——只需搜索一次您的语言，即可看到所有可用的资源。想找故事本身？请前往<a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">“发现”页面</a>。",
+    "searchPlaceholder": "按语言名称搜索，例如：中文"
+  },
+  "finalCta": {
+    "title": "需要翻译工具？",
+    "body": "Scribe SE 以及其他可用于开始翻译的编辑器都列在“创作”页面上。",
+    "ctaTools": "查看翻译工具",
+    "ctaDiscover": "查看已有的译本"
+  }
+}

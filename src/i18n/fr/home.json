@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories aide les églises, les ministères et les équipes de traduction à rendre l'Évangile accessible dans chaque langue grâce à un recueil simple d'histoires bibliques illustrées."
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "L'Évangile pour chaque peuple",
+    "sub": "Open Bible Stories aide les églises, les ministères et les équipes de traduction à rendre l'Évangile accessible dans chaque langue grâce à un recueil simple d'histoires bibliques illustrées.",
+    "ctaFind": "Trouvez votre langue",
+    "ctaTranslate": "Commencer à traduire",
+    "ctaApp": "OBS Application Mobile"
+  },
+  "stats": {
+    "label": "Langues<br>déjà disponibles",
+    "line1": "Chaque traduction représente une communauté atteinte, une église équipée et des vies transformées par l'Évangile.",
+    "line2": "La prochaine langue pourrait être la vôtre."
+  },
+  "open": {
+    "eyebrow": "Libre d'utilisation, de traduction et de partage",
+    "title": "Ouvert, pour tous",
+    "body": "Open Bible Stories est disponible sous une licence ouverte qui vous donne la liberté de télécharger, copier, partager, traduire, enregistrer de l'audio, créer des vidéos, imprimer et publier &mdash; consultez la <a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">licence</a> pour plus de détails.",
+    "cards": [
+      {
+        "title": "Découvrir",
+        "body": "Recherchez par langue pour voir si Open Bible Stories est disponible, et lisez-le directement dans votre navigateur.",
+        "cta": "Parcourir Découvrir"
+      },
+      {
+        "title": "Traduire",
+        "body": "Aidez à rendre l'Évangile disponible dans une autre langue, avec les outils et les étapes conçus pour les équipes de traduction.",
+        "cta": "Commencer à traduire"
+      },
+      {
+        "title": "Créer",
+        "body": "Transformez Open Bible Stories en vidéos, en audio, en supports de formation et bien plus pour les personnes que vous servez.",
+        "cta": "Commencer à créer"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Aidez à l'apporter dans la prochaine langue",
+    "body": "Chaque nouvelle traduction crée l'occasion pour quelqu'un de rencontrer Jésus dans la langue qu'il comprend le mieux. Cette prochaine langue pourrait commencer avec vous.",
+    "ctaTranslate": "Commencer à traduire",
+    "ctaGive": "Donner aujourd'hui"
+  }
+}

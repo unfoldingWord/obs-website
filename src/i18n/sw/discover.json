@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Vumbua — Open Bible Stories",
+    "description": "Soma Open Bible Stories katika lugha yako, kutoka kwa timu yoyote iliyochapisha."
+  },
+  "hero": {
+    "eyebrow": "Pata Injili katika lugha yako",
+    "title": "Vumbua",
+    "sub": "Tafuta Open Bible Stories katika lugha yako. Soma, sikiliza, tazama, au pakua tafsiri zinazopatikana.",
+    "ctaApp": "Programu ya Simu ya OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "Tafuta kwa jina la lugha, mfano Kiswahili",
+    "filterAll": "Zote",
+    "filterPrint": "Chapa",
+    "filterAudio": "Sauti",
+    "filterVideo": "Video"
+  }
+}

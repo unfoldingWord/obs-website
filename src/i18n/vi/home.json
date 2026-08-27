@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories giúp các hội thánh, mục vụ và đội ngũ dịch thuật đưa Phúc Âm đến với mọi ngôn ngữ qua một bộ sưu tập đơn giản gồm các câu chuyện Kinh Thánh có minh họa."
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "Phúc Âm cho mọi dân tộc",
+    "sub": "Open Bible Stories giúp các hội thánh, mục vụ và đội ngũ dịch thuật đưa Phúc Âm đến với mọi ngôn ngữ qua một bộ sưu tập đơn giản gồm các câu chuyện Kinh Thánh có minh họa.",
+    "ctaFind": "Tìm ngôn ngữ của bạn",
+    "ctaTranslate": "Bắt đầu dịch",
+    "ctaApp": "Ứng dụng di động OBS"
+  },
+  "stats": {
+    "label": "Ngôn ngữ<br>đã có sẵn",
+    "line1": "Mỗi bản dịch là một cộng đồng được vươn tới, một hội thánh được trang bị, và những cuộc đời đang được Phúc Âm biến đổi.",
+    "line2": "Ngôn ngữ tiếp theo có thể là của bạn."
+  },
+  "open": {
+    "eyebrow": "Tự do sử dụng, dịch thuật và chia sẻ",
+    "title": "Mở, dành cho mọi người",
+    "body": "Open Bible Stories được phát hành theo một giấy phép mở, cho bạn quyền tự do tải xuống, sao chép, chia sẻ, dịch, thu âm, làm video, in ấn và xuất bản &mdash; xem <a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">giấy phép</a> để biết chi tiết.",
+    "cards": [
+      {
+        "title": "Khám phá",
+        "body": "Tìm theo ngôn ngữ để xem Open Bible Stories đã có sẵn hay chưa, và đọc ngay trên trình duyệt của bạn.",
+        "cta": "Xem trang Khám phá"
+      },
+      {
+        "title": "Dịch thuật",
+        "body": "Góp phần đưa Phúc Âm đến với một ngôn ngữ khác, với các công cụ và các bước được xây dựng cho đội ngũ dịch thuật.",
+        "cta": "Bắt đầu dịch"
+      },
+      {
+        "title": "Sáng tạo",
+        "body": "Biến Open Bible Stories thành video, audio, tài liệu huấn luyện và nhiều hơn nữa cho những người bạn phục vụ.",
+        "cta": "Bắt đầu sáng tạo"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Góp phần đưa đến ngôn ngữ tiếp theo",
+    "body": "Mỗi bản dịch mới mở ra cơ hội để một người gặp gỡ Chúa Giê-xu trong ngôn ngữ mà họ hiểu rõ nhất. Ngôn ngữ tiếp theo ấy có thể bắt đầu từ bạn.",
+    "ctaTranslate": "Bắt đầu dịch",
+    "ctaGive": "Dâng hiến hôm nay"
+  }
+}

@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Dịch thuật — Open Bible Stories",
+    "description": "7 bước để dịch Open Bible Stories sang ngôn ngữ của bạn."
+  },
+  "hero": {
+    "eyebrow": "Góp phần đưa Phúc Âm đến với một ngôn ngữ khác",
+    "title": "Cách dịch Open Bible Stories",
+    "sub": "Góp phần đưa Phúc Âm đến với một ngôn ngữ khác. Hãy làm theo các bước dưới đây để bắt đầu một bản dịch mới dựa trên unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Cách dịch",
+    "tabResources": "Tài nguyên"
+  },
+  "steps": [
+    {
+      "title": "Chuẩn bị",
+      "body": "<p>Để chuẩn bị dịch, hãy bắt đầu bằng việc cài đặt <a href=\"https://scribe.bible/\">Scribe SE</a>. Để biết cách sử dụng Scribe SE, bạn có thể xem <a href=\"https://docs.scribe.bible/\">tài liệu hướng dẫn Scribe SE</a>.</p><p>Truy cập các tài nguyên dịch thuật trên <a href=\"https://www.well.bible/\">ứng dụng Bible Well</a>.</p>"
+    },
+    {
+      "title": "Tìm hiểu",
+      "body": "<p>Nghiên cứu <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">các nguyên tắc nền tảng</a> bạn cần cho việc dịch thuật.</p><p>Nghiên cứu câu chuyện \"Sự sáng tạo\" trong Scribe SE để làm quen với câu chuyện trong ngôn ngữ nguồn.</p>"
+    },
+    {
+      "title": "Dịch",
+      "body": "<p>Trong Scribe SE:</p><ul><li>Mở câu chuyện Open Bible Stories mà bạn muốn dịch</li><li>Làm theo các bước về <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">cách dịch</a> cùng với đội của bạn để hoàn tất quá trình soạn bản thảo</li></ul>"
+    },
+    {
+      "title": "Kiểm tra nội bộ",
+      "body": "<p>Hoàn tất các bước <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">kiểm tra</a> để thực hiện kiểm tra với đối tác và trong đội.</p>"
+    },
+    {
+      "title": "Kiểm tra bên ngoài",
+      "body": "<ul><li>Làm theo các bước trên <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">trang này</a> để thực hiện kiểm tra bên ngoài</li><li>Để tìm hiểu thêm về việc kiểm tra, bấm <a href=\"https://checking.my.canva.site\">vào đây</a></li></ul>"
+    },
+    {
+      "title": "Xuất bản",
+      "body": "<p>Khi mọi giai đoạn kiểm tra bản dịch đã hoàn tất, hãy chỉnh sửa lần cuối các câu chuyện trong Scribe SE và xuất bản lên <a href=\"https://door43.org\">Door43</a>.</p><p>Làm theo <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">danh sách kiểm tra này</a> để xác định rằng các câu chuyện đã sẵn sàng xuất bản.</p>"
+    },
+    {
+      "title": "Phổ biến",
+      "body": "<p>Bạn có thể chia sẻ bản dịch Open Bible Stories của mình dưới <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">nhiều định dạng khác nhau</a> để truyền giảng và môn đồ hóa &mdash; hoặc xem <a href=\"/create/\">trang Sáng tạo</a> để lấy các tệp nguồn gốc.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Chúc mừng",
+    "body": "<p>Hãy dành thời gian vui mừng vì bạn đã có Open Bible Stories bằng ngôn ngữ của mình. Hãy chia sẻ tin vui này với mọi người và dâng lời ngợi khen Đức Chúa Trời vì những gì Ngài đã làm.</p>"
+  },
+  "questions": "Có thắc mắc? Hãy gửi email đến <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Trang bị cho người khác để hiểu và dạy Phúc Âm",
+    "title": "Tài nguyên",
+    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions, và ấn bản Extended (Theological Formation) &mdash; tìm ngôn ngữ của bạn một lần để xem mọi thứ hiện có cho ngôn ngữ đó. Bạn đang tìm chính các câu chuyện? Hãy xem <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Khám phá</a>.",
+    "searchPlaceholder": "Tìm theo tên ngôn ngữ, ví dụ: Khmer"
+  },
+  "finalCta": {
+    "title": "Cần công cụ dịch thuật?",
+    "body": "Scribe SE và các trình soạn thảo khác để bắt đầu một bản dịch được liệt kê trên trang Sáng tạo.",
+    "ctaTools": "Xem các công cụ dịch thuật",
+    "ctaDiscover": "Xem những gì đã được dịch"
+  }
+}

@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "OBS ကို အဘယ်ကြောင့်",
+      "slug": "why-obs"
+    },
+    {
+      "label": "ရှာဖွေရန်",
+      "slug": "discover"
+    },
+    {
+      "label": "ဘာသာပြန်ရန်",
+      "slug": "translate"
+    },
+    {
+      "label": "ဖန်တီးရန်",
+      "slug": "create"
+    },
+    {
+      "label": "ဆက်သွယ်ရန်",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories ကို <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> နှင့် <a href=\"https://door43.org/\">Door43 ကမ္ဘာ့သာသနာအသိုင်းအဝိုင်း</a> တို့က ရေးဆွဲထုတ်လုပ်ထားပါသည်။ <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a> အောက်တွင် အခမဲ့ အသုံးပြု၊ ပြုပြင်၊ မျှဝေနိုင်ပါသည်။ မူရင်းပုံဆွဲများသည် &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a> ဖြစ်ပါသည်။",
+  "strings": {
+    "menuLabel": "မီနူးဖွင့်ရန်",
+    "languageLabel": "ဘာသာစကား",
+    "skipToContent": "အကြောင်းအရာသို့ ကျော်သွားရန်"
+  },
+  "legal": {
+    "license": "လိုင်စင်",
+    "privacy": "ကိုယ်ရေးအချက်အလက်မူဝါဒ",
+    "terms": "အသုံးပြုမှုစည်းမျဉ်းများ"
+  }
+}

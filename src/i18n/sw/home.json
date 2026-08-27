@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories husaidia makanisa, huduma, na timu za tafsiri kufanya Injili ipatikane katika kila lugha kupitia mkusanyiko rahisi wa hadithi za Biblia zenye michoro."
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "Injili kwa kila kabila na taifa",
+    "sub": "Open Bible Stories husaidia makanisa, huduma, na timu za tafsiri kufanya Injili ipatikane katika kila lugha kupitia mkusanyiko rahisi wa hadithi za Biblia zenye michoro.",
+    "ctaFind": "Tafuta lugha yako",
+    "ctaTranslate": "Anza Kutafsiri",
+    "ctaApp": "Programu ya Simu ya OBS"
+  },
+  "stats": {
+    "label": "Lugha<br>Zinazopatikana Tayari",
+    "line1": "Kila tafsiri inawakilisha jamii iliyofikiwa, kanisa lililowezeshwa, na maisha yanayobadilishwa na Injili.",
+    "line2": "Lugha inayofuata inaweza kuwa yako."
+  },
+  "open": {
+    "eyebrow": "Bure kutumia, kutafsiri, na kushiriki",
+    "title": "Wazi, kwa kila mtu",
+    "body": "Open Bible Stories inapatikana chini ya leseni huru inayokupa uhuru wa kupakua, kunakili, kushiriki, kutafsiri, kurekodi sauti, kutengeneza video, kuchapisha, na kusambaza &mdash; tazama <a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">leseni</a> kwa maelezo zaidi.",
+    "cards": [
+      {
+        "title": "Vumbua",
+        "body": "Tafuta kwa lugha uone kama Open Bible Stories inapatikana, na uisome moja kwa moja kwenye kivinjari chako.",
+        "cta": "Vinjari Vumbua"
+      },
+      {
+        "title": "Tafsiri",
+        "body": "Saidia kufanya Injili ipatikane katika lugha nyingine, kwa zana na hatua zilizoandaliwa kwa ajili ya timu za tafsiri.",
+        "cta": "Anza kutafsiri"
+      },
+      {
+        "title": "Tengeneza",
+        "body": "Badilisha Open Bible Stories kuwa video, sauti, vifaa vya mafunzo, na zaidi kwa ajili ya watu unaowahudumia.",
+        "cta": "Anza kutengeneza"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Saidia kuifikisha katika lugha inayofuata",
+    "body": "Kila tafsiri mpya huleta nafasi kwa mtu kukutana na Yesu katika lugha anayoielewa vizuri zaidi. Lugha hiyo inayofuata inaweza kuanza na wewe.",
+    "ctaTranslate": "Anza kutafsiri",
+    "ctaGive": "Toa leo"
+  }
+}

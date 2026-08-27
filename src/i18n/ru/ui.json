@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "Почему OBS",
+      "slug": "why-obs"
+    },
+    {
+      "label": "Найти",
+      "slug": "discover"
+    },
+    {
+      "label": "Переводить",
+      "slug": "translate"
+    },
+    {
+      "label": "Создавать",
+      "slug": "create"
+    },
+    {
+      "label": "Контакты",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories разработаны <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> и <a href=\"https://door43.org/\">всемирным миссионерским сообществом Door43</a>. Можно свободно использовать, адаптировать и распространять по лицензии <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. Оригинальные иллюстрации — &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
+  "strings": {
+    "menuLabel": "Открыть меню",
+    "languageLabel": "Язык",
+    "skipToContent": "Перейти к содержимому"
+  },
+  "legal": {
+    "license": "Лицензия",
+    "privacy": "Политика конфиденциальности",
+    "terms": "Условия использования"
+  }
+}

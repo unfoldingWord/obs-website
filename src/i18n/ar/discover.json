@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "اكتشف — Open Bible Stories",
+    "description": "اقرأ Open Bible Stories بلغتك، من أي فريق ناشر."
+  },
+  "hero": {
+    "eyebrow": "اعثر على الإنجيل بلغتك",
+    "title": "اكتشف",
+    "sub": "ابحث عن Open Bible Stories بلغتك. اقرأ الترجمات المتاحة أو استمع إليها أو شاهدها أو نزّلها.",
+    "ctaApp": "تطبيق OBS للجوال"
+  },
+  "browse": {
+    "searchPlaceholder": "ابحث باسم اللغة، مثل: العربية",
+    "filterAll": "الكل",
+    "filterPrint": "مطبوع",
+    "filterAudio": "صوت",
+    "filterVideo": "فيديو"
+  }
+}

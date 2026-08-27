@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Найти — Open Bible Stories",
+    "description": "Читайте Open Bible Stories на своём языке, от любой опубликовавшей их команды."
+  },
+  "hero": {
+    "eyebrow": "Найдите Евангелие на своём языке",
+    "title": "Найти",
+    "sub": "Найдите Open Bible Stories на своём языке. Читайте, слушайте, смотрите или скачивайте доступные переводы.",
+    "ctaApp": "Мобильное приложение OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "Поиск по названию языка, напр. русский",
+    "filterAll": "Все",
+    "filterPrint": "Печать",
+    "filterAudio": "Аудио",
+    "filterVideo": "Видео"
+  }
+}

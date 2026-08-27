@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "Maken — Open Bible Stories",
+    "description": "Bouw je eigen tekst-, beeld-, audio- of videomateriaal op basis van Open Bible Stories."
+  },
+  "hero": {
+    "eyebrow": "Deel het Evangelie via multimediamateriaal",
+    "title": "Maken",
+    "sub": "Maak je eigen materiaal op basis van unfoldingWord&reg; Open Bible Stories of de originele illustraties van Sweet Publishing &mdash; alles wat de mensen die je dient helpt deze verhalen te ontmoeten.",
+    "possibilities": "Video's &middot; Audio &middot; Trainingsmateriaal &middot; Presentaties &middot; Kindermateriaal &middot; Social media &middot; Lesmateriaal",
+    "cta": "Vind jouw taal"
+  },
+  "text": {
+    "title": "Tekst",
+    "sub": "De eenvoudigste manier om te beginnen is Scribe SE, een gratis vertaalprogramma voor Windows, Mac of Linux.",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "Begin met vertalen vanuit het Engels of een van de andere talen die op Ontdekken staan.",
+    "scribeCta": "Download Scribe SE",
+    "otherTitle": "Andere mogelijkheden",
+    "otherItems": [
+      "<a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">Engelse markdown-bron</a> voor een platte-tekst- of markdown-editor",
+      "<a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> of <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a> vanuit het Engels",
+      "<a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a> vanuit het Engels"
+    ]
+  },
+  "images": {
+    "title": "Afbeeldingen",
+    "sub": "Bronillustraties om je eigen documenten, presentaties of vertaalde verhalensets mee te bouwen.",
+    "jpgTitle": "JPG-bestanden",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">Alle bestanden, 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">Alle bestanden, 360px</a> (36 MB)"
+    ],
+    "origTitle": "Originele illustraties",
+    "origBody": "Bekijk of download de originele illustraties van Sweet Publishing op de <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">website van unfoldingWord</a>."
+  },
+  "video": {
+    "title": "Video's &amp; Audio",
+    "sub": "HD-videoclips in 1080p om in elke editor je eigen Open Bible Stories-video's of audio-opnamen mee te maken.",
+    "mp4Title": "MP4-bestanden",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">Alle bestanden als zip</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">Verhalen 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">Verhalen 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">Verhalen 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">Verhalen 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">Verhalen 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">Losse verhaalbestanden</a> (ongeveer 150 MB per stuk)"
+    ],
+    "psdTitle": "PSD-bestanden",
+    "psdBody": "Voor ingrijpende bewerkingen van visuele elementen in de clips. Grote bestanden die fotobewerkingssoftware en de nodige vaardigheid vereisen.",
+    "psdCta": "PSD-bestanden per verhaal",
+    "psdHelp": "Hulp nodig bij het maken van een video of audio-opname? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">Neem contact met ons op</a>."
+  }
+}

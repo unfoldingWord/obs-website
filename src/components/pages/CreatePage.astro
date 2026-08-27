@@ -1,0 +1,93 @@
+---
+import Base from '../../layouts/Base.astro';
+import { localePath } from '../../i18n/config';
+import { content } from '../../i18n/content';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'create');
+---
+
+<Base locale={locale} slug="create" title={t.meta.title} description={t.meta.description}>
+
+<section class="page-header">
+  <div class="wrap">
+    <p class="eyebrow">{t.hero.eyebrow}</p>
+    <h1>{t.hero.title}</h1>
+    <p set:html={t.hero.sub} />
+    <p class="possibility-line" set:html={t.hero.possibilities} />
+    <div class="cta-row" style="margin-top:28px;">
+      <a href={localePath(locale, 'discover')} class="btn btn-primary">{t.hero.cta}</a>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2>{t.text.title}</h2>
+      <p>{t.text.sub}</p>
+    </div>
+    <div class="card-grid cols-2">
+      <div class="card">
+        <h3>{t.text.scribeTitle}</h3>
+        <p>{t.text.scribeBody}</p>
+        <a href="https://scribe.bible/" class="btn btn-outline" style="margin-top:14px;">{t.text.scribeCta}</a>
+      </div>
+      <div class="card">
+        <h3>{t.text.otherTitle}</h3>
+        <ul>
+          {t.text.otherItems.map((item: string) => <li set:html={item} />)}
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="stats-section">
+  <div class="wrap stats-inner">
+    <div class="section-head" style="margin-bottom:32px;">
+      <h2>{t.images.title}</h2>
+      <p>{t.images.sub}</p>
+    </div>
+    <div class="card-grid cols-2">
+      <div class="card">
+        <h3>{t.images.jpgTitle}</h3>
+        <ul>
+          {t.images.jpgItems.map((item: string) => <li set:html={item} />)}
+        </ul>
+      </div>
+      <div class="card">
+        <h3>{t.images.origTitle}</h3>
+        <p set:html={t.images.origBody} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="section-head">
+      <h2 set:html={t.video.title} />
+      <p>{t.video.sub}</p>
+    </div>
+    <div class="card-grid cols-2">
+      <div class="card">
+        <h3>{t.video.mp4Title}</h3>
+        <ul>
+          {t.video.mp4Items.map((item: string) => <li set:html={item} />)}
+        </ul>
+      </div>
+      <div class="card">
+        <h3>{t.video.psdTitle}</h3>
+        <p>{t.video.psdBody}</p>
+        <a href="https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/psd/" class="btn btn-outline" style="margin-top:14px;">{t.video.psdCta}</a>
+        <p style="margin-top:14px; font-size:0.88rem;" set:html={t.video.psdHelp} />
+      </div>
+    </div>
+  </div>
+</section>
+
+</Base>

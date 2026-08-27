@@ -1,0 +1,33 @@
+---
+import { localePath, isLocalized, type PageSlug } from '../i18n/config';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+
+interface Props {
+  locale: string;
+  ui: any;
+  slug: PageSlug;
+}
+const { locale, ui, slug } = Astro.props;
+---
+
+<header class="site-nav">
+  <div class="nav-inner">
+    <a class="brand" href={localePath(locale, 'home')}>{ui.siteTitle}</a>
+    <nav class="links" id="nav-links">
+      {
+        ui.nav.map((item: { label: string; slug: PageSlug }) => (
+          <a
+            href={localePath(locale, item.slug)}
+            aria-current={item.slug === slug ? 'page' : undefined}
+          >
+            {item.label}
+          </a>
+        ))
+      }
+    </nav>
+    {isLocalized(slug) && (
+      <LanguageSwitcher locale={locale} slug={slug} label={ui.strings?.languageLabel ?? 'Language'} />
+    )}
+    <button class="menu-btn" aria-label={ui.strings?.menuLabel ?? 'Open menu'} aria-expanded="false">&#9776;</button>
+  </div>
+</header>

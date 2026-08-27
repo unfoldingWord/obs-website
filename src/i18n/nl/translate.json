@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Vertalen — Open Bible Stories",
+    "description": "7 stappen om Open Bible Stories in jouw taal te vertalen."
+  },
+  "hero": {
+    "eyebrow": "Help het Evangelie naar een andere taal te brengen",
+    "title": "Zo vertaal je Open Bible Stories",
+    "sub": "Help het Evangelie beschikbaar te maken in een andere taal. Volg de stappen hieronder om een nieuwe vertaling te beginnen op basis van unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Zo vertaal je",
+    "tabResources": "Hulpbronnen"
+  },
+  "steps": [
+    {
+      "title": "Voorbereiden",
+      "body": "<p>Bereid je voor op het vertalen door eerst <a href=\"https://scribe.bible/\">Scribe SE</a> te installeren. Voor informatie over het gebruik van Scribe SE kun je <a href=\"https://docs.scribe.bible/\">de Scribe SE-documentatie</a> raadplegen.</p><p>Raadpleeg vertaalhulpbronnen in de <a href=\"https://www.well.bible/\">Bible Well app</a>.</p>"
+    },
+    {
+      "title": "Begrijpen",
+      "body": "<p>Bestudeer de <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">fundamentele principes</a> die je nodig hebt voor het vertalen.</p><p>Bestudeer \"De schepping\" in Scribe SE om vertrouwd te raken met het verhaal in de brontaal.</p>"
+    },
+    {
+      "title": "Vertalen",
+      "body": "<p>In Scribe SE:</p><ul><li>Open het Open Bible Stories-verhaal dat je wilt vertalen</li><li>Volg de stappen over <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">hoe je vertaalt</a> samen met je team om het conceptproces af te ronden</li></ul>"
+    },
+    {
+      "title": "Intern toetsen",
+      "body": "<p>Doorloop de stappen voor <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">het toetsen</a> om partner- en teamcontroles uit te voeren.</p>"
+    },
+    {
+      "title": "Extern toetsen",
+      "body": "<ul><li>Volg de stappen op <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">deze pagina</a> om externe controles uit te voeren</li><li>Klik voor meer informatie over toetsen <a href=\"https://checking.my.canva.site\">hier</a></li></ul>"
+    },
+    {
+      "title": "Publiceren",
+      "body": "<p>Zodra alle fasen van het toetsen van de vertaling zijn doorlopen, breng je de laatste correcties aan in de verhalen in Scribe SE en publiceer je naar <a href=\"https://door43.org\">Door43</a>.</p><p>Volg <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">deze checklist</a> om vast te stellen dat de verhalen klaar zijn voor publicatie.</p>"
+    },
+    {
+      "title": "Verspreiden",
+      "body": "<p>Je kunt je vertaling van Open Bible Stories delen in <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">allerlei formaten</a> voor evangelisatie en discipelschap &mdash; of ga naar de <a href=\"/create/\">pagina Maken</a> voor de onderliggende bronbestanden.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Vieren",
+    "body": "<p>Neem de tijd om je te verheugen dat je Open Bible Stories in jouw taal hebt. Deel het goede nieuws met iedereen en prijs God voor wat Hij heeft gedaan.</p>"
+  },
+  "questions": "Vragen? Mail naar <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Rust anderen toe om het Evangelie te begrijpen en te onderwijzen",
+    "title": "Hulpbronnen",
+    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions en de Extended-editie (Theological Formation) &mdash; zoek één keer op je taal om alles te zien wat ervoor beschikbaar is. Zoek je de verhalen zelf? Dat is <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Ontdekken</a>.",
+    "searchPlaceholder": "Zoek op taalnaam, bijv. Swahili"
+  },
+  "finalCta": {
+    "title": "Vertaalhulpmiddelen nodig?",
+    "body": "Scribe SE en andere editors om een vertaling mee te beginnen staan op de pagina Maken.",
+    "ctaTools": "Bekijk de vertaalhulpmiddelen",
+    "ctaDiscover": "Bekijk wat al vertaald is"
+  }
+}

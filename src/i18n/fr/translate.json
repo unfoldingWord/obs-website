@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Traduire — Open Bible Stories",
+    "description": "7 étapes pour traduire Open Bible Stories dans votre langue."
+  },
+  "hero": {
+    "eyebrow": "Aidez à apporter l'Évangile dans une autre langue",
+    "title": "Comment traduire Open Bible Stories",
+    "sub": "Aidez à rendre l'Évangile disponible dans une autre langue. Suivez les étapes ci-dessous pour commencer une nouvelle traduction basée sur unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Comment traduire",
+    "tabResources": "Ressources"
+  },
+  "steps": [
+    {
+      "title": "Se préparer",
+      "body": "<p>Pour vous préparer à traduire, commencez par installer <a href=\"https://scribe.bible/\">Scribe SE</a>. Pour savoir comment utiliser Scribe SE, vous pouvez consulter <a href=\"https://docs.scribe.bible/\">la documentation de Scribe SE</a>.</p><p>Accédez aux ressources de traduction sur <a href=\"https://www.well.bible/\">l'application Bible Well</a>.</p>"
+    },
+    {
+      "title": "Comprendre",
+      "body": "<p>Étudiez les <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">principes fondamentaux</a> dont vous avez besoin pour la traduction.</p><p>Étudiez « La Création » dans Scribe SE pour vous familiariser avec l'histoire dans la langue source.</p>"
+    },
+    {
+      "title": "Traduire",
+      "body": "<p>Dans Scribe SE :</p><ul><li>Ouvrez l'histoire d'Open Bible Stories que vous voulez traduire</li><li>Suivez les étapes sur <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">comment traduire</a> avec votre équipe pour mener à bien la rédaction de l'ébauche</li></ul>"
+    },
+    {
+      "title": "Vérifier en interne",
+      "body": "<p>Suivez les étapes de <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">vérification</a> pour effectuer les vérifications en binôme et en équipe.</p>"
+    },
+    {
+      "title": "Vérifier en externe",
+      "body": "<ul><li>Suivez les étapes de <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">cette page</a> pour effectuer les vérifications externes</li><li>Pour en savoir plus sur la vérification, cliquez <a href=\"https://checking.my.canva.site\">ici</a></li></ul>"
+    },
+    {
+      "title": "Publier",
+      "body": "<p>Une fois toutes les étapes de vérification de la traduction achevées, apportez les dernières corrections aux histoires dans Scribe SE et publiez-les sur <a href=\"https://door43.org\">Door43</a>.</p><p>Suivez <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">cette liste de contrôle</a> pour déterminer si les histoires sont prêtes à être publiées.</p>"
+    },
+    {
+      "title": "Distribuer",
+      "body": "<p>Vous pouvez partager votre traduction d'Open Bible Stories dans une <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">variété de formats</a> pour l'évangélisation et la formation de disciples &mdash; ou consultez la <a href=\"/create/\">page Créer</a> pour les fichiers sources.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Célébrer",
+    "body": "<p>Prenez le temps de vous réjouir d'avoir Open Bible Stories dans votre langue. Partagez la bonne nouvelle avec tous et louez Dieu pour ce qu'Il a fait.</p>"
+  },
+  "questions": "Des questions ? Écrivez à <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Équipez les autres pour comprendre et enseigner l'Évangile",
+    "title": "Ressources",
+    "body": "Notes de traduction, Questions de traduction, Notes d'étude, Questions d'étude et l'édition étendue (Theological Formation, formation théologique) &mdash; recherchez votre langue une seule fois pour voir tout ce qui est disponible. Vous cherchez les histoires elles-mêmes ? C'est dans <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Découvrir</a>.",
+    "searchPlaceholder": "Recherchez par nom de langue, p. ex. swahili"
+  },
+  "finalCta": {
+    "title": "Besoin d'outils de traduction ?",
+    "body": "Scribe SE et d'autres éditeurs pour commencer une traduction sont répertoriés sur la page Créer.",
+    "ctaTools": "Voir les outils de traduction",
+    "ctaDiscover": "Voir ce qui est déjà traduit"
+  }
+}

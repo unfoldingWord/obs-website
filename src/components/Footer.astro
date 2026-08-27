@@ -1,0 +1,30 @@
+---
+import { localePath, type PageSlug } from '../i18n/config';
+
+interface Props {
+  locale: string;
+  ui: any;
+}
+const { locale, ui } = Astro.props;
+---
+
+<footer>
+  <div class="wrap">
+    <div class="footer-top">
+      <a href="https://unfoldingword.org"><img src="/assets/img/uw-logo-color.png" alt="unfoldingWord" width="160" height="28" /></a>
+      <div class="footer-links">
+        {
+          ui.nav.map((item: { label: string; slug: PageSlug }) => (
+            <a href={localePath(locale, item.slug)}>{item.label}</a>
+          ))
+        }
+      </div>
+    </div>
+    <p class="footer-credit" set:html={ui.footerCredit} />
+    <p class="footer-legal">
+      <a href="/license/">{ui.legal?.license ?? 'License'}</a> &middot;
+      <a href="/privacy/">{ui.legal?.privacy ?? 'Privacy Policy'}</a> &middot;
+      <a href="/terms-of-use/">{ui.legal?.terms ?? 'Terms of Use'}</a>
+    </p>
+  </div>
+</footer>

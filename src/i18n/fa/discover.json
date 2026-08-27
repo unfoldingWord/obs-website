@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "کشف کنید — Open Bible Stories",
+    "description": "Open Bible Stories را به زبان خود بخوانید، از هر تیمی که آن را منتشر کرده است."
+  },
+  "hero": {
+    "eyebrow": "انجیل را به زبان خود بیابید",
+    "title": "کشف کنید",
+    "sub": "Open Bible Stories را به زبان خود جست‌وجو کنید. ترجمه‌های موجود را بخوانید، بشنوید، ببینید یا دانلود کنید.",
+    "ctaApp": "اپلیکیشن موبایل OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "با نام زبان جست‌وجو کنید، مثلاً فارسی",
+    "filterAll": "همه",
+    "filterPrint": "چاپی",
+    "filterAudio": "صوتی",
+    "filterVideo": "ویدیو"
+  }
+}

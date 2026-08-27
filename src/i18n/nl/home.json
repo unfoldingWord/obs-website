@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het Evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen."
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "Het Evangelie voor elk volk",
+    "sub": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het Evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen.",
+    "ctaFind": "Vind jouw taal",
+    "ctaTranslate": "Begin met vertalen",
+    "ctaApp": "OBS Mobiele App"
+  },
+  "stats": {
+    "label": "Talen<br>al beschikbaar",
+    "line1": "Elke vertaling staat voor een bereikte gemeenschap, een toegeruste kerk en levens die door het Evangelie veranderd worden.",
+    "line2": "De volgende taal kan die van jou zijn."
+  },
+  "open": {
+    "eyebrow": "Vrij te gebruiken, te vertalen en te delen",
+    "title": "Open, voor iedereen",
+    "body": "Open Bible Stories is beschikbaar onder een open licentie die je de vrijheid geeft om te downloaden, kopiëren, delen, vertalen, audio op te nemen, video te maken, te drukken en te publiceren &mdash; zie de <a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">licentie</a> voor details.",
+    "cards": [
+      {
+        "title": "Ontdekken",
+        "body": "Zoek op taal om te zien of Open Bible Stories beschikbaar is, en lees het direct in je browser.",
+        "cta": "Ga naar Ontdekken"
+      },
+      {
+        "title": "Vertalen",
+        "body": "Help het Evangelie beschikbaar te maken in een andere taal, met de hulpmiddelen en stappen die voor vertaalteams zijn ontwikkeld.",
+        "cta": "Begin met vertalen"
+      },
+      {
+        "title": "Maken",
+        "body": "Maak van Open Bible Stories video's, audio, trainingsmateriaal en meer voor de mensen die je dient.",
+        "cta": "Begin met maken"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Help het naar de volgende taal te brengen",
+    "body": "Elke nieuwe vertaling schept een kans voor iemand om Jezus te ontmoeten in de taal die hij of zij het beste begrijpt. Die volgende taal kan bij jou beginnen.",
+    "ctaTranslate": "Begin met vertalen",
+    "ctaGive": "Geef vandaag"
+  }
+}

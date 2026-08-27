@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "بسازید — Open Bible Stories",
+    "description": "منبع متنی، تصویری، صوتی یا ویدیویی خود را از Open Bible Stories بسازید."
+  },
+  "hero": {
+    "eyebrow": "انجیل را با منابع چندرسانه‌ای اعلام کنید",
+    "title": "بسازید",
+    "sub": "منبع خود را بر پایهٔ unfoldingWord&reg; Open Bible Stories یا تصاویر اصلی Sweet Publishing بسازید &mdash; هر آنچه به کسانی که خدمت می‌کنید کمک می‌کند با این داستان‌ها روبه‌رو شوند.",
+    "possibilities": "ویدیو &middot; صوت &middot; مطالب آموزشی &middot; ارائه‌ها &middot; منابع کودکان &middot; شبکه‌های اجتماعی &middot; مطالب تعلیمی",
+    "cta": "زبان خود را بیابید"
+  },
+  "text": {
+    "title": "متن",
+    "sub": "ساده‌ترین راه برای شروع، Scribe SE است؛ ابزار ترجمهٔ رایگان برای Windows، Mac یا Linux.",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "ترجمه را از انگلیسی یا یکی از زبان‌های دیگر فهرست‌شده در کشف کنید آغاز کنید.",
+    "scribeCta": "دانلود Scribe SE",
+    "otherTitle": "گزینه‌های دیگر",
+    "otherItems": [
+      "<a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">منبع انگلیسی با قالب markdown</a> برای ویرایشگر متن ساده یا markdown",
+      "<a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> یا <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a> از انگلیسی",
+      "<a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a> از انگلیسی"
+    ]
+  },
+  "images": {
+    "title": "تصاویر",
+    "sub": "تصویرسازی‌های منبع برای ساخت اسناد، اسلایدها یا مجموعه‌داستان‌های ترجمه‌شدهٔ خودتان.",
+    "jpgTitle": "فایل‌های JPG",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">همهٔ فایل‌ها، 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">همهٔ فایل‌ها، 360px</a> (36 MB)"
+    ],
+    "origTitle": "تصویرسازی‌های اصلی",
+    "origBody": "تصویرسازی‌های اصلی Sweet Publishing را در <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">وب‌سایت unfoldingWord</a> مرور یا دانلود کنید."
+  },
+  "video": {
+    "title": "ویدیو و صوت",
+    "sub": "کلیپ‌های ویدیویی HD 1080p برای ساخت ویدیوها یا ضبط‌های صوتی Open Bible Stories در هر ویرایشگری.",
+    "mp4Title": "فایل‌های MP4",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">همهٔ فایل‌ها به‌صورت فشرده</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">داستان‌های 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">داستان‌های 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">داستان‌های 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">داستان‌های 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">داستان‌های 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">فایل‌های تک‌داستانی</a> (هر کدام حدود 150 MB)"
+    ],
+    "psdTitle": "فایل‌های PSD",
+    "psdBody": "برای ویرایش‌های گستردهٔ عناصر بصری درون کلیپ‌ها. فایل‌های بزرگی که استفاده از آن‌ها به نرم‌افزار ویرایش تصویر و مهارت نیاز دارد.",
+    "psdCta": "فایل‌های PSD تک‌داستانی",
+    "psdHelp": "برای تولید ویدیو یا ضبط صوتی به کمک نیاز دارید؟ <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">با ما تماس بگیرید</a>."
+  }
+}

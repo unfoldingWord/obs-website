@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Translate — Open Bible Stories",
+    "description": "7 steps to translating Open Bible Stories into your language."
+  },
+  "hero": {
+    "eyebrow": "Help bring the Gospel to another language",
+    "title": "How to translate Open Bible Stories",
+    "sub": "Help make the Gospel available in another language. Follow the steps below to start a new translation based on unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "How to Translate",
+    "tabResources": "Resources"
+  },
+  "steps": [
+    {
+      "title": "Prepare",
+      "body": "<p>To prepare to translate, begin by installing <a href=\"https://scribe.bible/\">Scribe SE</a>. For information on using Scribe SE, you may visit <a href=\"https://docs.scribe.bible/\">the Scribe SE docs</a>.</p><p>Access translation resources on the <a href=\"https://www.well.bible/\">Bible Well app</a>.</p>"
+    },
+    {
+      "title": "Understand",
+      "body": "<p>Study the <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">foundational principles</a> you need for translation.</p><p>Study \"The Creation\" in Scribe SE to become familiar with the story in the resource language.</p>"
+    },
+    {
+      "title": "Translate",
+      "body": "<p>In Scribe SE:</p><ul><li>Open the Open Bible Story you want to translate</li><li>Follow the steps on <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">how to translate</a> with your team to complete the drafting process</li></ul>"
+    },
+    {
+      "title": "Check internally",
+      "body": "<p>Complete the steps for <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">checking</a> to perform partner and team checks.</p>"
+    },
+    {
+      "title": "Check externally",
+      "body": "<ul><li>Follow the steps on <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">this page</a> to perform external checks</li><li>For more on checking, click <a href=\"https://checking.my.canva.site\">here</a></li></ul>"
+    },
+    {
+      "title": "Publish",
+      "body": "<p>Once all stages of checking the translation have occurred, make final edits to the stories in Scribe SE and publish to <a href=\"https://door43.org\">Door43</a>.</p><p>Follow <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">this checklist</a> to determine that the stories are ready to publish.</p>"
+    },
+    {
+      "title": "Distribute",
+      "body": "<p>You can share your Open Bible Stories translation in a <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">variety of formats</a> for evangelism and discipleship &mdash; or see the <a href=\"/create/\">Create page</a> for the underlying source files.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Celebrate",
+    "body": "<p>Take time to rejoice that you have Open Bible Stories in your language. Share the good news with everyone and give praise to God for what He has done.</p>"
+  },
+  "questions": "Questions? Email <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Equip others to understand and teach the Gospel",
+    "title": "Resources",
+    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions, and the Extended (Theological Formation) edition &mdash; search your language once to see everything available for it. Looking for the stories themselves? That's <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Discover</a>.",
+    "searchPlaceholder": "Search by language name, e.g. Swahili"
+  },
+  "finalCta": {
+    "title": "Need translation tools?",
+    "body": "Scribe SE and other editors for starting a translation are listed on the Create page.",
+    "ctaTools": "See translation tools",
+    "ctaDiscover": "Check what's already translated"
+  }
+}

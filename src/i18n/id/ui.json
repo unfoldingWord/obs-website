@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "Mengapa OBS",
+      "slug": "why-obs"
+    },
+    {
+      "label": "Temukan",
+      "slug": "discover"
+    },
+    {
+      "label": "Terjemahkan",
+      "slug": "translate"
+    },
+    {
+      "label": "Buat",
+      "slug": "create"
+    },
+    {
+      "label": "Kontak",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories dikembangkan oleh <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> dan <a href=\"https://door43.org/\">Komunitas Misi Dunia Door43</a>. Bebas digunakan, diadaptasi, dan dibagikan di bawah lisensi <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. Ilustrasi asli adalah &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
+  "strings": {
+    "menuLabel": "Buka menu",
+    "languageLabel": "Bahasa",
+    "skipToContent": "Langsung ke konten"
+  },
+  "legal": {
+    "license": "Lisensi",
+    "privacy": "Kebijakan Privasi",
+    "terms": "Ketentuan Penggunaan"
+  }
+}

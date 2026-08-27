@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "Vì sao chọn OBS",
+      "slug": "why-obs"
+    },
+    {
+      "label": "Khám phá",
+      "slug": "discover"
+    },
+    {
+      "label": "Dịch thuật",
+      "slug": "translate"
+    },
+    {
+      "label": "Sáng tạo",
+      "slug": "create"
+    },
+    {
+      "label": "Liên hệ",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories được phát triển bởi <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> và <a href=\"https://door43.org/\">Cộng đồng Truyền giáo Thế giới Door43</a>. Được tự do sử dụng, điều chỉnh và chia sẻ theo giấy phép <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. Các hình minh họa gốc thuộc bản quyền &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
+  "strings": {
+    "menuLabel": "Mở menu",
+    "languageLabel": "Ngôn ngữ",
+    "skipToContent": "Chuyển đến nội dung"
+  },
+  "legal": {
+    "license": "Giấy phép",
+    "privacy": "Chính sách bảo mật",
+    "terms": "Điều khoản sử dụng"
+  }
+}

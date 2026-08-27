@@ -1,0 +1,192 @@
+---
+import Base from '../../layouts/Base.astro';
+import { content } from '../../i18n/content';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'why-obs');
+
+const cardIcons = [
+  '<path d="M6 40l10-10 8 8 14-18"/><path d="M30 12h10v10"/>',
+  '<path d="M8 42V22L24 8l16 14v20"/><path d="M24 8V2M21 3h6"/><path d="M18 42V28h12v14"/>',
+  '<line x1="8" y1="20" x2="8" y2="28"/><line x1="17" y1="12" x2="17" y2="36"/><line x1="26" y1="6" x2="26" y2="42"/><line x1="35" y1="14" x2="35" y2="34"/><line x1="44" y1="20" x2="44" y2="28"/>',
+];
+---
+
+<Base locale={locale} slug="why-obs" title={t.meta.title} description={t.meta.description}>
+
+<!-- SECTION 1 — HERO: the story. -->
+<!-- PRIVACY: this story is anonymized on purpose — no name, no photo of the individual. -->
+<section style="position:relative; padding:0; overflow:hidden;">
+  <div style="position:relative; min-height:460px; display:flex; align-items:flex-end;">
+    <picture>
+      <source srcset="/assets/img/why-obs/hero-hands.webp" type="image/webp" />
+      <img src="/assets/img/why-obs/hero-hands.jpg" alt="" loading="eager" width="1800" height="1224"
+        style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;" />
+    </picture>
+    <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(1,47,71,0.93) 10%, rgba(1,47,71,0.6) 52%, rgba(1,47,71,0.28) 100%); z-index:1;"></div>
+    <div class="wrap" style="position:relative; z-index:2; padding:80px 28px 48px; color:var(--white);">
+      <p style="color:var(--cultivate); font-family:var(--heading-font); font-weight:800; letter-spacing:0.06em; text-transform:uppercase; font-size:0.85rem; margin-bottom:14px;">{t.hero.eyebrow}</p>
+      <h1 style="font-family:var(--heading-font); font-weight:900; font-size:clamp(2rem, 4.6vw, 3.1rem); line-height:1.15; max-width:820px;">{t.hero.title}</h1>
+    </div>
+  </div>
+
+  <div class="wrap story-continued" style="max-width:720px; padding-top:48px;">
+    <p set:html={t.hero.p1} />
+    <p set:html={t.hero.p2} />
+
+    <blockquote style="border-left:3px solid var(--inspire); padding-left:20px; margin:28px 0; font-size:1.15rem; font-style:italic; color:var(--ocean); font-weight:600; line-height:1.6;">
+      <Fragment set:html={t.hero.quote} />
+      <footer style="font-style:normal; font-weight:700; font-size:0.85rem; margin-top:10px; color:#4a5960;" set:html={t.hero.quoteAttr} />
+    </blockquote>
+
+    <p class="story-bridge">{t.hero.bridge}</p>
+  </div>
+</section>
+
+<!-- SECTION 2 — WHY OBS -->
+<section>
+  <div class="wrap">
+    <div class="section-head" style="max-width:640px;">
+      <p class="eyebrow">{t.why.eyebrow}</p>
+      <h2>{t.why.title}</h2>
+      <p>{t.why.sub}</p>
+    </div>
+
+    <div class="card-grid">
+      {
+        t.why.cards.map((card: { title: string; body: string }, i: number) => (
+          <div class="card">
+            <div class="scroll-card-icon">
+              <svg viewBox="0 0 48 48" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" set:html={cardIcons[i]} />
+            </div>
+            <h3>{card.title}</h3>
+            <p>{card.body}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3 — AROUND THE WORLD: auto-rotating field-voices banner. -->
+<section class="stats-section">
+  <div class="wrap stats-inner">
+    <div class="section-head" style="margin-bottom:28px; max-width:100%;">
+      <p class="eyebrow">{t.world.eyebrow}</p>
+      <h2 style="max-width:100%;">{t.world.title}</h2>
+    </div>
+
+    <!-- PRIVACY: photos of the individuals behind these quotes have been removed, pending
+         approval to publish any identifying photo alongside a testimonial from these regions. -->
+    <div class="whyworks-stage" aria-live="polite">
+      {
+        t.world.quotes.map((q: { id: string; quote: string; attr: string }, i: number) => (
+          <div class:list={['whyworks-panel', i === 0 && 'active']} id={`whyworks-${q.id}`}>
+            <div class="whyworks-copy">
+              <p class="quote" set:html={q.quote} />
+              <p class="attr" set:html={q.attr} />
+            </div>
+          </div>
+        ))
+      }
+    </div>
+
+    <div class="whyworks-dots" role="group" aria-label={t.world.dotsLabel}>
+      {
+        t.world.quotes.map((q: { id: string; dotLabel: string }, i: number) => (
+          <button
+            type="button"
+            class:list={['whyworks-dot', i === 0 && 'active']}
+            data-panel={q.id}
+            aria-current={i === 0 ? 'true' : undefined}
+            aria-label={q.dotLabel}
+          />
+        ))
+      }
+    </div>
+
+    <!-- LIVE IMPACT: the real, currently-published count — fetched live. -->
+    <div style="text-align:center; margin-top:56px; padding-top:40px; border-top:1px solid rgba(1,66,99,0.12);">
+      <div class="big-stat">
+        <span class="big-stat-num" id="lang-count" data-target="214">214</span>
+        <span class="big-stat-label" set:html={t.world.statLabel} />
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4 — CTA -->
+<section class="final-cta">
+  <div class="wrap final-cta-inner">
+    <h2>{t.finalCta.title}</h2>
+    <p set:html={t.finalCta.body} />
+    <div class="cta-row">
+      <a href="https://unfoldingword.org/give" target="_blank" rel="noopener" class="btn btn-primary">{t.finalCta.cta}</a>
+    </div>
+  </div>
+</section>
+
+<script is:inline>
+  // Auto-rotating "field voices" banner — cycles through the country quotes
+  // every few seconds. Dots are the only manual control; rotation pauses on
+  // hover or focus, and is skipped under prefers-reduced-motion.
+  (function () {
+    const dots = Array.from(document.querySelectorAll(".whyworks-dot"));
+    const dotsWrap = document.querySelector(".whyworks-dots");
+    const stage = document.querySelector(".whyworks-stage");
+    if (dots.length === 0 || !stage || !dotsWrap) return;
+
+    const ROTATE_MS = 5000;
+    const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let index = Math.max(0, dots.findIndex((d) => d.classList.contains("active")));
+    let timer = null;
+
+    function show(i) {
+      index = (i + dots.length) % dots.length;
+      const dot = dots[index];
+      dots.forEach((d) => {
+        const isActive = d === dot;
+        d.classList.toggle("active", isActive);
+        if (isActive) d.setAttribute("aria-current", "true");
+        else d.removeAttribute("aria-current");
+      });
+      document.querySelectorAll(".whyworks-panel").forEach((panel) => {
+        panel.classList.toggle("active", panel.id === `whyworks-${dot.dataset.panel}`);
+      });
+    }
+
+    function start() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(() => show(index + 1), ROTATE_MS);
+    }
+
+    function stop() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
+
+    dots.forEach((dot, i) => {
+      dot.addEventListener("click", () => {
+        show(i);
+        stop(); // resumes on mouseleave/focusout below
+      });
+    });
+
+    [dotsWrap, stage].forEach((el) => {
+      el.addEventListener("mouseenter", stop);
+      el.addEventListener("mouseleave", start);
+      el.addEventListener("focusin", stop);
+      el.addEventListener("focusout", start);
+    });
+
+    start();
+  })();
+</script>
+
+<Fragment slot="scripts">
+<script is:inline src="/assets/js/lang-count.js"></script>
+</Fragment>
+
+</Base>

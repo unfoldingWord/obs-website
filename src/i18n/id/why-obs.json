@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Mengapa Open Bible Stories",
+    "description": "Kisah nyata dari lapangan: bagaimana Open Bible Stories menjangkau yang belum terjangkau, melatih pemimpin baru, dan membuka pintu bagi penerjemahan Alkitab."
+  },
+  "hero": {
+    "eyebrow": "Sebuah kisah dari Chad",
+    "title": "Seorang Penerjemah dan Imam yang Marah",
+    "p1": "Sepuluh juta orang di Chad masih belum mendengar Injil. Tim penerjemah ini menempuh perjalanan berbahaya sejauh bermil-mil untuk memeriksa setiap terjemahan baru bersama komunitas yang akan menggunakannya &mdash; kali ini, dengan disaksikan oleh imam desa.",
+    "p2": "Di luar, para remaja menunggu aba-aba untuk melempari para tamu dengan batu. Namun ketika cerita-cerita itu dibacakan, amarah di ruangan itu mulai mereda. Pada akhirnya, sang imam sendiri berdiri: “Jika ada yang berkata Yesus bukan juruselamat, dia bukan Muslim sejati, dan dia yang seharusnya dilempari batu.”",
+    "quote": "“Saya memuji nama Tuhan untuk unfoldingWord dan Open Bible Stories. Alat ini sungguh diilhami! Kami sedang menabur benih di hati orang-orang Muslim yang seperti bom, dan suatu hari nanti benih itu akan meledak menjadi kehidupan.”",
+    "quoteAttr": "&mdash; Seorang mitra penerjemahan Alkitab, Chad",
+    "bridge": "Kisah semacam ini bukanlah satu-satunya. Di seluruh Afrika, Asia, Amerika Latin, dan Timur Tengah, gereja-gereja terus memilih Open Bible Stories karena ia menyingkirkan hambatan dalam membagikan Firman Tuhan."
+  },
+  "why": {
+    "eyebrow": "Lima puluh cerita, dari Penciptaan sampai Wahyu",
+    "title": "Mengapa Gereja-Gereja Terus Memilih Open Bible Stories",
+    "sub": "Langkah pertama sebuah tim menuju penerjemahan seluruh Alkitab.",
+    "cards": [
+      {
+        "title": "Mulai lebih cepat",
+        "body": "Gereja dapat mulai membagikan dan menerjemahkan isi Alkitab sebelum menyelesaikan seluruh Alkitab."
+      },
+      {
+        "title": "Dipimpin oleh gereja lokal",
+        "body": "Gereja sendiri yang menerjemahkan, memeriksa, dan menggunakan cerita-cerita ini."
+      },
+      {
+        "title": "Dibuat untuk dibagikan",
+        "body": "Cerita-cerita ini secara alami cocok untuk penuturan lisan, diskusi, dan berbagai tingkat kemampuan baca-tulis."
+      }
+    ]
+  },
+  "world": {
+    "eyebrow": "Di seluruh dunia",
+    "title": "Satu sumber. Ratusan kisah.",
+    "dotsLabel": "Suara dari lapangan, menurut tempat",
+    "quotes": [
+      {
+        "id": "chad",
+        "quote": "“Ia tidak hanya mengatasi prasangka Islam, tetapi juga langsung tersedia dalam format audio dan visual untuk dibagikan kepada mereka yang tidak dapat membaca atau menulis.”",
+        "attr": "&mdash; Mitra penerjemahan Alkitab dari Chad",
+        "dotLabel": "Chad"
+      },
+      {
+        "id": "sudan-leader",
+        "quote": "“Saya takjub melihat para penerjemah kami melatih pemimpin-pemimpin baru. Mereka orang percaya berlatar belakang Muslim dan masih sangat baru dalam kekristenan, tetapi pengetahuan mereka bertumbuh begitu cepat.”",
+        "attr": "&mdash; Pemimpin penerjemahan Alkitab dari Sudan",
+        "dotLabel": "Sudan, para pemimpin"
+      },
+      {
+        "id": "sudan-community",
+        "quote": "“Injil dalam bentuk cerita mudah dipahami oleh kelompok masyarakat Islam. Komunitas menerima terjemahan itu karena merupakan hasil karya mereka sendiri.”",
+        "attr": "&mdash; Pemimpin penerjemahan Alkitab dari Sudan",
+        "dotLabel": "Sudan, komunitas"
+      },
+      {
+        "id": "venezuela",
+        "quote": "“Ketika pemerintah mengusir semua misionaris Barat, kami harus mencari jalan untuk terus maju. Open Bible Stories dan Penerjemahan Alkitab yang Berpusat pada Gereja memberi kami alat-alat itu.”",
+        "attr": "&mdash; Mitra penerjemahan Alkitab dari Venezuela",
+        "dotLabel": "Venezuela"
+      },
+      {
+        "id": "iran",
+        "quote": "“Karena buku ini dalam bahasa hati saya, ibu saya dapat membacanya. Dengan segenap hati, terima kasih telah mewujudkan hal ini.”",
+        "attr": "&mdash; Mitra penerjemahan Alkitab dari Iran",
+        "dotLabel": "Iran"
+      },
+      {
+        "id": "eurasia",
+        "quote": "“Open Bible Stories menyampaikan Injil dengan begitu baik sehingga menjadi alat penginjilan favorit saya di negara-negara bekas Uni Soviet.”",
+        "attr": "&mdash; Mitra penerjemahan Alkitab dari Eurasia",
+        "dotLabel": "Eurasia"
+      }
+    ],
+    "statLabel": "Bahasa<br>dan terus bertambah"
+  },
+  "finalCta": {
+    "title": "Bantu Menuliskan Kisah Berikutnya",
+    "body": "Di suatu tempat hari ini, sebuah gereja lain sedang bersiap membagikan Injil dalam bahasanya sendiri untuk pertama kali &mdash; dukungan Anda ikut mewujudkannya.",
+    "cta": "Beri hari ini"
+  }
+}

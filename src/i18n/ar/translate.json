@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "ترجم — Open Bible Stories",
+    "description": "سبع خطوات لترجمة Open Bible Stories إلى لغتك."
+  },
+  "hero": {
+    "eyebrow": "ساهم في إيصال الإنجيل إلى لغة أخرى",
+    "title": "كيف تترجم Open Bible Stories",
+    "sub": "ساهم في إتاحة الإنجيل بلغة أخرى. اتبع الخطوات أدناه لبدء ترجمة جديدة مبنية على unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "كيفية الترجمة",
+    "tabResources": "الموارد"
+  },
+  "steps": [
+    {
+      "title": "استعد",
+      "body": "<p>للاستعداد للترجمة، ابدأ بتثبيت <a href=\"https://scribe.bible/\">Scribe SE</a>. لمعلومات حول استخدام Scribe SE، يمكنك زيارة <a href=\"https://docs.scribe.bible/\">وثائق Scribe SE</a>.</p><p>يمكنك الوصول إلى موارد الترجمة عبر تطبيق <a href=\"https://www.well.bible/\">Bible Well</a>.</p>"
+    },
+    {
+      "title": "افهم",
+      "body": "<p>ادرس <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">المبادئ الأساسية</a> التي تحتاجها للترجمة.</p><p>ادرس قصة \"الخلق\" في Scribe SE لتصبح مُلمًّا بالقصة في اللغة المصدر.</p>"
+    },
+    {
+      "title": "ترجم",
+      "body": "<p>في Scribe SE:</p><ul><li>افتح القصة التي تريد ترجمتها من Open Bible Stories</li><li>اتبع الخطوات في <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">كيفية الترجمة</a> مع فريقك لإتمام عملية الصياغة</li></ul>"
+    },
+    {
+      "title": "راجع داخليًا",
+      "body": "<p>أكمل خطوات <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">المراجعة</a> لإجراء مراجعات الشركاء والفريق.</p>"
+    },
+    {
+      "title": "راجع خارجيًا",
+      "body": "<ul><li>اتبع الخطوات في <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">هذه الصفحة</a> لإجراء المراجعات الخارجية</li><li>لمزيد من المعلومات عن المراجعة، انقر <a href=\"https://checking.my.canva.site\">هنا</a></li></ul>"
+    },
+    {
+      "title": "انشر",
+      "body": "<p>بعد إتمام جميع مراحل مراجعة الترجمة، أجرِ التعديلات النهائية على القصص في Scribe SE وانشرها على <a href=\"https://door43.org\">Door43</a>.</p><p>اتبع <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">قائمة التحقق هذه</a> للتأكد من أن القصص جاهزة للنشر.</p>"
+    },
+    {
+      "title": "وزّع",
+      "body": "<p>يمكنك مشاركة ترجمتك لقصص Open Bible Stories في <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">صيغ متنوعة</a> للكرازة والتلمذة &mdash; أو انظر <a href=\"/create/\">صفحة أنشئ</a> للحصول على الملفات المصدرية الأساسية.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "احتفل",
+    "body": "<p>خذ وقتًا للفرح بأن لديك Open Bible Stories بلغتك. شارك البشارة مع الجميع وقدّم التسبيح لله على ما صنعه.</p>"
+  },
+  "questions": "لديك أسئلة؟ راسلنا على <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "جهّز الآخرين لفهم الإنجيل وتعليمه",
+    "title": "الموارد",
+    "body": "ملاحظات الترجمة، وأسئلة الترجمة، وملاحظات الدراسة، وأسئلة الدراسة، والنسخة الموسّعة (التكوين اللاهوتي) &mdash; ابحث عن لغتك مرة واحدة لترى كل ما هو متاح لها. تبحث عن القصص نفسها؟ ستجدها في <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">اكتشف</a>.",
+    "searchPlaceholder": "ابحث باسم اللغة، مثل: العربية"
+  },
+  "finalCta": {
+    "title": "تحتاج إلى أدوات ترجمة؟",
+    "body": "Scribe SE وغيره من المحررات لبدء الترجمة مذكورة في صفحة أنشئ.",
+    "ctaTools": "اطّلع على أدوات الترجمة",
+    "ctaDiscover": "اطّلع على ما تُرجم بالفعل"
+  }
+}

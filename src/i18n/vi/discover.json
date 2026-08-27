@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Khám phá — Open Bible Stories",
+    "description": "Đọc Open Bible Stories bằng ngôn ngữ của bạn, do bất kỳ đội ngũ nào đã xuất bản."
+  },
+  "hero": {
+    "eyebrow": "Tìm Phúc Âm bằng ngôn ngữ của bạn",
+    "title": "Khám phá",
+    "sub": "Tìm Open Bible Stories bằng ngôn ngữ của bạn. Đọc, nghe, xem hoặc tải xuống các bản dịch hiện có.",
+    "ctaApp": "Ứng dụng di động OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "Tìm theo tên ngôn ngữ, ví dụ: Khmer",
+    "filterAll": "Tất cả",
+    "filterPrint": "Bản in",
+    "filterAudio": "Audio",
+    "filterVideo": "Video"
+  }
+}
