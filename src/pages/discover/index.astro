@@ -26,16 +26,16 @@ import Base from '../../layouts/Base.astro';
       <div class="library-tools">
         <div class="search-box">
           <span aria-hidden="true">&#128269;</span>
-          <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili">
+          <input id="lang-search" type="text" placeholder="Search by language name, e.g. Swahili" aria-label="Search by language name">
         </div>
         <div class="format-filters">
-          <button type="button" class="filter-chip active" data-format="all">All</button>
-          <button type="button" class="filter-chip" data-format="pdf">Print</button>
-          <button type="button" class="filter-chip" data-format="audio">Audio</button>
-          <button type="button" class="filter-chip" data-format="video">Video</button>
+          <button type="button" class="filter-chip active" data-format="all" aria-pressed="true">All</button>
+          <button type="button" class="filter-chip" data-format="pdf" aria-pressed="false">Print</button>
+          <button type="button" class="filter-chip" data-format="audio" aria-pressed="false">Audio</button>
+          <button type="button" class="filter-chip" data-format="video" aria-pressed="false">Video</button>
         </div>
       </div>
-      <p id="lib-status" class="lib-status"></p>
+      <p id="lib-status" class="lib-status" aria-live="polite"></p>
       <div id="lang-list" class="lang-list"></div>
     </div>
 

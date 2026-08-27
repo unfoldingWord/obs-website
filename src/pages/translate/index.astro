@@ -34,7 +34,7 @@ import Base from '../../layouts/Base.astro';
         <div class="step-num">2</div>
         <div class="step-body">
           <h3>Understand</h3>
-          <p>Study the <a href="https://app.notion.com/p/unfoldingword/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c?source=copy_link">foundational principles</a> you need for translation.</p>
+          <p>Study the <a href="https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c">foundational principles</a> you need for translation.</p>
           <p>Study "The Creation" in Scribe SE to become familiar with the story in the resource language.</p>
         </div>
       </div>
@@ -46,7 +46,7 @@ import Base from '../../layouts/Base.astro';
           <p>In Scribe SE:</p>
           <ul>
             <li>Open the Open Bible Story you want to translate</li>
-            <li>Follow the steps on <a href="https://app.notion.com/p/unfoldingword/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6">how to translate</a> with your team to complete the drafting process</li>
+            <li>Follow the steps on <a href="https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6">how to translate</a> with your team to complete the drafting process</li>
           </ul>
         </div>
       </div>
@@ -55,7 +55,7 @@ import Base from '../../layouts/Base.astro';
         <div class="step-num">4</div>
         <div class="step-body">
           <h3>Check internally</h3>
-          <p>Complete the steps for <a href="https://www.notion.so/unfoldingword/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6">checking</a> to perform partner and team checks.</p>
+          <p>Complete the steps for <a href="https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6">checking</a> to perform partner and team checks.</p>
         </div>
       </div>
 
@@ -64,7 +64,7 @@ import Base from '../../layouts/Base.astro';
         <div class="step-body">
           <h3>Check externally</h3>
           <ul>
-            <li>Follow the steps on <a href="https://www.notion.so/unfoldingword/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790">this page</a> to perform external checks</li>
+            <li>Follow the steps on <a href="https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790">this page</a> to perform external checks</li>
             <li>For more on checking, click <a href="https://checking.my.canva.site">here</a></li>
           </ul>
         </div>
@@ -75,7 +75,7 @@ import Base from '../../layouts/Base.astro';
         <div class="step-body">
           <h3>Publish</h3>
           <p>Once all stages of checking the translation have occurred, make final edits to the stories in Scribe SE and publish to <a href="https://door43.org">Door43</a>.</p>
-          <p>Follow <a href="https://www.notion.so/unfoldingword/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea">this checklist</a> to determine that the stories are ready to publish.</p>
+          <p>Follow <a href="https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea">this checklist</a> to determine that the stories are ready to publish.</p>
         </div>
       </div>
 
@@ -98,7 +98,7 @@ import Base from '../../layouts/Base.astro';
     </div>
 
     <p style="text-align:center; margin-top:32px; color:#4a5960; font-size:0.95rem;">
-      Questions? Email <a href="mailto:info@unfoldingword.org" style="color:var(--inspire);">info@unfoldingword.org</a>
+      Questions? Email <a href="mailto:info@unfoldingword.org" style="color:var(--inspire-text);">info@unfoldingword.org</a>
     </p>
   </div>
 </section>
@@ -111,18 +111,18 @@ import Base from '../../layouts/Base.astro';
     <div class="section-head" style="margin-bottom:32px;">
       <p class="eyebrow">Equip others to understand and teach the Gospel</p>
       <h2>Resources</h2>
-      <p>Translation Notes, Translation Questions, Study Notes, Study Questions, and the Extended (Theological Formation) edition &mdash; search your language once to see everything available for it. Looking for the stories themselves? That's <a href="/discover/" style="color:var(--inspire); font-weight:700;">Discover</a>.</p>
+      <p>Translation Notes, Translation Questions, Study Notes, Study Questions, and the Extended (Theological Formation) edition &mdash; search your language once to see everything available for it. Looking for the stories themselves? That's <a href="/discover/" style="color:var(--inspire-text); font-weight:700;">Discover</a>.</p>
     </div>
 
     <div id="res-browse">
       <div class="library-tools">
         <div class="search-box">
           <span aria-hidden="true">&#128269;</span>
-          <input id="res-search" type="text" placeholder="Search by language name, e.g. Swahili">
+          <input id="res-search" type="text" placeholder="Search by language name, e.g. Swahili" aria-label="Search by language name">
         </div>
       </div>
 
-      <p id="res-status" class="lib-status"></p>
+      <p id="res-status" class="lib-status" aria-live="polite"></p>
       <div id="res-lang-list" class="lang-list"></div>
     </div>
 

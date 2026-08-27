@@ -397,7 +397,12 @@
     listEl.querySelectorAll(".lang-row").forEach((row) => {
       row.addEventListener("click", () => showDetail(row.dataset.lang));
       row.addEventListener("keydown", (ev) => {
-        if (ev.key === "Enter") showDetail(row.dataset.lang);
+        // role="button" must respond to Space as well as Enter; preventDefault
+        // stops Space from also scrolling the page.
+        if (ev.key === "Enter" || ev.key === " ") {
+          ev.preventDefault();
+          showDetail(row.dataset.lang);
+        }
       });
     });
   }
@@ -626,11 +631,9 @@
           : ""
       }
       <div style="display:flex; align-items:center; gap:10px; margin-bottom:14px; flex-wrap:wrap;">
-        <button class="study-prev btn btn-outline" style="padding:6px 14px; font-size:0.85rem;">&larr; Prev story</button>
-        <select class="study-story-select" style="font-size:0.9rem; color:var(--ocean); font-weight:700; border:1px solid rgba(1,66,99,0.25); border-radius:999px; padding:6px 14px; background:var(--white); max-width:320px;">
+        <select class="study-story-select" aria-label="Jump to a story" style="font-size:0.9rem; color:var(--ocean); font-weight:700; border:1px solid rgba(1,66,99,0.25); border-radius:999px; padding:6px 14px; background:var(--white); max-width:320px;">
           <option>Loading stories...</option>
         </select>
-        <button class="study-next btn btn-outline" style="padding:6px 14px; font-size:0.85rem;">Next story &rarr;</button>
         <div class="story-links" style="display:flex; gap:14px; margin-left:auto; font-size:0.82rem;"></div>
       </div>
       <div class="youtube-embed" style="margin-bottom:14px;"></div>
@@ -653,14 +656,13 @@
     // ---- slide-deck state for the currently loaded story ----
     let currentStoryData = null; // {title, reference, frames}
     let slideIndex = 0;
+    let restoreFocus = null; // "prev" | "next" — which control to re-focus after a re-render
 
     const mainEl = container.querySelector(".study-main");
     const mediaEl = container.querySelector(".story-media");
     const youtubeEl = container.querySelector(".youtube-embed");
     const linksEl = container.querySelector(".story-links");
     const selectEl = container.querySelector(".study-story-select");
-    const prevBtn = container.querySelector(".study-prev");
-    const nextBtn = container.querySelector(".study-next");
 
     // One image + its paragraph per slide, with Prev/Next that keep
     // flipping right across a story boundary into the next/previous story
@@ -689,7 +691,7 @@
                   )}</h3>`
                 : ""
             }
-            <p style="color:#4a5960; font-size:0.9rem;">This story couldn't be broken into slides automatically. <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire);">View the raw file on Door43</a>.</p>
+            <p style="color:#4a5960; font-size:0.9rem;">This story couldn't be broken into slides automatically. <a href="https://git.door43.org/${entry.owner}/${entry.name}" style="color:var(--inspire-text);">View the raw file on Door43</a>.</p>
           </div>
         `;
         return;
@@ -717,7 +719,7 @@
           }</div>
           ${
             currentStoryData.reference
-              ? `<p style="color:#8a97a0; font-size:0.82rem; font-style:italic; margin-top:20px;">${escapeHtml(
+              ? `<p style="color:#64747d; font-size:0.82rem; font-style:italic; margin-top:20px;">${escapeHtml(
                   currentStoryData.reference
                 )}</p>`
               : ""
@@ -736,14 +738,24 @@
       const slideNextBtn = mainEl.querySelector(".slide-next");
       slidePrevBtn.disabled = slideIndex <= 0 && current <= 1;
       slideNextBtn.disabled = slideIndex >= frames.length - 1 && current >= maxStory;
-      slidePrevBtn.addEventListener("click", () => goToSlide(slideIndex - 1));
-      slideNextBtn.addEventListener("click", () => goToSlide(slideIndex + 1));
+      slidePrevBtn.addEventListener("click", () => goToSlide(slideIndex - 1, "prev"));
+      slideNextBtn.addEventListener("click", () => goToSlide(slideIndex + 1, "next"));
+
+      // Re-rendering replaced the button the keyboard user had focused —
+      // without this, focus falls back to <body> on every slide advance and
+      // they'd have to tab down from the top of the page for each frame.
+      if (restoreFocus === "prev" || restoreFocus === "next") {
+        const btn = restoreFocus === "prev" ? slidePrevBtn : slideNextBtn;
+        (btn.disabled ? (restoreFocus === "prev" ? slideNextBtn : slidePrevBtn) : btn).focus();
+      }
+      restoreFocus = null;
     }
 
     // newIndex outside the current story's frame range crosses into the
     // next/previous story (landing on its first or last slide, whichever
     // makes the flip feel continuous) rather than just disabling the button.
-    function goToSlide(newIndex) {
+    function goToSlide(newIndex, focusTarget) {
+      if (focusTarget) restoreFocus = focusTarget;
       const frames = (currentStoryData && currentStoryData.frames) || [];
 
       if (newIndex < 0) {
@@ -819,7 +831,7 @@
             audioByStory[num].browser_download_url
           }"></audio>${
             audioTag && audioTag !== entry.branch_or_tag_name
-              ? ` <span style="font-size:0.75rem; color:#8a97a0;">audio from ${escapeHtml(
+              ? ` <span style="font-size:0.75rem; color:#64747d;">audio from ${escapeHtml(
                   audioTag
                 )}</span>`
               : ""
@@ -832,8 +844,6 @@
     // startAt forwards through to loadStoryText — see its comment above.
     function update(startAt) {
       selectEl.value = current;
-      prevBtn.disabled = current <= 1;
-      nextBtn.disabled = current >= maxStory;
       loadStoryText(current, startAt);
       updateMedia(current);
     }
@@ -842,19 +852,6 @@
       current = parseInt(selectEl.value, 10);
       update(0);
     });
-    prevBtn.addEventListener("click", () => {
-      if (current > 1) {
-        current -= 1;
-        update(0);
-      }
-    });
-    nextBtn.addEventListener("click", () => {
-      if (current < maxStory) {
-        current += 1;
-        update(0);
-      }
-    });
-
     // Arrow-key flipping. Only one reader is ever active at a time on this
     // page (the browse list and its search box are hidden while a reader is
     // shown), but a fresh setupReader() call — e.g. switching teams in the
@@ -869,7 +866,7 @@
     document.addEventListener("keydown", activeReaderKeyHandler);
 
     // Always available regardless of asset content.
-    linksEl.innerHTML = `<a href="https://git.door43.org/${entry.owner}/${entry.name}" target="_blank" rel="noopener" style="color:var(--inspire);">View source on Door43</a>`;
+    linksEl.innerHTML = `<a href="https://git.door43.org/${entry.owner}/${entry.name}" target="_blank" rel="noopener" style="color:var(--inspire-text);">View source on Door43</a>`;
 
     fetchStoryFiles(entry).then((files) => {
       storyFiles = files;
@@ -906,7 +903,7 @@
         const embedUrl = youtubeEmbedUrl(youtubeFound.asset.browser_download_url);
         const tagNote =
           youtubeFound.release.tag_name !== entry.branch_or_tag_name
-            ? `<span style="font-size:0.75rem; color:#8a97a0; display:block; margin-top:4px;">from ${escapeHtml(
+            ? `<span style="font-size:0.75rem; color:#64747d; display:block; margin-top:4px;">from ${escapeHtml(
                 youtubeFound.release.tag_name
               )}</span>`
             : "";
@@ -926,12 +923,12 @@
       if (pdfFound) {
         const pdfTagNote =
           pdfFound.release.tag_name !== entry.branch_or_tag_name
-            ? ` <span style="color:#8a97a0;">(${escapeHtml(
+            ? ` <span style="color:#64747d;">(${escapeHtml(
                 pdfFound.release.tag_name
               )})</span>`
             : "";
         linksEl.innerHTML =
-          `<a href="${pdfFound.asset.browser_download_url}" target="_blank" rel="noopener" style="color:var(--inspire);">Print (PDF)</a>${pdfTagNote}` +
+          `<a href="${pdfFound.asset.browser_download_url}" target="_blank" rel="noopener" style="color:var(--inspire-text);">Print (PDF)</a>${pdfTagNote}` +
           ` &middot; ` +
           linksEl.innerHTML;
       }
@@ -987,7 +984,11 @@
     formatChips.forEach((chip) => {
       chip.addEventListener("click", () => {
         activeFormat = chip.dataset.format;
-        formatChips.forEach((c) => c.classList.toggle("active", c === chip));
+        formatChips.forEach((c) => {
+          const isActive = c === chip;
+          c.classList.toggle("active", isActive);
+          c.setAttribute("aria-pressed", isActive ? "true" : "false");
+        });
         renderList();
       });
     });
@@ -1035,13 +1036,22 @@
       }
     }
 
-    const cachedEntries = readCatalogCache();
+    function renderLoadError() {
+      // A dead-end "try refreshing" line helps nobody — especially behind
+      // the restrictive networks common in the regions this project serves.
+      // Offer an in-place retry plus the two working alternate routes.
+      statusEl.innerHTML =
+        'The language list couldn\'t be loaded — the Door43 catalog may be ' +
+        'unreachable from your network. ' +
+        '<button type="button" id="lib-retry" class="btn btn-outline" style="padding:8px 18px; font-size:0.85rem; margin:10px 6px 0;">Try again</button>' +
+        '<span style="display:block; margin-top:10px;">You can also browse on ' +
+        '<a href="https://door43.org" target="_blank" rel="noopener" style="color:var(--inspire-text); text-decoration:underline;">Door43</a> ' +
+        'or use the <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp" target="_blank" rel="noopener" style="color:var(--inspire-text); text-decoration:underline;">OBS mobile app</a>.</span>';
+      const retryBtn = document.getElementById("lib-retry");
+      if (retryBtn) retryBtn.addEventListener("click", loadCatalog);
+    }
 
-    if (cachedEntries) {
-      // Instant render, no network round-trip — see the caching comment
-      // near CATALOG_CACHE_KEY above for why this exists and what it saves.
-      hydrateFromEntries(cachedEntries);
-    } else {
+    function loadCatalog() {
       statusEl.textContent = "Loading languages...";
 
       fetch(CATALOG_URL)
@@ -1067,10 +1077,17 @@
           writeCatalogCache(languages);
           hydrateFromEntries(languages);
         })
-        .catch(() => {
-          statusEl.textContent =
-            "Couldn't load the language list right now. Try refreshing.";
-        });
+        .catch(renderLoadError);
+    }
+
+    const cachedEntries = readCatalogCache();
+
+    if (cachedEntries) {
+      // Instant render, no network round-trip — see the caching comment
+      // near CATALOG_CACHE_KEY above for why this exists and what it saves.
+      hydrateFromEntries(cachedEntries);
+    } else {
+      loadCatalog();
     }
   }
 })();

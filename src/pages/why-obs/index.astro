@@ -1,15 +1,18 @@
 ---
 import Base from '../../layouts/Base.astro';
 ---
-<Base title="Why Open Bible Stories" description="Real stories from the field: how Open Bible Stories reaches the unreached, trains new leaders, and opens the door to Bible translation." active="features">
+<Base title="Why Open Bible Stories" description="Real stories from the field: how Open Bible Stories reaches the unreached, trains new leaders, and opens the door to Bible translation." active="why-obs">
 
 <!-- SECTION 1 — HERO: the story. Headline is immediate (no "Story from Chad" quote-over-image / "Why this matters" framing layers stacked in front of it) — but the fuller narrative is restored below it per request, rather than the earlier trimmed 2-3 sentence version. -->
 <!-- PRIVACY: this story is anonymized on purpose — no name, no photo of the individual. -->
 <!-- PENDING APPROVAL: confirm this generic version is cleared for publishing before this goes live. -->
 <section style="position:relative; padding:0; overflow:hidden;">
   <div style="position:relative; min-height:460px; display:flex; align-items:flex-end;">
-    <img src="/assets/img/why-obs/hero-hands.jpg" alt="" loading="eager"
-      style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">
+    <picture>
+      <source srcset="/assets/img/why-obs/hero-hands.webp" type="image/webp">
+      <img src="/assets/img/why-obs/hero-hands.jpg" alt="" loading="eager" width="1800" height="1224"
+        style="position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0;">
+    </picture>
     <div style="position:absolute; inset:0; background:linear-gradient(0deg, rgba(1,47,71,0.93) 10%, rgba(1,47,71,0.6) 52%, rgba(1,47,71,0.28) 100%); z-index:1;"></div>
     <div class="wrap" style="position:relative; z-index:2; padding:80px 28px 48px; color:var(--white);">
       <p style="color:var(--cultivate); font-family:var(--heading-font); font-weight:800; letter-spacing:0.06em; text-transform:uppercase; font-size:0.85rem; margin-bottom:14px;">A story from Chad</p>
@@ -122,19 +125,19 @@ import Base from '../../layouts/Base.astro';
       </div>
     </div>
 
-    <div class="whyworks-dots" role="tablist" aria-label="Field voices, by place">
-      <button type="button" class="whyworks-dot active" data-panel="chad" aria-selected="true" aria-label="Chad"></button>
-      <button type="button" class="whyworks-dot" data-panel="sudan-leader" aria-selected="false" aria-label="Sudan, leaders"></button>
-      <button type="button" class="whyworks-dot" data-panel="sudan-community" aria-selected="false" aria-label="Sudan, community"></button>
-      <button type="button" class="whyworks-dot" data-panel="venezuela" aria-selected="false" aria-label="Venezuela"></button>
-      <button type="button" class="whyworks-dot" data-panel="iran" aria-selected="false" aria-label="Iran"></button>
-      <button type="button" class="whyworks-dot" data-panel="eurasia" aria-selected="false" aria-label="Eurasia"></button>
+    <div class="whyworks-dots" role="group" aria-label="Field voices, by place">
+      <button type="button" class="whyworks-dot active" data-panel="chad" aria-current="true" aria-label="Chad"></button>
+      <button type="button" class="whyworks-dot" data-panel="sudan-leader" aria-label="Sudan, leaders"></button>
+      <button type="button" class="whyworks-dot" data-panel="sudan-community" aria-label="Sudan, community"></button>
+      <button type="button" class="whyworks-dot" data-panel="venezuela" aria-label="Venezuela"></button>
+      <button type="button" class="whyworks-dot" data-panel="iran" aria-label="Iran"></button>
+      <button type="button" class="whyworks-dot" data-panel="eurasia" aria-label="Eurasia"></button>
     </div>
 
     <!-- LIVE IMPACT: the real, currently-published count — fetched live, same mechanism as the homepage, never a stale printed number. Now the proof point for this section rather than a separate section of its own. -->
     <div style="text-align:center; margin-top:56px; padding-top:40px; border-top:1px solid rgba(1,66,99,0.12);">
       <div class="big-stat">
-        <span class="big-stat-num" id="lang-count" data-target="213">0</span>
+        <span class="big-stat-num" id="lang-count" data-target="214">214</span>
         <span class="big-stat-label">Languages<br>and counting</span>
       </div>
     </div>
@@ -177,7 +180,8 @@ import Base from '../../layouts/Base.astro';
       dots.forEach((d) => {
         const isActive = d === dot;
         d.classList.toggle("active", isActive);
-        d.setAttribute("aria-selected", isActive ? "true" : "false");
+        if (isActive) d.setAttribute("aria-current", "true");
+        else d.removeAttribute("aria-current");
       });
       document.querySelectorAll(".whyworks-panel").forEach((panel) => {
         panel.classList.toggle("active", panel.id === `whyworks-${dot.dataset.panel}`);
@@ -212,60 +216,8 @@ import Base from '../../layouts/Base.astro';
   })();
 </script>
 
-<script is:inline>
-  // Same live-count mechanism as the homepage (see index.html) — sourced from
-  // the DCS catalog's stats-ext endpoint so this never drifts into a stale
-  // printed figure the way the "168 languages" number in older materials did.
-  (function () {
-    function animateCount(el, target) {
-      const duration = 1400;
-      const start = performance.now();
-      function tick(now) {
-        const progress = Math.min((now - start) / duration, 1);
-        const eased = 1 - Math.pow(1 - progress, 3);
-        el.textContent = Math.round(eased * target);
-        if (progress < 1) requestAnimationFrame(tick);
-      }
-      requestAnimationFrame(tick);
-    }
 
-    const countEl = document.getElementById("lang-count");
-    const fallbackTarget = parseInt(countEl.dataset.target, 10);
-    let liveTarget = null;
-    let intersected = false;
-    let animated = false;
-
-    function maybeAnimate() {
-      if (animated || !intersected || liveTarget === null) return;
-      animated = true;
-      animateCount(countEl, liveTarget);
-    }
-
-    const observer = new IntersectionObserver(
-      (entries) => {
-        if (entries[0].isIntersecting) {
-          intersected = true;
-          maybeAnimate();
-          observer.disconnect();
-        }
-      },
-      { threshold: 0.4 }
-    );
-    observer.observe(countEl);
-
-    fetch("https://git.door43.org/api/v1/catalog/stats-ext?subject=Open%20Bible%20Stories&stage=prod")
-      .then((res) => res.json())
-      .then((stats) => {
-        const count = stats && stats.lang_count;
-        liveTarget = Number.isFinite(count) && count > 0 ? count : fallbackTarget;
-        countEl.dataset.target = liveTarget;
-        maybeAnimate();
-      })
-      .catch(() => {
-        liveTarget = fallbackTarget;
-        maybeAnimate();
-      });
-  })();
-</script>
-
+<Fragment slot="scripts">
+<script is:inline src="/assets/js/lang-count.js"></script>
+</Fragment>
 </Base>

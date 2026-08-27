@@ -14,3 +14,8 @@
 
 /assets/css/*
   Cache-Control: public, no-cache
+
+# Self-hosted fonts are content-stable variable woff2 files — same immutable
+# policy as images.
+/assets/fonts/*
+  Cache-Control: public, max-age=31536000, immutable
