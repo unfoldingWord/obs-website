@@ -1,22 +1,5 @@
 ---
-import Base from '../../../layouts/Base.astro';
+import DiscoverReadPage from '../../../components/pages/DiscoverReadPage.astro';
 ---
-<Base title="Read — Open Bible Stories" description="Full-page reading view for Open Bible Stories.">
 
-<section class="page-header" style="padding:32px 0 24px;">
-  <div class="wrap">
-    <a href="/discover/" class="btn btn-outline">&larr; Back to Discover</a>
-  </div>
-</section>
-
-<section style="padding-top:0;">
-  <div class="wrap">
-    <div id="full-reader"></div>
-  </div>
-</section>
-
-
-<Fragment slot="scripts">
-<script is:inline src="/assets/js/discover.js"></script>
-</Fragment>
-</Base>
+<DiscoverReadPage locale="en" />

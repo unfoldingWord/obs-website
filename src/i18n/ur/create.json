@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "تخلیق کریں — Open Bible Stories",
+    "description": "Open Bible Stories سے اپنا متن، تصویر، آڈیو یا ویڈیو وسیلہ بنائیں۔"
+  },
+  "hero": {
+    "eyebrow": "ملٹی میڈیا وسائل کے ذریعے خوشخبری بانٹیں",
+    "title": "تخلیق کریں",
+    "sub": "unfoldingWord&reg; Open Bible Stories یا Sweet Publishing کی اصل تصاویر پر مبنی اپنا وسیلہ بنائیں — جو بھی چیز اُن لوگوں کو، جن کی آپ خدمت کرتے ہیں، ان کہانیوں تک پہنچنے میں مدد دے۔",
+    "possibilities": "ویڈیوز &middot; آڈیو &middot; تربیتی مواد &middot; پریزنٹیشنز &middot; بچوں کے وسائل &middot; سوشل میڈیا &middot; تدریسی مواد",
+    "cta": "اپنی زبان تلاش کریں"
+  },
+  "text": {
+    "title": "متن",
+    "sub": "شروع کرنے کا سب سے آسان طریقہ Scribe SE ہے — Windows، Mac یا Linux کے لیے ایک مفت ترجمے کا اوزار۔",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "انگریزی سے یا دریافت کے صفحے پر درج دیگر زبانوں میں سے کسی ایک سے ترجمہ شروع کریں۔",
+    "scribeCta": "Scribe SE ڈاؤن لوڈ کریں",
+    "otherTitle": "دیگر اختیارات",
+    "otherItems": [
+      "پلین ٹیکسٹ یا مارک ڈاؤن ایڈیٹر کے لیے <a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">انگریزی مارک ڈاؤن ماخذ</a>",
+      "انگریزی سے <a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> یا <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a>",
+      "انگریزی سے <a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a>"
+    ]
+  },
+  "images": {
+    "title": "تصاویر",
+    "sub": "اپنی دستاویزات، سلائیڈز یا ترجمہ شدہ کہانیوں کے سیٹ بنانے کے لیے ماخذ تصاویر۔",
+    "jpgTitle": "JPG فائلیں",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">تمام فائلیں، 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">تمام فائلیں، 360px</a> (36 MB)"
+    ],
+    "origTitle": "اصل تصاویر",
+    "origBody": "Sweet Publishing کی اصل تصاویر <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord کی ویب سائٹ</a> پر دیکھیں یا ڈاؤن لوڈ کریں۔"
+  },
+  "video": {
+    "title": "ویڈیوز اور آڈیو",
+    "sub": "کسی بھی ایڈیٹر میں اپنی Open Bible Stories ویڈیوز یا آڈیو ریکارڈنگز بنانے کے لیے HD 1080p ویڈیو کلپس۔",
+    "mp4Title": "MP4 فائلیں",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">تمام فائلیں زپ شدہ</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">کہانیاں 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">کہانیاں 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">کہانیاں 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">کہانیاں 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">کہانیاں 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">ہر کہانی کی الگ فائلیں</a> (ہر ایک تقریباً 150 MB)"
+    ],
+    "psdTitle": "PSD فائلیں",
+    "psdBody": "کلپس کے بصری عناصر میں نمایاں ترامیم کے لیے۔ یہ بڑی فائلیں ہیں جن کے استعمال کے لیے فوٹو ایڈیٹنگ سافٹ ویئر اور مہارت درکار ہے۔",
+    "psdCta": "ہر کہانی کی PSD فائلیں",
+    "psdHelp": "ویڈیو یا آڈیو ریکارڈنگ تیار کرنے میں مدد چاہیے؟ <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">ہم سے رابطہ کریں</a>۔"
+  }
+}

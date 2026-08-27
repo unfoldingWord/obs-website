@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "ဖန်တီးရန် — Open Bible Stories",
+    "description": "Open Bible Stories မှ သင့်ကိုယ်ပိုင် စာသား၊ ရုပ်ပုံ၊ အသံ သို့မဟုတ် ဗီဒီယို အရင်းအမြစ်ကို တည်ဆောက်ပါ။"
+  },
+  "hero": {
+    "eyebrow": "မာလ်တီမီဒီယာ အရင်းအမြစ်များဖြင့် သတင်းကောင်းကို မျှဝေပါ",
+    "title": "ဖန်တီးရန်",
+    "sub": "unfoldingWord&reg; Open Bible Stories သို့မဟုတ် Sweet Publishing မူရင်းရုပ်ပုံများကို အခြေခံ၍ သင့်ကိုယ်ပိုင်အရင်းအမြစ်ကို ဖန်တီးပါ — သင်အမှုတော်ဆောင်နေသောသူများ ဤဇာတ်လမ်းများကို ထိတွေ့ခံစားနိုင်စေမည့် မည်သည့်အရာမဆို။",
+    "possibilities": "ဗီဒီယိုများ &middot; အသံဖိုင်များ &middot; သင်တန်းအထောက်အကူများ &middot; တင်ဆက်မှုများ &middot; ကလေးသူငယ် အရင်းအမြစ်များ &middot; လူမှုကွန်ရက် &middot; သင်ကြားရေး အထောက်အကူများ",
+    "cta": "သင့်ဘာသာစကားကို ရှာပါ"
+  },
+  "text": {
+    "title": "စာသား",
+    "sub": "အလွယ်ဆုံးစတင်နည်းမှာ Windows, Mac သို့မဟုတ် Linux အတွက် အခမဲ့ဘာသာပြန်ကိရိယာဖြစ်သော Scribe SE ဖြစ်သည်။",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "အင်္ဂလိပ်ဘာသာမှ သို့မဟုတ် ရှာဖွေရန် စာမျက်နှာတွင် ဖော်ပြထားသော အခြားဘာသာစကားတစ်ခုမှ ဘာသာပြန်ခြင်းကို စတင်ပါ။",
+    "scribeCta": "Scribe SE ဒေါင်းလုဒ်ဆွဲရန်",
+    "otherTitle": "အခြားရွေးချယ်စရာများ",
+    "otherItems": [
+      "စာသားရိုးရိုး သို့မဟုတ် markdown တည်းဖြတ်ကိရိယာအတွက် <a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">အင်္ဂလိပ် markdown မူရင်းဖိုင်</a>",
+      "အင်္ဂလိပ်ဘာသာမှ <a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> သို့မဟုတ် <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a>",
+      "အင်္ဂလိပ်ဘာသာမှ <a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a>"
+    ]
+  },
+  "images": {
+    "title": "ရုပ်ပုံများ",
+    "sub": "သင့်ကိုယ်ပိုင် စာရွက်စာတမ်းများ၊ ဆလိုက်များ သို့မဟုတ် ဘာသာပြန်ဇာတ်လမ်းအစုများ တည်ဆောက်ရန် အခြေခံရုပ်ပုံများ။",
+    "jpgTitle": "JPG ဖိုင်များ",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">ဖိုင်အားလုံး၊ 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">ဖိုင်အားလုံး၊ 360px</a> (36 MB)"
+    ],
+    "origTitle": "မူရင်း ရုပ်ပုံများ",
+    "origBody": "Sweet Publishing ၏ မူရင်းရုပ်ပုံများကို <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord ဝက်ဘ်ဆိုက်</a> တွင် ကြည့်ရှုခြင်း သို့မဟုတ် ဒေါင်းလုဒ်ဆွဲခြင်း ပြုလုပ်နိုင်သည်။"
+  },
+  "video": {
+    "title": "ဗီဒီယိုနှင့် အသံ",
+    "sub": "မည်သည့်တည်းဖြတ်ကိရိယာတွင်မဆို သင့်ကိုယ်ပိုင် Open Bible Stories ဗီဒီယိုများ သို့မဟုတ် အသံသွင်းချက်များ တည်ဆောက်ရန် HD 1080p ဗီဒီယိုအပိုင်းများ။",
+    "mp4Title": "MP4 ဖိုင်များ",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">ဖိုင်အားလုံး တစ်စုတည်း</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်း 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်း 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်း 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်း 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်း 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">ဇာတ်လမ်းတစ်ပုဒ်ချင်း ဖိုင်များ</a> (တစ်ဖိုင်လျှင် ခန့်မှန်း 150 MB)"
+    ],
+    "psdTitle": "PSD ဖိုင်များ",
+    "psdBody": "ဗီဒီယိုအပိုင်းများအတွင်းရှိ ရုပ်ပုံအစိတ်အပိုင်းများကို သိသာစွာ ပြင်ဆင်လိုသည့်အခါအတွက်။ ဖိုင်ကြီးများဖြစ်ပြီး ဓာတ်ပုံတည်းဖြတ်ဆော့ဖ်ဝဲနှင့် ကျွမ်းကျင်မှု လိုအပ်သည်။",
+    "psdCta": "ဇာတ်လမ်းတစ်ပုဒ်ချင်း PSD ဖိုင်များ",
+    "psdHelp": "ဗီဒီယို သို့မဟုတ် အသံသွင်းချက် ထုတ်လုပ်ရာတွင် အကူအညီလိုပါသလား။ <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">ကျွန်ုပ်တို့ကို ဆက်သွယ်ပါ</a>။"
+  }
+}

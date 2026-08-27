@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "बनाएँ — Open Bible Stories",
+    "description": "Open Bible Stories से अपना स्वयं का पाठ, चित्र, ऑडियो या वीडियो संसाधन बनाएँ।"
+  },
+  "hero": {
+    "eyebrow": "मल्टीमीडिया संसाधनों के द्वारा सुसमाचार बाँटें",
+    "title": "बनाएँ",
+    "sub": "unfoldingWord&reg; Open Bible Stories या Sweet Publishing के मूल चित्रों पर आधारित अपना संसाधन बनाएँ — जो भी उन लोगों को, जिनकी आप सेवा करते हैं, इन कहानियों से जुड़ने में सहायता करे।",
+    "possibilities": "वीडियो &middot; ऑडियो &middot; प्रशिक्षण सामग्री &middot; प्रस्तुतियाँ &middot; बच्चों के संसाधन &middot; सोशल मीडिया &middot; शिक्षण सामग्री",
+    "cta": "अपनी भाषा खोजें"
+  },
+  "text": {
+    "title": "पाठ",
+    "sub": "शुरुआत करने का सबसे आसान तरीका है Scribe SE — Windows, Mac या Linux के लिए एक निःशुल्क अनुवाद साधन।",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "अंग्रेज़ी से या खोजें पृष्ठ पर सूचीबद्ध अन्य भाषाओं में से किसी एक से अनुवाद शुरू करें।",
+    "scribeCta": "Scribe SE डाउनलोड करें",
+    "otherTitle": "अन्य विकल्प",
+    "otherItems": [
+      "प्लेनटेक्स्ट या मार्कडाउन संपादक के लिए <a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">अंग्रेज़ी मार्कडाउन स्रोत</a>",
+      "अंग्रेज़ी से <a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> या <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a>",
+      "अंग्रेज़ी से <a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a>"
+    ]
+  },
+  "images": {
+    "title": "चित्र",
+    "sub": "अपने स्वयं के दस्तावेज़, स्लाइड या अनुवादित कहानी-सेट बनाने के लिए स्रोत चित्र।",
+    "jpgTitle": "JPG फ़ाइलें",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">सभी फ़ाइलें, 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">सभी फ़ाइलें, 360px</a> (36 MB)"
+    ],
+    "origTitle": "मूल चित्र",
+    "origBody": "Sweet Publishing के मूल चित्र <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord वेबसाइट</a> पर देखें या डाउनलोड करें।"
+  },
+  "video": {
+    "title": "वीडियो और ऑडियो",
+    "sub": "किसी भी संपादक में अपने स्वयं के Open Bible Stories वीडियो या ऑडियो रिकॉर्डिंग बनाने के लिए HD 1080p वीडियो क्लिप।",
+    "mp4Title": "MP4 फ़ाइलें",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">सभी फ़ाइलें ज़िप में</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">कहानियाँ 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">कहानियाँ 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">कहानियाँ 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">कहानियाँ 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">कहानियाँ 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">प्रत्येक कहानी की अलग फ़ाइलें</a> (प्रत्येक लगभग 150 MB)"
+    ],
+    "psdTitle": "PSD फ़ाइलें",
+    "psdBody": "क्लिप के दृश्य तत्वों में बड़े बदलावों के लिए। ये बड़ी फ़ाइलें हैं, जिनके उपयोग के लिए फ़ोटो-संपादन सॉफ़्टवेयर और कौशल आवश्यक है।",
+    "psdCta": "प्रत्येक कहानी की PSD फ़ाइलें",
+    "psdHelp": "वीडियो या ऑडियो रिकॉर्डिंग बनाने में सहायता चाहिए? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">हमसे संपर्क करें</a>।"
+  }
+}

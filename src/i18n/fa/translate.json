@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "ترجمه کنید — Open Bible Stories",
+    "description": "هفت گام برای ترجمهٔ Open Bible Stories به زبان شما."
+  },
+  "hero": {
+    "eyebrow": "به رساندن انجیل به زبانی دیگر کمک کنید",
+    "title": "چگونه Open Bible Stories را ترجمه کنیم",
+    "sub": "به در دسترس قرار دادن انجیل به زبانی دیگر کمک کنید. برای آغاز ترجمه‌ای تازه بر پایهٔ unfoldingWord&reg; Open Bible Stories، گام‌های زیر را دنبال کنید.",
+    "tabHowto": "روش ترجمه",
+    "tabResources": "منابع"
+  },
+  "steps": [
+    {
+      "title": "آماده شوید",
+      "body": "<p>برای آماده شدن برای ترجمه، ابتدا <a href=\"https://scribe.bible/\">Scribe SE</a> را نصب کنید. برای اطلاعات دربارهٔ استفاده از Scribe SE می‌توانید به <a href=\"https://docs.scribe.bible/\">مستندات Scribe SE</a> مراجعه کنید.</p><p>به منابع ترجمه در اپلیکیشن <a href=\"https://www.well.bible/\">Bible Well</a> دسترسی پیدا کنید.</p>"
+    },
+    {
+      "title": "درک کنید",
+      "body": "<p><a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">اصول بنیادین</a> مورد نیاز برای ترجمه را مطالعه کنید.</p><p>داستان «آفرینش» را در Scribe SE مطالعه کنید تا با داستان در زبان مبدأ آشنا شوید.</p>"
+    },
+    {
+      "title": "ترجمه کنید",
+      "body": "<p>در Scribe SE:</p><ul><li>داستانی از Open Bible Stories را که می‌خواهید ترجمه کنید باز کنید</li><li>گام‌های <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">روش ترجمه</a> را همراه تیم خود دنبال کنید تا فرایند تهیهٔ پیش‌نویس را کامل کنید</li></ul>"
+    },
+    {
+      "title": "بازبینی درونی",
+      "body": "<p>گام‌های <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">بازبینی</a> را کامل کنید تا بازبینی‌های همکار و تیم انجام شود.</p>"
+    },
+    {
+      "title": "بازبینی بیرونی",
+      "body": "<ul><li>گام‌های <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">این صفحه</a> را برای انجام بازبینی‌های بیرونی دنبال کنید</li><li>برای اطلاعات بیشتر دربارهٔ بازبینی، <a href=\"https://checking.my.canva.site\">اینجا</a> را کلیک کنید</li></ul>"
+    },
+    {
+      "title": "منتشر کنید",
+      "body": "<p>پس از انجام همهٔ مراحل بازبینی ترجمه، ویرایش‌های نهایی داستان‌ها را در Scribe SE انجام دهید و در <a href=\"https://door43.org\">Door43</a> منتشر کنید.</p><p>با دنبال کردن <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">این فهرست بازبینی</a> مطمئن شوید که داستان‌ها آمادهٔ انتشارند.</p>"
+    },
+    {
+      "title": "توزیع کنید",
+      "body": "<p>می‌توانید ترجمهٔ خود از Open Bible Stories را در <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">قالب‌های گوناگون</a> برای بشارت و شاگردسازی به اشتراک بگذارید &mdash; یا برای فایل‌های منبع اصلی، <a href=\"/create/\">صفحهٔ «بسازید»</a> را ببینید.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "جشن بگیرید",
+    "body": "<p>فرصتی بگذارید و از اینکه Open Bible Stories را به زبان خود دارید شادی کنید. این خبر خوش را با همه در میان بگذارید و خدا را برای آنچه کرده است ستایش کنید.</p>"
+  },
+  "questions": "پرسشی دارید؟ به <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a> ایمیل بزنید",
+  "resources": {
+    "eyebrow": "دیگران را برای درک و تعلیم انجیل تجهیز کنید",
+    "title": "منابع",
+    "body": "یادداشت‌های ترجمه، پرسش‌های ترجمه، یادداشت‌های مطالعه، پرسش‌های مطالعه و نسخهٔ گسترده (شکل‌گیری الهیاتی) &mdash; یک بار زبان خود را جست‌وجو کنید تا همهٔ آنچه برای آن موجود است را ببینید. به دنبال خود داستان‌ها هستید؟ آن‌ها در <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">صفحهٔ «کشف کنید»</a> هستند.",
+    "searchPlaceholder": "با نام زبان جست‌وجو کنید، مثلاً فارسی"
+  },
+  "finalCta": {
+    "title": "به ابزار ترجمه نیاز دارید؟",
+    "body": "Scribe SE و دیگر ویرایشگرها برای آغاز ترجمه در صفحهٔ «بسازید» فهرست شده‌اند.",
+    "ctaTools": "ابزارهای ترجمه را ببینید",
+    "ctaDiscover": "ببینید چه چیزهایی تاکنون ترجمه شده است"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "Create — Open Bible Stories",
+    "description": "Build your own text, image, audio, or video resource from Open Bible Stories."
+  },
+  "hero": {
+    "eyebrow": "Share the Gospel through multimedia resources",
+    "title": "Create",
+    "sub": "Create your own resource based on unfoldingWord&reg; Open Bible Stories or the original Sweet Publishing images &mdash; whatever helps the people you serve engage with these stories.",
+    "possibilities": "Videos &middot; Audio &middot; Training material &middot; Presentations &middot; Children's resources &middot; Social media &middot; Teaching material",
+    "cta": "Find your language"
+  },
+  "text": {
+    "title": "Text",
+    "sub": "The easiest way to get started is Scribe SE, a free translation tool for Windows, Mac, or Linux.",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "Start translating from English or one of the other languages listed on Discover.",
+    "scribeCta": "Download Scribe SE",
+    "otherTitle": "Other options",
+    "otherItems": [
+      "<a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">English markdown source</a> for a plaintext or markdown editor",
+      "<a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> or <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a> from English",
+      "<a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a> from English"
+    ]
+  },
+  "images": {
+    "title": "Images",
+    "sub": "Source illustrations for building your own documents, slides, or translated story sets.",
+    "jpgTitle": "JPG files",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">All files, 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">All files, 360px</a> (36 MB)"
+    ],
+    "origTitle": "Original illustrations",
+    "origBody": "Browse or download the original illustrations from Sweet Publishing on the <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord website</a>."
+  },
+  "video": {
+    "title": "Videos &amp; Audio",
+    "sub": "HD 1080p video clips for building your own Open Bible Stories videos or audio recordings in any editor.",
+    "mp4Title": "MP4 files",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">All files zipped</a> (7.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">Stories 1&ndash;10</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">Stories 11&ndash;20</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">Stories 21&ndash;30</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">Stories 31&ndash;40</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">Stories 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">Individual story files</a> (about 150 MB each)"
+    ],
+    "psdTitle": "PSD files",
+    "psdBody": "For significant edits to visual elements within the clips. Large files that require photo-editing software and skill to use.",
+    "psdCta": "Individual story PSD files",
+    "psdHelp": "Need help producing a video or audio recording? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">Contact us</a>."
+  }
+}

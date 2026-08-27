@@ -1,0 +1,104 @@
+---
+import Base from '../../layouts/Base.astro';
+import { localePath, localizeLinks } from '../../i18n/config';
+import { content } from '../../i18n/content';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'translate');
+---
+
+<Base locale={locale} slug="translate" title={t.meta.title} description={t.meta.description}>
+
+<section class="page-header" style="padding-bottom:0;">
+  <div class="wrap">
+    <p class="eyebrow">{t.hero.eyebrow}</p>
+    <h1>{t.hero.title}</h1>
+    <p set:html={t.hero.sub} />
+
+    <div class="page-tabs" role="tablist" style="margin-top:32px;">
+      <button type="button" class="page-tab active" data-tab="howto" role="tab" aria-selected="true" aria-controls="tab-panel-howto">{t.hero.tabHowto}</button>
+      <button type="button" class="page-tab" data-tab="resources" role="tab" aria-selected="false" aria-controls="tab-panel-resources">{t.hero.tabResources}</button>
+    </div>
+  </div>
+</section>
+
+<div id="tab-panel-howto" role="tabpanel">
+<section>
+  <div class="wrap">
+    <div class="step-list">
+
+      {
+        t.steps.map((step: { title: string; body: string }, i: number) => (
+          <div class="step-item">
+            <div class="step-num">{i + 1}</div>
+            <div class="step-body">
+              <h3>{step.title}</h3>
+              <Fragment set:html={localizeLinks(step.body, locale)} />
+            </div>
+          </div>
+        ))
+      }
+
+      <div class="step-item celebrate">
+        <div class="step-num">&#10003;</div>
+        <div class="step-body">
+          <h3>{t.celebrate.title}</h3>
+          <Fragment set:html={t.celebrate.body} />
+        </div>
+      </div>
+
+    </div>
+
+    <p style="text-align:center; margin-top:32px; color:#4a5960; font-size:0.95rem;" set:html={t.questions} />
+  </div>
+</section>
+</div>
+
+<div id="tab-panel-resources" role="tabpanel" hidden>
+
+<section style="padding-top:40px;">
+  <div class="wrap">
+    <div class="section-head" style="margin-bottom:32px;">
+      <p class="eyebrow">{t.resources.eyebrow}</p>
+      <h2>{t.resources.title}</h2>
+      <p set:html={localizeLinks(t.resources.body, locale)} />
+    </div>
+
+    <div id="res-browse">
+      <div class="library-tools">
+        <div class="search-box">
+          <span aria-hidden="true">&#128269;</span>
+          <input id="res-search" type="text" placeholder={t.resources.searchPlaceholder} aria-label={t.resources.searchPlaceholder} />
+        </div>
+      </div>
+
+      <p id="res-status" class="lib-status" aria-live="polite"></p>
+      <div id="res-lang-list" class="lang-list"></div>
+    </div>
+
+    <div id="res-lang-detail" hidden style="max-width:720px; margin:0 auto;"></div>
+  </div>
+</section>
+
+</div>
+
+<section class="final-cta">
+  <div class="wrap final-cta-inner">
+    <h2>{t.finalCta.title}</h2>
+    <p>{t.finalCta.body}</p>
+    <div class="cta-row">
+      <a href={localePath(locale, 'create')} class="btn btn-primary">{t.finalCta.ctaTools}</a>
+      <a href={localePath(locale, 'discover')} class="btn btn-outline">{t.finalCta.ctaDiscover}</a>
+    </div>
+  </div>
+</section>
+
+<Fragment slot="scripts">
+  <script is:inline src="/assets/js/resources.js"></script>
+  <script is:inline src="/assets/js/tabs.js"></script>
+</Fragment>
+
+</Base>

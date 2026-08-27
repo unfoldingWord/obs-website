@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Vì sao chọn Open Bible Stories",
+    "description": "Những câu chuyện có thật từ thực địa: Open Bible Stories vươn tới những người chưa được vươn tới, huấn luyện những người lãnh đạo mới, và mở cánh cửa cho công tác dịch Kinh Thánh."
+  },
+  "hero": {
+    "eyebrow": "Một câu chuyện từ Tchad",
+    "title": "Người dịch Kinh Thánh và vị Imam giận dữ",
+    "p1": "Mười triệu người ở Tchad vẫn chưa được nghe Phúc Âm. Đội dịch thuật này vượt qua nhiều dặm đường nguy hiểm để kiểm tra từng bản dịch mới cùng với các cộng đồng sẽ sử dụng chúng &mdash; lần này, dưới sự chứng kiến của vị imam trong làng.",
+    "p2": "Bên ngoài, các thanh thiếu niên chờ hiệu lệnh để ném đá những vị khách. Nhưng khi các câu chuyện được đọc lên, cơn giận trong căn phòng dịu dần. Cuối buổi, chính vị imam đứng dậy: “Nếu ai nói Chúa Giê-xu không phải là Đấng Cứu Thế, người đó không phải là người Hồi giáo chân chính, và chính người đó mới đáng bị ném đá.”",
+    "quote": "“Tôi chúc tụng danh Chúa vì unfoldingWord và Open Bible Stories. Công cụ này thật được soi dẫn! Chúng tôi đang gieo những hạt giống vào lòng những người Hồi giáo&hellip; và một ngày kia chúng sẽ bừng nở thành sự sống.”",
+    "quoteAttr": "&mdash; Một đối tác dịch Kinh Thánh, Tchad",
+    "bridge": "Câu chuyện như thế này không phải là cá biệt. Khắp châu Phi, châu Á, châu Mỹ Latinh và Trung Đông, các hội thánh vẫn tiếp tục chọn Open Bible Stories vì nó gỡ bỏ những rào cản trong việc chia sẻ Lời Chúa."
+  },
+  "why": {
+    "eyebrow": "Năm mươi câu chuyện, từ Sáng Thế đến Khải Huyền",
+    "title": "Vì sao các hội thánh vẫn tiếp tục chọn Open Bible Stories",
+    "sub": "Bước đầu tiên của một đội ngũ trên hành trình dịch trọn bộ Kinh Thánh.",
+    "cards": [
+      {
+        "title": "Khởi đầu sớm hơn",
+        "body": "Các hội thánh có thể bắt đầu chia sẻ và dịch nội dung Kinh Thánh trước khi hoàn tất trọn bộ Kinh Thánh."
+      },
+      {
+        "title": "Do hội thánh địa phương dẫn dắt",
+        "body": "Chính các hội thánh tự dịch, kiểm tra và sử dụng các câu chuyện."
+      },
+      {
+        "title": "Được tạo ra để chia sẻ",
+        "body": "Các câu chuyện phù hợp cách tự nhiên với kể chuyện truyền khẩu, thảo luận và nhiều mức độ biết đọc biết viết khác nhau."
+      }
+    ]
+  },
+  "world": {
+    "eyebrow": "Khắp thế giới",
+    "title": "Một tài nguyên. Hàng trăm câu chuyện.",
+    "dotsLabel": "Tiếng nói từ thực địa, theo địa điểm",
+    "quotes": [
+      {
+        "id": "chad",
+        "quote": "“Nó không chỉ vượt qua thành kiến của người Hồi giáo mà còn có ngay ở dạng audio và hình ảnh để chia sẻ với những người không biết đọc, biết viết.”",
+        "attr": "&mdash; Đối tác dịch Kinh Thánh người Tchad",
+        "dotLabel": "Tchad"
+      },
+      {
+        "id": "sudan-leader",
+        "quote": "“Tôi kinh ngạc khi nhìn các dịch giả của chúng tôi huấn luyện những người lãnh đạo mới. Họ là những tín hữu xuất thân từ Hồi giáo và còn rất mới với Cơ Đốc giáo, nhưng sự hiểu biết của họ tăng trưởng rất nhanh.”",
+        "attr": "&mdash; Người lãnh đạo dịch Kinh Thánh người Sudan",
+        "dotLabel": "Sudan, người lãnh đạo"
+      },
+      {
+        "id": "sudan-community",
+        "quote": "“Phúc Âm ở dạng câu chuyện thì dễ hiểu đối với các nhóm dân theo Hồi giáo. Cộng đồng đón nhận bản dịch vì đó là công sức của chính họ.”",
+        "attr": "&mdash; Người lãnh đạo dịch Kinh Thánh người Sudan",
+        "dotLabel": "Sudan, cộng đồng"
+      },
+      {
+        "id": "venezuela",
+        "quote": "“Khi chính quyền trục xuất tất cả các giáo sĩ phương Tây, chúng tôi phải tìm một con đường để tiến bước. Open Bible Stories và mô hình Dịch Kinh Thánh lấy Hội thánh làm trung tâm cho chúng tôi những công cụ đó.”",
+        "attr": "&mdash; Đối tác dịch Kinh Thánh người Venezuela",
+        "dotLabel": "Venezuela"
+      },
+      {
+        "id": "iran",
+        "quote": "“Vì cuốn sách này bằng tiếng mẹ đẻ của tôi, mẹ tôi có thể đọc được. Với tất cả tấm lòng, cảm ơn anh chị em đã làm cho điều này thành hiện thực.”",
+        "attr": "&mdash; Đối tác dịch Kinh Thánh người Iran",
+        "dotLabel": "Iran"
+      },
+      {
+        "id": "eurasia",
+        "quote": "“Open Bible Stories truyền đạt Phúc Âm hay đến nỗi nó là công cụ truyền giảng tôi yêu thích nhất tại các nước từng thuộc Liên Xô.”",
+        "attr": "&mdash; Đối tác dịch Kinh Thánh vùng Á-Âu",
+        "dotLabel": "Á-Âu"
+      }
+    ],
+    "statLabel": "Ngôn ngữ<br>và vẫn đang tăng"
+  },
+  "finalCta": {
+    "title": "Cùng viết nên câu chuyện tiếp theo",
+    "body": "Đâu đó hôm nay, một hội thánh khác đang chuẩn bị chia sẻ Phúc Âm bằng chính ngôn ngữ của mình lần đầu tiên &mdash; sự hỗ trợ của bạn góp phần làm cho điều đó thành hiện thực.",
+    "cta": "Dâng hiến hôm nay"
+  }
+}

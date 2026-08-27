@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Temukan — Open Bible Stories",
+    "description": "Baca Open Bible Stories dalam bahasa Anda, dari tim mana pun yang telah menerbitkannya."
+  },
+  "hero": {
+    "eyebrow": "Temukan Injil dalam bahasa Anda",
+    "title": "Temukan",
+    "sub": "Cari Open Bible Stories dalam bahasa Anda. Baca, dengarkan, tonton, atau unduh terjemahan yang tersedia.",
+    "ctaApp": "Aplikasi Seluler OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "Cari berdasarkan nama bahasa, mis. Jawa",
+    "filterAll": "Semua",
+    "filterPrint": "Cetak",
+    "filterAudio": "Audio",
+    "filterVideo": "Video"
+  }
+}

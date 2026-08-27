@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "创作 — Open Bible Stories",
+    "description": "基于 Open Bible Stories 制作您自己的文字、图片、音频或视频资源。"
+  },
+  "hero": {
+    "eyebrow": "通过多媒体资源分享福音",
+    "title": "创作",
+    "sub": "基于 unfoldingWord&reg; Open Bible Stories 或 Sweet Publishing 的原版插图，制作您自己的资源——凡能帮助您所服事的人接触这些故事的形式都可以。",
+    "possibilities": "视频 &middot; 音频 &middot; 培训材料 &middot; 演示文稿 &middot; 儿童材料 &middot; 社交媒体 &middot; 教学材料",
+    "cta": "查找您的语言"
+  },
+  "text": {
+    "title": "文字",
+    "sub": "最简单的起点是 Scribe SE——一款支持 Windows、Mac 和 Linux 的免费翻译工具。",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "从英语或“发现”页面中列出的其他语言开始翻译。",
+    "scribeCta": "下载 Scribe SE",
+    "otherTitle": "其他选择",
+    "otherItems": [
+      "<a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">英文 markdown 源文件</a>，适用于纯文本或 markdown 编辑器",
+      "<a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> 或 <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a>（从英文开始翻译）",
+      "<a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a>（从英文开始翻译）"
+    ]
+  },
+  "images": {
+    "title": "图片",
+    "sub": "用于制作您自己的文档、幻灯片或翻译故事集的源插图。",
+    "jpgTitle": "JPG 文件",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">全部文件，2160px</a>（769 MB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">全部文件，360px</a>（36 MB）"
+    ],
+    "origTitle": "原版插图",
+    "origBody": "在 <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord 网站</a>上浏览或下载 Sweet Publishing 的原版插图。"
+  },
+  "video": {
+    "title": "视频与音频",
+    "sub": "1080p 高清视频素材，可在任何编辑软件中制作您自己的 Open Bible Stories 视频或音频。",
+    "mp4Title": "MP4 文件",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">全部文件打包</a>（7.2 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">故事 1&ndash;10</a>（1.5 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">故事 11&ndash;20</a>（1.7 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">故事 21&ndash;30</a>（1.2 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">故事 31&ndash;40</a>（1.3 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">故事 41&ndash;50</a>（1.5 GB）",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">单个故事文件</a>（每个约 150 MB）"
+    ],
+    "psdTitle": "PSD 文件",
+    "psdBody": "用于对素材中的视觉元素进行较大幅度的修改。文件较大，需要图像编辑软件和相应的技能。",
+    "psdCta": "单个故事的 PSD 文件",
+    "psdHelp": "制作视频或音频需要帮助？<a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">联系我们</a>。"
+  }
+}

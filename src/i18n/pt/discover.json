@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "Descubra — Open Bible Stories",
+    "description": "Leia Open Bible Stories no seu idioma, publicado por qualquer equipe de tradução."
+  },
+  "hero": {
+    "eyebrow": "Encontre o Evangelho no seu idioma",
+    "title": "Descubra",
+    "sub": "Pesquise Open Bible Stories no seu idioma. Leia, ouça, assista ou baixe as traduções disponíveis.",
+    "ctaApp": "Aplicativo OBS"
+  },
+  "browse": {
+    "searchPlaceholder": "Pesquise pelo nome do idioma, ex.: guarani",
+    "filterAll": "Todos",
+    "filterPrint": "Impresso",
+    "filterAudio": "Áudio",
+    "filterVideo": "Vídeo"
+  }
+}

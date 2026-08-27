@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Why Open Bible Stories",
+    "description": "Real stories from the field: how Open Bible Stories reaches the unreached, trains new leaders, and opens the door to Bible translation."
+  },
+  "hero": {
+    "eyebrow": "A story from Chad",
+    "title": "A Translator and the Angry Imam",
+    "p1": "Ten million people in Chad still haven't heard the gospel. This translation team travels many dangerous miles to check each new translation with the communities who will use it &mdash; this time, with the village imam watching.",
+    "p2": "Outside, teenagers waited for a signal to stone the visitors. But as the stories were read aloud, the anger in the room softened. By the end, the imam himself stood up: &ldquo;If anyone says Jesus is not the savior, he is not a real Muslim, and he should be stoned.&rdquo;",
+    "quote": "&ldquo;I bless the name of the Lord for unfoldingWord and Open Bible Stories. This instrument is inspired! We are sowing seeds in the hearts of Muslims&hellip; and one day they will burst into life.&rdquo;",
+    "quoteAttr": "&mdash; A Bible translation partner, Chad",
+    "bridge": "This kind of story isn't unique. Across Africa, Asia, Latin America, and the Middle East, churches continue choosing Open Bible Stories because it removes barriers to sharing God's Word."
+  },
+  "why": {
+    "eyebrow": "Fifty stories, Creation to Revelation",
+    "title": "Why Churches Keep Choosing Open Bible Stories",
+    "sub": "A team's first step toward translating the whole Bible.",
+    "cards": [
+      {
+        "title": "Start sooner",
+        "body": "Churches can begin sharing and translating biblical content before completing a full Bible."
+      },
+      {
+        "title": "Led by the local church",
+        "body": "Churches translate, review, and use the stories themselves."
+      },
+      {
+        "title": "Made to be shared",
+        "body": "Stories work naturally through oral storytelling, discussion, and different literacy contexts."
+      }
+    ]
+  },
+  "world": {
+    "eyebrow": "Around the world",
+    "title": "One resource. Hundreds of stories.",
+    "dotsLabel": "Field voices, by place",
+    "quotes": [
+      {
+        "id": "chad",
+        "quote": "&ldquo;It not only overcomes Islamic prejudice but is immediately available in audio and visual formats to share with those who cannot read or write.&rdquo;",
+        "attr": "&mdash; Chadian Bible translation partner",
+        "dotLabel": "Chad"
+      },
+      {
+        "id": "sudan-leader",
+        "quote": "&ldquo;I am amazed when I watch our translators train new leaders. They are Muslim-background believers and very new to Christianity, but their knowledge grows so quickly.&rdquo;",
+        "attr": "&mdash; Sudanese Bible translation leader",
+        "dotLabel": "Sudan, leaders"
+      },
+      {
+        "id": "sudan-community",
+        "quote": "&ldquo;The gospel in story form is easily understandable for Islamic people groups. The community accepts the translation because it is their own work.&rdquo;",
+        "attr": "&mdash; Sudanese Bible translation leader",
+        "dotLabel": "Sudan, community"
+      },
+      {
+        "id": "venezuela",
+        "quote": "&ldquo;When the government kicked out all Western missionaries, we had to find a way forward. Open Bible Stories and Church-Centric Bible Translation give us those tools.&rdquo;",
+        "attr": "&mdash; Venezuelan Bible translation partner",
+        "dotLabel": "Venezuela"
+      },
+      {
+        "id": "iran",
+        "quote": "&ldquo;Because it is in my heart language, my mother can read this book. With all my heart, thank you for making this possible.&rdquo;",
+        "attr": "&mdash; Iranian Bible translation partner",
+        "dotLabel": "Iran"
+      },
+      {
+        "id": "eurasia",
+        "quote": "&ldquo;Open Bible Stories communicate the gospel so well that it is my favorite evangelistic tool in countries once part of the Soviet Union.&rdquo;",
+        "attr": "&mdash; Eurasian Bible translation partner",
+        "dotLabel": "Eurasia"
+      }
+    ],
+    "statLabel": "Languages<br>and counting"
+  },
+  "finalCta": {
+    "title": "Help Write the Next Story",
+    "body": "Somewhere today, another church is preparing to share the gospel in its own language for the first time &mdash; your support helps make that possible.",
+    "cta": "Give Today"
+  }
+}

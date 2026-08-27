@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories helps churches, ministries, and translation teams make the Gospel accessible in every language through a simple collection of illustrated Bible stories."
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "The Gospel for every people group",
+    "sub": "Open Bible Stories helps churches, ministries, and translation teams make the Gospel accessible in every language through a simple collection of illustrated Bible stories.",
+    "ctaFind": "Find your language",
+    "ctaTranslate": "Start Translating",
+    "ctaApp": "OBS Mobile App"
+  },
+  "stats": {
+    "label": "Languages<br>Already Available",
+    "line1": "Every translation represents a community reached, a church equipped, and lives being transformed by the Gospel.",
+    "line2": "The next language could be yours."
+  },
+  "open": {
+    "eyebrow": "Free to use, to translate, to share",
+    "title": "Open, for everyone",
+    "body": "Open Bible Stories is available under an open license that gives you freedom to download, copy, share, translate, record audio, create video, print, and publish &mdash; see the <a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">license</a> for details.",
+    "cards": [
+      {
+        "title": "Discover",
+        "body": "Search by language to see if Open Bible Stories is available, and read it right in your browser.",
+        "cta": "Browse Discover"
+      },
+      {
+        "title": "Translate",
+        "body": "Help make the Gospel available in another language, with the tools and steps built for translation teams.",
+        "cta": "Start translating"
+      },
+      {
+        "title": "Create",
+        "body": "Turn Open Bible Stories into videos, audio, training material, and more for the people you serve.",
+        "cta": "Start creating"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "Help bring it to the next language",
+    "body": "Every new translation creates an opportunity for someone to encounter Jesus in the language they understand best. That next language could start with you.",
+    "ctaTranslate": "Start translating",
+    "ctaGive": "Give Today"
+  }
+}

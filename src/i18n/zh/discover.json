@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "发现 — Open Bible Stories",
+    "description": "阅读由各团队发布的您语言的 Open Bible Stories 译本。"
+  },
+  "hero": {
+    "eyebrow": "用您的语言寻找福音",
+    "title": "发现",
+    "sub": "搜索您语言的 Open Bible Stories。阅读、收听、观看或下载已有的译本。",
+    "ctaApp": "OBS 手机应用"
+  },
+  "browse": {
+    "searchPlaceholder": "按语言名称搜索，例如：中文",
+    "filterAll": "全部",
+    "filterPrint": "文字",
+    "filterAudio": "音频",
+    "filterVideo": "视频"
+  }
+}

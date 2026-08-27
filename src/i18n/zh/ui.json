@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "为什么选择 OBS",
+      "slug": "why-obs"
+    },
+    {
+      "label": "发现",
+      "slug": "discover"
+    },
+    {
+      "label": "翻译",
+      "slug": "translate"
+    },
+    {
+      "label": "创作",
+      "slug": "create"
+    },
+    {
+      "label": "联系我们",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories 由 <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> 和 <a href=\"https://door43.org/\">Door43 全球宣教社区</a> 开发。可在 <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a> 许可下自由使用、改编和分享。原始插图版权 &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>。",
+  "strings": {
+    "menuLabel": "打开菜单",
+    "languageLabel": "语言",
+    "skipToContent": "跳到正文"
+  },
+  "legal": {
+    "license": "许可协议",
+    "privacy": "隐私政策",
+    "terms": "使用条款"
+  }
+}

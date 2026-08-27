@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "OBS کیوں",
+      "slug": "why-obs"
+    },
+    {
+      "label": "دریافت کریں",
+      "slug": "discover"
+    },
+    {
+      "label": "ترجمہ کریں",
+      "slug": "translate"
+    },
+    {
+      "label": "تخلیق کریں",
+      "slug": "create"
+    },
+    {
+      "label": "رابطہ",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories کو <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> اور <a href=\"https://door43.org/\">Door43 عالمی مشن برادری</a> نے تیار کیا ہے۔ <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a> کے تحت استعمال، موافقت اور اشتراک کے لیے مفت۔ اصل تصاویر &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a> کی ہیں۔",
+  "strings": {
+    "menuLabel": "مینیو کھولیں",
+    "languageLabel": "زبان",
+    "skipToContent": "براہِ راست مواد پر جائیں"
+  },
+  "legal": {
+    "license": "لائسنس",
+    "privacy": "رازداری کی پالیسی",
+    "terms": "استعمال کی شرائط"
+  }
+}

@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "खोजें — Open Bible Stories",
+    "description": "अपनी भाषा में Open Bible Stories पढ़ें, चाहे अनुवाद किसी भी दल ने प्रकाशित किया हो।"
+  },
+  "hero": {
+    "eyebrow": "अपनी भाषा में सुसमाचार पाएँ",
+    "title": "खोजें",
+    "sub": "अपनी भाषा में Open Bible Stories खोजें। उपलब्ध अनुवादों को पढ़ें, सुनें, देखें या डाउनलोड करें।",
+    "ctaApp": "OBS मोबाइल ऐप"
+  },
+  "browse": {
+    "searchPlaceholder": "भाषा के नाम से खोजें, जैसे हिन्दी",
+    "filterAll": "सभी",
+    "filterPrint": "प्रिंट",
+    "filterAudio": "ऑडियो",
+    "filterVideo": "वीडियो"
+  }
+}

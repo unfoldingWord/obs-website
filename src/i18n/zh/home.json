@@ -1,0 +1,47 @@
+{
+  "meta": {
+    "title": "Open Bible Stories",
+    "description": "Open Bible Stories 通过一套简明的图画圣经故事集，帮助教会、事工机构和翻译团队让福音进入每一种语言。"
+  },
+  "hero": {
+    "eyebrow": "unfoldingWord&reg; Open Bible Stories",
+    "title": "让福音临到每一个族群",
+    "sub": "Open Bible Stories 通过一套简明的图画圣经故事集，帮助教会、事工机构和翻译团队让福音进入每一种语言。",
+    "ctaFind": "查找您的语言",
+    "ctaTranslate": "开始翻译",
+    "ctaApp": "OBS 手机应用"
+  },
+  "stats": {
+    "label": "种语言<br>已经可用",
+    "line1": "每一个译本都意味着一个被触及的群体、一间被装备的教会，以及被福音更新的生命。",
+    "line2": "下一种语言，也许就是您的语言。"
+  },
+  "open": {
+    "eyebrow": "可自由使用、翻译、分享",
+    "title": "向所有人开放",
+    "body": "Open Bible Stories 采用开放许可发布，您可以自由下载、复制、分享、翻译、录制音频、制作视频、印刷和出版——详情请参阅<a href=\"/license/\" style=\"color:var(--inspire-text); text-decoration:underline;\">许可协议</a>。",
+    "cards": [
+      {
+        "title": "发现",
+        "body": "按语言搜索，查看 Open Bible Stories 是否已有您的语言版本，并直接在浏览器中阅读。",
+        "cta": "进入“发现”页面"
+      },
+      {
+        "title": "翻译",
+        "body": "借助为翻译团队打造的工具和步骤，帮助福音进入另一种语言。",
+        "cta": "开始翻译"
+      },
+      {
+        "title": "创作",
+        "body": "把 Open Bible Stories 制作成视频、音频、培训材料等，服事您所服事的人群。",
+        "cta": "开始创作"
+      }
+    ]
+  },
+  "finalCta": {
+    "title": "帮助福音故事进入下一种语言",
+    "body": "每一个新译本都为人们创造了机会，让他们能用自己最明白的语言遇见耶稣。下一种语言，也许就从您开始。",
+    "ctaTranslate": "开始翻译",
+    "ctaGive": "今天就奉献"
+  }
+}

@@ -1,0 +1,69 @@
+---
+import { locales, byCode, localePath, type PageSlug } from '../i18n/config';
+
+interface Props {
+  locale: string;
+  slug: PageSlug;
+  label?: string;
+}
+const { locale, slug, label = 'Language' } = Astro.props;
+const current = byCode(locale);
+---
+
+<div class="lang-switcher">
+  {/* The accessible name must contain the visible text ("English"), so voice
+      control users saying "click English" can activate it (WCAG 2.5.3). The
+      purpose is conveyed by a visually-hidden prefix rather than aria-label. */}
+  <button type="button" class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
+    <span class="sr-only">{label}:</span>
+    {/* Full name on desktop; at phone widths the name would crowd the brand
+        onto two lines, so only the uppercase code shows there (CSS swap). */}
+    <span class="lang-switcher-name">{current.name}</span>
+    <span class="lang-switcher-code">{current.code.toUpperCase()}</span>
+    <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
+      <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"></path>
+    </svg>
+  </button>
+  <ul class="lang-switcher-menu">
+    {
+      locales.map((l) => (
+        <li>
+          <a
+            href={localePath(l.code, slug)}
+            lang={l.tag}
+            dir={l.dir}
+            aria-current={l.code === locale ? 'true' : undefined}
+          >
+            {l.name}
+          </a>
+        </li>
+      ))
+    }
+  </ul>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLElement>('.lang-switcher').forEach((root) => {
+    const toggle = root.querySelector<HTMLButtonElement>('button[aria-haspopup]');
+    if (!toggle) return;
+
+    const close = (returnFocus = false) => {
+      if (toggle.getAttribute('aria-expanded') !== 'true') return;
+      toggle.setAttribute('aria-expanded', 'false');
+      if (returnFocus) toggle.focus();
+    };
+
+    toggle.addEventListener('click', () => {
+      const open = toggle.getAttribute('aria-expanded') === 'true';
+      toggle.setAttribute('aria-expanded', String(!open));
+    });
+
+    root.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close(true);
+    });
+
+    document.addEventListener('click', (e) => {
+      if (!root.contains(e.target as Node)) close();
+    });
+  });
+</script>

@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Traduza — Open Bible Stories",
+    "description": "7 passos para traduzir Open Bible Stories para o seu idioma."
+  },
+  "hero": {
+    "eyebrow": "Ajude a levar o Evangelho a outro idioma",
+    "title": "Como traduzir Open Bible Stories",
+    "sub": "Ajude a tornar o Evangelho disponível em outro idioma. Siga os passos abaixo para começar uma nova tradução baseada em unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Como traduzir",
+    "tabResources": "Recursos"
+  },
+  "steps": [
+    {
+      "title": "Prepare-se",
+      "body": "<p>Para se preparar para traduzir, comece instalando o <a href=\"https://scribe.bible/\">Scribe SE</a>. Para informações sobre como usar o Scribe SE, você pode visitar <a href=\"https://docs.scribe.bible/\">a documentação do Scribe SE</a>.</p><p>Acesse os recursos de tradução no <a href=\"https://www.well.bible/\">aplicativo The Bible Well</a>.</p>"
+    },
+    {
+      "title": "Compreenda",
+      "body": "<p>Estude os <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">princípios fundamentais</a> de que você precisa para a tradução.</p><p>Estude “A Criação” no Scribe SE para se familiarizar com a história no idioma de origem.</p>"
+    },
+    {
+      "title": "Traduza",
+      "body": "<p>No Scribe SE:</p><ul><li>Abra a história de Open Bible Stories que você quer traduzir</li><li>Siga os passos sobre <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">como traduzir</a> com a sua equipe para concluir o processo de rascunho</li></ul>"
+    },
+    {
+      "title": "Verifique internamente",
+      "body": "<p>Complete os passos de <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">verificação</a> para realizar as verificações em dupla e em equipe.</p>"
+    },
+    {
+      "title": "Verifique externamente",
+      "body": "<ul><li>Siga os passos <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">desta página</a> para realizar as verificações externas</li><li>Para saber mais sobre verificação, clique <a href=\"https://checking.my.canva.site\">aqui</a></li></ul>"
+    },
+    {
+      "title": "Publique",
+      "body": "<p>Depois de concluídas todas as etapas de verificação da tradução, faça as edições finais das histórias no Scribe SE e publique no <a href=\"https://door43.org\">Door43</a>.</p><p>Siga <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">esta lista de verificação</a> para confirmar que as histórias estão prontas para publicação.</p>"
+    },
+    {
+      "title": "Distribua",
+      "body": "<p>Você pode compartilhar sua tradução de Open Bible Stories em uma <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">variedade de formatos</a> para evangelismo e discipulado &mdash; ou veja a <a href=\"/create/\">página Crie</a> para os arquivos-fonte.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Celebre",
+    "body": "<p>Reserve um tempo para se alegrar por ter Open Bible Stories no seu idioma. Compartilhe a boa notícia com todos e louve a Deus pelo que Ele fez.</p>"
+  },
+  "questions": "Dúvidas? Escreva para <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Equipe outros para compreender e ensinar o Evangelho",
+    "title": "Recursos",
+    "body": "Notas de Tradução, Perguntas de Tradução, Notas de Estudo, Perguntas de Estudo e a edição Estendida de Formação Teológica &mdash; pesquise seu idioma uma única vez para ver tudo o que está disponível. Procurando as histórias em si? Isso está no <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Descubra</a>.",
+    "searchPlaceholder": "Pesquise pelo nome do idioma, ex.: guarani"
+  },
+  "finalCta": {
+    "title": "Precisa de ferramentas de tradução?",
+    "body": "O Scribe SE e outros editores para começar uma tradução estão listados na página Crie.",
+    "ctaTools": "Ver ferramentas de tradução",
+    "ctaDiscover": "Veja o que já foi traduzido"
+  }
+}

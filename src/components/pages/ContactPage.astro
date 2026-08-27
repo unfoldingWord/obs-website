@@ -1,0 +1,28 @@
+---
+import Base from '../../layouts/Base.astro';
+import { content } from '../../i18n/content';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'contact');
+---
+
+<Base locale={locale} slug="contact" title={t.meta.title} description={t.meta.description}>
+
+<section class="page-header">
+  <div class="wrap">
+    <p class="eyebrow">{t.hero.eyebrow}</p>
+    <h1>{t.hero.title}</h1>
+    <p>{t.hero.sub}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap" style="text-align:center;">
+    <a href="https://unfoldingword.org/contact/" class="btn btn-primary">{t.cta}</a>
+  </div>
+</section>
+
+</Base>

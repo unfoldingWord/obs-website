@@ -13,6 +13,19 @@ npm run preview  # serves the built dist/
 
 Requires Node 18.20+ (Astro's minimum).
 
+## Localization
+
+The site is localized into 16 languages — the same setup as churchbased.bible. English lives at `/`, every other locale at `/{lang}/` (e.g. `/es/translate/`). Locales: en, es, fr, hi, ru, ar, zh, sw, pt, id, vi, bn, ur, fa, my, nl — defined in `src/i18n/config.ts`.
+
+- `src/i18n/en/*.json` — the English source strings, one file per page plus `ui.json` (nav, footer, shared strings).
+- `src/i18n/{lang}/*.json` — translations. Missing keys fall back to English automatically (deep merge in `src/i18n/content.ts`), so a partially translated locale still renders completely.
+- `src/components/pages/*.astro` — the page markup, one component per page, rendered once per locale; `src/pages/[lang]/` holds the non-English routes.
+- `src/components/LanguageSwitcher.astro` — the language dropdown in the header.
+- Non-Latin scripts (and Cyrillic) get self-hosted font packs, same policy as the Latin faces: `scripts/build-font-css.mjs` (run automatically before dev/build) emits one stylesheet per script into `public/assets/fonts/` from the `@fontsource` packages, and `Base.astro` links only the current locale's pack (see `fontHrefFor()` in `src/i18n/config.ts` and the `:lang()` rules at the end of `styles.css`); ar/ur/fa render RTL.
+- The legal pages (`/license/`, `/privacy/`, `/terms-of-use/`) and the 404 page are English-only — no `/{lang}/` variants, no switcher.
+- The Discover/Resources language browsers (`discover.js`, `resources.js`) are client-side apps whose dynamic UI strings are still English-only.
+- `npm run check:locales` — verifies every locale has every file, structure matches English, and embedded links are untouched; prints an untranslated ratio per locale.
+
 ## Structure
 
 - `src/layouts/Base.astro` — the shared page shell: `<head>` (including canonical/Open Graph/Twitter meta), skip link, header/nav, footer, and the `nav.js` script tag. Nav highlighting comes from each page's `active` prop. There is exactly one nav, in one order, on every page.

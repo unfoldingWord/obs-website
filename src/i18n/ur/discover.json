@@ -1,0 +1,19 @@
+{
+  "meta": {
+    "title": "دریافت کریں — Open Bible Stories",
+    "description": "اپنی زبان میں Open Bible Stories پڑھیں — کسی بھی ٹیم کا شائع شدہ ترجمہ۔"
+  },
+  "hero": {
+    "eyebrow": "اپنی زبان میں خوشخبری پائیں",
+    "title": "دریافت کریں",
+    "sub": "اپنی زبان میں Open Bible Stories تلاش کریں۔ دستیاب تراجم پڑھیں، سنیں، دیکھیں یا ڈاؤن لوڈ کریں۔",
+    "ctaApp": "OBS موبائل ایپ"
+  },
+  "browse": {
+    "searchPlaceholder": "زبان کے نام سے تلاش کریں، مثلاً اردو",
+    "filterAll": "سب",
+    "filterPrint": "پرنٹ",
+    "filterAudio": "آڈیو",
+    "filterVideo": "ویڈیو"
+  }
+}

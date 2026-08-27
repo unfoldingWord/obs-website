@@ -1,0 +1,29 @@
+---
+import Base from '../../layouts/Base.astro';
+import { localePath } from '../../i18n/config';
+import { content } from '../../i18n/content';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'discover-read');
+---
+
+<Base locale={locale} slug="discover-read" title={t.meta.title} description={t.meta.description}>
+
+<section class="page-header" style="padding:32px 0 24px;">
+  <div class="wrap">
+    <a href={localePath(locale, 'discover')} class="btn btn-outline" set:html={t.back} />
+  </div>
+</section>
+
+<section style="padding-top:0;">
+  <div class="wrap">
+    <div id="full-reader"></div>
+  </div>
+</section>
+
+<script is:inline src="/assets/js/discover.js" slot="scripts"></script>
+
+</Base>

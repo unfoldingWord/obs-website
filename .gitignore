@@ -5,3 +5,8 @@ Thumbs.db
 node_modules/
 dist/
 .astro/
+
+# Generated per-script font packs (scripts/build-font-css.mjs)
+public/assets/fonts/*.css
+public/assets/fonts/files/
+.claude/

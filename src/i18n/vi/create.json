@@ -1,0 +1,55 @@
+{
+  "meta": {
+    "title": "Sáng tạo — Open Bible Stories",
+    "description": "Tự xây dựng tài nguyên văn bản, hình ảnh, audio hoặc video của bạn từ Open Bible Stories."
+  },
+  "hero": {
+    "eyebrow": "Chia sẻ Phúc Âm qua các tài nguyên đa phương tiện",
+    "title": "Sáng tạo",
+    "sub": "Tạo tài nguyên của riêng bạn dựa trên unfoldingWord&reg; Open Bible Stories hoặc các hình minh họa gốc của Sweet Publishing &mdash; bất cứ điều gì giúp những người mà bạn phục vụ đến với các câu chuyện này.",
+    "possibilities": "Video &middot; Audio &middot; Tài liệu huấn luyện &middot; Bài trình chiếu &middot; Tài liệu thiếu nhi &middot; Mạng xã hội &middot; Tài liệu giảng dạy",
+    "cta": "Tìm ngôn ngữ của bạn"
+  },
+  "text": {
+    "title": "Văn bản",
+    "sub": "Cách dễ nhất để bắt đầu là Scribe SE, một công cụ dịch thuật miễn phí cho Windows, Mac hoặc Linux.",
+    "scribeTitle": "Scribe SE",
+    "scribeBody": "Bắt đầu dịch từ tiếng Anh hoặc một trong các ngôn ngữ khác được liệt kê trên Khám phá.",
+    "scribeCta": "Tải Scribe SE",
+    "otherTitle": "Các lựa chọn khác",
+    "otherItems": [
+      "<a href=\"https://cdn.door43.org/en/obs/v6/obs.zip\" style=\"color:var(--inspire-text);\">Nguồn markdown tiếng Anh</a> cho trình soạn thảo văn bản thuần hoặc markdown",
+      "<a href=\"https://cdn.door43.org/en/obs/v6/docx/en_obs-v6.docx\" style=\"color:var(--inspire-text);\">Microsoft Word</a> hoặc <a href=\"https://cdn.door43.org/en/obs/v6/odt/en_obs-v6.odt\" style=\"color:var(--inspire-text);\">OpenDocument</a> từ tiếng Anh",
+      "<a href=\"https://bloomlibrary.org/browse/detail/2nbAvDqoQJ\" style=\"color:var(--inspire-text);\">Bloom Editor</a> từ tiếng Anh"
+    ]
+  },
+  "images": {
+    "title": "Hình ảnh",
+    "sub": "Hình minh họa nguồn để xây dựng tài liệu, trang trình chiếu hoặc bộ câu chuyện đã dịch của riêng bạn.",
+    "jpgTitle": "Tệp JPG",
+    "jpgItems": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">Tất cả tệp, 2160px</a> (769 MB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">Tất cả tệp, 360px</a> (36 MB)"
+    ],
+    "origTitle": "Hình minh họa gốc",
+    "origBody": "Xem hoặc tải xuống các hình minh họa gốc từ Sweet Publishing trên <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">trang web unfoldingWord</a>."
+  },
+  "video": {
+    "title": "Video &amp; Audio",
+    "sub": "Các đoạn video HD 1080p để tự dựng video hoặc bản thu âm Open Bible Stories trong bất kỳ trình biên tập nào.",
+    "mp4Title": "Tệp MP4",
+    "mp4Items": [
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">Tất cả tệp nén zip</a> (7,2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">Câu chuyện 1&ndash;10</a> (1,5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">Câu chuyện 11&ndash;20</a> (1,7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">Câu chuyện 21&ndash;30</a> (1,2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">Câu chuyện 31&ndash;40</a> (1,3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">Câu chuyện 41&ndash;50</a> (1,5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">Tệp từng câu chuyện</a> (khoảng 150 MB mỗi tệp)"
+    ],
+    "psdTitle": "Tệp PSD",
+    "psdBody": "Dành cho việc chỉnh sửa sâu các yếu tố hình ảnh trong các đoạn video. Tệp dung lượng lớn, đòi hỏi phần mềm chỉnh sửa ảnh và kỹ năng để sử dụng.",
+    "psdCta": "Tệp PSD từng câu chuyện",
+    "psdHelp": "Cần giúp đỡ để sản xuất video hoặc bản thu âm? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">Liên hệ với chúng tôi</a>."
+  }
+}

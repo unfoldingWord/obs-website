@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Terjemahkan — Open Bible Stories",
+    "description": "7 langkah menerjemahkan Open Bible Stories ke dalam bahasa Anda."
+  },
+  "hero": {
+    "eyebrow": "Bantu menghadirkan Injil dalam bahasa lain",
+    "title": "Cara menerjemahkan Open Bible Stories",
+    "sub": "Bantu menyediakan Injil dalam bahasa lain. Ikuti langkah-langkah di bawah ini untuk memulai terjemahan baru berdasarkan unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Cara Menerjemahkan",
+    "tabResources": "Sumber Daya"
+  },
+  "steps": [
+    {
+      "title": "Bersiap",
+      "body": "<p>Untuk mempersiapkan penerjemahan, mulailah dengan memasang <a href=\"https://scribe.bible/\">Scribe SE</a>. Untuk informasi tentang cara menggunakan Scribe SE, Anda dapat mengunjungi <a href=\"https://docs.scribe.bible/\">dokumentasi Scribe SE</a>.</p><p>Akses sumber daya penerjemahan di <a href=\"https://www.well.bible/\">aplikasi Bible Well</a>.</p>"
+    },
+    {
+      "title": "Pahami",
+      "body": "<p>Pelajari <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">prinsip-prinsip dasar</a> yang Anda perlukan untuk menerjemahkan.</p><p>Pelajari \"Penciptaan\" di Scribe SE untuk mengenal cerita itu dalam bahasa sumber.</p>"
+    },
+    {
+      "title": "Terjemahkan",
+      "body": "<p>Di Scribe SE:</p><ul><li>Buka cerita Open Bible Stories yang ingin Anda terjemahkan</li><li>Ikuti langkah-langkah tentang <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">cara menerjemahkan</a> bersama tim Anda untuk menyelesaikan proses pembuatan draf</li></ul>"
+    },
+    {
+      "title": "Periksa secara internal",
+      "body": "<p>Selesaikan langkah-langkah <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">pemeriksaan</a> untuk melakukan pemeriksaan mitra dan tim.</p>"
+    },
+    {
+      "title": "Periksa secara eksternal",
+      "body": "<ul><li>Ikuti langkah-langkah di <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">halaman ini</a> untuk melakukan pemeriksaan eksternal</li><li>Untuk lebih lanjut tentang pemeriksaan, klik <a href=\"https://checking.my.canva.site\">di sini</a></li></ul>"
+    },
+    {
+      "title": "Terbitkan",
+      "body": "<p>Setelah semua tahap pemeriksaan terjemahan selesai, lakukan penyuntingan akhir pada cerita-cerita di Scribe SE dan terbitkan ke <a href=\"https://door43.org\">Door43</a>.</p><p>Ikuti <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">daftar periksa ini</a> untuk memastikan cerita-cerita siap diterbitkan.</p>"
+    },
+    {
+      "title": "Distribusikan",
+      "body": "<p>Anda dapat membagikan terjemahan Open Bible Stories Anda dalam <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">berbagai format</a> untuk penginjilan dan pemuridan &mdash; atau lihat <a href=\"/create/\">halaman Buat</a> untuk berkas sumber aslinya.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Rayakan",
+    "body": "<p>Ambillah waktu untuk bersukacita karena Anda kini memiliki Open Bible Stories dalam bahasa Anda. Bagikan kabar baik ini kepada semua orang dan naikkan pujian kepada Allah atas apa yang telah Dia kerjakan.</p>"
+  },
+  "questions": "Ada pertanyaan? Kirim email ke <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Perlengkapi orang lain untuk memahami dan mengajarkan Injil",
+    "title": "Sumber Daya",
+    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions, dan edisi Extended (Pembinaan Teologis) &mdash; cukup cari bahasa Anda satu kali untuk melihat semua yang tersedia. Mencari cerita-ceritanya sendiri? Itu ada di <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Temukan</a>.",
+    "searchPlaceholder": "Cari berdasarkan nama bahasa, mis. Jawa"
+  },
+  "finalCta": {
+    "title": "Perlu alat penerjemahan?",
+    "body": "Scribe SE dan editor lain untuk memulai penerjemahan tercantum di halaman Buat.",
+    "ctaTools": "Lihat alat penerjemahan",
+    "ctaDiscover": "Lihat apa yang sudah diterjemahkan"
+  }
+}

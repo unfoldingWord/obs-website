@@ -1,0 +1,60 @@
+{
+  "meta": {
+    "title": "Tafsiri — Open Bible Stories",
+    "description": "Hatua 7 za kutafsiri Open Bible Stories katika lugha yako."
+  },
+  "hero": {
+    "eyebrow": "Saidia kuifikisha Injili katika lugha nyingine",
+    "title": "Jinsi ya kutafsiri Open Bible Stories",
+    "sub": "Saidia kufanya Injili ipatikane katika lugha nyingine. Fuata hatua zilizo hapa chini kuanza tafsiri mpya inayotegemea unfoldingWord&reg; Open Bible Stories.",
+    "tabHowto": "Jinsi ya Kutafsiri",
+    "tabResources": "Rasilimali"
+  },
+  "steps": [
+    {
+      "title": "Jiandae",
+      "body": "<p>Ili kujiandaa kutafsiri, anza kwa kusakinisha <a href=\"https://scribe.bible/\">Scribe SE</a>. Kwa maelezo kuhusu kutumia Scribe SE, unaweza kutembelea <a href=\"https://docs.scribe.bible/\">nyaraka za Scribe SE</a>.</p><p>Pata rasilimali za tafsiri kwenye programu ya <a href=\"https://www.well.bible/\">Bible Well</a>.</p>"
+    },
+    {
+      "title": "Elewa",
+      "body": "<p>Jifunze <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">kanuni za msingi</a> unazohitaji kwa ajili ya tafsiri.</p><p>Jifunze hadithi ya \"Uumbaji\" katika Scribe SE ili uifahamu hadithi hiyo katika lugha ya chanzo.</p>"
+    },
+    {
+      "title": "Tafsiri",
+      "body": "<p>Katika Scribe SE:</p><ul><li>Fungua hadithi ya Open Bible Stories unayotaka kutafsiri</li><li>Fuata hatua za <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">jinsi ya kutafsiri</a> pamoja na timu yako kukamilisha mchakato wa kuandika rasimu</li></ul>"
+    },
+    {
+      "title": "Kagua ndani ya timu",
+      "body": "<p>Kamilisha hatua za <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">ukaguzi</a> ili kufanya ukaguzi wa washirika na wa timu.</p>"
+    },
+    {
+      "title": "Kagua nje ya timu",
+      "body": "<ul><li>Fuata hatua kwenye <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">ukurasa huu</a> ili kufanya ukaguzi wa nje</li><li>Kwa maelezo zaidi kuhusu ukaguzi, bofya <a href=\"https://checking.my.canva.site\">hapa</a></li></ul>"
+    },
+    {
+      "title": "Chapisha",
+      "body": "<p>Baada ya hatua zote za ukaguzi wa tafsiri kukamilika, fanya masahihisho ya mwisho ya hadithi katika Scribe SE na uchapishe kwenye <a href=\"https://door43.org\">Door43</a>.</p><p>Fuata <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">orodha hii ya ukaguzi</a> ili kuthibitisha kuwa hadithi ziko tayari kuchapishwa.</p>"
+    },
+    {
+      "title": "Sambaza",
+      "body": "<p>Unaweza kushiriki tafsiri yako ya Open Bible Stories katika <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">mifumo mbalimbali</a> kwa ajili ya uinjilisti na uanafunzi &mdash; au tazama <a href=\"/create/\">ukurasa wa Tengeneza</a> kwa faili za chanzo.</p>"
+    }
+  ],
+  "celebrate": {
+    "title": "Sherehekea",
+    "body": "<p>Chukua muda kufurahia kwamba una Open Bible Stories katika lugha yako. Shiriki habari njema na kila mtu na umsifu Mungu kwa yale aliyoyatenda.</p>"
+  },
+  "questions": "Una maswali? Tuma barua pepe kwa <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "resources": {
+    "eyebrow": "Wawezeshe wengine kuelewa na kufundisha Injili",
+    "title": "Rasilimali",
+    "body": "Maelezo ya Tafsiri, Maswali ya Tafsiri, Maelezo ya Kujifunza, Maswali ya Kujifunza, na Toleo Lililopanuliwa (Malezi ya Kitheolojia) &mdash; tafuta lugha yako mara moja uone vyote vinavyopatikana kwa ajili yake. Unatafuta hadithi zenyewe? Ziko kwenye <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Vumbua</a>.",
+    "searchPlaceholder": "Tafuta kwa jina la lugha, mfano Kiswahili"
+  },
+  "finalCta": {
+    "title": "Unahitaji zana za tafsiri?",
+    "body": "Scribe SE na vihariri vingine vya kuanzisha tafsiri vimeorodheshwa kwenye ukurasa wa Tengeneza.",
+    "ctaTools": "Tazama zana za tafsiri",
+    "ctaDiscover": "Angalia kilichokwisha kutafsiriwa"
+  }
+}

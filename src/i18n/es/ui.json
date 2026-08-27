@@ -1,0 +1,36 @@
+{
+  "siteTitle": "Open Bible Stories",
+  "nav": [
+    {
+      "label": "Por qué OBS",
+      "slug": "why-obs"
+    },
+    {
+      "label": "Descubre",
+      "slug": "discover"
+    },
+    {
+      "label": "Traduce",
+      "slug": "translate"
+    },
+    {
+      "label": "Crea",
+      "slug": "create"
+    },
+    {
+      "label": "Contacto",
+      "slug": "contact"
+    }
+  ],
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories es desarrollado por <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> y la <a href=\"https://door43.org/\">Comunidad de Misiones Mundiales Door43</a>. Libre para usar, adaptar y compartir bajo <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. Las ilustraciones originales son &copy; de <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
+  "strings": {
+    "menuLabel": "Abrir menú",
+    "languageLabel": "Idioma",
+    "skipToContent": "Saltar al contenido"
+  },
+  "legal": {
+    "license": "Licencia",
+    "privacy": "Política de Privacidad",
+    "terms": "Términos de Uso"
+  }
+}

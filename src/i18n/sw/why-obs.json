@@ -1,0 +1,83 @@
+{
+  "meta": {
+    "title": "Kwa nini Open Bible Stories",
+    "description": "Hadithi za kweli kutoka uwandani: jinsi Open Bible Stories inavyowafikia wasiofikiwa, inavyofundisha viongozi wapya, na kufungua mlango wa tafsiri ya Biblia."
+  },
+  "hero": {
+    "eyebrow": "Hadithi kutoka Chad",
+    "title": "Mtafsiri na Imamu Aliyekasirika",
+    "p1": "Watu milioni kumi nchini Chad bado hawajasikia Injili. Timu hii ya tafsiri husafiri maili nyingi zenye hatari ili kukagua kila tafsiri mpya pamoja na jamii zitakazoitumia &mdash; safari hii, huku imamu wa kijiji akitazama.",
+    "p2": "Nje, vijana walisubiri ishara ya kuwapiga mawe wageni. Lakini hadithi zilipokuwa zikisomwa kwa sauti, hasira ndani ya chumba ilipoa. Mwishoni, imamu mwenyewe alisimama: &ldquo;Yeyote anayesema Yesu si mwokozi, si Mwislamu wa kweli, na anastahili kupigwa mawe.&rdquo;",
+    "quote": "&ldquo;Nalibariki jina la Bwana kwa ajili ya unfoldingWord na Open Bible Stories. Chombo hiki kimevuviwa! Tunapanda mbegu mioyoni mwa Waislamu&hellip; na siku moja zitachipuka na kuleta uzima.&rdquo;",
+    "quoteAttr": "&mdash; Mshirika wa tafsiri ya Biblia, Chad",
+    "bridge": "Hadithi ya aina hii si ya pekee. Kote Afrika, Asia, Amerika ya Kusini, na Mashariki ya Kati, makanisa yanaendelea kuchagua Open Bible Stories kwa sababu inaondoa vikwazo vya kushiriki Neno la Mungu."
+  },
+  "why": {
+    "eyebrow": "Hadithi hamsini, kuanzia Uumbaji hadi Ufunuo",
+    "title": "Kwa nini Makanisa Yanaendelea Kuchagua Open Bible Stories",
+    "sub": "Hatua ya kwanza ya timu kuelekea kutafsiri Biblia nzima.",
+    "cards": [
+      {
+        "title": "Anza mapema",
+        "body": "Makanisa yanaweza kuanza kushiriki na kutafsiri maudhui ya Biblia kabla ya kukamilisha Biblia nzima."
+      },
+      {
+        "title": "Ikiongozwa na kanisa la mtaa",
+        "body": "Makanisa yenyewe hutafsiri, hukagua, na kutumia hadithi hizi."
+      },
+      {
+        "title": "Imetengenezwa ili kushirikiwa",
+        "body": "Hadithi hufanya kazi kwa urahisi kupitia usimulizi wa mdomo, majadiliano, na mazingira mbalimbali ya uwezo wa kusoma."
+      }
+    ]
+  },
+  "world": {
+    "eyebrow": "Duniani kote",
+    "title": "Rasilimali moja. Mamia ya hadithi.",
+    "dotsLabel": "Sauti kutoka uwandani, kwa mahali",
+    "quotes": [
+      {
+        "id": "chad",
+        "quote": "&ldquo;Haiondoi tu dhana potofu za Kiislamu, bali pia inapatikana mara moja katika mifumo ya sauti na picha ili kuwashirikisha wasioweza kusoma wala kuandika.&rdquo;",
+        "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Chad",
+        "dotLabel": "Chad"
+      },
+      {
+        "id": "sudan-leader",
+        "quote": "&ldquo;Nastaajabu ninapowaona watafsiri wetu wakifundisha viongozi wapya. Ni waumini waliotoka katika Uislamu na ni wapya sana katika Ukristo, lakini maarifa yao yanakua kwa kasi sana.&rdquo;",
+        "attr": "&mdash; Kiongozi wa tafsiri ya Biblia wa Sudan",
+        "dotLabel": "Sudan, viongozi"
+      },
+      {
+        "id": "sudan-community",
+        "quote": "&ldquo;Injili katika mfumo wa hadithi inaeleweka kwa urahisi kwa makabila ya Kiislamu. Jamii inaikubali tafsiri kwa sababu ni kazi yao wenyewe.&rdquo;",
+        "attr": "&mdash; Kiongozi wa tafsiri ya Biblia wa Sudan",
+        "dotLabel": "Sudan, jamii"
+      },
+      {
+        "id": "venezuela",
+        "quote": "&ldquo;Serikali ilipowafukuza wamisionari wote wa Magharibi, ilitubidi kutafuta njia ya kusonga mbele. Open Bible Stories na Tafsiri ya Biblia Inayoongozwa na Kanisa hutupatia zana hizo.&rdquo;",
+        "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Venezuela",
+        "dotLabel": "Venezuela"
+      },
+      {
+        "id": "iran",
+        "quote": "&ldquo;Kwa sababu iko katika lugha ya moyo wangu, mama yangu anaweza kusoma kitabu hiki. Kwa moyo wangu wote, asanteni kwa kufanya hili liwezekane.&rdquo;",
+        "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Iran",
+        "dotLabel": "Iran"
+      },
+      {
+        "id": "eurasia",
+        "quote": "&ldquo;Open Bible Stories huwasilisha Injili vizuri sana hivi kwamba ni chombo changu ninachokipenda zaidi cha uinjilisti katika nchi zilizokuwa sehemu ya Umoja wa Kisovieti.&rdquo;",
+        "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Eurasia",
+        "dotLabel": "Eurasia"
+      }
+    ],
+    "statLabel": "Lugha<br>na idadi inaongezeka"
+  },
+  "finalCta": {
+    "title": "Saidia Kuandika Hadithi Inayofuata",
+    "body": "Mahali fulani leo, kanisa lingine linajiandaa kushiriki Injili katika lugha yake kwa mara ya kwanza &mdash; mchango wako husaidia kufanya hilo liwezekane.",
+    "cta": "Toa leo"
+  }
+}
