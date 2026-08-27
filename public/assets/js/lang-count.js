@@ -1,18 +1,25 @@
 // Live language counter, shared by the homepage and Why OBS page.
 //
 // The element (#lang-count) ships with its fallback number rendered as real
-// text (and mirrored in data-target) — never a literal "0". Anyone with JS
-// off, a print/PDF export, a social-preview crawler, or a screenshot sees a
-// sensible number instead of "0 languages". The fallback lives in the markup
-// in exactly one place per page and both pages use this one script, so the
-// two can't drift apart the way the old inline copies did (198 vs 213).
+// text (and mirrored in data-target) — never a literal "0" in the markup.
+// Anyone with JS off, a print/PDF export, a social-preview crawler, or a
+// screenshot sees a sensible number instead of "0 languages". The fallback
+// lives in the markup in exactly one place per page and both pages use this
+// one script, so the two can't drift apart the way the old inline copies
+// did (198 vs 213).
+//
+// When JS *is* running (and the visitor hasn't asked for reduced motion),
+// the count-up from 0 is restored as a progressive enhancement: the script
+// zeroes the number immediately at load — long before the stat scrolls into
+// view — so the visitor still gets the full 0 → N animation the section was
+// designed around, without "0" ever being the served markup.
 //
 // The live count comes from the DCS catalog's stats-ext endpoint (computed
 // server-side, so it stays in sync with what's actually published, without
-// shipping the full catalog payload just for a number). The count-up
-// animation runs only when BOTH the element has scrolled into view AND the
-// live number has resolved — so the visitor never watches the stale
-// fallback settle in first, and never sees an animation from a cold "0".
+// shipping the full catalog payload just for a number). The animation runs
+// only when BOTH the element has scrolled into view AND the live number has
+// resolved (or the fetch has failed and the fallback stands in) — so the
+// visitor never watches a stale number settle in first.
 (function () {
   var countEl = document.getElementById("lang-count");
   if (!countEl) return;
@@ -23,17 +30,26 @@
   var intersected = false;
   var animated = false;
 
-  function animateCount(el, from, target) {
-    if (reduceMotion || from === target) {
+  // JS is running, so the count-up will happen — start the display at 0 now,
+  // while the stat is still (almost certainly) below the fold. Skipped under
+  // prefers-reduced-motion, where the rendered fallback stays put and only
+  // the final value is swapped in.
+  if (!reduceMotion) countEl.textContent = "0";
+
+  function animateCount(el, target) {
+    if (reduceMotion) {
       el.textContent = target;
       return;
     }
     var duration = 1400;
     var start = performance.now();
     function tick(now) {
-      var progress = Math.min((now - start) / duration, 1);
+      // Clamp at 0 too: rAF hands the callback the frame's start timestamp,
+      // which can precede the performance.now() captured above — an
+      // unclamped first frame briefly renders a negative number.
+      var progress = Math.min(Math.max((now - start) / duration, 0), 1);
       var eased = 1 - Math.pow(1 - progress, 3);
-      el.textContent = Math.round(from + eased * (target - from));
+      el.textContent = Math.round(eased * target);
       if (progress < 1) requestAnimationFrame(tick);
     }
     requestAnimationFrame(tick);
@@ -42,7 +58,7 @@
   function maybeAnimate() {
     if (animated || !intersected || liveTarget === null) return;
     animated = true;
-    animateCount(countEl, fallbackTarget, liveTarget);
+    animateCount(countEl, liveTarget);
   }
 
   var observer = new IntersectionObserver(
@@ -66,8 +82,8 @@
       maybeAnimate();
     })
     .catch(function () {
-      // Endpoint unreachable — the fallback is already rendered in the
-      // markup, so there is nothing to animate; just stop waiting.
+      // Endpoint unreachable — count up to the fallback instead, so the
+      // display (zeroed above) never stays stuck at "0".
       liveTarget = fallbackTarget;
       maybeAnimate();
     });
