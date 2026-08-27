@@ -16,7 +16,10 @@ const current = byCode(locale);
       purpose is conveyed by a visually-hidden prefix rather than aria-label. */}
   <button type="button" class="lang-switcher-btn" aria-haspopup="true" aria-expanded="false">
     <span class="sr-only">{label}:</span>
-    <span>{current.name}</span>
+    {/* Full name on desktop; at phone widths the name would crowd the brand
+        onto two lines, so only the uppercase code shows there (CSS swap). */}
+    <span class="lang-switcher-name">{current.name}</span>
+    <span class="lang-switcher-code">{current.code.toUpperCase()}</span>
     <svg width="10" height="6" viewBox="0 0 10 6" aria-hidden="true">
       <path d="M1 1l4 4 4-4" fill="none" stroke="currentColor" stroke-width="1.5"></path>
     </svg>
