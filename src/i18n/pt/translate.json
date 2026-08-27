@@ -13,7 +13,7 @@
   "steps": [
     {
       "title": "Prepare-se",
-      "body": "<p>Para se preparar para traduzir, comece instalando o <a href=\"https://scribe.bible/\">Scribe SE</a>. Para informações sobre como usar o Scribe SE, você pode visitar <a href=\"https://docs.scribe.bible/\">a documentação do Scribe SE</a>.</p><p>Acesse os recursos de tradução no <a href=\"https://www.well.bible/\">aplicativo Bible Well</a>.</p>"
+      "body": "<p>Para se preparar para traduzir, comece instalando o <a href=\"https://scribe.bible/\">Scribe SE</a>. Para informações sobre como usar o Scribe SE, você pode visitar <a href=\"https://docs.scribe.bible/\">a documentação do Scribe SE</a>.</p><p>Acesse os recursos de tradução no <a href=\"https://www.well.bible/\">aplicativo The Bible Well</a>.</p>"
     },
     {
       "title": "Compreenda",
@@ -48,7 +48,7 @@
   "resources": {
     "eyebrow": "Equipe outros para compreender e ensinar o Evangelho",
     "title": "Recursos",
-    "body": "Notas de Tradução, Perguntas de Tradução, Notas de Estudo, Perguntas de Estudo e a edição Estendida (Theological Formation, formação teológica) &mdash; pesquise seu idioma uma única vez para ver tudo o que está disponível. Procurando as histórias em si? Isso está no <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Descubra</a>.",
+    "body": "Notas de Tradução, Perguntas de Tradução, Notas de Estudo, Perguntas de Estudo e a edição Estendida de Formação Teológica &mdash; pesquise seu idioma uma única vez para ver tudo o que está disponível. Procurando as histórias em si? Isso está no <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Descubra</a>.",
     "searchPlaceholder": "Pesquise pelo nome do idioma, ex.: guarani"
   },
   "finalCta": {

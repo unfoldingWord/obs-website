@@ -8,9 +8,9 @@
     "title": "Un traductor y el imán enojado",
     "p1": "Diez millones de personas en Chad aún no han escuchado el evangelio. Este equipo de traducción recorre muchos kilómetros peligrosos para revisar cada nueva traducción con las comunidades que la usarán &mdash; esta vez, bajo la mirada del imán del pueblo.",
     "p2": "Afuera, unos jóvenes esperaban la señal para apedrear a los visitantes. Pero mientras se leían las historias en voz alta, el enojo en la sala se fue suavizando. Al final, el propio imán se puso de pie: «Si alguien dice que Jesús no es el salvador, no es un verdadero musulmán, y debería ser apedreado».",
-    "quote": "«Bendigo el nombre del Señor por unfoldingWord y Open Bible Stories. ¡Este instrumento es inspirado! Estamos sembrando en los corazones de los musulmanes semillas que son como bombas, y un día estallarán en vida.»",
+    "quote": "«Bendigo el nombre del Señor por unfoldingWord y Open Bible Stories. ¡Este instrumento es inspirado! Estamos sembrando semillas en los corazones de los musulmanes… y un día brotarán a la vida».",
     "quoteAttr": "&mdash; Un socio de traducción bíblica, Chad",
-    "bridge": "Este tipo de historia no es única. En África, Asia, América Latina y el Medio Oriente, las iglesias siguen eligiendo Open Bible Stories porque elimina las barreras para compartir la Palabra de Dios."
+    "bridge": "Esta historia no es un caso aislado. En África, Asia, América Latina y el Medio Oriente, las iglesias siguen eligiendo Open Bible Stories porque elimina las barreras para compartir la Palabra de Dios."
   },
   "why": {
     "eyebrow": "Cincuenta historias, de la Creación al Apocalipsis",
@@ -27,7 +27,7 @@
       },
       {
         "title": "Hecho para compartirse",
-        "body": "Las historias funcionan de manera natural en la narración oral, la conversación y distintos contextos de alfabetización."
+        "body": "Las historias funcionan de manera natural en la narración oral, la conversación y distintos niveles de alfabetización."
       }
     ]
   },
@@ -38,42 +38,42 @@
     "quotes": [
       {
         "id": "chad",
-        "quote": "«No solo supera los prejuicios islámicos, sino que está disponible de inmediato en formatos de audio y video para compartir con quienes no saben leer ni escribir.»",
+        "quote": "«No solo supera los prejuicios islámicos, sino que está disponible de inmediato en formatos de audio y video para compartir con quienes no saben leer ni escribir».",
         "attr": "&mdash; Socio chadiano de traducción bíblica",
         "dotLabel": "Chad"
       },
       {
         "id": "sudan-leader",
-        "quote": "«Me asombra ver a nuestros traductores capacitar a nuevos líderes. Son creyentes de trasfondo musulmán, muy nuevos en el cristianismo, pero su conocimiento crece muy rápido.»",
+        "quote": "«Me asombra ver a nuestros traductores capacitar a nuevos líderes. Son creyentes de trasfondo musulmán, muy nuevos en el cristianismo, pero su conocimiento crece muy rápido».",
         "attr": "&mdash; Líder sudanés de traducción bíblica",
         "dotLabel": "Sudán, líderes"
       },
       {
         "id": "sudan-community",
-        "quote": "«El evangelio en forma de historias es fácil de entender para los pueblos islámicos. La comunidad acepta la traducción porque es obra suya.»",
+        "quote": "«El evangelio en forma de historias es fácil de entender para los pueblos islámicos. La comunidad acepta la traducción porque es obra suya».",
         "attr": "&mdash; Líder sudanés de traducción bíblica",
         "dotLabel": "Sudán, comunidad"
       },
       {
         "id": "venezuela",
-        "quote": "«Cuando el gobierno expulsó a todos los misioneros occidentales, tuvimos que encontrar un camino. Open Bible Stories y la Traducción Bíblica Centrada en la Iglesia nos dan esas herramientas.»",
+        "quote": "«Cuando el gobierno expulsó a todos los misioneros occidentales, tuvimos que encontrar un camino. Open Bible Stories y la Traducción Bíblica Centrada en la Iglesia nos dan esas herramientas».",
         "attr": "&mdash; Socio venezolano de traducción bíblica",
         "dotLabel": "Venezuela"
       },
       {
         "id": "iran",
-        "quote": "«Como está en el idioma de mi corazón, mi madre puede leer este libro. Con todo mi corazón, gracias por hacerlo posible.»",
+        "quote": "«Como está en el idioma de mi corazón, mi madre puede leer este libro. Con todo mi corazón, gracias por hacerlo posible».",
         "attr": "&mdash; Socio iraní de traducción bíblica",
         "dotLabel": "Irán"
       },
       {
         "id": "eurasia",
-        "quote": "«Open Bible Stories comunica el evangelio tan bien que es mi herramienta evangelística favorita en los países que formaron parte de la Unión Soviética.»",
+        "quote": "«Open Bible Stories comunica el evangelio tan bien que es mi herramienta evangelística favorita en los países que formaron parte de la Unión Soviética».",
         "attr": "&mdash; Socio euroasiático de traducción bíblica",
         "dotLabel": "Eurasia"
       }
     ],
-    "statLabel": "Idiomas<br>y contando"
+    "statLabel": "Idiomas<br>y sumando"
   },
   "finalCta": {
     "title": "Ayuda a escribir la próxima historia",

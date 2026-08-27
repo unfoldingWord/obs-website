@@ -1,20 +1,20 @@
 {
   "meta": {
     "title": "তৈরি করুন — Open Bible Stories",
-    "description": "Open Bible Stories থেকে আপনার নিজস্ব পাঠ্য, চিত্র, অডিও বা ভিডিও সম্পদ তৈরি করুন."
+    "description": "Open Bible Stories থেকে আপনার নিজস্ব পাঠ্য, চিত্র, অডিও বা ভিডিও সম্পদ তৈরি করুন।"
   },
   "hero": {
     "eyebrow": "মাল্টিমিডিয়া সম্পদের মাধ্যমে সুসমাচার ভাগ করে নিন",
     "title": "তৈরি করুন",
-    "sub": "unfoldingWord&reg; Open Bible Stories অথবা Sweet Publishing-এর মূল চিত্রগুলির ভিত্তিতে আপনার নিজস্ব সম্পদ তৈরি করুন — যা-ই আপনার সেবা করা মানুষদের এই গল্পগুলির সঙ্গে সাক্ষাৎ করতে সাহায্য করে.",
+    "sub": "unfoldingWord&reg; Open Bible Stories অথবা Sweet Publishing-এর মূল চিত্রগুলির ভিত্তিতে আপনার নিজস্ব সম্পদ তৈরি করুন — যা আপনি যাদের সেবা করেন তাদের এই গল্পগুলির কাছে পৌঁছাতে সাহায্য করে।",
     "possibilities": "ভিডিও &middot; অডিও &middot; প্রশিক্ষণ উপকরণ &middot; উপস্থাপনা &middot; শিশুদের সম্পদ &middot; সোশ্যাল মিডিয়া &middot; শিক্ষণ উপকরণ",
     "cta": "আপনার ভাষা খুঁজুন"
   },
   "text": {
     "title": "পাঠ্য",
-    "sub": "শুরু করার সবচেয়ে সহজ উপায় হল Scribe SE — Windows, Mac বা Linux-এর জন্য একটি বিনামূল্যের অনুবাদ সরঞ্জাম.",
+    "sub": "শুরু করার সবচেয়ে সহজ উপায় হল Scribe SE — Windows, Mac বা Linux-এর জন্য একটি বিনামূল্যের অনুবাদ সরঞ্জাম।",
     "scribeTitle": "Scribe SE",
-    "scribeBody": "ইংরেজি থেকে বা খুঁজুন-এ তালিকাভুক্ত অন্য কোনো ভাষা থেকে অনুবাদ শুরু করুন।",
+    "scribeBody": "ইংরেজি থেকে বা ‘খুঁজুন’ পাতায় তালিকাভুক্ত অন্য কোনো ভাষা থেকে অনুবাদ শুরু করুন।",
     "scribeCta": "Scribe SE ডাউনলোড করুন",
     "otherTitle": "অন্যান্য বিকল্প",
     "otherItems": [
@@ -25,31 +25,31 @@
   },
   "images": {
     "title": "চিত্র",
-    "sub": "আপনার নিজস্ব নথি, স্লাইড বা অনূদিত গল্পের সেট তৈরির জন্য উৎস চিত্র.",
+    "sub": "আপনার নিজস্ব নথি, স্লাইড বা অনূদিত গল্পের সেট তৈরির জন্য উৎস চিত্র।",
     "jpgTitle": "JPG ফাইল",
     "jpgItems": [
       "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-2160px.zip\" style=\"color:var(--inspire-text);\">সব ফাইল, 2160px</a> (769 MB)",
       "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/jpg/obs-images-360px.zip\" style=\"color:var(--inspire-text);\">সব ফাইল, 360px</a> (36 MB)"
     ],
     "origTitle": "মূল চিত্রসমূহ",
-    "origBody": "Sweet Publishing-এর মূল চিত্রগুলি <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord ওয়েবসাইটে</a> দেখুন বা ডাউনলোড করুন."
+    "origBody": "Sweet Publishing-এর মূল চিত্রগুলি <a href=\"https://www.unfoldingword.org/sweet-publishing/\" style=\"color:var(--inspire-text);\">unfoldingWord ওয়েবসাইটে</a> দেখুন বা ডাউনলোড করুন।"
   },
   "video": {
     "title": "ভিডিও ও অডিও",
-    "sub": "যে কোনো সম্পাদকে আপনার নিজস্ব Open Bible Stories ভিডিও বা অডিও রেকর্ডিং তৈরির জন্য HD 1080p ভিডিও ক্লিপ.",
+    "sub": "যে কোনো সম্পাদকে আপনার নিজস্ব Open Bible Stories ভিডিও বা অডিও রেকর্ডিং তৈরির জন্য HD 1080p ভিডিও ক্লিপ।",
     "mp4Title": "MP4 ফাইল",
     "mp4Items": [
       "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_stock%20clips_master.zip\" style=\"color:var(--inspire-text);\">সব ফাইল জিপ করা</a> (7.2 GB)",
-      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">গল্প 1&ndash;10</a> (1.5 GB)",
-      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">গল্প 11&ndash;20</a> (1.7 GB)",
-      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">গল্প 21&ndash;30</a> (1.2 GB)",
-      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">গল্প 31&ndash;40</a> (1.3 GB)",
-      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">গল্প 41&ndash;50</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_01-10.zip\" style=\"color:var(--inspire-text);\">গল্প ১&ndash;১০</a> (1.5 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_11-20.zip\" style=\"color:var(--inspire-text);\">গল্প ১১&ndash;২০</a> (1.7 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_21-30.zip\" style=\"color:var(--inspire-text);\">গল্প ২১&ndash;৩০</a> (1.2 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_31-40.zip\" style=\"color:var(--inspire-text);\">গল্প ৩১&ndash;৪০</a> (1.3 GB)",
+      "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/obs_1080p_clips_stories_41-50.zip\" style=\"color:var(--inspire-text);\">গল্প ৪১&ndash;৫০</a> (1.5 GB)",
       "<a href=\"https://filedn.com/lD0GfuMvTstXgqaJfpLL87S/obs/mp4/stories/\" style=\"color:var(--inspire-text);\">প্রতিটি গল্পের আলাদা ফাইল</a> (প্রতিটি প্রায় 150 MB)"
     ],
     "psdTitle": "PSD ফাইল",
-    "psdBody": "ক্লিপের দৃশ্যমান উপাদানে বড় ধরনের সম্পাদনার জন্য. এগুলি বড় ফাইল, যা ব্যবহারে ফটো-সম্পাদনা সফটওয়্যার ও দক্ষতা প্রয়োজন.",
+    "psdBody": "ক্লিপের দৃশ্যমান উপাদানে বড় ধরনের সম্পাদনার জন্য। এগুলি বড় ফাইল, যা ব্যবহারে ফটো-সম্পাদনা সফটওয়্যার ও দক্ষতা প্রয়োজন।",
     "psdCta": "প্রতিটি গল্পের PSD ফাইল",
-    "psdHelp": "ভিডিও বা অডিও রেকর্ডিং তৈরিতে সাহায্য দরকার? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">আমাদের সঙ্গে যোগাযোগ করুন</a>."
+    "psdHelp": "ভিডিও বা অডিও রেকর্ডিং তৈরিতে সাহায্য দরকার? <a href=\"https://unfoldingword.org/contact/\" style=\"color:var(--inspire-text);\">আমাদের সঙ্গে যোগাযোগ করুন</a>।"
   }
 }

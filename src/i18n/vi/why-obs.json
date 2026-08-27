@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "Vì sao chọn Open Bible Stories",
-    "description": "Những câu chuyện có thật từ thực địa: Open Bible Stories vươn đến những người chưa được vươn tới, huấn luyện những người lãnh đạo mới, và mở cánh cửa cho công tác dịch Kinh Thánh."
+    "description": "Những câu chuyện có thật từ thực địa: Open Bible Stories vươn tới những người chưa được vươn tới, huấn luyện những người lãnh đạo mới, và mở cánh cửa cho công tác dịch Kinh Thánh."
   },
   "hero": {
     "eyebrow": "Một câu chuyện từ Tchad",
     "title": "Người dịch Kinh Thánh và vị Imam giận dữ",
     "p1": "Mười triệu người ở Tchad vẫn chưa được nghe Phúc Âm. Đội dịch thuật này vượt qua nhiều dặm đường nguy hiểm để kiểm tra từng bản dịch mới cùng với các cộng đồng sẽ sử dụng chúng &mdash; lần này, dưới sự chứng kiến của vị imam trong làng.",
-    "p2": "Bên ngoài, các thanh thiếu niên chờ hiệu lệnh để ném đá những vị khách. Nhưng khi các câu chuyện được đọc lên, cơn giận trong căn phòng dịu dần. Cuối buổi, chính vị imam đứng dậy: “Nếu ai nói Chúa Giê-xu không phải là đấng cứu thế, người đó không phải là người Hồi giáo chân chính, và chính người đó mới đáng bị ném đá.”",
-    "quote": "“Tôi chúc tụng danh Chúa vì unfoldingWord và Open Bible Stories. Công cụ này thật được soi dẫn! Chúng tôi đang gieo vào lòng những người Hồi giáo những hạt giống như những quả bom, và một ngày kia chúng sẽ bùng nổ thành sự sống.”",
+    "p2": "Bên ngoài, các thanh thiếu niên chờ hiệu lệnh để ném đá những vị khách. Nhưng khi các câu chuyện được đọc lên, cơn giận trong căn phòng dịu dần. Cuối buổi, chính vị imam đứng dậy: “Nếu ai nói Chúa Giê-xu không phải là Đấng Cứu Thế, người đó không phải là người Hồi giáo chân chính, và chính người đó mới đáng bị ném đá.”",
+    "quote": "“Tôi chúc tụng danh Chúa vì unfoldingWord và Open Bible Stories. Công cụ này thật được soi dẫn! Chúng tôi đang gieo những hạt giống vào lòng những người Hồi giáo&hellip; và một ngày kia chúng sẽ bừng nở thành sự sống.”",
     "quoteAttr": "&mdash; Một đối tác dịch Kinh Thánh, Tchad",
     "bridge": "Câu chuyện như thế này không phải là cá biệt. Khắp châu Phi, châu Á, châu Mỹ Latinh và Trung Đông, các hội thánh vẫn tiếp tục chọn Open Bible Stories vì nó gỡ bỏ những rào cản trong việc chia sẻ Lời Chúa."
   },
@@ -27,7 +27,7 @@
       },
       {
         "title": "Được tạo ra để chia sẻ",
-        "body": "Các câu chuyện phù hợp cách tự nhiên với kể chuyện truyền khẩu, thảo luận và các bối cảnh trình độ đọc viết khác nhau."
+        "body": "Các câu chuyện phù hợp cách tự nhiên với kể chuyện truyền khẩu, thảo luận và nhiều mức độ biết đọc biết viết khác nhau."
       }
     ]
   },
@@ -56,7 +56,7 @@
       },
       {
         "id": "venezuela",
-        "quote": "“Khi chính quyền trục xuất tất cả các giáo sĩ phương Tây, chúng tôi phải tìm một con đường để tiến bước. Open Bible Stories và mô hình Dịch Kinh Thánh lấy Hội Thánh làm trung tâm cho chúng tôi những công cụ đó.”",
+        "quote": "“Khi chính quyền trục xuất tất cả các giáo sĩ phương Tây, chúng tôi phải tìm một con đường để tiến bước. Open Bible Stories và mô hình Dịch Kinh Thánh lấy Hội thánh làm trung tâm cho chúng tôi những công cụ đó.”",
         "attr": "&mdash; Đối tác dịch Kinh Thánh người Venezuela",
         "dotLabel": "Venezuela"
       },

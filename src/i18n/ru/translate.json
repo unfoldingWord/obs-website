@@ -4,7 +4,7 @@
     "description": "7 шагов к переводу Open Bible Stories на ваш язык."
   },
   "hero": {
-    "eyebrow": "Помогите принести Евангелие ещё на один язык",
+    "eyebrow": "Помогите Евангелию зазвучать ещё на одном языке",
     "title": "Как переводить Open Bible Stories",
     "sub": "Помогите сделать Евангелие доступным ещё на одном языке. Следуйте шагам ниже, чтобы начать новый перевод на основе unfoldingWord&reg; Open Bible Stories.",
     "tabHowto": "Как переводить",
@@ -13,7 +13,7 @@
   "steps": [
     {
       "title": "Подготовьтесь",
-      "body": "<p>Чтобы подготовиться к переводу, сначала установите <a href=\"https://scribe.bible/\">Scribe SE</a>. Информацию о работе со Scribe SE можно найти в <a href=\"https://docs.scribe.bible/\">документации Scribe SE</a>.</p><p>Получите доступ к переводческим ресурсам в приложении <a href=\"https://www.well.bible/\">Bible Well</a>.</p>"
+      "body": "<p>Чтобы подготовиться к переводу, сначала установите <a href=\"https://scribe.bible/\">Scribe SE</a>. Информацию о работе со Scribe SE можно найти в <a href=\"https://docs.scribe.bible/\">документации Scribe SE</a>.</p><p>Получите доступ к переводческим ресурсам в приложении <a href=\"https://www.well.bible/\">The Bible Well</a>.</p>"
     },
     {
       "title": "Разберитесь",
@@ -28,7 +28,7 @@
       "body": "<p>Выполните шаги по <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">проверке</a>, чтобы провести партнёрскую и командную проверку.</p>"
     },
     {
-      "title": "Проверьте внешне",
+      "title": "Проведите внешнюю проверку",
       "body": "<ul><li>Следуйте шагам на <a href=\"https://unfoldingword.notion.site/How-to-Externally-Check-OBS-b2d3de40fea54f158ae6cda5c3571790\">этой странице</a>, чтобы провести внешнюю проверку</li><li>Подробнее о проверке — <a href=\"https://checking.my.canva.site\">здесь</a></li></ul>"
     },
     {
@@ -37,7 +37,7 @@
     },
     {
       "title": "Распространяйте",
-      "body": "<p>Вы можете делиться своим переводом Open Bible Stories в <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">разных форматах</a> для евангелизации и ученичества — или загляните на страницу <a href=\"/create/\">«Создавать»</a> за исходными файлами.</p>"
+      "body": "<p>Вы можете делиться своим переводом Open Bible Stories в <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">разных форматах</a> для благовестия и ученичества — или загляните на страницу <a href=\"/create/\">«Создавать»</a> за исходными файлами.</p>"
     }
   ],
   "celebrate": {
@@ -46,7 +46,7 @@
   },
   "questions": "Есть вопросы? Напишите на <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
-    "eyebrow": "Помогите другим понимать Евангелие и учить ему",
+    "eyebrow": "Помогите людям понимать Евангелие и учить ему других",
     "title": "Ресурсы",
     "body": "Заметки для перевода, вопросы для перевода, заметки для изучения, вопросы для изучения и расширенное издание (богословская подготовка) — найдите свой язык один раз, чтобы увидеть всё, что для него доступно. Ищете сами истории? Это раздел <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">«Найти»</a>.",
     "searchPlaceholder": "Поиск по названию языка, напр. русский"

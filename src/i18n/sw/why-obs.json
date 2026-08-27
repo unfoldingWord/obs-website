@@ -8,7 +8,7 @@
     "title": "Mtafsiri na Imamu Aliyekasirika",
     "p1": "Watu milioni kumi nchini Chad bado hawajasikia Injili. Timu hii ya tafsiri husafiri maili nyingi zenye hatari ili kukagua kila tafsiri mpya pamoja na jamii zitakazoitumia &mdash; safari hii, huku imamu wa kijiji akitazama.",
     "p2": "Nje, vijana walisubiri ishara ya kuwapiga mawe wageni. Lakini hadithi zilipokuwa zikisomwa kwa sauti, hasira ndani ya chumba ilipoa. Mwishoni, imamu mwenyewe alisimama: &ldquo;Yeyote anayesema Yesu si mwokozi, si Mwislamu wa kweli, na anastahili kupigwa mawe.&rdquo;",
-    "quote": "&ldquo;Nalibariki jina la Bwana kwa ajili ya unfoldingWord na Open Bible Stories. Chombo hiki kimevuviwa! Tunapanda mbegu mioyoni mwa Waislamu zilizo kama mabomu, na siku moja zitalipuka na kuwa uzima.&rdquo;",
+    "quote": "&ldquo;Nalibariki jina la Bwana kwa ajili ya unfoldingWord na Open Bible Stories. Chombo hiki kimevuviwa! Tunapanda mbegu mioyoni mwa Waislamu&hellip; na siku moja zitachipuka na kuleta uzima.&rdquo;",
     "quoteAttr": "&mdash; Mshirika wa tafsiri ya Biblia, Chad",
     "bridge": "Hadithi ya aina hii si ya pekee. Kote Afrika, Asia, Amerika ya Kusini, na Mashariki ya Kati, makanisa yanaendelea kuchagua Open Bible Stories kwa sababu inaondoa vikwazo vya kushiriki Neno la Mungu."
   },
@@ -22,7 +22,7 @@
         "body": "Makanisa yanaweza kuanza kushiriki na kutafsiri maudhui ya Biblia kabla ya kukamilisha Biblia nzima."
       },
       {
-        "title": "Ikiongozwa na kanisa la mahali",
+        "title": "Ikiongozwa na kanisa la mtaa",
         "body": "Makanisa yenyewe hutafsiri, hukagua, na kutumia hadithi hizi."
       },
       {
@@ -33,12 +33,12 @@
   },
   "world": {
     "eyebrow": "Duniani kote",
-    "title": "Rasilimali moja. Hadithi mamia.",
+    "title": "Rasilimali moja. Mamia ya hadithi.",
     "dotsLabel": "Sauti kutoka uwandani, kwa mahali",
     "quotes": [
       {
         "id": "chad",
-        "quote": "&ldquo;Haishindi tu chuki ya Kiislamu bali pia inapatikana mara moja katika mifumo ya sauti na picha kushirikiwa na wasioweza kusoma wala kuandika.&rdquo;",
+        "quote": "&ldquo;Haiondoi tu dhana potofu za Kiislamu, bali pia inapatikana mara moja katika mifumo ya sauti na picha ili kuwashirikisha wasioweza kusoma wala kuandika.&rdquo;",
         "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Chad",
         "dotLabel": "Chad"
       },
@@ -68,7 +68,7 @@
       },
       {
         "id": "eurasia",
-        "quote": "&ldquo;Open Bible Stories huwasilisha Injili vizuri sana hivi kwamba ni chombo changu ninachokipenda zaidi cha uinjilisti katika nchi zilizokuwa sehemu ya Muungano wa Kisovieti.&rdquo;",
+        "quote": "&ldquo;Open Bible Stories huwasilisha Injili vizuri sana hivi kwamba ni chombo changu ninachokipenda zaidi cha uinjilisti katika nchi zilizokuwa sehemu ya Umoja wa Kisovieti.&rdquo;",
         "attr": "&mdash; Mshirika wa tafsiri ya Biblia wa Eurasia",
         "dotLabel": "Eurasia"
       }
@@ -77,7 +77,7 @@
   },
   "finalCta": {
     "title": "Saidia Kuandika Hadithi Inayofuata",
-    "body": "Mahali fulani leo, kanisa lingine linajiandaa kushiriki Injili katika lugha yake kwa mara ya kwanza &mdash; msaada wako husaidia kufanya hilo liwezekane.",
+    "body": "Mahali fulani leo, kanisa lingine linajiandaa kushiriki Injili katika lugha yake kwa mara ya kwanza &mdash; mchango wako husaidia kufanya hilo liwezekane.",
     "cta": "Toa leo"
   }
 }

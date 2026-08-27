@@ -1,19 +1,19 @@
 {
   "meta": {
     "title": "Open Bible Stories",
-    "description": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het Evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen."
+    "description": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen."
   },
   "hero": {
     "eyebrow": "unfoldingWord&reg; Open Bible Stories",
-    "title": "Het Evangelie voor elk volk",
-    "sub": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het Evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen.",
+    "title": "Het evangelie voor elk volk",
+    "sub": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen.",
     "ctaFind": "Vind jouw taal",
     "ctaTranslate": "Begin met vertalen",
-    "ctaApp": "OBS Mobiele App"
+    "ctaApp": "Mobiele OBS-app"
   },
   "stats": {
     "label": "Talen<br>al beschikbaar",
-    "line1": "Elke vertaling staat voor een bereikte gemeenschap, een toegeruste kerk en levens die door het Evangelie veranderd worden.",
+    "line1": "Elke vertaling staat voor een bereikte gemeenschap, een toegeruste kerk en levens die door het evangelie veranderd worden.",
     "line2": "De volgende taal kan die van jou zijn."
   },
   "open": {
@@ -28,7 +28,7 @@
       },
       {
         "title": "Vertalen",
-        "body": "Help het Evangelie beschikbaar te maken in een andere taal, met de hulpmiddelen en stappen die voor vertaalteams zijn ontwikkeld.",
+        "body": "Help het evangelie beschikbaar te maken in een andere taal, met de hulpmiddelen en stappen die voor vertaalteams zijn ontwikkeld.",
         "cta": "Begin met vertalen"
       },
       {

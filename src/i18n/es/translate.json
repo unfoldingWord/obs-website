@@ -42,13 +42,13 @@
   ],
   "celebrate": {
     "title": "Celebra",
-    "body": "<p>Toma un tiempo para alegrarte de tener Open Bible Stories en tu idioma. Comparte la buena noticia con todos y alaba a Dios por lo que Él ha hecho.</p>"
+    "body": "<p>Toma un tiempo para regocijarte de tener Open Bible Stories en tu idioma. Comparte la buena noticia con todos y alaba a Dios por lo que Él ha hecho.</p>"
   },
   "questions": "¿Preguntas? Escribe a <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
     "eyebrow": "Equipa a otros para comprender y enseñar el Evangelio",
     "title": "Recursos",
-    "body": "Notas de Traducción, Preguntas de Traducción, Notas de Estudio, Preguntas de Estudio y la edición Extendida (Theological Formation, formación teológica) &mdash; busca tu idioma una sola vez para ver todo lo disponible. ¿Buscas las historias mismas? Eso está en <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Descubre</a>.",
+    "body": "Notas de Traducción, Preguntas de Traducción, Notas de Estudio, Preguntas de Estudio y la edición Extendida (Formación Teológica) &mdash; busca tu idioma una sola vez para ver todo lo disponible. ¿Buscas las historias mismas? Eso está en <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Descubre</a>.",
     "searchPlaceholder": "Busca por nombre de idioma, p. ej. náhuatl"
   },
   "finalCta": {

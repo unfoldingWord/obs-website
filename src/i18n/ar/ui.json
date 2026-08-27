@@ -18,18 +18,18 @@
       "slug": "create"
     },
     {
-      "label": "اتصل بنا",
+      "label": "تواصل معنا",
       "slug": "contact"
     }
   ],
-  "footerCredit": "unfoldingWord&reg; Open Bible Stories من تطوير <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> و<a href=\"https://door43.org/\">مجتمع Door43 للإرساليات العالمية</a>. مجاني للاستخدام والتكييف والمشاركة بموجب <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. الرسوم التوضيحية الأصلية &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories من تطوير <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> و<a href=\"https://door43.org/\">مجتمع Door43 للإرساليات العالمية</a>. مجاني للاستخدام والتعديل والمشاركة بموجب <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a>. الرسوم التوضيحية الأصلية &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a>.",
   "strings": {
     "menuLabel": "افتح القائمة",
     "languageLabel": "اللغة",
     "skipToContent": "انتقل إلى المحتوى"
   },
   "legal": {
-    "license": "الترخيص",
+    "license": "الرخصة",
     "privacy": "سياسة الخصوصية",
     "terms": "شروط الاستخدام"
   }

@@ -1,23 +1,23 @@
 {
   "meta": {
     "title": "অনুবাদ করুন — Open Bible Stories",
-    "description": "আপনার ভাষায় Open Bible Stories অনুবাদের ৭টি ধাপ."
+    "description": "আপনার ভাষায় Open Bible Stories অনুবাদের ৭টি ধাপ।"
   },
   "hero": {
     "eyebrow": "আরও একটি ভাষায় সুসমাচার পৌঁছে দিতে সাহায্য করুন",
     "title": "Open Bible Stories কীভাবে অনুবাদ করবেন",
-    "sub": "আরও একটি ভাষায় সুসমাচার পৌঁছে দিতে সাহায্য করুন. unfoldingWord&reg; Open Bible Stories-এর ভিত্তিতে নতুন অনুবাদ শুরু করতে নিচের ধাপগুলি অনুসরণ করুন.",
+    "sub": "আরও একটি ভাষায় সুসমাচার পৌঁছে দিতে সাহায্য করুন। unfoldingWord&reg; Open Bible Stories-এর ভিত্তিতে নতুন অনুবাদ শুরু করতে নিচের ধাপগুলি অনুসরণ করুন।",
     "tabHowto": "কীভাবে অনুবাদ করবেন",
-    "tabResources": "সম্পদসমূহ"
+    "tabResources": "সম্পদ"
   },
   "steps": [
     {
       "title": "প্রস্তুতি নিন",
-      "body": "<p>অনুবাদের প্রস্তুতির জন্য প্রথমে <a href=\"https://scribe.bible/\">Scribe SE</a> ইনস্টল করুন. Scribe SE ব্যবহারের তথ্যের জন্য <a href=\"https://docs.scribe.bible/\">Scribe SE-এর নথিপত্র</a> দেখতে পারেন.</p><p>অনুবাদ সম্পদগুলি পাবেন <a href=\"https://www.well.bible/\">Bible Well অ্যাপে</a>.</p>"
+      "body": "<p>অনুবাদের প্রস্তুতির জন্য প্রথমে <a href=\"https://scribe.bible/\">Scribe SE</a> ইনস্টল করুন। Scribe SE ব্যবহারের তথ্যের জন্য <a href=\"https://docs.scribe.bible/\">Scribe SE-এর নথিপত্র</a> দেখতে পারেন।</p><p>অনুবাদ সম্পদগুলি পাবেন <a href=\"https://www.well.bible/\">The Bible Well</a> অ্যাপে।</p>"
     },
     {
       "title": "বুঝুন",
-      "body": "<p>অনুবাদের জন্য প্রয়োজনীয় <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">ভিত্তিমূলক নীতিগুলি</a> অধ্যয়ন করুন.</p><p>উৎস ভাষার গল্পের সঙ্গে পরিচিত হতে Scribe SE-তে \"সৃষ্টি\" (The Creation) অধ্যয়ন করুন.</p>"
+      "body": "<p>অনুবাদের জন্য প্রয়োজনীয় <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">ভিত্তিমূলক নীতিগুলি</a> অধ্যয়ন করুন।</p><p>উৎস ভাষার গল্পের সঙ্গে পরিচিত হতে Scribe SE-তে \"সৃষ্টি\" (The Creation) অধ্যয়ন করুন।</p>"
     },
     {
       "title": "অনুবাদ করুন",
@@ -25,7 +25,7 @@
     },
     {
       "title": "অভ্যন্তরীণ যাচাই করুন",
-      "body": "<p>সহযোগী ও দলগত যাচাইয়ের জন্য <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">যাচাইয়ের</a> ধাপগুলি সম্পূর্ণ করুন.</p>"
+      "body": "<p>সহযোগী ও দলগত যাচাইয়ের জন্য <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">যাচাইয়ের</a> ধাপগুলি সম্পূর্ণ করুন।</p>"
     },
     {
       "title": "বাহ্যিক যাচাই করুন",
@@ -33,27 +33,27 @@
     },
     {
       "title": "প্রকাশ করুন",
-      "body": "<p>অনুবাদ যাচাইয়ের সব পর্যায় সম্পন্ন হলে, Scribe SE-তে গল্পগুলির চূড়ান্ত সম্পাদনা করুন এবং <a href=\"https://door43.org\">Door43</a>-এ প্রকাশ করুন.</p><p>গল্পগুলি প্রকাশের জন্য প্রস্তুত কি না তা নির্ধারণ করতে <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">এই তালিকাটি</a> অনুসরণ করুন.</p>"
+      "body": "<p>অনুবাদ যাচাইয়ের সব পর্যায় সম্পন্ন হলে, Scribe SE-তে গল্পগুলির চূড়ান্ত সম্পাদনা করুন এবং <a href=\"https://door43.org\">Door43</a>-এ প্রকাশ করুন।</p><p>গল্পগুলি প্রকাশের জন্য প্রস্তুত কি না তা নির্ধারণ করতে <a href=\"https://unfoldingword.notion.site/A-Checklist-to-Publish-54e0454cbc324fb5b3eaa389029308ea\">এই তালিকাটি</a> অনুসরণ করুন।</p>"
     },
     {
       "title": "বিতরণ করুন",
-      "body": "<p>সুসমাচার প্রচার ও শিষ্যত্বের জন্য আপনার Open Bible Stories অনুবাদ <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">নানা রূপে</a> ভাগ করে নিতে পারেন — অথবা মূল উৎস ফাইলগুলির জন্য <a href=\"/create/\">তৈরি করুন পাতাটি</a> দেখুন.</p>"
+      "body": "<p>সুসমাচার প্রচার ও শিষ্যত্বের জন্য আপনার Open Bible Stories অনুবাদ <a href=\"https://unfoldingword.notion.site/How-to-Distribute-Open-Bible-Stories-OBS-a3a74cc363e445bdb46190429c07cdb5\">নানা রূপে</a> ভাগ করে নিতে পারেন — অথবা মূল উৎস ফাইলগুলির জন্য <a href=\"/create/\">‘তৈরি করুন’ পাতাটি</a> দেখুন।</p>"
     }
   ],
   "celebrate": {
     "title": "আনন্দ করুন",
-    "body": "<p>আপনার ভাষায় Open Bible Stories আছে বলে আনন্দ করার সময় নিন. এই সুখবর সবার সঙ্গে ভাগ করে নিন এবং ঈশ্বর যা করেছেন তার জন্য তাঁর প্রশংসা করুন.</p>"
+    "body": "<p>আপনার ভাষায় Open Bible Stories আছে বলে আনন্দ করার সময় নিন। এই সুখবর সবার সঙ্গে ভাগ করে নিন এবং ঈশ্বর যা করেছেন তার জন্য তাঁর প্রশংসা করুন।</p>"
   },
   "questions": "কোনো প্রশ্ন আছে? ইমেল করুন <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
     "eyebrow": "অন্যদের সুসমাচার বুঝতে ও শেখাতে প্রস্তুত করুন",
-    "title": "সম্পদসমূহ",
-    "body": "অনুবাদ টীকা, অনুবাদ প্রশ্ন, অধ্যয়ন টীকা, অধ্যয়ন প্রশ্ন এবং বর্ধিত (তত্ত্বীয় গঠন) সংস্করণ — একবার আপনার ভাষা খুঁজলেই তার জন্য যা যা আছে সব দেখতে পাবেন. গল্পগুলিই খুঁজছেন? সেটি হল <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">খুঁজুন</a>.",
+    "title": "সম্পদ",
+    "body": "অনুবাদ টীকা, অনুবাদ প্রশ্ন, অধ্যয়ন টীকা, অধ্যয়ন প্রশ্ন এবং বর্ধিত (ধর্মতাত্ত্বিক গঠন) সংস্করণ — একবার আপনার ভাষা খুঁজলেই তার জন্য যা যা আছে সব দেখতে পাবেন। গল্পগুলিই খুঁজছেন? সেগুলি পাবেন <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">‘খুঁজুন’ পাতায়</a>।",
     "searchPlaceholder": "ভাষার নাম দিয়ে খুঁজুন, যেমন বাংলা"
   },
   "finalCta": {
     "title": "অনুবাদের সরঞ্জাম দরকার?",
-    "body": "Scribe SE এবং অনুবাদ শুরু করার অন্যান্য সম্পাদক তৈরি করুন পাতায় তালিকাভুক্ত আছে.",
+    "body": "Scribe SE এবং অনুবাদ শুরু করার অন্যান্য সম্পাদক ‘তৈরি করুন’ পাতায় তালিকাভুক্ত আছে।",
     "ctaTools": "অনুবাদের সরঞ্জাম দেখুন",
     "ctaDiscover": "ইতিমধ্যে কী অনূদিত হয়েছে দেখুন"
   }

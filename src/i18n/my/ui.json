@@ -2,7 +2,7 @@
   "siteTitle": "Open Bible Stories",
   "nav": [
     {
-      "label": "OBS ကို အဘယ်ကြောင့်",
+      "label": "အဘယ်ကြောင့် OBS နည်း",
       "slug": "why-obs"
     },
     {
@@ -22,7 +22,7 @@
       "slug": "contact"
     }
   ],
-  "footerCredit": "unfoldingWord&reg; Open Bible Stories ကို <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> နှင့် <a href=\"https://door43.org/\">Door43 ကမ္ဘာ့သာသနာအသိုင်းအဝိုင်း</a> တို့က ရေးဆွဲထုတ်လုပ်ထားပါသည်။ <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a> အောက်တွင် အခမဲ့ အသုံးပြု၊ ပြုပြင်၊ မျှဝေနိုင်ပါသည်။ မူရင်းပုံဆွဲများသည် &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a> ဖြစ်ပါသည်။",
+  "footerCredit": "unfoldingWord&reg; Open Bible Stories ကို <a href=\"https://unfoldingword.org\">unfoldingWord&reg;</a> နှင့် <a href=\"https://door43.org/\">Door43 ကမ္ဘာ့သာသနာအသိုင်းအဝိုင်း</a> တို့က ပြုစုထုတ်ဝေထားပါသည်။ <a href=\"https://creativecommons.org/licenses/by-sa/4.0\">CC BY-SA 4.0</a> အောက်တွင် အခမဲ့ အသုံးပြု၊ ပြုပြင်၊ မျှဝေနိုင်ပါသည်။ မူရင်းရုပ်ပုံများသည် &copy; <a href=\"https://www.sweetpublishing.com/\">Sweet Publishing</a> ဖြစ်ပါသည်။",
   "strings": {
     "menuLabel": "မီနူးဖွင့်ရန်",
     "languageLabel": "ဘာသာစကား",

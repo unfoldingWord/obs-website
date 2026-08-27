@@ -7,8 +7,8 @@
     "eyebrow": "Uma história do Chade",
     "title": "Um tradutor e o imã irado",
     "p1": "Dez milhões de pessoas no Chade ainda não ouviram o evangelho. Esta equipe de tradução percorre muitos quilômetros perigosos para verificar cada nova tradução com as comunidades que a usarão &mdash; desta vez, sob o olhar do imã da aldeia.",
-    "p2": "Do lado de fora, adolescentes aguardavam um sinal para apedrejar os visitantes. Mas, à medida que as histórias eram lidas em voz alta, a raiva na sala foi se abrandando. No final, o próprio imã se levantou: “Se alguém diz que Jesus não é o salvador, não é um verdadeiro muçulmano, e deveria ser apedrejado.”",
-    "quote": "“Bendigo o nome do Senhor pela unfoldingWord e por Open Bible Stories. Este instrumento é inspirado! Estamos semeando nos corações dos muçulmanos sementes que são como bombas, e um dia elas explodirão em vida.”",
+    "p2": "Do lado de fora, adolescentes aguardavam um sinal para apedrejar os visitantes. Mas, à medida que as histórias eram lidas em voz alta, a raiva na sala foi se abrandando. No final, o próprio imã se levantou: “Quem diz que Jesus não é o Salvador não é um verdadeiro muçulmano e deveria ser apedrejado.”",
+    "quote": "“Bendigo o nome do Senhor pela unfoldingWord e por Open Bible Stories. Este instrumento é inspirado! Estamos semeando sementes nos corações dos muçulmanos&hellip; e um dia elas brotarão para a vida.”",
     "quoteAttr": "&mdash; Um parceiro de tradução da Bíblia, Chade",
     "bridge": "Esse tipo de história não é único. Pela África, Ásia, América Latina e Oriente Médio, igrejas continuam escolhendo Open Bible Stories porque ele remove as barreiras para compartilhar a Palavra de Deus."
   },
@@ -34,7 +34,7 @@
   "world": {
     "eyebrow": "Ao redor do mundo",
     "title": "Um recurso. Centenas de histórias.",
-    "dotsLabel": "Vozes do campo, por lugar",
+    "dotsLabel": "Vozes do campo, por região",
     "quotes": [
       {
         "id": "chad",
@@ -73,7 +73,7 @@
         "dotLabel": "Eurásia"
       }
     ],
-    "statLabel": "Idiomas<br>e contando"
+    "statLabel": "Idiomas<br>e crescendo"
   },
   "finalCta": {
     "title": "Ajude a escrever a próxima história",

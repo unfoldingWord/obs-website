@@ -17,7 +17,7 @@
     },
     {
       "title": "افهم",
-      "body": "<p>ادرس <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">المبادئ الأساسية</a> التي تحتاجها للترجمة.</p><p>ادرس قصة \"الخلق\" في Scribe SE لتصبح مُلمًّا بالقصة في اللغة المصدر.</p>"
+      "body": "<p>ادرس <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">المبادئ الأساسية</a> التي تحتاجها للترجمة.</p><p>ادرس قصة «الخلق» في Scribe SE لتصبح مُلمًّا بالقصة في اللغة المصدر.</p>"
     },
     {
       "title": "ترجم",
@@ -42,13 +42,13 @@
   ],
   "celebrate": {
     "title": "احتفل",
-    "body": "<p>خذ وقتًا للفرح بأن لديك Open Bible Stories بلغتك. شارك البشارة مع الجميع وقدّم التسبيح لله على ما صنعه.</p>"
+    "body": "<p>خذ وقتًا للفرح بأن لديك Open Bible Stories بلغتك. شارك هذا الخبر السار مع الجميع وسبّح الله على ما صنعه.</p>"
   },
   "questions": "لديك أسئلة؟ راسلنا على <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
     "eyebrow": "جهّز الآخرين لفهم الإنجيل وتعليمه",
     "title": "الموارد",
-    "body": "ملاحظات الترجمة، وأسئلة الترجمة، وملاحظات الدراسة، وأسئلة الدراسة، والنسخة الموسّعة (التكوين اللاهوتي) &mdash; ابحث عن لغتك مرة واحدة لترى كل ما هو متاح لها. تبحث عن القصص نفسها؟ ستجدها في <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">اكتشف</a>.",
+    "body": "ملاحظات الترجمة، وأسئلة الترجمة، وملاحظات الدراسة، وأسئلة الدراسة، والنسخة الموسّعة (التكوين اللاهوتي) &mdash; ابحث عن لغتك مرة واحدة لترى كل ما هو متاح لها. تبحث عن القصص نفسها؟ ستجدها في صفحة <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">اكتشف</a>.",
     "searchPlaceholder": "ابحث باسم اللغة، مثل: العربية"
   },
   "finalCta": {

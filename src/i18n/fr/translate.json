@@ -17,11 +17,11 @@
     },
     {
       "title": "Comprendre",
-      "body": "<p>Étudiez les <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">principes fondamentaux</a> dont vous avez besoin pour la traduction.</p><p>Étudiez « La Création » dans Scribe SE pour vous familiariser avec l'histoire dans la langue source.</p>"
+      "body": "<p>Étudiez les <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">principes fondamentaux</a> dont vous avez besoin pour la traduction.</p><p>Étudiez « La Création » dans Scribe SE pour vous familiariser avec l'histoire dans la langue source.</p>"
     },
     {
       "title": "Traduire",
-      "body": "<p>Dans Scribe SE :</p><ul><li>Ouvrez l'histoire d'Open Bible Stories que vous voulez traduire</li><li>Suivez les étapes sur <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">comment traduire</a> avec votre équipe pour mener à bien la rédaction de l'ébauche</li></ul>"
+      "body": "<p>Dans Scribe SE :</p><ul><li>Ouvrez l'histoire d'Open Bible Stories que vous voulez traduire</li><li>Suivez les étapes sur <a href=\"https://unfoldingword.notion.site/How-to-Draft-Internally-Check-OBS-7d87e72748f84d74b4fb834522b023f6\">comment traduire</a> avec votre équipe pour mener à bien la rédaction de l'ébauche</li></ul>"
     },
     {
       "title": "Vérifier en interne",
@@ -44,15 +44,15 @@
     "title": "Célébrer",
     "body": "<p>Prenez le temps de vous réjouir d'avoir Open Bible Stories dans votre langue. Partagez la bonne nouvelle avec tous et louez Dieu pour ce qu'Il a fait.</p>"
   },
-  "questions": "Des questions ? Écrivez à <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
+  "questions": "Des questions ? Écrivez à <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
     "eyebrow": "Équipez les autres pour comprendre et enseigner l'Évangile",
     "title": "Ressources",
-    "body": "Notes de traduction, Questions de traduction, Notes d'étude, Questions d'étude et l'édition étendue (Theological Formation, formation théologique) &mdash; recherchez votre langue une seule fois pour voir tout ce qui est disponible. Vous cherchez les histoires elles-mêmes ? C'est dans <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Découvrir</a>.",
+    "body": "Notes de traduction, Questions de traduction, Notes d'étude, Questions d'étude et l'édition étendue (Theological Formation, formation théologique) &mdash; recherchez votre langue une seule fois pour voir tout ce qui est disponible. Vous cherchez les histoires elles-mêmes ? C'est dans <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Découvrir</a>.",
     "searchPlaceholder": "Recherchez par nom de langue, p. ex. swahili"
   },
   "finalCta": {
-    "title": "Besoin d'outils de traduction ?",
+    "title": "Besoin d'outils de traduction ?",
     "body": "Scribe SE et d'autres éditeurs pour commencer une traduction sont répertoriés sur la page Créer.",
     "ctaTools": "Voir les outils de traduction",
     "ctaDiscover": "Voir ce qui est déjà traduit"

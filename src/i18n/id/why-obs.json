@@ -6,9 +6,9 @@
   "hero": {
     "eyebrow": "Sebuah kisah dari Chad",
     "title": "Seorang Penerjemah dan Imam yang Marah",
-    "p1": "Sepuluh juta orang di Chad masih belum mendengar Injil. Tim penerjemah ini menempuh perjalanan berbahaya sejauh bermil-mil untuk memeriksa setiap terjemahan baru bersama komunitas yang akan menggunakannya &mdash; kali ini, dengan disaksikan oleh imam desa.",
-    "p2": "Di luar, para remaja menunggu aba-aba untuk melempari para tamu dengan batu. Namun ketika cerita-cerita itu dibacakan, amarah di ruangan itu mulai mereda. Pada akhirnya, sang imam sendiri berdiri: “Jika ada yang berkata Yesus bukan juruselamat, dia bukan Muslim sejati, dan dia yang seharusnya dilempari batu.”",
-    "quote": "“Saya memuji nama Tuhan untuk unfoldingWord dan Open Bible Stories. Alat ini sungguh diilhami! Kami sedang menabur benih di hati orang-orang Muslim yang seperti bom, dan suatu hari nanti benih itu akan meledak menjadi kehidupan.”",
+    "p1": "Sepuluh juta orang di Chad masih belum mendengar Injil. Tim penerjemah ini menempuh perjalanan jauh dan berbahaya untuk memeriksa setiap terjemahan baru bersama komunitas yang akan menggunakannya &mdash; kali ini, dengan disaksikan oleh imam desa.",
+    "p2": "Di luar, para remaja menunggu aba-aba untuk melempari para tamu dengan batu. Namun ketika cerita-cerita itu dibacakan, amarah di ruangan itu mulai mereda. Pada akhirnya, sang imam sendiri berdiri: “Jika ada yang berkata Yesus bukan juruselamat, dia bukan Muslim sejati, dan dialah yang seharusnya dilempari batu.”",
+    "quote": "“Saya memuji nama Tuhan karena unfoldingWord dan Open Bible Stories. Alat ini sungguh diilhamkan! Kami sedang menabur benih di hati orang-orang Muslim&hellip; dan suatu hari nanti benih itu akan bertunas menjadi kehidupan.”",
     "quoteAttr": "&mdash; Seorang mitra penerjemahan Alkitab, Chad",
     "bridge": "Kisah semacam ini bukanlah satu-satunya. Di seluruh Afrika, Asia, Amerika Latin, dan Timur Tengah, gereja-gereja terus memilih Open Bible Stories karena ia menyingkirkan hambatan dalam membagikan Firman Tuhan."
   },
@@ -33,12 +33,12 @@
   },
   "world": {
     "eyebrow": "Di seluruh dunia",
-    "title": "Satu sumber. Ratusan kisah.",
+    "title": "Satu bahan. Ratusan kisah.",
     "dotsLabel": "Suara dari lapangan, menurut tempat",
     "quotes": [
       {
         "id": "chad",
-        "quote": "“Ia tidak hanya mengatasi prasangka Islam, tetapi juga langsung tersedia dalam format audio dan visual untuk dibagikan kepada mereka yang tidak dapat membaca atau menulis.”",
+        "quote": "“Ia tidak hanya mengatasi prasangka di kalangan masyarakat Muslim, tetapi juga langsung tersedia dalam format audio dan visual untuk dibagikan kepada mereka yang tidak dapat membaca atau menulis.”",
         "attr": "&mdash; Mitra penerjemahan Alkitab dari Chad",
         "dotLabel": "Chad"
       },
@@ -50,7 +50,7 @@
       },
       {
         "id": "sudan-community",
-        "quote": "“Injil dalam bentuk cerita mudah dipahami oleh kelompok masyarakat Islam. Komunitas menerima terjemahan itu karena merupakan hasil karya mereka sendiri.”",
+        "quote": "“Injil dalam bentuk cerita mudah dipahami oleh suku-suku bangsa Muslim. Komunitas menerima terjemahan itu karena merupakan hasil karya mereka sendiri.”",
         "attr": "&mdash; Pemimpin penerjemahan Alkitab dari Sudan",
         "dotLabel": "Sudan, komunitas"
       },
@@ -78,6 +78,6 @@
   "finalCta": {
     "title": "Bantu Menuliskan Kisah Berikutnya",
     "body": "Di suatu tempat hari ini, sebuah gereja lain sedang bersiap membagikan Injil dalam bahasanya sendiri untuk pertama kali &mdash; dukungan Anda ikut mewujudkannya.",
-    "cta": "Beri hari ini"
+    "cta": "Beri Dukungan Hari Ini"
   }
 }

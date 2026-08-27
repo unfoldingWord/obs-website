@@ -4,15 +4,15 @@
     "description": "Lees Open Bible Stories in jouw taal, van elk team dat heeft gepubliceerd."
   },
   "hero": {
-    "eyebrow": "Vind het Evangelie in jouw taal",
+    "eyebrow": "Vind het evangelie in jouw taal",
     "title": "Ontdekken",
     "sub": "Zoek naar Open Bible Stories in jouw taal. Lees, luister, kijk of download beschikbare vertalingen.",
-    "ctaApp": "OBS Mobiele App"
+    "ctaApp": "Mobiele OBS-app"
   },
   "browse": {
     "searchPlaceholder": "Zoek op taalnaam, bijv. Swahili",
     "filterAll": "Alles",
-    "filterPrint": "Drukwerk",
+    "filterPrint": "Print",
     "filterAudio": "Audio",
     "filterVideo": "Video"
   }

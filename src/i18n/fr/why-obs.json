@@ -1,14 +1,14 @@
 {
   "meta": {
     "title": "Pourquoi Open Bible Stories",
-    "description": "Des histoires vraies venues du terrain : comment Open Bible Stories atteint les non-atteints, forme de nouveaux responsables et ouvre la porte à la traduction de la Bible."
+    "description": "Des histoires vraies venues du terrain : comment Open Bible Stories atteint les non-atteints, forme de nouveaux responsables et ouvre la porte à la traduction de la Bible."
   },
   "hero": {
     "eyebrow": "Une histoire du Tchad",
     "title": "Un traducteur et l'imam en colère",
-    "p1": "Dix millions de personnes au Tchad n'ont toujours pas entendu l'évangile. Cette équipe de traduction parcourt de nombreux kilomètres dangereux pour vérifier chaque nouvelle traduction avec les communautés qui l'utiliseront &mdash; cette fois, sous le regard de l'imam du village.",
-    "p2": "Dehors, des adolescents attendaient un signal pour lapider les visiteurs. Mais à mesure que les histoires étaient lues à voix haute, la colère dans la salle s'est apaisée. À la fin, l'imam lui-même s'est levé : « Si quelqu'un dit que Jésus n'est pas le sauveur, il n'est pas un vrai musulman, et il devrait être lapidé. »",
-    "quote": "« Je bénis le nom du Seigneur pour unfoldingWord et Open Bible Stories. Cet instrument est inspiré ! Nous semons dans le cœur des musulmans des graines qui sont comme des bombes, et un jour elles éclateront en vie. »",
+    "p1": "Dix millions de personnes au Tchad n'ont toujours pas entendu l'Évangile. Cette équipe de traduction parcourt des kilomètres sur des routes dangereuses pour vérifier chaque nouvelle traduction avec les communautés qui l'utiliseront &mdash; cette fois, sous le regard de l'imam du village.",
+    "p2": "Dehors, des adolescents attendaient un signal pour lapider les visiteurs. Mais à mesure que les histoires étaient lues à voix haute, la colère dans la salle s'est apaisée. À la fin, l'imam lui-même s'est levé : « Si quelqu'un dit que Jésus n'est pas le sauveur, il n'est pas un vrai musulman, et il devrait être lapidé. »",
+    "quote": "« Je bénis le nom du Seigneur pour unfoldingWord et Open Bible Stories. Cet instrument est inspiré ! Nous semons des graines dans le cœur des musulmans&hellip; et un jour elles éclateront pour donner la vie. »",
     "quoteAttr": "&mdash; Un partenaire de traduction de la Bible, Tchad",
     "bridge": "Ce genre d'histoire n'est pas unique. En Afrique, en Asie, en Amérique latine et au Moyen-Orient, les églises continuent de choisir Open Bible Stories parce qu'il lève les obstacles au partage de la Parole de Dieu."
   },
@@ -22,12 +22,12 @@
         "body": "Les églises peuvent commencer à partager et à traduire du contenu biblique avant d'avoir achevé une Bible complète."
       },
       {
-        "title": "Conduit par l'église locale",
+        "title": "Dirigé par l'Église locale",
         "body": "Les églises traduisent, vérifient et utilisent elles-mêmes les histoires."
       },
       {
         "title": "Fait pour être partagé",
-        "body": "Les histoires se prêtent naturellement au récit oral, à la discussion et à différents contextes d'alphabétisation."
+        "body": "Les histoires se prêtent naturellement au récit oral, à la discussion et à différents niveaux d'alphabétisation."
       }
     ]
   },
@@ -38,37 +38,37 @@
     "quotes": [
       {
         "id": "chad",
-        "quote": "« Non seulement il surmonte les préjugés islamiques, mais il est immédiatement disponible en formats audio et visuels pour être partagé avec ceux qui ne savent ni lire ni écrire. »",
+        "quote": "« Non seulement il surmonte les préjugés islamiques, mais il est immédiatement disponible en formats audio et visuels pour être partagé avec ceux qui ne savent ni lire ni écrire. »",
         "attr": "&mdash; Partenaire tchadien de traduction de la Bible",
         "dotLabel": "Tchad"
       },
       {
         "id": "sudan-leader",
-        "quote": "« Je suis émerveillé quand je regarde nos traducteurs former de nouveaux responsables. Ce sont des croyants d'arrière-plan musulman, tout nouveaux dans la foi chrétienne, mais leur connaissance grandit si vite. »",
+        "quote": "« Je suis émerveillé quand je regarde nos traducteurs former de nouveaux responsables. Ce sont des croyants d'arrière-plan musulman, tout nouveaux dans la foi chrétienne, mais leur connaissance grandit si vite. »",
         "attr": "&mdash; Responsable soudanais de traduction de la Bible",
         "dotLabel": "Soudan, responsables"
       },
       {
         "id": "sudan-community",
-        "quote": "« L'évangile sous forme d'histoires est facile à comprendre pour les peuples musulmans. La communauté accepte la traduction parce que c'est son propre travail. »",
+        "quote": "« L'Évangile sous forme d'histoires est facile à comprendre pour les peuples musulmans. La communauté accepte la traduction parce que c'est son propre travail. »",
         "attr": "&mdash; Responsable soudanais de traduction de la Bible",
         "dotLabel": "Soudan, communauté"
       },
       {
         "id": "venezuela",
-        "quote": "« Quand le gouvernement a expulsé tous les missionnaires occidentaux, nous avons dû trouver un chemin. Open Bible Stories et la traduction de la Bible centrée sur l'Église nous donnent ces outils. »",
+        "quote": "« Quand le gouvernement a expulsé tous les missionnaires occidentaux, nous avons dû trouver un moyen d'avancer. Open Bible Stories et la traduction de la Bible centrée sur l'Église nous donnent ces outils. »",
         "attr": "&mdash; Partenaire vénézuélien de traduction de la Bible",
         "dotLabel": "Venezuela"
       },
       {
         "id": "iran",
-        "quote": "« Parce que c'est dans la langue de mon cœur, ma mère peut lire ce livre. De tout mon cœur, merci d'avoir rendu cela possible. »",
+        "quote": "« Parce que c'est dans la langue de mon cœur, ma mère peut lire ce livre. De tout mon cœur, merci d'avoir rendu cela possible. »",
         "attr": "&mdash; Partenaire iranien de traduction de la Bible",
         "dotLabel": "Iran"
       },
       {
         "id": "eurasia",
-        "quote": "« Open Bible Stories communique si bien l'évangile que c'est mon outil d'évangélisation préféré dans les pays autrefois membres de l'Union soviétique. »",
+        "quote": "« Open Bible Stories communique si bien l'Évangile que c'est mon outil d'évangélisation préféré dans les pays autrefois membres de l'Union soviétique. »",
         "attr": "&mdash; Partenaire eurasien de traduction de la Bible",
         "dotLabel": "Eurasie"
       }
@@ -77,7 +77,7 @@
   },
   "finalCta": {
     "title": "Aidez à écrire la prochaine histoire",
-    "body": "Quelque part aujourd'hui, une autre église se prépare à partager l'évangile dans sa propre langue pour la première fois &mdash; votre soutien aide à rendre cela possible.",
-    "cta": "Donner aujourd'hui"
+    "body": "Quelque part aujourd'hui, une autre église se prépare à partager l'Évangile dans sa propre langue pour la première fois &mdash; votre soutien aide à rendre cela possible.",
+    "cta": "Faire un don"
   }
 }

@@ -1,19 +1,19 @@
 {
   "meta": {
     "title": "Open Bible Stories",
-    "description": "Open Bible Stories membantu gereja, pelayanan, dan tim penerjemah membuat Injil dapat diakses dalam setiap bahasa melalui kumpulan sederhana cerita Alkitab bergambar."
+    "description": "Open Bible Stories membantu gereja, pelayanan, dan tim penerjemah membuat Injil dapat diakses dalam setiap bahasa melalui kumpulan cerita Alkitab bergambar yang sederhana."
   },
   "hero": {
     "eyebrow": "unfoldingWord&reg; Open Bible Stories",
     "title": "Injil bagi setiap suku bangsa",
-    "sub": "Open Bible Stories membantu gereja, pelayanan, dan tim penerjemah membuat Injil dapat diakses dalam setiap bahasa melalui kumpulan sederhana cerita Alkitab bergambar.",
+    "sub": "Open Bible Stories membantu gereja, pelayanan, dan tim penerjemah membuat Injil dapat diakses dalam setiap bahasa melalui kumpulan cerita Alkitab bergambar yang sederhana.",
     "ctaFind": "Temukan bahasa Anda",
     "ctaTranslate": "Mulai Menerjemahkan",
     "ctaApp": "Aplikasi Seluler OBS"
   },
   "stats": {
     "label": "Bahasa<br>Sudah Tersedia",
-    "line1": "Setiap terjemahan mewakili sebuah komunitas yang terjangkau, sebuah gereja yang diperlengkapi, dan hidup-hidup yang diubahkan oleh Injil.",
+    "line1": "Setiap terjemahan mewakili sebuah komunitas yang dijangkau, sebuah gereja yang diperlengkapi, dan kehidupan orang-orang yang diubahkan oleh Injil.",
     "line2": "Bahasa berikutnya bisa jadi bahasa Anda."
   },
   "open": {
@@ -24,7 +24,7 @@
       {
         "title": "Temukan",
         "body": "Cari berdasarkan bahasa untuk melihat apakah Open Bible Stories sudah tersedia, dan baca langsung di browser Anda.",
-        "cta": "Jelajahi Temukan"
+        "cta": "Buka halaman Temukan"
       },
       {
         "title": "Terjemahkan",
@@ -42,6 +42,6 @@
     "title": "Bantu menghadirkannya dalam bahasa berikutnya",
     "body": "Setiap terjemahan baru menciptakan kesempatan bagi seseorang untuk berjumpa dengan Yesus dalam bahasa yang paling ia pahami. Bahasa berikutnya bisa dimulai dari Anda.",
     "ctaTranslate": "Mulai menerjemahkan",
-    "ctaGive": "Beri hari ini"
+    "ctaGive": "Beri Dukungan Hari Ini"
   }
 }

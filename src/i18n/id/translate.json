@@ -12,7 +12,7 @@
   },
   "steps": [
     {
-      "title": "Persiapkan",
+      "title": "Bersiap",
       "body": "<p>Untuk mempersiapkan penerjemahan, mulailah dengan memasang <a href=\"https://scribe.bible/\">Scribe SE</a>. Untuk informasi tentang cara menggunakan Scribe SE, Anda dapat mengunjungi <a href=\"https://docs.scribe.bible/\">dokumentasi Scribe SE</a>.</p><p>Akses sumber daya penerjemahan di <a href=\"https://www.well.bible/\">aplikasi Bible Well</a>.</p>"
     },
     {
@@ -42,13 +42,13 @@
   ],
   "celebrate": {
     "title": "Rayakan",
-    "body": "<p>Ambillah waktu untuk bersukacita karena Anda telah memiliki Open Bible Stories dalam bahasa Anda. Bagikan kabar baik ini kepada semua orang dan naikkan pujian kepada Allah atas apa yang telah Dia kerjakan.</p>"
+    "body": "<p>Ambillah waktu untuk bersukacita karena Anda kini memiliki Open Bible Stories dalam bahasa Anda. Bagikan kabar baik ini kepada semua orang dan naikkan pujian kepada Allah atas apa yang telah Dia kerjakan.</p>"
   },
   "questions": "Ada pertanyaan? Kirim email ke <a href=\"mailto:info@unfoldingword.org\" style=\"color:var(--inspire-text);\">info@unfoldingword.org</a>",
   "resources": {
     "eyebrow": "Perlengkapi orang lain untuk memahami dan mengajarkan Injil",
     "title": "Sumber Daya",
-    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions, dan edisi Extended (Theological Formation) &mdash; cukup cari bahasa Anda satu kali untuk melihat semua yang tersedia. Mencari cerita-ceritanya sendiri? Itu ada di <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Temukan</a>.",
+    "body": "Translation Notes, Translation Questions, Study Notes, Study Questions, dan edisi Extended (Pembinaan Teologis) &mdash; cukup cari bahasa Anda satu kali untuk melihat semua yang tersedia. Mencari cerita-ceritanya sendiri? Itu ada di <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Temukan</a>.",
     "searchPlaceholder": "Cari berdasarkan nama bahasa, mis. Jawa"
   },
   "finalCta": {

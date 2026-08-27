@@ -17,7 +17,7 @@
     },
     {
       "title": "Elewa",
-      "body": "<p>Jifunze <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">misingi ya kanuni</a> unazohitaji kwa ajili ya tafsiri.</p><p>Jifunze hadithi ya \"Uumbaji\" katika Scribe SE ili uifahamu hadithi hiyo katika lugha ya chanzo.</p>"
+      "body": "<p>Jifunze <a href=\"https://unfoldingword.notion.site/Discover-the-Principles-of-Translation-using-OBS-bdb7947e460a4835a6b9c128b385407c\">kanuni za msingi</a> unazohitaji kwa ajili ya tafsiri.</p><p>Jifunze hadithi ya \"Uumbaji\" katika Scribe SE ili uifahamu hadithi hiyo katika lugha ya chanzo.</p>"
     },
     {
       "title": "Tafsiri",
@@ -48,7 +48,7 @@
   "resources": {
     "eyebrow": "Wawezeshe wengine kuelewa na kufundisha Injili",
     "title": "Rasilimali",
-    "body": "Maelezo ya Tafsiri, Maswali ya Tafsiri, Maelezo ya Kujifunza, Maswali ya Kujifunza, na toleo la Kupanuliwa (Malezi ya Kithiolojia) &mdash; tafuta lugha yako mara moja uone vyote vinavyopatikana kwa ajili yake. Unatafuta hadithi zenyewe? Ziko kwenye <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Vumbua</a>.",
+    "body": "Maelezo ya Tafsiri, Maswali ya Tafsiri, Maelezo ya Kujifunza, Maswali ya Kujifunza, na Toleo Lililopanuliwa (Malezi ya Kitheolojia) &mdash; tafuta lugha yako mara moja uone vyote vinavyopatikana kwa ajili yake. Unatafuta hadithi zenyewe? Ziko kwenye <a href=\"/discover/\" style=\"color:var(--inspire-text); font-weight:700;\">Vumbua</a>.",
     "searchPlaceholder": "Tafuta kwa jina la lugha, mfano Kiswahili"
   },
   "finalCta": {
