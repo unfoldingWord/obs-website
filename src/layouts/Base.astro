@@ -19,6 +19,7 @@ import { locales, byCode, defaultLocale, localePath, fontHrefFor, isLocalized, t
 import { content } from '../i18n/content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 
 interface Props {
   locale: string;
@@ -76,6 +77,7 @@ const fontHref = fontHrefFor(locale);
 {fontHref && <link href={fontHref} rel="stylesheet" />}
 <link rel="icon" href="/assets/img/favicon.ico" sizes="any" />
 <link rel="stylesheet" href="/assets/css/styles.css" />
+<GoogleAnalytics />
 <slot name="head" />
 </head>
 <body>
