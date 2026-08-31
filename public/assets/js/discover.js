@@ -1030,7 +1030,13 @@
 
       renderList();
 
-      const hashCode = location.hash.replace("#", "");
+      // Legacy /library deep links used codes like "kmz--fa_gl--kmz_obs_text_obs"
+      // (language code + team/resource id). Keep only the language code.
+      let hashCode = location.hash.replace("#", "");
+      const legacySep = hashCode.indexOf("--");
+      if (legacySep !== -1) {
+        hashCode = hashCode.slice(0, legacySep);
+      }
       if (hashCode && languageGroups.has(hashCode)) {
         showDetail(hashCode);
       }
