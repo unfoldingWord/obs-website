@@ -2,6 +2,7 @@
 # its own search, format filters, and inline reader). These keep old
 # bookmarks/links/search results from 404ing.
 /create/library/*  /discover/  301
+/library           /discover/  301
 /library/*         /discover/  301
 
 # The Why OBS page moved from /features/ to /why-obs/ to match its nav label;
