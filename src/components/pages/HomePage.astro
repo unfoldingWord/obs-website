@@ -2,15 +2,24 @@
 import Base from '../../layouts/Base.astro';
 import { localePath } from '../../i18n/config';
 import { content } from '../../i18n/content';
+import { languageCount, withCount } from '../../data/catalog';
+import { workNode, mobileAppNode } from '../../lib/jsonld';
 
 interface Props {
   locale: string;
 }
 const { locale } = Astro.props;
 const t = content(locale, 'home');
+const ui = content(locale, 'ui');
+
+// Title carries the localized tagline so each locale's home is distinct
+// ("Open Bible Stories — El Evangelio para cada pueblo"); the description
+// gets the build-time language count substituted for {count}.
+const title = `${ui.siteTitle} — ${t.hero.title}`;
+const description = withCount(t.meta.description);
 ---
 
-<Base locale={locale} slug="home" title={t.meta.title} description={t.meta.description}>
+<Base locale={locale} slug="home" title={title} description={description} jsonLd={[workNode(), mobileAppNode()]}>
 
 <section class="hero">
   <div class="hero-inner">
@@ -61,7 +70,7 @@ const t = content(locale, 'home');
 <section class="stats-section">
   <div class="wrap stats-inner" style="text-align:center;">
     <div class="big-stat">
-      <span class="big-stat-num" id="lang-count" data-target="214">214</span>
+      <span class="big-stat-num" id="lang-count" data-target={languageCount}>{languageCount}</span>
       <span class="big-stat-label" set:html={t.stats.label} />
     </div>
     <p style="color:var(--tech); font-size:1.15rem; max-width:560px; margin:28px auto 10px; font-weight:600;">{t.stats.line1}</p>

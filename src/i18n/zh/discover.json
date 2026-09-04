@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "发现 — Open Bible Stories",
-    "description": "阅读由各团队发布的您语言的 Open Bible Stories 译本。"
+    "title": "查找您语言的 Open Bible Stories — 发现",
+    "description": "在 Open Bible Stories 已发布的 {count} 种语言中搜索。在线阅读、聆听音频、观看视频或下载 PDF——以开放许可免费提供。"
   },
   "hero": {
     "eyebrow": "用您的语言寻找福音",
@@ -14,6 +14,13 @@
     "filterAll": "全部",
     "filterPrint": "文字",
     "filterAudio": "音频",
-    "filterVideo": "视频"
+    "filterVideo": "视频",
+    "status": "已发布的 {total} 种语言中显示 {shown} 种",
+    "noMatch": "暂时没有语言与该搜索匹配。",
+    "noMatchFormat": "没有语言与该搜索和格式匹配——请尝试其他格式。",
+    "loading": "正在加载语言...",
+    "teams": "已有 {n} 个团队发布此译本",
+    "back": "返回“发现”",
+    "openFull": "在整页中打开"
   }
 }

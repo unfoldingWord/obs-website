@@ -1,3 +1,27 @@
+# Public HTML (and everything not matched by a more specific rule below).
+#
+# This is a static Astro site: a page can only change when a new build is
+# deployed, and Cloudflare Pages invalidates its edge cache on every deploy.
+# So the edge may hold pages for a day (s-maxage) while browsers keep a copy
+# for five minutes and then revalidate — an ETag/304 round trip, not a full
+# download. `no-store` (observed on public pages) defeats both the edge and
+# the browser cache for no benefit on a site with no per-visitor content.
+# NOTE: if a zone-level Cache Rule / Browser Cache TTL setting in the
+# Cloudflare dashboard still forces `no-store`, it overrides this file and
+# must be changed there.
+/*
+  Cache-Control: public, max-age=300, s-maxage=86400, stale-while-revalidate=86400
+  X-Content-Type-Options: nosniff
+
+# Sitemaps and robots are re-read by crawlers on their own schedule; short
+# browser TTL, edge TTL until the next deploy.
+/sitemap-index.xml
+  Cache-Control: public, max-age=300, s-maxage=86400
+/sitemap-*.xml
+  Cache-Control: public, max-age=300, s-maxage=86400
+/robots.txt
+  Cache-Control: public, max-age=300, s-maxage=86400
+
 # Images are effectively static under their current filenames — long,
 # immutable caching is safe for these.
 /assets/img/*
@@ -8,12 +32,13 @@
 # bundler step). An "immutable" cache here would let a visitor's browser
 # skip ever re-checking the server, so a later fix could silently never
 # reach anyone who already visited. "no-cache" means "always revalidate
-# with the server before using the cached copy" — not "don't cache".
+# with the server before using the cached copy" — not "don't cache" — and
+# the edge may still serve them until the next deploy purges it.
 /assets/js/*
-  Cache-Control: public, no-cache
+  Cache-Control: public, no-cache, s-maxage=86400
 
 /assets/css/*
-  Cache-Control: public, no-cache
+  Cache-Control: public, no-cache, s-maxage=86400
 
 # Self-hosted fonts are content-stable variable woff2 files — same immutable
 # policy as images.

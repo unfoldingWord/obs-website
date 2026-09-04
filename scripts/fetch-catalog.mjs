@@ -1,0 +1,124 @@
+// Build-time snapshot of the published Open Bible Stories catalog.
+//
+// Runs before `astro build` / `astro dev` (see package.json) and writes
+// src/data/catalog.json, which is the ONE source for every public fact about
+// "how many languages" and "which languages":
+//   - the language count on the homepage and Why OBS page
+//   - the prerendered language list on /discover/ (crawlable without JS)
+//   - meta descriptions that mention the count
+//   - JSON-LD (ItemList of translations)
+//
+// The number is therefore defined as: the count of distinct language codes
+// with at least one production-stage "Open Bible Stories" entry in the
+// Door43 Content Service (DCS) catalog, excluding the Theological Formation
+// edition — exactly the set Discover shows. Changing the catalog changes the
+// number on the next build. Nothing at runtime fetches a different count.
+//
+// The same endpoint and filters as public/assets/js/discover.js: no `limit`
+// (omitting it returns every matching entry), no `metadataType` filter (16
+// languages only have the older translationStudio format).
+//
+// Failure policy: a deploy that ships an empty catalog would publish "0
+// languages" and delist every translation, so a production build (`--required`)
+// fails when no data is available — Cloudflare Pages then keeps the previous
+// deployment live. An existing snapshot is kept (with a warning) when the fetch
+// fails. `npm run dev` runs without `--required` so offline development still
+// works; set OBS_CATALOG_ALLOW_EMPTY=1 to force a build through offline.
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
+import { dirname } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const CATALOG_URL =
+  'https://git.door43.org/api/v1/catalog/search?subject=Open%20Bible%20Stories&stage=prod';
+const OUT = fileURLToPath(new URL('../src/data/catalog.json', import.meta.url));
+const required = process.argv.includes('--required') && !process.env.OBS_CATALOG_ALLOW_EMPTY;
+
+const ENTRY_FIELDS = ['owner', 'name', 'branch_or_tag_name', 'title', 'metadata_type'];
+
+function pad(n) {
+  return String(n).padStart(2, '0');
+}
+
+/** Collapse raw catalog entries into one record per language. */
+export function groupLanguages(entries) {
+  const byLang = new Map();
+  for (const e of entries) {
+    if (!e || !e.language) continue;
+    if (/theological formation/i.test(e.title || '')) continue;
+    const arr = byLang.get(e.language) || [];
+    arr.push(e);
+    byLang.set(e.language, arr);
+  }
+  const has = (entries, key) => entries.some((e) => e.attachment_types && e.attachment_types[key]);
+  return Array.from(byLang.entries())
+    .map(([code, group]) => ({
+      code,
+      // language_title is the language's own name as recorded in the
+      // resource manifest (usually the autonym). No separate English name
+      // exists in the catalog, so none is invented here.
+      title: group.find((e) => e.language_title)?.language_title || code,
+      direction: group.find((e) => e.language_direction)?.language_direction === 'rtl' ? 'rtl' : 'ltr',
+      formats: {
+        pdf: has(group, 'pdf'),
+        audio: has(group, 'audio'),
+        // "stream" is how a hosted YouTube link is tagged.
+        video: has(group, 'video') || has(group, 'stream'),
+      },
+      entries: group.map((e) => Object.fromEntries(ENTRY_FIELDS.map((f) => [f, e[f] ?? null]))),
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title, 'en'));
+}
+
+async function fetchCatalog() {
+  const res = await fetch(CATALOG_URL, { headers: { accept: 'application/json' } });
+  if (!res.ok) throw new Error(`DCS catalog responded ${res.status}`);
+  const body = await res.json();
+  const entries = Array.isArray(body.data) ? body.data : [];
+  const total = parseInt(res.headers.get('x-total-count') || '', 10);
+  if (Number.isFinite(total) && total > entries.length) {
+    console.warn(
+      `[catalog] response has ${entries.length} entries but X-Total-Count is ${total} — the list may be truncated; the endpoint may need pagination now.`
+    );
+  }
+  if (entries.length === 0) throw new Error('DCS catalog returned no entries');
+  return entries;
+}
+
+function writeSnapshot(languages) {
+  const now = new Date();
+  const snapshot = {
+    source: CATALOG_URL,
+    fetchedAt: now.toISOString(),
+    // Date only, for dateModified in JSON-LD.
+    fetchedDate: `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(now.getUTCDate())}`,
+    languageCount: languages.length,
+    languages,
+  };
+  mkdirSync(dirname(OUT), { recursive: true });
+  writeFileSync(OUT, JSON.stringify(snapshot, null, 1) + '\n');
+  return snapshot;
+}
+
+const isMain = process.argv[1] && fileURLToPath(import.meta.url) === process.argv[1];
+if (isMain) {
+  try {
+    const entries = await fetchCatalog();
+    const snapshot = writeSnapshot(groupLanguages(entries));
+    console.log(`[catalog] ${snapshot.languageCount} languages (${entries.length} entries) → src/data/catalog.json`);
+  } catch (err) {
+    console.warn(`[catalog] fetch failed: ${err.message}`);
+    if (existsSync(OUT)) {
+      const prev = JSON.parse(readFileSync(OUT, 'utf8'));
+      if (prev.languageCount > 0) {
+        console.warn(`[catalog] keeping existing snapshot from ${prev.fetchedAt} (${prev.languageCount} languages)`);
+        process.exit(0);
+      }
+    }
+    if (required) {
+      console.error('[catalog] no catalog data available — refusing to build a site with zero languages. Set OBS_CATALOG_ALLOW_EMPTY=1 to override.');
+      process.exit(1);
+    }
+    writeSnapshot([]);
+    console.warn('[catalog] wrote an EMPTY snapshot — pages will fall back to placeholder facts. Do not deploy this build.');
+  }
+}

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Khám phá — Open Bible Stories",
-    "description": "Đọc Open Bible Stories bằng ngôn ngữ của bạn, do bất kỳ đội ngũ nào phát hành."
+    "title": "Tìm Open Bible Stories bằng ngôn ngữ của bạn — Khám phá",
+    "description": "Tìm trong {count} ngôn ngữ đã phát hành của Open Bible Stories. Đọc trực tuyến, nghe âm thanh, xem video hoặc tải PDF — miễn phí theo giấy phép mở."
   },
   "hero": {
     "eyebrow": "Tìm Phúc Âm bằng ngôn ngữ của bạn",
@@ -14,6 +14,13 @@
     "filterAll": "Tất cả",
     "filterPrint": "Bản in",
     "filterAudio": "Audio",
-    "filterVideo": "Video"
+    "filterVideo": "Video",
+    "status": "{shown} trong {total} ngôn ngữ đã phát hành",
+    "noMatch": "Chưa có ngôn ngữ nào khớp với tìm kiếm đó.",
+    "noMatchFormat": "Không có ngôn ngữ nào khớp với tìm kiếm và định dạng đó — hãy thử định dạng khác.",
+    "loading": "Đang tải ngôn ngữ...",
+    "teams": "{n} đội ngũ đã phát hành bản này",
+    "back": "Quay lại Khám phá",
+    "openFull": "Mở toàn trang"
   }
 }

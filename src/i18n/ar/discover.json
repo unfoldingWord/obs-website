@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "اكتشف — Open Bible Stories",
-    "description": "اقرأ Open Bible Stories بلغتك، من أي فريق ناشر."
+    "title": "اعثر على Open Bible Stories بلغتك — اكتشف",
+    "description": "ابحث بين {count} لغة منشورة من Open Bible Stories. اقرأ عبر الإنترنت، أو استمع إلى الصوت، أو شاهد الفيديو، أو حمّل ملف PDF — مجانًا بترخيص مفتوح."
   },
   "hero": {
     "eyebrow": "اعثر على الإنجيل بلغتك",
@@ -14,6 +14,13 @@
     "filterAll": "الكل",
     "filterPrint": "مطبوع",
     "filterAudio": "صوت",
-    "filterVideo": "فيديو"
+    "filterVideo": "فيديو",
+    "status": "{shown} من {total} لغة منشورة",
+    "noMatch": "لا توجد لغة تطابق هذا البحث حتى الآن.",
+    "noMatchFormat": "لا توجد لغة تطابق هذا البحث وهذا التنسيق — جرّب تنسيقًا آخر.",
+    "loading": "جارٍ تحميل اللغات...",
+    "teams": "نشرته {n} فرق",
+    "back": "العودة إلى اكتشف",
+    "openFull": "افتح في صفحة كاملة"
   }
 }

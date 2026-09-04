@@ -1,6 +1,16 @@
+# One canonical host. https://openbiblestories.org is canonical (it is the
+# `site` in astro.config.mjs, the canonical/hreflang/JSON-LD URLs, and the
+# sitemap); www is 301'd to it so search signals aren't split across two
+# hosts. Cloudflare Pages honors absolute-URL sources here as long as BOTH
+# hostnames are attached to the Pages project as custom domains — if www is
+# not attached, this rule never fires. Host rules must come first.
+https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
+
 # Archived pages (Library browser removed in favor of /discover/, which has
 # its own search, format filters, and inline reader). These keep old
-# bookmarks/links/search results from 404ing.
+# bookmarks/links/search results from 404ing. Deep links like
+# /library/#code--team are preserved by the browser (the fragment survives a
+# redirect) and discover.js opens the language from the hash.
 /create/library/*  /discover/  301
 /library           /discover/  301
 /library/*         /discover/  301

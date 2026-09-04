@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Ontdekken — Open Bible Stories",
-    "description": "Lees Open Bible Stories in jouw taal, van elk team dat heeft gepubliceerd."
+    "title": "Vind Open Bible Stories in jouw taal — Ontdekken",
+    "description": "Zoek in {count} gepubliceerde talen van Open Bible Stories. Lees online, luister naar audio, bekijk video of download de pdf — gratis onder een open licentie."
   },
   "hero": {
     "eyebrow": "Vind het evangelie in jouw taal",
@@ -14,6 +14,13 @@
     "filterAll": "Alles",
     "filterPrint": "Print",
     "filterAudio": "Audio",
-    "filterVideo": "Video"
+    "filterVideo": "Video",
+    "status": "{shown} van {total} gepubliceerde talen",
+    "noMatch": "Nog geen taal komt overeen met die zoekopdracht.",
+    "noMatchFormat": "Geen taal komt overeen met die zoekopdracht en dat formaat — probeer een ander formaat.",
+    "loading": "Talen laden...",
+    "teams": "{n} teams hebben dit gepubliceerd",
+    "back": "Terug naar Ontdekken",
+    "openFull": "Op volledige pagina openen"
   }
 }
