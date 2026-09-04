@@ -96,11 +96,14 @@ export async function fetchCatalog() {
   if (entries.length === 0) throw new Error('DCS catalog returned no entries');
 
   if (total > entries.length) {
-    console.warn(`[catalog] first response has ${entries.length} of ${total} entries — paginating.`);
-    const seen = new Set(entries.map((e) => `${e.owner}/${e.name}@${e.branch_or_tag_name}`));
+    // The unpaged response was cut short. Its page size is unknown, so it
+    // cannot be resumed from; start over with explicit 1-indexed pages of a
+    // known size and stop when a short page arrives or the total is reached.
+    console.warn(`[catalog] first response has ${entries.length} of ${total} entries — re-fetching in pages of ${PAGE_SIZE}.`);
+    entries = [];
+    const seen = new Set();
     for (let page = 1; entries.length < total; page++) {
       const { entries: more } = await fetchPage(`${CATALOG_URL}&limit=${PAGE_SIZE}&page=${page}`);
-      if (more.length === 0) break;
       for (const e of more) {
         const key = `${e.owner}/${e.name}@${e.branch_or_tag_name}`;
         if (!seen.has(key)) {
@@ -108,6 +111,7 @@ export async function fetchCatalog() {
           entries.push(e);
         }
       }
+      if (more.length < PAGE_SIZE) break;
     }
     if (entries.length < total) {
       throw new Error(`DCS catalog is truncated: got ${entries.length} of ${total} entries even after paginating`);

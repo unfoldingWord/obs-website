@@ -13,14 +13,9 @@
   Cache-Control: public, max-age=300, s-maxage=86400, stale-while-revalidate=86400
   X-Content-Type-Options: nosniff
 
-# Sitemaps and robots are re-read by crawlers on their own schedule; short
-# browser TTL, edge TTL until the next deploy.
-/sitemap-index.xml
-  Cache-Control: public, max-age=300, s-maxage=86400
-/sitemap-*.xml
-  Cache-Control: public, max-age=300, s-maxage=86400
-/robots.txt
-  Cache-Control: public, max-age=300, s-maxage=86400
+# Sitemaps and robots.txt fall under the /* rule above (Pages concatenates
+# same-named headers from every matching rule, so a second rule here would
+# duplicate the value rather than replace it).
 
 # Images are effectively static under their current filenames — long,
 # immutable caching is safe for these.
