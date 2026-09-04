@@ -3,8 +3,9 @@
 // whatever page-specific nodes a page passes in via the `jsonLd` prop.
 //
 // Facts here are the standardized public entity facts (see README →
-// "Public facts"): product name, one-sentence definition, license.
-import { languageCount, languagePath, type CatalogLanguage } from '../data/catalog';
+// "Catalog data and public facts"): product name, one-sentence definition,
+// license.
+import type { CatalogLanguage } from '../data/catalog';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -60,7 +61,9 @@ export function websiteNode(inLanguage: string) {
 }
 
 /** The work itself — the English source edition every translation derives
- *  from. Emitted on the homepage and Discover. */
+ *  from. Emitted on the homepage and Discover. The story count belongs on
+ *  an ItemList of stories (story pages, Phase 3), and the translations list
+ *  is its own ItemList on Discover — neither is stubbed here. */
 export function workNode() {
   return {
     '@type': 'CreativeWork',
@@ -74,13 +77,9 @@ export function workNode() {
     isAccessibleForFree: true,
     isFamilyFriendly: true,
     genre: 'Bible stories',
-    numberOfItems: 50,
     publisher: { '@id': PUBLISHER_ID },
     copyrightHolder: { '@id': PUBLISHER_ID },
     image: `${SITE_URL}/assets/img/story-boat.jpg`,
-    // Number of languages the work is published in; sourced from the DCS
-    // catalog at build time (see src/data/catalog.ts).
-    workTranslation: { '@type': 'ItemList', numberOfItems: languageCount },
     // Media objects are emitted only on story pages where a file exists
     // (Phase 3) — never as empty placeholders here.
   };
@@ -98,24 +97,27 @@ export function mobileAppNode() {
   };
 }
 
-/** One CreativeWork per published translation — reusable by the future
- *  /l/{code}/ hub template, which should add its own @id and ItemList of
- *  the 50 stories. */
-export function translationNode(lang: CatalogLanguage, dateModified?: string | null) {
-  const node: Record<string, unknown> = {
+/**
+ * One CreativeWork per published translation. Deliberately has NO `url`
+ * until /l/{code}/ hubs exist (#6): the only per-language URL today is a
+ * fragment of the Discover page, and 200+ CreativeWorks pointing at
+ * fragments of one document is wrong markup. The hub template should call
+ * this and add `@id`/`url` plus an ItemList of the 50 stories.
+ */
+export function translationNode(lang: CatalogLanguage, extra: Record<string, unknown> = {}) {
+  return {
     '@type': 'CreativeWork',
     name: `${PRODUCT_NAME} (${lang.title})`,
-    url: `${SITE_URL}${languagePath(lang.code)}`,
     inLanguage: lang.code,
     license: LICENSE_URL,
     isAccessibleForFree: true,
     translationOfWork: { '@id': WORK_ID },
+    ...extra,
   };
-  if (dateModified) node.dateModified = dateModified;
-  return node;
 }
 
-/** ItemList of all published translations, for Discover. */
+/** ItemList of all published translations. Emitted once, on the default-
+ *  locale Discover page (the catalog page), not on all 16 locale copies. */
 export function translationListNode(languages: CatalogLanguage[]) {
   return {
     '@type': 'ItemList',

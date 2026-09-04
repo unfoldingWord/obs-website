@@ -9,7 +9,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:locales": "node scripts/check-locales.mjs",
-    "fetch:catalog": "node scripts/fetch-catalog.mjs"
+    "fetch:catalog": "node scripts/fetch-catalog.mjs",
+    "test": "node --test scripts/*.test.mjs"
   },
   "dependencies": {
     "@astrojs/sitemap": "^3.7.3",

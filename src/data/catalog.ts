@@ -1,8 +1,12 @@
-// Typed access to the build-time catalog snapshot written by
-// scripts/fetch-catalog.mjs. Every public statement about the published
-// languages (count, list, JSON-LD) must come from here so the facts cannot
-// drift between pages.
-import snapshot from './catalog.json';
+// Typed access to the catalog snapshot written by scripts/fetch-catalog.mjs.
+// Every public statement about the published languages (count, list,
+// JSON-LD) must come from here so the facts cannot drift between pages.
+//
+// src/data/catalog.json is committed as the offline fallback and refreshed
+// by the prebuild fetch on every build; the import is tolerant of the file
+// being absent so a fresh clone can still type-check, but a production build
+// (`fetch-catalog.mjs --required`) refuses to run without data.
+import { localePath } from '../i18n/config';
 
 export interface CatalogEntry {
   owner: string;
@@ -30,28 +34,43 @@ export interface CatalogSnapshot {
   languages: CatalogLanguage[];
 }
 
-export const catalog = snapshot as CatalogSnapshot;
+const EMPTY: CatalogSnapshot = {
+  source: '',
+  fetchedAt: null,
+  fetchedDate: null,
+  languageCount: 0,
+  languages: [],
+};
+
+const snapshots = import.meta.glob<{ default: CatalogSnapshot }>('./catalog.json', { eager: true });
+export const catalog: CatalogSnapshot = snapshots['./catalog.json']?.default ?? EMPTY;
 export const languages: CatalogLanguage[] = catalog.languages;
 
-/** True when the build has real catalog data (an empty snapshot only happens
- *  in offline development — see the failure policy in fetch-catalog.mjs). */
+/** True when the build has real catalog data. False only in offline
+ *  development (see the failure policy in fetch-catalog.mjs). */
 export const hasCatalog = catalog.languageCount > 0;
 
-/** Last known published-language count, used ONLY when the snapshot is empty
- *  (offline dev). Production builds refuse to run without catalog data. */
-const OFFLINE_PLACEHOLDER_COUNT = 214;
+/** The single public language count. There is deliberately no hardcoded
+ *  placeholder: with no data this is 0 and every page says so, which is
+ *  visibly wrong rather than plausibly stale. */
+export const languageCount: number = catalog.languageCount;
 
-/** The single public language count. */
-export const languageCount: number = hasCatalog ? catalog.languageCount : OFFLINE_PLACEHOLDER_COUNT;
+if (!hasCatalog) {
+  console.warn('[catalog] src/data/catalog.json is missing or empty — pages will state 0 languages. Run `npm run fetch:catalog`.');
+}
 
 /** Replace the `{count}` placeholder used in localized meta strings. */
 export function withCount(text: string): string {
   return text.replace(/\{count\}/g, String(languageCount));
 }
 
-/** Interim public URL for a language until /l/{code}/ hubs exist: the
- *  Discover deep link that discover.js opens on load. Kept in one place so
- *  the list, JSON-LD and any future sitemap agree. */
-export function languagePath(code: string): string {
-  return `/discover/#${encodeURIComponent(code)}`;
+/**
+ * Interim link for a language until /l/{code}/ hubs exist (#6): the Discover
+ * deep link in the current locale, which discover.js opens on load and which
+ * scrolls to the row (each <li> carries id={code}) without JS. This is a
+ * fragment of the Discover page, NOT a distinct URL — never advertise it as a
+ * canonical translation URL in JSON-LD or sitemaps.
+ */
+export function languagePath(code: string, locale: string): string {
+  return `${localePath(locale, 'discover')}#${encodeURIComponent(code)}`;
 }

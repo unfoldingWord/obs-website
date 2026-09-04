@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
+import { defaultLocale, localePath } from '../../i18n/config';
 import { languages, languageCount, withCount, languagePath } from '../../data/catalog';
 import { workNode, translationListNode } from '../../lib/jsonld';
 
@@ -13,15 +14,21 @@ const t = content(locale, 'discover');
 // The full language list is prerendered from the build-time catalog snapshot
 // (src/data/catalog.ts) so crawlers and no-JS visitors see every published
 // language. discover.js then enhances the same rows: search and format
-// filters hide/show them, and clicking a row opens the inline reader. Each
-// row is a real link to the language's Discover deep link, which discover.js
-// opens on load, so the list works with JS off too.
+// filters hide/show them, and clicking a row opens the inline reader.
+//
+// Without JS the page is browse-only: each row links to this locale's
+// Discover page with #code, and the <li id={code}> makes that scroll to the
+// row. The reader itself needs JS until /l/{code}/ hubs exist (#6).
 const title = withCount(t.meta.title);
 const description = withCount(t.meta.description);
 const status = t.browse.status.replace('{shown}', String(languageCount)).replace('{total}', String(languageCount));
+
+// The ItemList of translations is emitted once, on the canonical (English)
+// catalog page, not repeated on all 16 locale copies.
+const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(languages)] : [workNode()];
 ---
 
-<Base locale={locale} slug="discover" title={title} description={description} jsonLd={[workNode(), translationListNode(languages)]}>
+<Base locale={locale} slug="discover" title={title} description={description} jsonLd={jsonLd}>
 
 <section class="page-header" style="padding:44px 0 32px;">
   <div class="wrap">
@@ -47,6 +54,7 @@ const status = t.browse.status.replace('{shown}', String(languageCount)).replace
       data-teams={t.browse.teams}
       data-back={t.browse.back}
       data-open-full={t.browse.openFull}
+      data-read-path={localePath(locale, 'discover-read')}
     >
       <div class="library-tools">
         <div class="search-box">
@@ -64,11 +72,10 @@ const status = t.browse.status.replace('{shown}', String(languageCount)).replace
       <ul id="lang-list" class="lang-list">
         {
           languages.map((l) => (
-            <li>
+            <li id={l.code}>
               <a
                 class="lang-row"
-                href={languagePath(l.code)}
-                hreflang={l.code}
+                href={languagePath(l.code, locale)}
                 data-lang={l.code}
                 data-title={l.title}
                 data-pdf={l.formats.pdf ? '1' : undefined}

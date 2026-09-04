@@ -66,6 +66,12 @@ const ogLocale = def.tag.replace('-', '_');
 {description && <meta property="og:description" content={description} />}
 <meta property="og:url" content={canonical} />
 <meta property="og:locale" content={ogLocale} />
+{
+  localized &&
+    locales
+      .filter((l) => l.code !== locale)
+      .map((l) => <meta property="og:locale:alternate" content={l.tag.replace('-', '_')} />)
+}
 <meta property="og:image" content={ogImage} />
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={title} />

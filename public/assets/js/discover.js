@@ -424,7 +424,7 @@
         <button id="back-to-browse" class="btn btn-outline">&larr; ${escapeHtml(
           str("back", "Back to Discover")
         )}</button>
-        <a href="/discover/read/?lang=${encodeURIComponent(
+        <a href="${escapeHtml(str("readPath", "/discover/read/"))}?lang=${encodeURIComponent(
           code
         )}" target="_blank" rel="noopener" class="btn btn-outline">${escapeHtml(
           str("openFull", "Open full page")
@@ -435,13 +435,15 @@
       <div id="detail-body"><p style="color:#4a5960;">Loading...</p></div>
     `;
 
-    document
-      .getElementById("back-to-browse")
-      .addEventListener("click", () => {
-        // Clearing the hash triggers syncFromHash(), which shows the list.
-        if (location.hash) location.hash = "";
-        else showBrowse();
-      });
+    const backBtn = document.getElementById("back-to-browse");
+    backBtn.addEventListener("click", () => {
+      // Clearing the hash triggers syncFromHash(), which shows the list.
+      if (location.hash) location.hash = "";
+      else showBrowse();
+    });
+    // The list the visitor was in is now hidden; move focus into the detail
+    // view so keyboard and screen-reader users aren't left on a hidden row.
+    backBtn.focus();
 
     renderLanguageBody(group, document.getElementById("detail-body"));
   }
@@ -1058,36 +1060,11 @@
         languageGroups.set(e.language, arr);
       });
 
-      // The build-time list and the live catalog normally agree; if a
-      // language was published since the last deploy it has no prerendered
-      // row, so append one (formats from attachment_types, as at build time)
-      // rather than silently hiding a real translation until the next build.
-      const known = new Set(uniqueLanguages.map((l) => l.code));
-      let appended = false;
-      languageGroups.forEach((entries, code) => {
-        if (known.has(code)) return;
-        const li = document.createElement("li");
-        const has = (k) => entries.some((e) => e.attachment_types && e.attachment_types[k]);
-        const formats = { pdf: has("pdf"), audio: has("audio"), video: has("video") || has("stream") };
-        const title = entries[0].language_title || code;
-        li.innerHTML =
-          `<a class="lang-row" href="#${encodeURIComponent(code)}" data-lang="${escapeHtml(code)}" data-title="${escapeHtml(title)}"` +
-          (formats.pdf ? ' data-pdf="1"' : "") +
-          (formats.audio ? ' data-audio="1"' : "") +
-          (formats.video ? ' data-video="1"' : "") +
-          `><div><div class="name">${escapeHtml(title)}</div><div class="code"><code>${escapeHtml(code)}</code></div></div>` +
-          `<div class="badges">` +
-          (formats.pdf ? '<span class="badge">Print</span>' : "") +
-          (formats.audio ? '<span class="badge audio">Audio</span>' : "") +
-          (formats.video ? '<span class="badge video">Video</span>' : "") +
-          `</div></a>`;
-        listEl.appendChild(li);
-        appended = true;
-      });
-      if (appended) {
-        readPrerenderedList();
-        renderList();
-      }
+      // The visible list is never changed from the live catalog: the
+      // prerendered rows, the homepage count, the meta descriptions and the
+      // JSON-LD all come from the same build-time snapshot, and appending
+      // rows here would make the list disagree with all of them. A language
+      // published since the last deploy appears on the next build.
 
       syncFromHash();
     }

@@ -10,6 +10,3 @@ dist/
 public/assets/fonts/*.css
 public/assets/fonts/files/
 .claude/
-
-# Build-time DCS catalog snapshot (scripts/fetch-catalog.mjs)
-src/data/catalog.json

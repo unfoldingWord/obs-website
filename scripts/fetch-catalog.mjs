@@ -16,14 +16,21 @@
 //
 // The same endpoint and filters as public/assets/js/discover.js: no `limit`
 // (omitting it returns every matching entry), no `metadataType` filter (16
-// languages only have the older translationStudio format).
+// languages only have the older translationStudio format). If the response
+// is nevertheless shorter than X-Total-Count, the remainder is fetched page
+// by page; a snapshot that is still short is an error, never written.
 //
-// Failure policy: a deploy that ships an empty catalog would publish "0
-// languages" and delist every translation, so a production build (`--required`)
-// fails when no data is available — Cloudflare Pages then keeps the previous
-// deployment live. An existing snapshot is kept (with a warning) when the fetch
-// fails. `npm run dev` runs without `--required` so offline development still
-// works; set OBS_CATALOG_ALLOW_EMPTY=1 to force a build through offline.
+// Failure policy: a deploy that ships an empty or partial catalog would
+// publish a wrong count and delist translations, so:
+//   - the snapshot on disk (src/data/catalog.json, committed as the offline
+//     fallback) is only overwritten by a complete, successful fetch;
+//   - on failure the existing snapshot is kept, with a warning;
+//   - a production build (`--required`) fails only when the fetch fails AND
+//     no snapshot exists — Cloudflare Pages then keeps the previous
+//     deployment live;
+//   - `npm run dev` runs without `--required`; OBS_CATALOG_ALLOW_EMPTY=1
+//     forces a build through with an empty snapshot (pages then state 0
+//     languages — visibly wrong on purpose, never a stale placeholder).
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -69,18 +76,43 @@ export function groupLanguages(entries) {
     .sort((a, b) => a.title.localeCompare(b.title, 'en'));
 }
 
-async function fetchCatalog() {
-  const res = await fetch(CATALOG_URL, { headers: { accept: 'application/json' } });
+const PAGE_SIZE = 1000;
+
+async function fetchPage(url) {
+  const res = await fetch(url, { headers: { accept: 'application/json' } });
   if (!res.ok) throw new Error(`DCS catalog responded ${res.status}`);
   const body = await res.json();
-  const entries = Array.isArray(body.data) ? body.data : [];
-  const total = parseInt(res.headers.get('x-total-count') || '', 10);
-  if (Number.isFinite(total) && total > entries.length) {
-    console.warn(
-      `[catalog] response has ${entries.length} entries but X-Total-Count is ${total} — the list may be truncated; the endpoint may need pagination now.`
-    );
-  }
+  return {
+    entries: Array.isArray(body.data) ? body.data : [],
+    total: parseInt(res.headers.get('x-total-count') || '', 10),
+  };
+}
+
+/** Fetch every catalog entry; throws unless the result is complete. */
+export async function fetchCatalog() {
+  const first = await fetchPage(CATALOG_URL);
+  let entries = first.entries;
+  const total = Number.isFinite(first.total) ? first.total : entries.length;
   if (entries.length === 0) throw new Error('DCS catalog returned no entries');
+
+  if (total > entries.length) {
+    console.warn(`[catalog] first response has ${entries.length} of ${total} entries — paginating.`);
+    const seen = new Set(entries.map((e) => `${e.owner}/${e.name}@${e.branch_or_tag_name}`));
+    for (let page = 1; entries.length < total; page++) {
+      const { entries: more } = await fetchPage(`${CATALOG_URL}&limit=${PAGE_SIZE}&page=${page}`);
+      if (more.length === 0) break;
+      for (const e of more) {
+        const key = `${e.owner}/${e.name}@${e.branch_or_tag_name}`;
+        if (!seen.has(key)) {
+          seen.add(key);
+          entries.push(e);
+        }
+      }
+    }
+    if (entries.length < total) {
+      throw new Error(`DCS catalog is truncated: got ${entries.length} of ${total} entries even after paginating`);
+    }
+  }
   return entries;
 }
 
@@ -115,10 +147,10 @@ if (isMain) {
       }
     }
     if (required) {
-      console.error('[catalog] no catalog data available — refusing to build a site with zero languages. Set OBS_CATALOG_ALLOW_EMPTY=1 to override.');
+      console.error('[catalog] no catalog data available and no committed snapshot — refusing to build a site with zero languages. Set OBS_CATALOG_ALLOW_EMPTY=1 to override.');
       process.exit(1);
     }
     writeSnapshot([]);
-    console.warn('[catalog] wrote an EMPTY snapshot — pages will fall back to placeholder facts. Do not deploy this build.');
+    console.warn('[catalog] wrote an EMPTY snapshot — every page will state 0 languages. Do not deploy this build.');
   }
 }
