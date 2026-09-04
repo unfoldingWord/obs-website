@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Vumbua — Open Bible Stories",
-    "description": "Soma Open Bible Stories katika lugha yako, kutoka kwa timu yoyote iliyochapisha."
+    "title": "Pata Open Bible Stories katika lugha yako — Vumbua",
+    "description": "Tafuta kati ya lugha {count} zilizochapishwa za Open Bible Stories. Soma mtandaoni, sikiliza sauti, tazama video au pakua PDF — bila malipo chini ya leseni huria."
   },
   "hero": {
     "eyebrow": "Pata Injili katika lugha yako",
@@ -14,6 +14,13 @@
     "filterAll": "Zote",
     "filterPrint": "Machapisho",
     "filterAudio": "Sauti",
-    "filterVideo": "Video"
+    "filterVideo": "Video",
+    "status": "Lugha {shown} kati ya {total} zilizochapishwa",
+    "noMatch": "Bado hakuna lugha inayolingana na utafutaji huo.",
+    "noMatchFormat": "Hakuna lugha inayolingana na utafutaji huo na muundo huo — jaribu muundo mwingine.",
+    "loading": "Inapakia lugha...",
+    "teams": "Timu {n} zimechapisha hii",
+    "back": "Rudi kwenye Vumbua",
+    "openFull": "Fungua ukurasa mzima"
   }
 }

@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Temukan — Open Bible Stories",
-    "description": "Baca Open Bible Stories dalam bahasa Anda, dari tim mana pun yang telah menerbitkannya."
+    "title": "Temukan Open Bible Stories dalam bahasa Anda — Temukan",
+    "description": "Cari di antara {count} bahasa Open Bible Stories yang telah diterbitkan. Baca daring, dengarkan audio, tonton video, atau unduh PDF — gratis di bawah lisensi terbuka."
   },
   "hero": {
     "eyebrow": "Temukan Injil dalam bahasa Anda",
@@ -14,6 +14,13 @@
     "filterAll": "Semua",
     "filterPrint": "Cetak",
     "filterAudio": "Audio",
-    "filterVideo": "Video"
+    "filterVideo": "Video",
+    "status": "{shown} dari {total} bahasa yang diterbitkan",
+    "noMatch": "Belum ada bahasa yang cocok dengan pencarian itu.",
+    "noMatchFormat": "Tidak ada bahasa yang cocok dengan pencarian dan format itu — coba format lain.",
+    "loading": "Memuat bahasa...",
+    "teams": "{n} tim telah menerbitkan ini",
+    "back": "Kembali ke Temukan",
+    "openFull": "Buka halaman penuh"
   }
 }

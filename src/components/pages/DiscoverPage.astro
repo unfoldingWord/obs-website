@@ -1,22 +1,41 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
+import { defaultLocale, localePath } from '../../i18n/config';
+import { languages, languageCount, withCount, languagePath } from '../../data/catalog';
+import { workNode, translationListNode } from '../../lib/jsonld';
 
 interface Props {
   locale: string;
 }
 const { locale } = Astro.props;
 const t = content(locale, 'discover');
+
+// The full language list is prerendered from the build-time catalog snapshot
+// (src/data/catalog.ts) so crawlers and no-JS visitors see every published
+// language. discover.js then enhances the same rows: search and format
+// filters hide/show them, and clicking a row opens the inline reader.
+//
+// Without JS the page is browse-only: each row links to this locale's
+// Discover page with #code, and the <li id={code}> makes that scroll to the
+// row. The reader itself needs JS until /l/{code}/ hubs exist (#6).
+const title = withCount(t.meta.title);
+const description = withCount(t.meta.description);
+const status = t.browse.status.replace('{shown}', String(languageCount)).replace('{total}', String(languageCount));
+
+// The ItemList of translations is emitted once, on the canonical (English)
+// catalog page, not repeated on all 16 locale copies.
+const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(languages)] : [workNode()];
 ---
 
-<Base locale={locale} slug="discover" title={t.meta.title} description={t.meta.description}>
+<Base locale={locale} slug="discover" title={title} description={description} jsonLd={jsonLd}>
 
 <section class="page-header" style="padding:44px 0 32px;">
   <div class="wrap">
     <div class="discover-hero-intro">
       <p class="eyebrow">{t.hero.eyebrow}</p>
       <h1 style="margin:8px 0 14px;">{t.hero.title}</h1>
-      <p style="max-width:520px;">{t.hero.sub}</p>
+      <p style="max-width:520px;">{withCount(t.hero.sub)}</p>
 
       <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="btn btn-outline" style="margin-top:20px;">{t.hero.ctaApp}</a>
 
@@ -25,11 +44,22 @@ const t = content(locale, 'discover');
       <img src="/assets/img/world-map-backdrop.svg" alt="" aria-hidden="true" class="discover-map-backdrop" />
     </div>
 
-    <div id="lang-browse" style="margin-top:60px;">
+    <div
+      id="lang-browse"
+      style="margin-top:60px;"
+      data-status={t.browse.status}
+      data-no-match={t.browse.noMatch}
+      data-no-match-format={t.browse.noMatchFormat}
+      data-loading={t.browse.loading}
+      data-teams={t.browse.teams}
+      data-back={t.browse.back}
+      data-open-full={t.browse.openFull}
+      data-read-path={localePath(locale, 'discover-read')}
+    >
       <div class="library-tools">
         <div class="search-box">
           <span aria-hidden="true">&#128269;</span>
-          <input id="lang-search" type="text" placeholder={t.browse.searchPlaceholder} aria-label={t.browse.searchPlaceholder} />
+          <input id="lang-search" type="search" name="q" placeholder={t.browse.searchPlaceholder} aria-label={t.browse.searchPlaceholder} />
         </div>
         <div class="format-filters">
           <button type="button" class="filter-chip active" data-format="all" aria-pressed="true">{t.browse.filterAll}</button>
@@ -38,8 +68,37 @@ const t = content(locale, 'discover');
           <button type="button" class="filter-chip" data-format="video" aria-pressed="false">{t.browse.filterVideo}</button>
         </div>
       </div>
-      <p id="lib-status" class="lib-status" aria-live="polite"></p>
-      <div id="lang-list" class="lang-list"></div>
+      <p id="lib-status" class="lib-status" aria-live="polite">{status}</p>
+      <ul id="lang-list" class="lang-list">
+        {
+          languages.map((l) => (
+            <li id={l.code}>
+              <a
+                class="lang-row"
+                href={languagePath(l.code, locale)}
+                data-lang={l.code}
+                data-title={l.title}
+                data-pdf={l.formats.pdf ? '1' : undefined}
+                data-audio={l.formats.audio ? '1' : undefined}
+                data-video={l.formats.video ? '1' : undefined}
+              >
+                <div>
+                  <div class="name" lang={l.code} dir={l.direction}>{l.title}</div>
+                  <div class="code">
+                    <code>{l.code}</code>
+                    {l.entries.length > 1 && <span> &middot; {t.browse.teams.replace('{n}', String(l.entries.length))}</span>}
+                  </div>
+                </div>
+                <div class="badges">
+                  {l.formats.pdf && <span class="badge">{t.browse.filterPrint}</span>}
+                  {l.formats.audio && <span class="badge audio">{t.browse.filterAudio}</span>}
+                  {l.formats.video && <span class="badge video">{t.browse.filterVideo}</span>}
+                </div>
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </div>
 
     <div id="lang-detail" hidden style="max-width:820px; margin:28px auto 0;"></div>

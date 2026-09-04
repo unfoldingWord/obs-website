@@ -1,7 +1,7 @@
 {
   "meta": {
-    "title": "Discover — Open Bible Stories",
-    "description": "Read Open Bible Stories in your language, by any published team."
+    "title": "Find Open Bible Stories in your language — Discover",
+    "description": "Search {count} published languages for Open Bible Stories. Read online, listen to audio, watch video, or download the PDF — free under an open license."
   },
   "hero": {
     "eyebrow": "Find the Gospel in your language",
@@ -14,6 +14,13 @@
     "filterAll": "All",
     "filterPrint": "Print",
     "filterAudio": "Audio",
-    "filterVideo": "Video"
+    "filterVideo": "Video",
+    "status": "{shown} of {total} published languages",
+    "noMatch": "No languages match that search yet.",
+    "noMatchFormat": "No languages match that search and format yet — try a different format.",
+    "loading": "Loading languages...",
+    "teams": "{n} teams have published this",
+    "back": "Back to Discover",
+    "openFull": "Open full page"
   }
 }

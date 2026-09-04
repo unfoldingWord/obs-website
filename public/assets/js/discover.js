@@ -87,7 +87,20 @@
   const browseEl = document.getElementById("lang-browse");
   const formatChips = document.querySelectorAll(".format-filters .filter-chip");
 
+  // Localized UI strings for the browse list come from data-* attributes on
+  // #lang-browse (set from src/i18n/{lang}/discover.json by DiscoverPage.astro).
+  // The reader itself is still English-only.
+  const browseStrings = (browseEl && browseEl.dataset) || {};
+  function str(key, fallback) {
+    return browseStrings[key] || fallback;
+  }
+
   let languageGroups = new Map();
+  // The language list is prerendered into the HTML at build time from the DCS
+  // catalog (see src/data/catalog.ts). Each row is an <a class="lang-row">
+  // carrying data-lang/data-title/data-pdf/data-audio/data-video, so the list,
+  // search and format filters work before (and without) the catalog fetch —
+  // the fetch is only needed to open a language's reader.
   let uniqueLanguages = [];
   let activeFormat = "all";
 
@@ -356,55 +369,43 @@
 
   // ---------- browse list (one row per language) ----------
 
+  // Reads the prerendered rows once; filtering then just hides/shows them.
+  function readPrerenderedList() {
+    uniqueLanguages = Array.from(listEl.querySelectorAll(".lang-row")).map((row) => ({
+      code: row.dataset.lang,
+      title: row.dataset.title || row.dataset.lang,
+      formats: {
+        pdf: row.dataset.pdf === "1",
+        audio: row.dataset.audio === "1",
+        video: row.dataset.video === "1",
+      },
+      item: row.closest("li") || row,
+    }));
+  }
+
   function renderList() {
     const query = searchEl.value.trim();
-    const filtered = uniqueLanguages
-      .filter((l) => matchesSearch(l, query))
-      .filter((l) => matchesFormat(l, activeFormat));
+    let shown = 0;
+    uniqueLanguages.forEach((l) => {
+      const visible = matchesSearch(l, query) && matchesFormat(l, activeFormat);
+      l.item.hidden = !visible;
+      if (visible) shown++;
+    });
 
-    if (filtered.length === 0) {
-      listEl.innerHTML = "";
+    if (shown === 0) {
       statusEl.textContent =
         activeFormat === "all"
-          ? "No languages match that search yet."
-          : "No languages match that search and format yet — try a different format.";
+          ? str("noMatch", "No languages match that search yet.")
+          : str(
+              "noMatchFormat",
+              "No languages match that search and format yet — try a different format."
+            );
       return;
     }
 
-    statusEl.textContent =
-      filtered.length + " of " + uniqueLanguages.length + " published languages";
-
-    listEl.innerHTML = filtered
-      .map((l) => {
-        const badges = [
-          l.formats.pdf ? '<span class="badge">Print</span>' : "",
-          l.formats.audio ? '<span class="badge audio">Audio</span>' : "",
-          l.formats.video ? '<span class="badge video">Video</span>' : "",
-        ].join("");
-        return `
-        <div class="lang-row" data-lang="${l.code}" tabindex="0" role="button">
-          <div>
-            <div class="name">${l.title}</div>
-            <div class="code">${l.code}${
-              l.count > 1 ? ` &middot; ${l.count} teams have published this` : ""
-            }</div>
-          </div>
-          <div class="badges">${badges}</div>
-        </div>`;
-      })
-      .join("");
-
-    listEl.querySelectorAll(".lang-row").forEach((row) => {
-      row.addEventListener("click", () => showDetail(row.dataset.lang));
-      row.addEventListener("keydown", (ev) => {
-        // role="button" must respond to Space as well as Enter; preventDefault
-        // stops Space from also scrolling the page.
-        if (ev.key === "Enter" || ev.key === " ") {
-          ev.preventDefault();
-          showDetail(row.dataset.lang);
-        }
-      });
-    });
+    statusEl.textContent = str("status", "{shown} of {total} published languages")
+      .replace("{shown}", shown)
+      .replace("{total}", uniqueLanguages.length);
   }
 
   // ---------- detail / reader ----------
@@ -413,31 +414,36 @@
     const group = languageGroups.get(code) || [];
     if (group.length === 0) return;
 
-    location.hash = code;
+    if (location.hash.replace("#", "") !== code) location.hash = code;
     browseEl.hidden = true;
     detailEl.hidden = false;
 
     const displayEntry = group[0];
     detailEl.innerHTML = `
       <div style="display:flex; align-items:center; justify-content:space-between; flex-wrap:wrap; gap:12px; margin-bottom:20px;">
-        <button id="back-to-browse" class="btn btn-outline">&larr; Back to Discover</button>
-        <a href="/discover/read/?lang=${encodeURIComponent(
+        <button id="back-to-browse" class="btn btn-outline">&larr; ${escapeHtml(
+          str("back", "Back to Discover")
+        )}</button>
+        <a href="${escapeHtml(str("readPath", "/discover/read/"))}?lang=${encodeURIComponent(
           code
-        )}" target="_blank" rel="noopener" class="btn btn-outline">Open full page &#8599;</a>
+        )}" target="_blank" rel="noopener" class="btn btn-outline">${escapeHtml(
+          str("openFull", "Open full page")
+        )} &#8599;</a>
       </div>
       <h2 style="color:var(--ocean); margin-bottom:4px;">${displayEntry.language_title}</h2>
       <p style="color:#4a5960; margin-bottom:20px;">${displayEntry.language} &middot; unfoldingWord&reg; Open Bible Stories</p>
       <div id="detail-body"><p style="color:#4a5960;">Loading...</p></div>
     `;
 
-    document
-      .getElementById("back-to-browse")
-      .addEventListener("click", () => {
-        location.hash = "";
-        detailEl.hidden = true;
-        browseEl.hidden = false;
-        clearReaderKeyHandler();
-      });
+    const backBtn = document.getElementById("back-to-browse");
+    backBtn.addEventListener("click", () => {
+      // Clearing the hash triggers syncFromHash(), which shows the list.
+      if (location.hash) location.hash = "";
+      else showBrowse();
+    });
+    // The list the visitor was in is now hidden; move focus into the detail
+    // view so keyboard and screen-reader users aren't left on a hidden row.
+    backBtn.focus();
 
     renderLanguageBody(group, document.getElementById("detail-body"));
   }
@@ -979,7 +985,56 @@
         });
     }
   } else if (browseEl) {
+    readPrerenderedList();
+
+    // WebSite SearchAction (JSON-LD in Base.astro) lands here with ?q=.
+    const initialQuery = new URLSearchParams(window.location.search).get("q");
+    if (initialQuery && !searchEl.value) searchEl.value = initialQuery;
+    renderList();
+
     searchEl.addEventListener("input", renderList);
+
+    function showBrowse() {
+      detailEl.hidden = true;
+      browseEl.hidden = false;
+      clearReaderKeyHandler();
+    }
+
+    // Language code from the URL fragment. Legacy /library deep links used
+    // codes like "kmz--fa_gl--kmz_obs_text_obs" (language code + team/resource
+    // id); keep only the language code.
+    function codeFromHash() {
+      let hashCode = decodeURIComponent(location.hash.replace("#", ""));
+      const legacySep = hashCode.indexOf("--");
+      if (legacySep !== -1) hashCode = hashCode.slice(0, legacySep);
+      return hashCode;
+    }
+
+    // The URL fragment is the single source of truth for "which language is
+    // open": rows are plain links to #code, the Back button clears it, and the
+    // browser's own back/forward buttons work. Until the catalog has loaded
+    // there is nothing to render for a code, so this is re-run after hydrate.
+    function syncFromHash() {
+      const code = codeFromHash();
+      if (code && languageGroups.has(code)) {
+        showDetail(code);
+      } else if (!code) {
+        showBrowse();
+      }
+    }
+    window.addEventListener("hashchange", syncFromHash);
+
+    // Row clicks navigate to #code, which syncFromHash picks up. When the
+    // clicked code isn't in the loaded catalog (or the catalog is still
+    // loading), the default link behaviour keeps the hash so the language
+    // opens as soon as the data arrives.
+    listEl.addEventListener("click", (ev) => {
+      const row = ev.target.closest(".lang-row");
+      if (!row || !languageGroups.has(row.dataset.lang)) return;
+      ev.preventDefault();
+      if (location.hash.replace("#", "") === row.dataset.lang) showDetail(row.dataset.lang);
+      else location.hash = row.dataset.lang;
+    });
 
     formatChips.forEach((chip) => {
       chip.addEventListener("click", () => {
@@ -994,8 +1049,9 @@
     });
 
     // Shared by both the cache-hit and live-fetch paths so there's exactly
-    // one place that builds languageGroups/uniqueLanguages from a list of
-    // (already-trimmed) catalog entries.
+    // one place that builds languageGroups from a list of (already-trimmed)
+    // catalog entries. The visible list itself is prerendered (see
+    // readPrerenderedList); the catalog is what the reader needs.
     function hydrateFromEntries(languages) {
       languageGroups = new Map();
       languages.forEach((e) => {
@@ -1004,42 +1060,13 @@
         languageGroups.set(e.language, arr);
       });
 
-      // Each catalog entry already reports its own attachment_types (pdf /
-      // audio / video / stream / other) — no extra per-language fetch
-      // needed. "stream" is what a hosted YouTube link is tagged as (see
-      // youtubeEmbedUrl/latestReleaseWithYouTube below), so "video"
-      // availability means either a direct video asset or a stream link.
-      // A language counts as having a format if ANY team that published it
-      // offers that format, since the reader lets the visitor pick a team.
-      uniqueLanguages = Array.from(languageGroups.entries())
-        .map(([code, entries]) => ({
-          code,
-          title: entries[0].language_title || code,
-          count: entries.length,
-          formats: {
-            pdf: entries.some((e) => e.attachment_types && e.attachment_types.pdf),
-            audio: entries.some((e) => e.attachment_types && e.attachment_types.audio),
-            video: entries.some(
-              (e) =>
-                e.attachment_types &&
-                (e.attachment_types.video || e.attachment_types.stream)
-            ),
-          },
-        }))
-        .sort((a, b) => a.title.localeCompare(b.title));
+      // The visible list is never changed from the live catalog: the
+      // prerendered rows, the homepage count, the meta descriptions and the
+      // JSON-LD all come from the same build-time snapshot, and appending
+      // rows here would make the list disagree with all of them. A language
+      // published since the last deploy appears on the next build.
 
-      renderList();
-
-      // Legacy /library deep links used codes like "kmz--fa_gl--kmz_obs_text_obs"
-      // (language code + team/resource id). Keep only the language code.
-      let hashCode = location.hash.replace("#", "");
-      const legacySep = hashCode.indexOf("--");
-      if (legacySep !== -1) {
-        hashCode = hashCode.slice(0, legacySep);
-      }
-      if (hashCode && languageGroups.has(hashCode)) {
-        showDetail(hashCode);
-      }
+      syncFromHash();
     }
 
     function renderLoadError() {
@@ -1047,7 +1074,7 @@
       // the restrictive networks common in the regions this project serves.
       // Offer an in-place retry plus the two working alternate routes.
       statusEl.innerHTML =
-        'The language list couldn\'t be loaded — the Door43 catalog may be ' +
+        'The stories couldn\'t be loaded — the Door43 catalog may be ' +
         'unreachable from your network. ' +
         '<button type="button" id="lib-retry" class="btn btn-outline" style="padding:8px 18px; font-size:0.85rem; margin:10px 6px 0;">Try again</button>' +
         '<span style="display:block; margin-top:10px;">You can also browse on ' +
@@ -1058,7 +1085,8 @@
     }
 
     function loadCatalog() {
-      statusEl.textContent = "Loading languages...";
+      // The prerendered list is already visible; only the reader is pending.
+      if (uniqueLanguages.length === 0) statusEl.textContent = str("loading", "Loading languages...");
 
       fetch(CATALOG_URL)
         .then((res) => {

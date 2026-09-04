@@ -1,0 +1,64 @@
+[
+  {
+    "_comment": "SYNTHETIC test fixture in the shape of DCS /api/v1/catalog/search entries (fields the site reads). Not real catalog data.",
+    "owner": "unfoldingWord",
+    "name": "en_obs",
+    "branch_or_tag_name": "v9",
+    "title": "Open Bible Stories",
+    "language": "en",
+    "language_title": "English",
+    "language_direction": "ltr",
+    "metadata_type": "rc",
+    "attachment_types": { "pdf": true, "audio": true, "video": true }
+  },
+  {
+    "owner": "team-a",
+    "name": "sw_obs",
+    "branch_or_tag_name": "v1",
+    "title": "Open Bible Stories",
+    "language": "sw",
+    "language_title": "Kiswahili",
+    "language_direction": "ltr",
+    "metadata_type": "rc",
+    "attachment_types": { "pdf": true }
+  },
+  {
+    "owner": "team-b",
+    "name": "sw_obs",
+    "branch_or_tag_name": "v2",
+    "title": "Open Bible Stories",
+    "language": "sw",
+    "language_title": "Kiswahili",
+    "metadata_type": "ts",
+    "attachment_types": { "stream": true }
+  },
+  {
+    "owner": "team-c",
+    "name": "ar_obs",
+    "branch_or_tag_name": "v1",
+    "title": "Open Bible Stories",
+    "language": "ar",
+    "language_title": "العربية",
+    "language_direction": "rtl",
+    "metadata_type": "rc",
+    "attachment_types": { "audio": true }
+  },
+  {
+    "owner": "team-d",
+    "name": "ha_obs-tf",
+    "branch_or_tag_name": "v1",
+    "title": "Open Bible Stories — Theological Formation Edition",
+    "language": "ha",
+    "language_title": "Hausa",
+    "metadata_type": "rc",
+    "attachment_types": { "pdf": true }
+  },
+  {
+    "owner": "team-e",
+    "name": "zz_obs",
+    "branch_or_tag_name": "v1",
+    "title": "Open Bible Stories",
+    "language": "zz",
+    "metadata_type": "rc"
+  }
+]
