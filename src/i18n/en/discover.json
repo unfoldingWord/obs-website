@@ -22,6 +22,7 @@
     "teams": "{n} teams have published this",
     "back": "Back to Discover",
     "openFull": "Open full page",
-    "languagePage": "Language page"
+    "languagePage": "Downloads & details",
+    "offline": "Reading online isn't available right now (Door43 can't be reached). You can still open any language for its downloads."
   }
 }

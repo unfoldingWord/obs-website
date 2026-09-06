@@ -19,6 +19,7 @@ import {
   assetFormats,
   fetchMissingAssets,
   enrichAssets,
+  sortLanguages,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -121,6 +122,16 @@ test('applyLangnames sets englishName whenever it differs from the chosen autony
   assert.deepEqual([out.hi.title, out.hi.englishName], ['हिन्दी', 'Hindi']);
   assert.deepEqual([out.zh.title, out.zh.englishName], ['中文 (Zhōngwén)', 'Chinese']);
   assert.deepEqual([out['es-419'].title, out['es-419'].englishName], ['Español de Latinoamérica', 'Spanish (Latin America)']);
+});
+
+test('sortLanguages orders by English name so scripts do not decide position', () => {
+  const out = sortLanguages([
+    { code: 'ur', title: 'اردو', englishName: 'Urdu' },
+    { code: 'sw', title: 'Kiswahili', englishName: 'Swahili' },
+    { code: 'hi', title: 'हिन्दी', englishName: 'Hindi' },
+    { code: 'zz', title: 'Aa', englishName: null },
+  ]);
+  assert.deepEqual(out.map((l) => l.code), ['zz', 'hi', 'sw', 'ur']);
 });
 
 test('scriptFor maps Urdu in Arabic script to the Nastaliq pack', () => {

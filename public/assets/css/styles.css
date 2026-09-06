@@ -416,6 +416,8 @@ section{padding:80px 0;}
 .lang-row:hover{background:var(--panel);}
 .lang-row .name{font-weight:700; color:var(--ocean); font-size:1rem;}
 .lang-row .code{font-size:0.82rem; color:#4a5960;}
+.lang-row .code .english{color:var(--ocean); font-weight:600;}
+.detail-text-link{color:var(--inspire-text); text-decoration:underline; font-size:0.92rem;}
 .lang-row .code code{font-family:inherit;}
 .lang-row .badges{display:flex; gap:6px; flex-wrap:wrap; justify-content:flex-end;}
 .badge{font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:999px; background:var(--panel); color:var(--ocean);}
@@ -695,24 +697,40 @@ html[data-script="han"]{
 html[data-script="nastaliq"] body{line-height:2;}
 html[data-script="nastaliq"] h1, html[data-script="nastaliq"] h2, html[data-script="nastaliq"] h3, html[data-script="nastaliq"] h4{line-height:1.7 !important;}
 
+/* Letter-spaced uppercase is a Latin/Cyrillic convention: on Arabic-script
+   text it separates letters that must join, and on Devanagari it splits
+   conjuncts. Applies to the ar/ur/hi/… marketing pages as well as hubs. */
+html:not([data-script="latin"]):not([data-script="cyrillic"]) .eyebrow{letter-spacing:0;}
+
 /* ---------- LANGUAGE HUBS (/l/{code}/) ---------- */
+.hub-back{margin-bottom:22px; padding:9px 18px; font-size:0.85rem;}
 .hub-header h1{font-size:clamp(2rem, 5vw, 3.2rem); margin:6px 0 4px;}
 .hub-english-name{font-size:1.25rem; color:#4a5960; margin:0 0 18px; font-weight:600;}
-.hub-facts{display:grid; grid-template-columns:max-content 1fr; gap:6px 18px; margin:18px 0 0; font-size:0.95rem; max-width:720px;}
-.hub-facts dt{font-weight:700; color:var(--ocean);}
-.hub-facts dd{margin:0; color:var(--tech);}
-.hub-facts code{font-family:inherit; background:var(--panel); padding:1px 8px; border-radius:6px;}
-.hub-version, .hub-cc{color:#64747d; font-size:0.85em;}
-.hub-format-list{list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:12px;}
+.hub-format-list{list-style:none; padding:0; margin:22px 0 0; display:flex; flex-wrap:wrap; gap:12px;}
 .hub-app-note{margin:18px 0 0; font-size:0.95rem; color:#4a5960;}
-.hub-asset-meta{font-weight:400; font-size:0.78em; opacity:0.75; margin-inline-start:6px;}
+/* Inline links inside the hub's text need a non-colour cue (WCAG 1.4.1);
+   the global a{} rule strips both colour and underline. */
+.hub-facts a, .hub-license a, .hub-app-note a, .hub-partial a{color:var(--inspire-text); text-decoration:underline;}
+.hub-extract-grid{display:grid; grid-template-columns:minmax(0, 360px) minmax(0, 1fr); gap:32px; align-items:start;}
+.hub-extract-grid img{width:100%; height:auto; border-radius:12px; box-shadow:0 12px 28px rgba(1,66,99,0.16);}
 .hub-extract blockquote{border-inline-start:3px solid var(--inspire); padding-inline-start:20px; margin:18px 0; font-size:1.15rem; line-height:1.7; color:var(--tech); max-width:760px;}
+html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 .hub-extract-title{font-family:var(--heading-font); font-weight:800; color:var(--ocean); margin:0 0 10px;}
 .hub-extract footer{font-style:italic; color:#64747d; font-size:0.9rem; margin-top:10px;}
+.hub-partial{color:#4a5960; margin:-6px 0 18px;}
+.hub-partial a{margin-inline-start:6px;}
 .hub-story-list{list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:4px 24px;}
 .hub-story-list a{display:flex; gap:12px; align-items:baseline; padding:8px 10px; border-radius:8px; color:var(--tech); text-decoration:none;}
 .hub-story-list a:hover{background:var(--panel);}
 .hub-story-num{font-weight:800; color:var(--inspire-text); min-width:2ch; text-align:end;}
-.hub-license{background:var(--panel);}
-.hub-license .wrap{font-size:0.9rem; color:#4a5960;}
+.hub-about{background:var(--panel);}
+.hub-about h2{font-size:1.3rem;}
+.hub-facts{display:grid; grid-template-columns:max-content 1fr; gap:6px 18px; margin:18px 0 0; font-size:0.95rem; max-width:720px;}
+.hub-facts dt{font-weight:700; color:var(--ocean);}
+.hub-facts dd{margin:0; color:var(--tech);}
+.hub-facts code{font-family:inherit; background:var(--white); padding:1px 8px; border-radius:6px;}
+.hub-publishers{list-style:none; padding:0; margin:0;}
+.hub-version, .hub-cc{color:#64747d; font-size:0.85em;}
+.hub-license{font-size:0.9rem; color:#4a5960; margin:24px 0 0;}
+@media (max-width:760px){ .hub-extract-grid{grid-template-columns:1fr;} .hub-extract-grid img{max-width:360px;} }
 @media (max-width:640px){ .hub-facts{grid-template-columns:1fr;} .hub-facts dt{margin-top:8px;} }

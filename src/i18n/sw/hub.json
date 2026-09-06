@@ -14,11 +14,15 @@
   "video": "Tazama (video)",
   "app": "Pata programu ya simu",
   "extractTitle": "Kutoka hadithi ya 1",
-  "storiesTitle": "Hadithi zote {n}",
+  "storiesTitle": "Hadithi ({n} kati ya {total})",
   "version": "v{version}",
   "teams": "Timu {n} zimechapisha lugha hii.",
   "allLanguages": "Lugha zote",
   "license": "Bila malipo kutumia, kubadilisha na kushiriki chini ya leseni huria",
   "source": "Chanzo kwenye Door43",
-  "readStory": "Soma hadithi hii"
+  "readStory": "Soma hadithi hii",
+  "partial": "Hadithi {n} kati ya {total} zimetafsiriwa hadi sasa.",
+  "partialLink": "Saidia kutafsiri zilizobaki",
+  "audioZip": "Pakua sauti zote ({size})",
+  "about": "Kuhusu tafsiri hii"
 }

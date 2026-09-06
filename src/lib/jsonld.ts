@@ -5,7 +5,7 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import { languagePath, readerPath, classifyAssets, hubLocaleFor, readableStories, publishersOf, type CatalogLanguage } from '../data/catalog';
+import { languagePath, readerPath, classifyAssets, hubLocaleFor, readableStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -163,6 +163,7 @@ export function hubNodes(lang: CatalogLanguage) {
     sameAs: lang.entries.map((e) => `https://git.door43.org/${e.owner}/${e.name}`),
     version: lang.entries[0]?.branch_or_tag_name ?? undefined,
     dateModified: lang.updated ?? undefined,
+    image: storyImage(1),
   };
   if (alternateName.length) extra.alternateName = alternateName;
   if (lang.extract?.text) extra.abstract = lang.extract.text;

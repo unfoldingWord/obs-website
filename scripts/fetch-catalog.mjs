@@ -252,6 +252,16 @@ export function applyLangnames(languages, langnames) {
   });
 }
 
+/**
+ * Display order for the language list: by English name where known, else
+ * the autonym. Sorting by autonym would sink every non-Latin script below
+ * all Latin names, so a Hindi or Arabic reader would scroll past everything.
+ */
+export function sortLanguages(languages) {
+  const key = (l) => l.englishName || l.title || l.code;
+  return [...languages].sort((a, b) => key(a).localeCompare(key(b), 'en'));
+}
+
 /** Parse one Resource Container story markdown file into title/paragraphs/reference. */
 export function parseStoryMarkdown(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n/, '');
@@ -582,6 +592,8 @@ if (isMain) {
       return p ? { ...l, englishName: p.englishName ?? null, altNames: p.altNames ?? [], region: p.region ?? null, countryCodes: p.countryCodes ?? [], direction: p.direction ?? l.direction } : l;
     });
   }
+
+  languages = sortLanguages(languages);
 
   // Optional enrichment 2: PDFs/audio/video from older releases, incrementally.
   languages = await enrichAssets(languages, previous);

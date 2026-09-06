@@ -22,6 +22,7 @@
     "teams": "已有 {n} 个团队发布此译本",
     "back": "返回“发现”",
     "openFull": "在整页中打开",
-    "languagePage": "语言页面"
+    "languagePage": "下载与详情",
+    "offline": "目前无法在线阅读（无法连接 Door43）。您仍可打开任一语言查看其下载内容。"
   }
 }

@@ -57,6 +57,7 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
       data-open-full={t.browse.openFull}
       data-read-path={localePath(locale, 'discover-read')}
       data-language-page={t.browse.languagePage}
+      data-offline={t.browse.offline}
     >
       <div class="library-tools">
         <div class="search-box">
@@ -80,6 +81,7 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
                 href={languagePath(l.code)}
                 data-lang={l.code}
                 data-title={l.title}
+                data-search={[l.title, l.englishName, ...l.altNames, l.code].filter(Boolean).join(' ')}
                 data-pdf={l.formats.pdf ? '1' : undefined}
                 data-audio={l.formats.audio ? '1' : undefined}
                 data-video={l.formats.video ? '1' : undefined}
@@ -87,6 +89,7 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
                 <div>
                   <div class="name" lang={l.code} dir={l.direction}>{l.title}</div>
                   <div class="code">
+                    {l.englishName && l.englishName !== l.title && <span class="english">{l.englishName} &middot; </span>}
                     <code>{l.code}</code>
                     {l.entries.length > 1 && <span> &middot; {t.browse.teams.replace('{n}', String(l.entries.length))}</span>}
                   </div>

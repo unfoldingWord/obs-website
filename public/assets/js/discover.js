@@ -356,13 +356,13 @@
       });
   }
 
+  // Matches the autonym, the English name, alternate names and the code
+  // (data-search on the row), so "Swahili" finds Kiswahili and "Hindi"
+  // finds हिन्दी.
   function matchesSearch(langRow, query) {
     if (!query) return true;
     const q = query.toLowerCase();
-    return (
-      langRow.title.toLowerCase().includes(q) ||
-      langRow.code.toLowerCase().includes(q)
-    );
+    return langRow.search.includes(q);
   }
 
   function matchesFormat(langRow, format) {
@@ -377,6 +377,7 @@
     uniqueLanguages = Array.from(listEl.querySelectorAll(".lang-row")).map((row) => ({
       code: row.dataset.lang,
       title: row.dataset.title || row.dataset.lang,
+      search: `${row.dataset.search || row.dataset.title || ""} ${row.dataset.lang}`.toLowerCase(),
       formats: {
         pdf: row.dataset.pdf === "1",
         audio: row.dataset.audio === "1",
@@ -427,13 +428,13 @@
         <button id="back-to-browse" class="btn btn-outline">&larr; ${escapeHtml(
           str("back", "Back to Discover")
         )}</button>
-        <span style="display:flex; gap:10px; flex-wrap:wrap;">
+        <span style="display:flex; gap:16px; flex-wrap:wrap; align-items:center;">
           <a href="/l/${encodeURIComponent(code)}/" class="btn btn-outline">${escapeHtml(
-            str("languagePage", "Language page")
+            str("languagePage", "Downloads & details")
           )}</a>
           <a href="${escapeHtml(str("readPath", "/discover/read/"))}?lang=${encodeURIComponent(
             code
-          )}" target="_blank" rel="noopener" class="btn btn-outline">${escapeHtml(
+          )}" target="_blank" rel="noopener" class="detail-text-link">${escapeHtml(
             str("openFull", "Open full page")
           )} &#8599;</a>
         </span>
@@ -974,6 +975,16 @@
       fullReaderEl.innerHTML =
         '<p style="color:#4a5960;">No language specified. Go back to Discover and pick one.</p>';
     } else {
+      // The language hub is the page most readers came from, works without
+      // DCS, and carries the downloads — point Back at it and offer it in
+      // the failure state.
+      const hubHref = `/l/${encodeURIComponent(code)}/`;
+      const hubLabel = fullReaderEl.dataset.languagePage || "Downloads & details";
+      const backEl = document.getElementById("reader-back");
+      if (backEl) {
+        backEl.href = hubHref;
+        backEl.innerHTML = `&larr; ${escapeHtml(hubLabel)}`;
+      }
       fullReaderEl.innerHTML =
         '<p style="color:#4a5960;">Loading...</p>';
 
@@ -997,7 +1008,9 @@
         })
         .catch(() => {
           fullReaderEl.innerHTML =
-            '<p style="color:#4a5960;">Couldn\'t load this right now.</p>';
+            '<p style="color:#4a5960;">Couldn\'t load this right now — the Door43 catalog may be unreachable from your network. ' +
+            `<a href="${hubHref}" style="color:var(--inspire-text); text-decoration:underline;">${escapeHtml(hubLabel)}</a>` +
+            ' has the PDF and other downloads for this language.</p>';
         });
     }
   } else if (browseEl) {
@@ -1086,6 +1099,27 @@
     }
 
     function renderLoadError() {
+      // The prerendered list is still there and every row links to its hub
+      // (which has the downloads), so say what still works instead of
+      // contradicting a populated list and recommending the host that just
+      // failed. The full message is only for the (offline-build) case with
+      // no rows at all.
+      if (uniqueLanguages.length > 0) {
+        statusEl.textContent = str(
+          "offline",
+          "Reading online isn't available right now (Door43 can't be reached). You can still open any language for its downloads."
+        );
+        const retry = document.createElement("button");
+        retry.type = "button";
+        retry.id = "lib-retry";
+        retry.className = "btn btn-outline";
+        retry.style.cssText = "padding:8px 18px; font-size:0.85rem; margin:10px 6px 0;";
+        retry.textContent = "Try again";
+        retry.addEventListener("click", loadCatalog);
+        statusEl.appendChild(document.createTextNode(" "));
+        statusEl.appendChild(retry);
+        return;
+      }
       // A dead-end "try refreshing" line helps nobody — especially behind
       // the restrictive networks common in the regions this project serves.
       // Offer an in-place retry plus the two working alternate routes.

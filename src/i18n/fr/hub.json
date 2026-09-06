@@ -14,11 +14,15 @@
   "video": "Regarder (vidéo)",
   "app": "Obtenir l'application mobile",
   "extractTitle": "Extrait de l'histoire 1",
-  "storiesTitle": "Les {n} histoires",
+  "storiesTitle": "Histoires ({n} sur {total})",
   "version": "v{version}",
   "teams": "{n} équipes ont publié cette langue.",
   "allLanguages": "Toutes les langues",
   "license": "Libre d'utilisation, d'adaptation et de partage sous licence ouverte",
   "source": "Source sur Door43",
-  "readStory": "Lire cette histoire"
+  "readStory": "Lire cette histoire",
+  "partial": "{n} histoires sur {total} sont traduites pour l'instant.",
+  "partialLink": "Aidez à traduire le reste",
+  "audioZip": "Télécharger tout l'audio ({size})",
+  "about": "À propos de cette traduction"
 }

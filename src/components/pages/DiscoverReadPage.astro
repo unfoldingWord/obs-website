@@ -8,19 +8,22 @@ interface Props {
 }
 const { locale } = Astro.props;
 const t = content(locale, 'discover-read');
+const browse = content(locale, 'discover').browse;
 ---
 
 <Base locale={locale} slug="discover-read" title={t.meta.title} description={t.meta.description}>
 
 <section class="page-header" style="padding:32px 0 24px;">
   <div class="wrap">
-    <a href={localePath(locale, 'discover')} class="btn btn-outline" set:html={t.back} />
+    <a id="reader-back" href={localePath(locale, 'discover')} class="btn btn-outline" set:html={t.back} />
   </div>
 </section>
 
 <section style="padding-top:0;">
   <div class="wrap">
-    <div id="full-reader"></div>
+    <!-- discover.js adds a link back to the language hub (/l/{code}/) when
+         ?lang= is present — the hub works offline and carries the PDFs. -->
+    <div id="full-reader" data-language-page={browse.languagePage}></div>
   </div>
 </section>
 

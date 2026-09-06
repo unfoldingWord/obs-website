@@ -14,11 +14,15 @@
   "video": "观看（视频）",
   "app": "获取移动应用",
   "extractTitle": "故事 1 节选",
-  "storiesTitle": "全部 {n} 个故事",
+  "storiesTitle": "故事（{n} / {total}）",
   "version": "v{version}",
   "teams": "已有 {n} 个团队发布此语言。",
   "allLanguages": "所有语言",
   "license": "可在开放许可下自由使用、改编和分享",
   "source": "Door43 上的源文件",
-  "readStory": "阅读此故事"
+  "readStory": "阅读此故事",
+  "partial": "目前已翻译 {total} 个故事中的 {n} 个。",
+  "partialLink": "帮助翻译其余故事",
+  "audioZip": "下载全部音频（{size}）",
+  "about": "关于此译本"
 }

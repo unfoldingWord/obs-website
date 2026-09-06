@@ -14,11 +14,15 @@
   "video": "Bekijken (video)",
   "app": "Download de mobiele app",
   "extractTitle": "Uit verhaal 1",
-  "storiesTitle": "Alle {n} verhalen",
+  "storiesTitle": "Verhalen ({n} van {total})",
   "version": "v{version}",
   "teams": "{n} teams hebben deze taal gepubliceerd.",
   "allLanguages": "Alle talen",
   "license": "Gratis te gebruiken, aan te passen en te delen onder een open licentie",
   "source": "Bron op Door43",
-  "readStory": "Dit verhaal lezen"
+  "readStory": "Dit verhaal lezen",
+  "partial": "Tot nu toe zijn {n} van de {total} verhalen vertaald.",
+  "partialLink": "Help de rest te vertalen",
+  "audioZip": "Alle audio downloaden ({size})",
+  "about": "Over deze vertaling"
 }

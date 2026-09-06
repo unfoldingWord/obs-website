@@ -14,11 +14,15 @@
   "video": "Tonton (video)",
   "app": "Dapatkan aplikasi seluler",
   "extractTitle": "Dari cerita 1",
-  "storiesTitle": "Semua {n} cerita",
+  "storiesTitle": "Cerita ({n} dari {total})",
   "version": "v{version}",
   "teams": "{n} tim telah menerbitkan bahasa ini.",
   "allLanguages": "Semua bahasa",
   "license": "Gratis untuk digunakan, diadaptasi, dan dibagikan di bawah lisensi terbuka",
   "source": "Sumber di Door43",
-  "readStory": "Baca cerita ini"
+  "readStory": "Baca cerita ini",
+  "partial": "Sejauh ini {n} dari {total} cerita telah diterjemahkan.",
+  "partialLink": "Bantu terjemahkan sisanya",
+  "audioZip": "Unduh semua audio ({size})",
+  "about": "Tentang terjemahan ini"
 }

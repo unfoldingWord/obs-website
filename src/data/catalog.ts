@@ -135,6 +135,18 @@ export function hubLocaleFor(code: string): string {
   return locale.code;
 }
 
+/** Name to show as the hub's H1: the autonym, or the English name when the
+ *  autonym is unknown (the code stands in for the title then). */
+export function displayName(lang: CatalogLanguage): string {
+  return lang.title === lang.code && lang.englishName ? lang.englishName : lang.title;
+}
+
+/** The illustration for a story's first frame. The OBS art is language-
+ *  independent; this is the same host and size the reader loads from. */
+export function storyImage(num: number): string {
+  return `https://cdn.door43.org/obs/jpg/360px/obs-en-${String(num).padStart(2, '0')}-01.jpg`;
+}
+
 /** Stories that were actually read from the repo (a title exists). The hub
  *  and its JSON-LD list exactly these — never a padded list of 50. */
 export function readableStories(lang: CatalogLanguage): CatalogStory[] {
@@ -149,6 +161,29 @@ export function publishersOf(lang: CatalogLanguage): string[] {
 /** The YouTube link for a language, if any release carries one. */
 export function youtubeOf(lang: CatalogLanguage): CatalogAsset | undefined {
   return classifyAssets(lang).video.find((a) => /youtu\.?be/i.test(a.url));
+}
+
+/** The one PDF to offer first: from the most recently released entry that
+ *  has one. Other teams' PDFs are listed under their publisher. */
+export function primaryPdf(lang: CatalogLanguage): (CatalogAsset & { owner: string }) | undefined {
+  const byDate = [...lang.entries].sort((a, b) => (b.released ?? '').localeCompare(a.released ?? ''));
+  for (const e of byDate) {
+    const pdf = e.assets.find((a) => /\.pdf$/i.test(a.name) || /\.pdf$/i.test(a.url));
+    if (pdf) return { ...pdf, owner: e.owner };
+  }
+  return undefined;
+}
+
+/** The full-audio zip for a language, if a release carries one. */
+export function audioZipOf(lang: CatalogLanguage): CatalogAsset | undefined {
+  return classifyAssets(lang).audio.find((a) => /\.zip$/i.test(a.name));
+}
+
+/** Human file size for download labels, or null when unknown. */
+export function formatSize(n: number | null | undefined): string | null {
+  if (!n) return null;
+  const mb = n / 1048576;
+  return `${mb.toFixed(mb > 10 ? 0 : 1)} MB`;
 }
 
 /** Stylesheet for a detected script, or null when the Latin faces suffice. */
