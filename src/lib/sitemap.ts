@@ -3,8 +3,9 @@
 // with lastmod from the catalog). robots.txt points at sitemap-index.xml.
 import { locales, defaultLocale, localizedSlugs, englishOnlySlugs, localePath } from '../i18n/config';
 import { languages, languagePath } from '../data/catalog';
+import { SITE_URL } from './jsonld';
 
-export const SITE = 'https://openbiblestories.org';
+export const SITE = SITE_URL;
 
 const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
 

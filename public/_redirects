@@ -20,3 +20,8 @@ https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
 # Resources tab.
 /features/*   /why-obs/              301
 /resources/*  /translate/#resources  301
+
+# @astrojs/sitemap used to emit sitemap-0.xml; the sitemap is now an index
+# (sitemap-index.xml → sitemap-pages.xml + sitemap-languages.xml). Keep the
+# old URL alive for crawlers that still hold it. Safe to remove in 2027.
+/sitemap-0.xml  /sitemap-pages.xml  301

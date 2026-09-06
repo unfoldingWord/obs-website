@@ -882,11 +882,15 @@
     // Always available regardless of asset content.
     linksEl.innerHTML = `<a href="https://git.door43.org/${entry.owner}/${entry.name}" target="_blank" rel="noopener" style="color:var(--inspire-text);">View source on Door43</a>`;
 
+    // Consume the ?story= deep link now, not when the file list resolves —
+    // otherwise opening another language before the first resolves would
+    // apply it to the wrong language.
+    const wantedStory = initialStory;
+    initialStory = null;
     fetchStoryFiles(entry).then((files) => {
       storyFiles = files;
       maxStory = storyFiles.length || 1;
-      if (initialStory && storyFiles.some((s) => s.num === initialStory)) current = initialStory;
-      initialStory = null;
+      if (wantedStory && storyFiles.some((s) => s.num === wantedStory)) current = wantedStory;
       buildStorySelect();
       update();
     });

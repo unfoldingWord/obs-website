@@ -23,9 +23,15 @@
 //      (16 languages only have the older translationStudio format). If the
 //      response is shorter than X-Total-Count the whole list is re-fetched
 //      in explicit pages; a still-short result is an error, never written.
-//   2. translationDatabase langnames.json (optional enrichment) — English
-//      name, alternate names, region, country codes and direction per code.
-//   3. Story text per language (optional enrichment) — the 50 story titles
+//   2. translationDatabase langnames.json (optional enrichment) — autonym
+//      (where the manifest only has the English name), English name,
+//      alternate names, region, country codes and direction per code.
+//   3. Release assets (optional enrichment) — when the catalog says a
+//      language has a PDF/audio/video but the entry's own release carries no
+//      such file (Door43-Catalog releases have no assets), the repo's release
+//      history is walked for the newest release that has it, the same way
+//      discover.js resolves formats at runtime.
+//   4. Story text per language (optional enrichment) — the 50 story titles
 //      and a short extract of story 1, straight from each repo. This is
 //      ~50 small fetches per language; results are cached in the snapshot
 //      and only re-fetched for entries whose release changed, so after the
@@ -68,15 +74,68 @@ const pad = (n) => String(n).padStart(2, '0');
 // Pure helpers (unit-tested in fetch-catalog.test.mjs)
 // ---------------------------------------------------------------------------
 
+const ASSET_NAME_RE = /\.(pdf|epub|docx|zip|mp3|mp4|3gp)$/i;
+const YOUTUBE_RE = /youtu\.?be/i;
+
 /** Downloadable assets worth listing on a hub, from a catalog entry's release. */
 export function compactAssets(entry) {
-  const assets = entry?.release?.assets;
+  return compactAssetList(entry?.release?.assets);
+}
+
+function compactAssetList(assets, tag = null) {
   if (!Array.isArray(assets)) return [];
   return assets
     .filter((a) => a && a.name && a.browser_download_url)
-    .filter((a) => /\.(pdf|epub|docx|zip|mp3|mp4|3gp)$/i.test(a.name) || /youtu\.?be/i.test(a.browser_download_url))
+    .filter((a) => ASSET_NAME_RE.test(a.name) || YOUTUBE_RE.test(a.browser_download_url))
     .slice(0, 40)
-    .map((a) => ({ name: a.name, url: a.browser_download_url, size: Number.isFinite(a.size) ? a.size : null }));
+    .map((a) => ({ name: a.name, url: a.browser_download_url, size: Number.isFinite(a.size) ? a.size : null, ...(tag ? { tag } : {}) }));
+}
+
+/** Which hub formats a list of assets already covers. */
+export function assetFormats(assets) {
+  const has = (re) => assets.some((a) => re.test(a.name) || re.test(a.url));
+  return {
+    pdf: has(/\.pdf$/i),
+    audio: has(/\.mp3$|audio|mp3/i),
+    video: has(/\.(mp4|3gp)$|video|youtu\.?be/i),
+  };
+}
+
+/**
+ * Fill in formats the catalog advertises (attachment_types) but the entry's
+ * own release lacks, from the newest non-draft release of the repo that has
+ * them. Mirrors latestReleaseWithExt() in discover.js. Returns the entry's
+ * assets plus the found files (tagged with their release), or the original
+ * list when nothing is missing or the lookup fails. Never throws.
+ */
+export async function fetchMissingAssets(entry, wanted, fetchImpl = fetch) {
+  const own = entry.assets || [];
+  const have = assetFormats(own);
+  const missing = ['pdf', 'audio', 'video'].filter((k) => wanted[k] && !have[k]);
+  if (!missing.length || !entry.owner || !entry.name) return own;
+  let releases;
+  try {
+    const body = await fetchText(`https://git.door43.org/api/v1/repos/${entry.owner}/${entry.name}/releases`, fetchImpl);
+    releases = body ? JSON.parse(body) : [];
+  } catch {
+    return own;
+  }
+  if (!Array.isArray(releases)) return own;
+  const ordered = releases
+    .filter((r) => r && !r.draft)
+    .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
+  const extra = [];
+  for (const key of missing) {
+    for (const r of ordered) {
+      const compact = compactAssetList(r.assets, r.tag_name || null);
+      const found = compact.filter((a) => assetFormats([a])[key]);
+      if (found.length) {
+        extra.push(...found.filter((a) => !own.some((o) => o.url === a.url) && !extra.some((o) => o.url === a.url)));
+        break;
+      }
+    }
+  }
+  return extra.length ? [...own, ...extra] : own;
 }
 
 /** Collapse raw catalog entries into one record per language. */
@@ -136,10 +195,40 @@ function contentPathFor(entry) {
   return String(ing.path).replace(/^\.\/?/, '').replace(/\/$/, '') || 'content';
 }
 
+const norm = (s) => String(s ?? '').trim().toLowerCase().replace(/\s+/g, ' ');
+const isAscii = (s) => /^[\x00-\x7f]*$/.test(String(s));
+
+/**
+ * Decide the autonym for a language from the manifest title and its
+ * langnames row. The DCS manifest's language_title is often the English
+ * name ("Swahili", "Arabic", "Chinese, Simplified") or English in
+ * parentheses ("हिन्दी (Hindi)"), so langnames.ln (first comma-separated
+ * segment) is used when:
+ *   - the manifest title equals the code, or
+ *   - it equals the English name (ang) case-insensitively, or
+ *   - it is "<something> (<ang>)", or
+ *   - it is plain ASCII while ln is written in another script.
+ * Otherwise the manifest title stands (e.g. es-419 "Español de
+ * Latinoamérica" beats langnames' "Español Latin America").
+ */
+export function chooseAutonym(title, code, row) {
+  const ln = String(row?.ln ?? '').split(',')[0].trim();
+  if (!ln) return title;
+  const ang = norm(row?.ang);
+  const t = norm(title);
+  if (!t || t === norm(code)) return ln;
+  if (ang && t === ang) return ln;
+  const paren = t.match(/^(.+?)\s*\((.+)\)$/);
+  if (paren && ang && norm(paren[2]) === ang) return ln;
+  if (isAscii(title) && !isAscii(ln)) return ln;
+  return title;
+}
+
 /**
  * Merge translationDatabase langnames into the language records. langnames
- * rows look like { lc, ln, ang, ld, lr, alt: [], cc: [] }. Only fills fields
- * the catalog does not have; the catalog's own autonym wins.
+ * rows look like { lc, ln, ang, ld, lr, alt: [], cc: [] }. Fills the fields
+ * the catalog does not have, and replaces an English manifest title with the
+ * autonym (see chooseAutonym).
  */
 export function applyLangnames(languages, langnames) {
   if (!Array.isArray(langnames)) return languages;
@@ -148,9 +237,9 @@ export function applyLangnames(languages, langnames) {
   return languages.map((lang) => {
     const row = byCode.get(lang.code.toLowerCase());
     if (!row) return lang;
-    const autonym = lang.title === lang.code && row.ln ? row.ln : lang.title;
-    const english = row.ang && row.ang !== autonym ? row.ang : null;
-    const alt = Array.isArray(row.alt) ? row.alt.filter((n) => n && n !== autonym && n !== english) : [];
+    const autonym = chooseAutonym(lang.title, lang.code, row);
+    const english = row.ang && norm(row.ang) !== norm(autonym) ? String(row.ang).trim() : null;
+    const alt = Array.isArray(row.alt) ? row.alt.filter((n) => n && norm(n) !== norm(autonym) && norm(n) !== norm(english)) : [];
     return {
       ...lang,
       title: autonym,
@@ -220,6 +309,17 @@ export function detectScript(text) {
   let best = 'latin';
   for (const [k, v] of Object.entries(counts)) if (v > counts[best]) best = k;
   return best;
+}
+
+/**
+ * Font pack for a language: the dominant script of its text, except that
+ * Urdu-family codes written in Arabic script take the Nastaliq pack
+ * (styles.css keys on this value via <html data-script>).
+ */
+export function scriptFor(code, sample) {
+  const script = sample ? detectScript(sample) : 'latin';
+  if (script === 'arabic' && /^ur(?:$|[-_])/i.test(code) && !/deva/i.test(code)) return 'nastaliq';
+  return script;
 }
 
 /** Story file URLs for one entry, mirroring public/assets/js/discover.js. */
@@ -313,12 +413,23 @@ export async function fetchCatalog(fetchImpl = fetch) {
 }
 
 /**
- * Fetch the 50 story titles and the story-1 extract for one language from
- * its first (primary) entry. Returns { stories, extract, script }; a story
- * that cannot be read gets a null title. Never throws.
+ * Fetch the 50 story titles and the story-1 extract for one language. Tries
+ * each publishing team's entry in order and keeps the first that yields any
+ * story (some repos are incomplete at their tagged release). Returns
+ * { stories, extract, script }; a story that cannot be read gets a null
+ * title, and `stories` is null when no entry has any. Never throws.
  */
 export async function fetchStories(language, fetchImpl = fetch) {
-  const entry = language.entries[0];
+  let result = { stories: null, extract: null, script: 'latin' };
+  for (const entry of language.entries) {
+    if (!entry?.owner || !entry?.name || !entry?.branch_or_tag_name) continue;
+    result = await fetchStoriesFrom(language.code, entry, fetchImpl);
+    if (result.stories) break;
+  }
+  return result;
+}
+
+async function fetchStoriesFrom(code, entry, fetchImpl) {
   const nums = Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
   let extract = null;
   const stories = await mapLimit(nums, 8, async (num) => {
@@ -347,9 +458,8 @@ export async function fetchStories(language, fetchImpl = fetch) {
     }
   });
   const sample = [extract?.title, extract?.text, ...stories.map((s) => s.title)].filter(Boolean).join(' ');
-  const script = sample ? detectScript(sample) : 'latin';
   const anyTitle = stories.some((s) => s.title);
-  return { stories: anyTitle ? stories : null, extract, script };
+  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, sample) };
 }
 
 /**
@@ -358,11 +468,12 @@ export async function fetchStories(language, fetchImpl = fetch) {
  */
 export async function enrichStories(languages, previous, fetchImpl = fetch, log = console) {
   const prevByCode = new Map((previous?.languages || []).map((l) => [l.code, l]));
+  const keyOf = (l) => (l.entries || []).map(entryKey).join('|');
   let fetched = 0;
   let reused = 0;
   const out = await mapLimit(languages, Math.max(1, Math.floor(CONCURRENCY / 8)), async (lang) => {
     const prev = prevByCode.get(lang.code);
-    if (prev && prev.stories && prev.entries?.[0] && entryKey(prev.entries[0]) === entryKey(lang.entries[0])) {
+    if (prev && prev.stories && keyOf(prev) === keyOf(lang)) {
       reused++;
       return { ...lang, stories: prev.stories, extract: prev.extract, script: prev.script || lang.script };
     }
@@ -371,6 +482,36 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
     return { ...lang, ...result };
   });
   log.log(`[catalog] stories: fetched ${fetched} languages, reused ${reused} from the previous snapshot`);
+  return out;
+}
+
+/**
+ * Enrich entries whose release lacks an advertised PDF/audio/video with the
+ * newest release that has it (see fetchMissingAssets). Cached per entry in
+ * the snapshot: an entry with the same entryKey reuses its previous assets.
+ */
+export async function enrichAssets(languages, previous, fetchImpl = fetch, log = console) {
+  const prevEntries = new Map();
+  for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
+  let fetched = 0;
+  let reused = 0;
+  const out = await mapLimit(languages, 6, async (lang) => {
+    const wanted = lang.formats;
+    const entries = [];
+    for (const entry of lang.entries) {
+      const prev = prevEntries.get(entryKey(entry));
+      if (prev && Array.isArray(prev.assets)) {
+        reused++;
+        entries.push({ ...entry, assets: prev.assets });
+        continue;
+      }
+      const assets = await fetchMissingAssets(entry, wanted, fetchImpl);
+      if (assets !== entry.assets) fetched++;
+      entries.push({ ...entry, assets });
+    }
+    return { ...lang, entries };
+  });
+  log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
   return out;
 }
 
@@ -442,7 +583,10 @@ if (isMain) {
     });
   }
 
-  // Optional enrichment 2: story titles + extract, incrementally.
+  // Optional enrichment 2: PDFs/audio/video from older releases, incrementally.
+  languages = await enrichAssets(languages, previous);
+
+  // Optional enrichment 3: story titles + extract, incrementally.
   if (fetchStoriesEnabled) {
     languages = await enrichStories(languages, previous);
   } else {

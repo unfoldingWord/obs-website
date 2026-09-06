@@ -3,10 +3,11 @@
 // the build-time catalog snapshot (src/data/catalog.ts). This is the public
 // canonical URL for "Open Bible Stories in {language}" (#6): everything a
 // crawler or answer engine needs is in the initial HTML — autonym, English
-// and alternate names, codes, region, formats that actually exist, the 50
-// story titles in the language, an in-language extract of story 1, the
-// publishers, and CC BY-SA attribution. The reader itself is still the
-// Discover reader; story pages (Phase 3) will replace the deep links here.
+// and alternate names, codes, region, formats that actually exist, the story
+// titles that were actually read from the repo (usually all 50), an
+// in-language extract of story 1, the publishers, and CC BY-SA attribution.
+// The reader itself is still the Discover reader; story pages (Phase 3) will
+// replace the deep links here.
 //
 // The page chrome (nav, footer, labels) uses the marketing locale whose
 // primary subtag matches the content language, otherwise English; the
@@ -21,6 +22,9 @@ import {
   hubLocaleFor,
   fontHrefForScript,
   classifyAssets,
+  readableStories,
+  publishersOf,
+  youtubeOf,
   type CatalogLanguage,
 } from '../../../data/catalog';
 import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
@@ -42,19 +46,24 @@ const fill = (s: string, vars: Record<string, string | number>) =>
   Object.entries(vars).reduce((acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)), s);
 
 // Title pattern from #6: "{Autonym} ({English name}, {code}) | Open Bible Stories".
-const nameBits = [lang.englishName, lang.code].filter(Boolean).join(', ');
-const title = `${lang.title} (${nameBits}) | Open Bible Stories`;
+// When the autonym is unknown the code stands in as the name and is not repeated.
+const nameBits = [lang.englishName, lang.title === lang.code ? null : lang.code].filter(Boolean).join(', ');
+const title = `${lang.title}${nameBits ? ` (${nameBits})` : ''} | Open Bible Stories`;
 const langLabel = lang.englishName ? `${lang.title} (${lang.englishName})` : lang.title;
 const description = fill(t.meta.description, { language: langLabel });
 
 const assets = classifyAssets(lang);
-const youtube = assets.video.find((a) => /youtu\.?be/i.test(a.url));
-const stories = lang.stories ?? Array.from({ length: 50 }, (_, i) => ({ num: i + 1, title: null }));
-const publishers = Array.from(new Set(lang.entries.map((e) => e.owner).filter(Boolean)));
+const youtube = youtubeOf(lang);
+const stories = readableStories(lang);
+const publishers = publishersOf(lang);
 const primary = lang.entries[0];
 const fontHref = fontHrefForScript(lang.script);
-const fmtSize = (n: number | null) => (n ? `${(n / 1048576).toFixed(n > 10485760 ? 0 : 1)} MB` : '');
-const appUrl = `https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=${encodeURIComponent(lang.code)}`;
+const read = (story?: number) => readerPath(lang.code, story, uiLocale);
+const fmtSize = (n: number | null) => (n ? `${(n / 1048576).toFixed(n > 10485760 ? 0 : 1)} MB` : null);
+// The app is the general OBS app (Play Store ignores hl= for most codes and
+// the app does not ship every language), so it is offered as a note, not
+// as a per-language format.
+const appUrl = 'https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp';
 ---
 
 <Base
@@ -68,6 +77,7 @@ const appUrl = `https://play.google.com/store/apps/details?id=com.unfoldingword.
   dir={lang.direction}
   alternates={false}
   fontHref={fontHref}
+  script={lang.script}
 >
 
 <section class="page-header hub-header" lang={ui.tag} dir={ui.dir}>
@@ -109,24 +119,24 @@ const appUrl = `https://play.google.com/store/apps/details?id=com.unfoldingword.
   <div class="wrap">
     <h2>{t.formatsTitle}</h2>
     <ul class="hub-format-list">
-      <li><a class="btn btn-primary" href={readerPath(lang.code)}>{t.read}</a></li>
+      <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>
       {assets.pdf.slice(0, 3).map((a) => (
-        <li><a class="btn btn-outline" href={a.url} rel="noopener">{t.pdf} <span class="hub-asset-meta">{a.name} {fmtSize(a.size)}</span></a></li>
+        <li><a class="btn btn-outline" href={a.url} rel="noopener">{t.pdf} <span class="hub-asset-meta">{[a.name, fmtSize(a.size), a.tag ? `(${a.tag})` : null].filter(Boolean).join(' ')}</span></a></li>
       ))}
       {assets.epub.slice(0, 1).map((a) => (
-        <li><a class="btn btn-outline" href={a.url} rel="noopener">EPUB <span class="hub-asset-meta">{fmtSize(a.size)}</span></a></li>
+        <li><a class="btn btn-outline" href={a.url} rel="noopener">EPUB{fmtSize(a.size) && <span class="hub-asset-meta">{fmtSize(a.size)}</span>}</a></li>
       ))}
       {assets.docx.slice(0, 1).map((a) => (
-        <li><a class="btn btn-outline" href={a.url} rel="noopener">DOCX <span class="hub-asset-meta">{fmtSize(a.size)}</span></a></li>
+        <li><a class="btn btn-outline" href={a.url} rel="noopener">DOCX{fmtSize(a.size) && <span class="hub-asset-meta">{fmtSize(a.size)}</span>}</a></li>
       ))}
       {lang.formats.audio && (
-        <li><a class="btn btn-outline" href={assets.audio.find((a) => /\.zip$/i.test(a.name))?.url ?? readerPath(lang.code)} rel="noopener">{t.audio}</a></li>
+        <li><a class="btn btn-outline" href={assets.audio.find((a) => /\.zip$/i.test(a.name))?.url ?? read()} rel="noopener">{t.audio}</a></li>
       )}
       {lang.formats.video && (
-        <li><a class="btn btn-outline" href={youtube?.url ?? assets.video[0]?.url ?? readerPath(lang.code)} rel="noopener">{t.video}</a></li>
+        <li><a class="btn btn-outline" href={youtube?.url ?? assets.video[0]?.url ?? read()} rel="noopener">{t.video}</a></li>
       )}
-      <li><a class="btn btn-outline" href={appUrl} target="_blank" rel="noopener">{t.app}</a></li>
     </ul>
+    <p class="hub-app-note"><a href={appUrl} target="_blank" rel="noopener">{t.app}</a></p>
   </div>
 </section>
 
@@ -139,32 +149,34 @@ const appUrl = `https://play.google.com/store/apps/details?id=com.unfoldingword.
         <p>{lang.extract.text}</p>
         {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
       </blockquote>
-      <p lang={ui.tag} dir={ui.dir}><a href={readerPath(lang.code, 1)} class="btn btn-outline">{t.readStory}</a></p>
+      <p lang={ui.tag} dir={ui.dir}><a href={read(1)} class="btn btn-outline">{t.readStory}</a></p>
     </div>
   </section>
 )}
 
-<section class="hub-stories">
-  <div class="wrap">
-    <h2 lang={ui.tag} dir={ui.dir}>{t.storiesTitle}</h2>
-    <ol class="hub-story-list" lang={lang.code} dir={lang.direction}>
-      {stories.map((s) => (
-        <li>
-          <a href={readerPath(lang.code, s.num)}>
-            <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
-            <span class="hub-story-title">{s.title ?? <span lang={ui.tag}>{fill(t.storyN, { n: s.num })}</span>}</span>
-          </a>
-        </li>
-      ))}
-    </ol>
-  </div>
-</section>
+{stories.length > 0 && (
+  <section class="hub-stories">
+    <div class="wrap">
+      <h2 lang={ui.tag} dir={ui.dir}>{fill(t.storiesTitle, { n: stories.length })}</h2>
+      <ol class="hub-story-list" lang={lang.code} dir={lang.direction}>
+        {stories.map((s) => (
+          <li>
+            <a href={read(s.num)}>
+              <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+              <span class="hub-story-title">{s.title}</span>
+            </a>
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+)}
 
 <section class="hub-license" lang={ui.tag} dir={ui.dir}>
   <div class="wrap">
     <p>
       <strong>unfoldingWord® Open Bible Stories</strong> — {t.license}
-      (<a href={LICENSE_URL} rel="license noopener">CC BY-SA 4.0</a>).
+      <a href={LICENSE_URL} rel="license noopener">CC BY-SA 4.0</a>.
       {publishers.length > 1 ? fill(t.teams, { n: publishers.length }) : ''}
       {primary && <span> <a href={`https://git.door43.org/${primary.owner}/${primary.name}`} rel="noopener">{t.source}</a></span>}
     </p>

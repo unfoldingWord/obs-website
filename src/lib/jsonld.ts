@@ -5,7 +5,7 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import { languagePath, readerPath, classifyAssets, type CatalogLanguage } from '../data/catalog';
+import { languagePath, readerPath, classifyAssets, hubLocaleFor, readableStories, publishersOf, type CatalogLanguage } from '../data/catalog';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -101,13 +101,17 @@ export function hubId(code: string): string {
   return `${SITE_URL}${languagePath(code)}#work`;
 }
 
+/** The one name a translation node carries everywhere it appears. */
+export function translationName(lang: CatalogLanguage): string {
+  return lang.englishName ? `${PRODUCT_NAME} (${lang.title} / ${lang.englishName})` : `${PRODUCT_NAME} (${lang.title})`;
+}
+
 /** One CreativeWork per published translation, pointing at its hub. */
 export function translationNode(lang: CatalogLanguage, extra: Record<string, unknown> = {}) {
-  const name = lang.englishName ? `${PRODUCT_NAME} (${lang.title} / ${lang.englishName})` : `${PRODUCT_NAME} (${lang.title})`;
   return {
     '@type': 'CreativeWork',
     '@id': hubId(lang.code),
-    name,
+    name: translationName(lang),
     url: `${SITE_URL}${languagePath(lang.code)}`,
     inLanguage: lang.code,
     license: LICENSE_URL,
@@ -129,7 +133,7 @@ export function translationListNode(languages: CatalogLanguage[]) {
     itemListElement: languages.map((lang, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: { '@id': hubId(lang.code), '@type': 'CreativeWork', name: lang.title, url: `${SITE_URL}${languagePath(lang.code)}`, inLanguage: lang.code },
+      item: { '@id': hubId(lang.code), '@type': 'CreativeWork', name: translationName(lang), url: `${SITE_URL}${languagePath(lang.code)}`, inLanguage: lang.code },
     })),
   };
 }
@@ -137,17 +141,20 @@ export function translationListNode(languages: CatalogLanguage[]) {
 /**
  * Nodes for a language hub: the translation as a CreativeWork (with
  * publisher, alternate names, dateModified, and download encodings that
- * actually exist) plus an ItemList of its 50 stories linking into the reader.
- * Story pages (Phase 3) will give each story its own @id; until then the
- * reader deep link is the story URL.
+ * actually exist) plus an ItemList of the stories that were actually read
+ * from the repo, linking into the reader. No VideoObject: Google requires
+ * name/thumbnailUrl/uploadDate for it, which the catalog does not have —
+ * media objects come with story pages (Phase 3, #16). Story pages will give
+ * each story its own @id; until then the reader deep link is the story URL.
  */
 export function hubNodes(lang: CatalogLanguage) {
   const assets = classifyAssets(lang);
+  const uiLocale = hubLocaleFor(lang.code);
   const encodings = [
     ...assets.pdf.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: a.url, name: a.name })),
     ...assets.epub.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/epub+zip', contentUrl: a.url, name: a.name })),
   ];
-  const publishers = Array.from(new Set(lang.entries.map((e) => e.owner).filter(Boolean)));
+  const publishers = publishersOf(lang);
   const alternateName = [lang.englishName, ...lang.altNames].filter(Boolean);
   const extra: Record<string, unknown> = {
     publisher: publishers.length === 1 && publishers[0] === 'unfoldingWord'
@@ -160,24 +167,21 @@ export function hubNodes(lang: CatalogLanguage) {
   if (alternateName.length) extra.alternateName = alternateName;
   if (lang.extract?.text) extra.abstract = lang.extract.text;
   if (encodings.length) extra.encoding = encodings;
-  const yt = assets.video.find((a) => /youtu\.?be/i.test(a.url));
-  if (yt) {
-    extra.video = { '@type': 'VideoObject', name: `${lang.title} — Open Bible Stories`, embedUrl: yt.url, inLanguage: lang.code };
-  }
   const work = translationNode(lang, extra);
 
-  const stories = lang.stories ?? Array.from({ length: 50 }, (_, i) => ({ num: i + 1, title: null }));
+  const stories = readableStories(lang);
+  if (!stories.length) return [work];
   const list = {
     '@type': 'ItemList',
     '@id': `${SITE_URL}${languagePath(lang.code)}#stories`,
-    name: `${lang.title} — 50 stories`,
+    name: `${lang.title} — ${stories.length} ${stories.length === 1 ? 'story' : 'stories'}`,
     numberOfItems: stories.length,
     itemListOrder: 'https://schema.org/ItemListOrderAscending',
-    itemListElement: stories.map((s) => ({
+    itemListElement: stories.map((s, i) => ({
       '@type': 'ListItem',
-      position: s.num,
-      name: s.title ?? `Story ${s.num}`,
-      url: `${SITE_URL}${readerPath(lang.code, s.num)}`,
+      position: i + 1,
+      name: s.title,
+      url: `${SITE_URL}${readerPath(lang.code, s.num, uiLocale)}`,
     })),
   };
   return [work, list];

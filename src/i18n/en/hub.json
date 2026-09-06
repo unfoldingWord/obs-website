@@ -14,12 +14,11 @@
   "video": "Watch (video)",
   "app": "Get the mobile app",
   "extractTitle": "From story 1",
-  "storiesTitle": "All 50 stories",
-  "storyN": "Story {n}",
+  "storiesTitle": "All {n} stories",
   "version": "v{version}",
   "teams": "{n} teams have published this language.",
   "allLanguages": "All languages",
-  "license": "Free to use, adapt, and share under an open license",
+  "license": "Free to use, adapt, and share under",
   "source": "Source on Door43",
   "readStory": "Read this story"
 }

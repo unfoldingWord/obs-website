@@ -7,12 +7,18 @@
 // by the prebuild fetch on every build; the import is tolerant of the file
 // being absent so a fresh clone can still type-check, but a production build
 // (`fetch-catalog.mjs --required`) refuses to run without data.
-import { locales, defaultLocale } from '../i18n/config';
+import { locales, defaultLocale, localePath } from '../i18n/config';
+
+/** Stories in an Open Bible Stories edition. Mirrors STORY_COUNT in
+ *  scripts/fetch-catalog.mjs (discover.js carries its own copy). */
+export const STORY_COUNT = 50;
 
 export interface CatalogAsset {
   name: string;
   url: string;
   size: number | null;
+  /** Release tag the file came from when it is not the entry's own release. */
+  tag?: string;
 }
 
 export interface CatalogEntry {
@@ -106,21 +112,43 @@ export function languagePath(code: string): string {
   return `/l/${encodeURIComponent(code)}/`;
 }
 
-/** Full-page reader for a language, optionally opened at a story. */
-export function readerPath(code: string, story?: number): string {
+/** Full-page reader for a language in a UI locale, optionally opened at a story. */
+export function readerPath(code: string, story?: number, locale: string = defaultLocale): string {
   const q = new URLSearchParams({ lang: code });
   if (story) q.set('story', String(story));
-  return `/discover/read/?${q.toString()}`;
+  return `${localePath(locale, 'discover-read')}?${q.toString()}`;
 }
 
 /**
  * The marketing UI locale whose chrome (nav, footer, hub labels) best fits a
  * content language: the same primary subtag when we have that locale
- * ("es-419" → es, "pt-br" → pt, "sw" → sw), otherwise English.
+ * ("es-419" → es, "pt-br" → pt, "sw" → sw), otherwise English. A script
+ * subtag the locale does not share ("zh-hant" vs zh-Hans, "ur-deva" vs ur)
+ * falls back to English rather than serving chrome in the wrong script.
  */
 export function hubLocaleFor(code: string): string {
-  const primary = code.toLowerCase().split(/[-_]/)[0];
-  return locales.some((l) => l.code === primary) ? primary : defaultLocale;
+  const parts = code.toLowerCase().split(/[-_]/);
+  const locale = locales.find((l) => l.code === parts[0]);
+  if (!locale) return defaultLocale;
+  const script = parts.slice(1).find((p) => /^[a-z]{4}$/.test(p));
+  if (script && !locale.tag.toLowerCase().split('-').includes(script)) return defaultLocale;
+  return locale.code;
+}
+
+/** Stories that were actually read from the repo (a title exists). The hub
+ *  and its JSON-LD list exactly these — never a padded list of 50. */
+export function readableStories(lang: CatalogLanguage): CatalogStory[] {
+  return (lang.stories ?? []).filter((s) => s.title);
+}
+
+/** Distinct publishing teams, in catalog order. */
+export function publishersOf(lang: CatalogLanguage): string[] {
+  return Array.from(new Set(lang.entries.map((e) => e.owner).filter(Boolean)));
+}
+
+/** The YouTube link for a language, if any release carries one. */
+export function youtubeOf(lang: CatalogLanguage): CatalogAsset | undefined {
+  return classifyAssets(lang).video.find((a) => /youtu\.?be/i.test(a.url));
 }
 
 /** Stylesheet for a detected script, or null when the Latin faces suffice. */
@@ -129,9 +157,13 @@ export function fontHrefForScript(script: CatalogLanguage['script']): string | n
   return packs.has(script) ? `/assets/fonts/${script}.css` : null;
 }
 
-/** Downloadable assets of a language, classified for the hub's format list. */
+/** Downloadable assets of a language, classified for the hub's format list.
+ *  Deduplicated by URL (two teams can publish the same file). */
 export function classifyAssets(lang: CatalogLanguage) {
-  const all = lang.entries.flatMap((e) => e.assets.map((a) => ({ ...a, owner: e.owner })));
+  const seen = new Set<string>();
+  const all = lang.entries
+    .flatMap((e) => e.assets.map((a) => ({ ...a, owner: e.owner })))
+    .filter((a) => (seen.has(a.url) ? false : (seen.add(a.url), true)));
   const pick = (re: RegExp) => all.filter((a) => re.test(a.name) || re.test(a.url));
   return {
     pdf: pick(/\.pdf$/i),
