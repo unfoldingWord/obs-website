@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "description": "Open Bible Stories به زبان {language}: ۵۰ داستان مصوّر کتاب‌مقدس از آفرینش تا مکاشفه برای خواندن، شنیدن و دانلود. رایگان با مجوز CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories به زبان {language}",
+  "alsoKnownAs": "نام‌های دیگر",
+  "codes": "کد زبان",
+  "region": "منطقه",
+  "publisherLabel": "منتشرشده توسط",
+  "formatsTitle": "قالب‌های موجود",
+  "read": "خواندن آنلاین",
+  "pdf": "دانلود PDF",
+  "audio": "شنیدن (صدا)",
+  "video": "تماشا (ویدئو)",
+  "app": "دریافت برنامهٔ موبایل",
+  "extractTitle": "از داستان ۱",
+  "storiesTitle": "همهٔ ۵۰ داستان",
+  "storyN": "داستان {n}",
+  "version": "v{version}",
+  "teams": "{n} تیم این زبان را منتشر کرده‌اند.",
+  "allLanguages": "همهٔ زبان‌ها",
+  "license": "رایگان برای استفاده، تغییر و اشتراک‌گذاری با مجوز آزاد",
+  "source": "منبع در Door43",
+  "readStory": "این داستان را بخوانید"
+}

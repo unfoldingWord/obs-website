@@ -691,3 +691,24 @@ html:lang(zh){
    Nastaliq's. */
 html:lang(ur) body{line-height:2;}
 html:lang(ur) h1, html:lang(ur) h2, html:lang(ur) h3, html:lang(ur) h4{line-height:1.7 !important;}
+
+/* ---------- LANGUAGE HUBS (/l/{code}/) ---------- */
+.hub-header h1{font-size:clamp(2rem, 5vw, 3.2rem); margin:6px 0 4px;}
+.hub-english-name{font-size:1.25rem; color:#4a5960; margin:0 0 18px; font-weight:600;}
+.hub-facts{display:grid; grid-template-columns:max-content 1fr; gap:6px 18px; margin:18px 0 0; font-size:0.95rem; max-width:720px;}
+.hub-facts dt{font-weight:700; color:var(--ocean);}
+.hub-facts dd{margin:0; color:var(--tech);}
+.hub-facts code{font-family:inherit; background:var(--panel); padding:1px 8px; border-radius:6px;}
+.hub-version, .hub-cc{color:#64747d; font-size:0.85em;}
+.hub-format-list{list-style:none; padding:0; margin:0; display:flex; flex-wrap:wrap; gap:12px;}
+.hub-asset-meta{font-weight:400; font-size:0.78em; opacity:0.75; margin-inline-start:6px;}
+.hub-extract blockquote{border-inline-start:3px solid var(--inspire); padding-inline-start:20px; margin:18px 0; font-size:1.15rem; line-height:1.7; color:var(--tech); max-width:760px;}
+.hub-extract-title{font-family:var(--heading-font); font-weight:800; color:var(--ocean); margin:0 0 10px;}
+.hub-extract footer{font-style:italic; color:#64747d; font-size:0.9rem; margin-top:10px;}
+.hub-story-list{list-style:none; padding:0; margin:0; display:grid; grid-template-columns:repeat(auto-fill, minmax(260px, 1fr)); gap:4px 24px;}
+.hub-story-list a{display:flex; gap:12px; align-items:baseline; padding:8px 10px; border-radius:8px; color:var(--tech); text-decoration:none;}
+.hub-story-list a:hover{background:var(--panel);}
+.hub-story-num{font-weight:800; color:var(--inspire-text); min-width:2ch; text-align:end;}
+.hub-license{background:var(--panel);}
+.hub-license .wrap{font-size:0.9rem; color:#4a5960;}
+@media (max-width:640px){ .hub-facts{grid-template-columns:1fr;} .hub-facts dt{margin-top:8px;} }

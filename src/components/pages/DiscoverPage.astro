@@ -16,9 +16,10 @@ const t = content(locale, 'discover');
 // language. discover.js then enhances the same rows: search and format
 // filters hide/show them, and clicking a row opens the inline reader.
 //
-// Without JS the page is browse-only: each row links to this locale's
-// Discover page with #code, and the <li id={code}> makes that scroll to the
-// row. The reader itself needs JS until /l/{code}/ hubs exist (#6).
+// Each row links to the language's hub (/l/{code}/), a real crawlable page.
+// With JS, discover.js intercepts the click to open the inline reader and
+// keeps the open language in the URL hash; the <li id={code}> makes hash
+// deep links scroll to the row even without JS.
 const title = withCount(t.meta.title);
 const description = withCount(t.meta.description);
 const status = t.browse.status.replace('{shown}', String(languageCount)).replace('{total}', String(languageCount));
@@ -55,6 +56,7 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
       data-back={t.browse.back}
       data-open-full={t.browse.openFull}
       data-read-path={localePath(locale, 'discover-read')}
+      data-language-page={t.browse.languagePage}
     >
       <div class="library-tools">
         <div class="search-box">
@@ -75,7 +77,7 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
             <li id={l.code}>
               <a
                 class="lang-row"
-                href={languagePath(l.code, locale)}
+                href={languagePath(l.code)}
                 data-lang={l.code}
                 data-title={l.title}
                 data-pdf={l.formats.pdf ? '1' : undefined}

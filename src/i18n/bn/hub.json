@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "description": "{language} ভাষায় Open Bible Stories: সৃষ্টি থেকে প্রকাশিত বাক্য পর্যন্ত ৫০টি সচিত্র বাইবেলের গল্প — পড়ুন, শুনুন ও ডাউনলোড করুন। CC BY-SA 4.0-এর অধীনে বিনামূল্যে।"
+  },
+  "eyebrow": "{language} ভাষায় Open Bible Stories",
+  "alsoKnownAs": "অন্য নাম",
+  "codes": "ভাষার কোড",
+  "region": "অঞ্চল",
+  "publisherLabel": "প্রকাশক",
+  "formatsTitle": "উপলব্ধ ফরম্যাট",
+  "read": "অনলাইনে পড়ুন",
+  "pdf": "PDF ডাউনলোড করুন",
+  "audio": "শুনুন (অডিও)",
+  "video": "দেখুন (ভিডিও)",
+  "app": "মোবাইল অ্যাপ নিন",
+  "extractTitle": "গল্প ১ থেকে",
+  "storiesTitle": "সব ৫০টি গল্প",
+  "storyN": "গল্প {n}",
+  "version": "v{version}",
+  "teams": "{n}টি দল এই ভাষা প্রকাশ করেছে।",
+  "allLanguages": "সব ভাষা",
+  "license": "উন্মুক্ত লাইসেন্সে ব্যবহার, রূপান্তর ও শেয়ার করার জন্য বিনামূল্যে",
+  "source": "Door43-এ উৎস",
+  "readStory": "এই গল্পটি পড়ুন"
+}

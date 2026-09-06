@@ -29,18 +29,26 @@ The site is localized into 16 languages — the same setup as churchbased.bible.
 
 ## Catalog data and public facts
 
-`scripts/fetch-catalog.mjs` runs before every dev/build (`npm run fetch:catalog` to run it alone) and writes `src/data/catalog.json` from the Door43 Content Service catalog: every production-stage *Open Bible Stories* entry, grouped by language, minus the Theological Formation edition (paginating if the API truncates). `src/data/catalog.json` is **committed** as the offline fallback — refresh it with `npm run fetch:catalog` and commit when the catalog has changed materially; the build refreshes it anyway. `src/data/catalog.ts` is the typed accessor. Everything public that states a fact about the languages reads from it:
+`scripts/fetch-catalog.mjs` runs before every dev/build (`npm run fetch:catalog` to run it alone) and writes `src/data/catalog.json`. `src/data/catalog.json` is **committed** as the offline fallback — refresh it with `npm run fetch:catalog` and commit when the catalog has changed materially; the build refreshes it anyway. `src/data/catalog.ts` is the typed accessor. Three sources feed it:
+
+1. **DCS catalog search** (required): every production-stage *Open Bible Stories* entry, grouped by language, minus the Theological Formation edition (paginating if the API truncates). Per entry: publisher, version tag, release date, and the downloadable release assets (PDF/EPUB/DOCX/zip/audio/video/YouTube).
+2. **translationDatabase `langnames.json`** (optional): English name, alternate names, region, country codes, direction. Filled only where the catalog has nothing; the manifest's autonym always wins.
+3. **Story text** (optional): the 50 story titles and a short extract of story 1 in the language, read straight from each repo (both Resource Container and legacy translationStudio layouts). Results are cached in the snapshot and re-fetched only for entries whose release changed, so after the first build only what moved is fetched. `OBS_CATALOG_STORIES=0` skips this step for offline work.
+
+Everything public that states a fact about the languages reads from the snapshot:
 
 - the language count on the homepage and Why OBS (`lang-count.js` only animates the served number; it no longer fetches anything),
-- the prerendered language list on `/discover/` — real links, so the catalog is crawlable; `discover.js` filters those rows and opens the reader. The live catalog is never used to change the list (that would let it drift from the count), only to open a language.
-- `{count}` in localized meta descriptions,
-- the JSON-LD `ItemList` on the English Discover page.
+- the prerendered language list on `/discover/` — each row links to the language's hub; `discover.js` intercepts clicks to open the inline reader and never changes the list from the live catalog (that would let it drift from the count),
+- the `/l/{code}/` **language hubs** (see below), `sitemap-languages.xml`, and the JSON-LD on Discover and the hubs,
+- `{count}` in localized meta descriptions.
 
-So the public definition of "languages" is: **distinct language codes with a published OBS translation in the DCS catalog** — the same set Discover lists. Changing the catalog changes the number on the next build. `npm test` covers the grouping rules against `scripts/fixtures/catalog-entries.sample.json` (synthetic).
+So the public definition of "languages" is: **distinct language codes with a published OBS translation in the DCS catalog** — the same set Discover lists. Changing the catalog changes the number on the next build. `npm test` covers the grouping, langnames merge, story parsing, script detection and incremental story caching against `scripts/fixtures/catalog-entries.sample.json` (synthetic) and a fake `fetch`.
 
-Without JS, Discover is browse-only: rows link to `/{lang}/discover/#code` and each `<li id="code">` scrolls into view; the reader needs JS. Per-language fragment links are an interim measure until `/l/{code}/` hubs exist (#6) — they are not distinct URLs and are not advertised as such in JSON-LD or the sitemap.
+Failure policy: the snapshot is only overwritten by a complete, successful catalog fetch. `npm run build` fails only when the catalog fetch fails *and* no snapshot exists (Cloudflare then keeps the previous deployment live). Enrichment failures (langnames, a story file) never fail the build — the field falls back to the previous snapshot or null. `npm run dev` warns and writes an empty snapshot instead, and every page then states 0 languages — visibly wrong on purpose; there is no hardcoded placeholder count. `OBS_CATALOG_ALLOW_EMPTY=1` forces a build through offline.
 
-Failure policy: the snapshot is only overwritten by a complete, successful fetch. `npm run build` fails only when the fetch fails *and* no snapshot exists (Cloudflare then keeps the previous deployment live). `npm run dev` warns and writes an empty snapshot instead, and every page then states 0 languages — visibly wrong on purpose; there is no hardcoded placeholder count. `OBS_CATALOG_ALLOW_EMPTY=1` forces a build through offline.
+## Language hubs (`/l/{code}/`)
+
+`src/pages/l/[code]/index.astro` renders one static page per published language — the canonical public URL for "Open Bible Stories in {language}". `/l/` keeps content languages out of the marketing-locale namespace (`/es/`, `/fr/`, …). Everything is in the initial HTML: autonym (H1), English name, alternate names, code, region, publishers with version and release date, the formats that actually exist (read online, PDF/EPUB/DOCX downloads, audio, video, app), an in-language extract of story 1, and all 50 story titles linking into the full-page reader (`/discover/read/?lang={code}&story={n}`; story pages will replace these links). `<html lang>`/`dir` and the font pack follow the content language (script detected from the fetched text); the chrome and labels use the marketing locale with the same primary subtag, else English (`src/i18n/{lang}/hub.json`). Hubs have a self-referencing canonical, no hreflang cluster, no locale switcher. Their JSON-LD is a `CreativeWork` (`inLanguage`, license, `isAccessibleForFree`, `translationOfWork`, publisher, `alternateName`, `dateModified`, PDF/EPUB `encoding`, a `VideoObject` only when a YouTube link exists, the extract as `abstract`) plus an `ItemList` of the 50 stories.
 
 Standardized entity strings (also in `src/lib/jsonld.ts`):
 - Product name: **unfoldingWord Open Bible Stories**
@@ -49,8 +57,9 @@ Standardized entity strings (also in `src/lib/jsonld.ts`):
 
 ## SEO plumbing
 
-- `src/lib/jsonld.ts` builds one JSON-LD `@graph` per page (emitted by `Base.astro`): `Organization` (unfoldingWord) + `WebSite` with a `SearchAction` to `/discover/?q=` on every page; `CreativeWork` for the work on the homepage and Discover; an `ItemList` of translations (name, `inLanguage`, license — no `url` until hubs exist) on the English Discover page only. `translationNode()` is the reusable per-language node for the future `/l/{code}/` hub template, which should add `@id`/`url`. Media objects (`AudioObject`/`VideoObject`) are only to be emitted where a real file exists — never as empty placeholders. `sameAs` lists only URLs that appear on the site; add YouTube / app-store / Wikidata links once confirmed.
-- hreflang: `Base.astro` emits the full reciprocal 16-locale set plus `x-default` (→ English) on every localized page; `astro.config.mjs` makes `@astrojs/sitemap` emit the same alternates in the sitemap. Legal pages and the 404 have no alternates. Story-level clusters will come with story pages (sitemap method).
+- `src/lib/jsonld.ts` builds one JSON-LD `@graph` per page (emitted by `Base.astro`): `Organization` (unfoldingWord) + `WebSite` with a `SearchAction` to `/discover/?q=` on every page; `CreativeWork` for the work on the homepage and Discover; an `ItemList` of translations pointing at the hubs on the English Discover page only; `hubNodes()` for each `/l/{code}/` page. Media objects (`AudioObject`/`VideoObject`) are only to be emitted where a real file exists — never as empty placeholders. `sameAs` lists only URLs that appear on the site; add YouTube / app-store / Wikidata links once confirmed.
+- hreflang: `Base.astro` emits the full reciprocal 16-locale set plus `x-default` (→ English) on every localized page. Legal pages, the 404 and the language hubs have no alternates. Story-level clusters will come with story pages (sitemap method).
+- Sitemaps: `src/pages/sitemap-index.xml.ts` → `sitemap-pages.xml` (marketing pages with the same hreflang alternates as the HTML; no 404) and `sitemap-languages.xml` (one hub per published language, `lastmod` from the latest release). Generated by `src/lib/sitemap.ts`; `robots.txt` points at the index. A stories sitemap will be added with story pages.
 - `og:locale` and `og:locale:alternate` are emitted per locale.
 
 ## Crawlers and AI policy
@@ -60,7 +69,7 @@ Standardized entity strings (also in `src/lib/jsonld.ts`):
 ## Structure
 
 - `src/layouts/Base.astro` — the shared page shell: `<head>` (including canonical/Open Graph/Twitter meta), skip link, header/nav, footer, and the `nav.js` script tag. Nav highlighting comes from each page's `active` prop. There is exactly one nav, in one order, on every page.
-- `src/pages/` — one `.astro` file per route (`src/pages/features/index.astro` → `/features/`). Each page passes its title/description to the layout and supplies only its `<main>` content, plus any per-page script tags via the named `scripts` slot.
+- `src/pages/` — one `.astro` file per route (`src/pages/features/index.astro` → `/features/`). Each page passes its title/description to the layout and supplies only its `<main>` content, plus any per-page script tags via the named `scripts` slot. `src/pages/l/[code]/index.astro` generates the language hubs; `src/pages/sitemap-*.xml.ts` the sitemaps.
 - `public/` — copied to the site root verbatim at build time:
   - `assets/css/styles.css` — shared stylesheet (includes the `@font-face` rules for the self-hosted fonts).
   - `assets/fonts/` — self-hosted variable woff2 files for Montserrat and Nunito Sans (latin + latin-ext), replacing the old render-blocking fonts.googleapis.com request.

@@ -21,6 +21,7 @@
     "loading": "Chargement des langues...",
     "teams": "{n} équipes l'ont publié",
     "back": "Retour à Découvrir",
-    "openFull": "Ouvrir en pleine page"
+    "openFull": "Ouvrir en pleine page",
+    "languagePage": "Page de la langue"
   }
 }

@@ -21,6 +21,7 @@
     "loading": "正在加载语言...",
     "teams": "已有 {n} 个团队发布此译本",
     "back": "返回“发现”",
-    "openFull": "在整页中打开"
+    "openFull": "在整页中打开",
+    "languagePage": "语言页面"
   }
 }

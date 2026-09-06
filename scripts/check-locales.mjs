@@ -8,7 +8,7 @@ import { join } from 'node:path';
 
 const ROOT = new URL('..', import.meta.url).pathname;
 const LOCALES = ['en', 'es', 'fr', 'hi', 'ru', 'ar', 'zh', 'sw', 'pt', 'id', 'vi', 'bn', 'ur', 'fa', 'my', 'nl'];
-const PAGES = ['ui', 'home', 'why-obs', 'discover', 'discover-read', 'translate', 'create', 'contact'];
+const PAGES = ['ui', 'home', 'why-obs', 'discover', 'discover-read', 'translate', 'create', 'contact', 'hub'];
 // Keys whose values must be byte-identical to English (routing/link data).
 const ASSET_KEYS = new Set(['slug', 'id']);
 

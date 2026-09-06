@@ -21,6 +21,7 @@
     "loading": "Carregando idiomas...",
     "teams": "{n} equipes publicaram este idioma",
     "back": "Voltar para Descubra",
-    "openFull": "Abrir em página inteira"
+    "openFull": "Abrir em página inteira",
+    "languagePage": "Página do idioma"
   }
 }

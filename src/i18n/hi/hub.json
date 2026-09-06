@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "description": "{language} में Open Bible Stories: सृष्टि से प्रकाशितवाक्य तक 50 सचित्र बाइबल कहानियाँ, पढ़ने, सुनने और डाउनलोड करने के लिए। CC BY-SA 4.0 के अंतर्गत निःशुल्क।"
+  },
+  "eyebrow": "{language} में Open Bible Stories",
+  "alsoKnownAs": "अन्य नाम",
+  "codes": "भाषा कोड",
+  "region": "क्षेत्र",
+  "publisherLabel": "प्रकाशक",
+  "formatsTitle": "उपलब्ध प्रारूप",
+  "read": "ऑनलाइन पढ़ें",
+  "pdf": "PDF डाउनलोड करें",
+  "audio": "सुनें (ऑडियो)",
+  "video": "देखें (वीडियो)",
+  "app": "मोबाइल ऐप प्राप्त करें",
+  "extractTitle": "कहानी 1 से",
+  "storiesTitle": "सभी 50 कहानियाँ",
+  "storyN": "कहानी {n}",
+  "version": "v{version}",
+  "teams": "{n} दलों ने यह भाषा प्रकाशित की है।",
+  "allLanguages": "सभी भाषाएँ",
+  "license": "खुले लाइसेंस के अंतर्गत उपयोग, अनुकूलन और साझा करने के लिए निःशुल्क",
+  "source": "Door43 पर स्रोत",
+  "readStory": "यह कहानी पढ़ें"
+}

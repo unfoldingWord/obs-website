@@ -96,6 +96,9 @@
   }
 
   let languageGroups = new Map();
+  // Story to open first in the full-page reader (/discover/read/?lang=X&story=N),
+  // set from the URL and consumed by the first setupReader() call.
+  let initialStory = null;
   // The language list is prerendered into the HTML at build time from the DCS
   // catalog (see src/data/catalog.ts). Each row is an <a class="lang-row">
   // carrying data-lang/data-title/data-pdf/data-audio/data-video, so the list,
@@ -424,11 +427,16 @@
         <button id="back-to-browse" class="btn btn-outline">&larr; ${escapeHtml(
           str("back", "Back to Discover")
         )}</button>
-        <a href="${escapeHtml(str("readPath", "/discover/read/"))}?lang=${encodeURIComponent(
-          code
-        )}" target="_blank" rel="noopener" class="btn btn-outline">${escapeHtml(
-          str("openFull", "Open full page")
-        )} &#8599;</a>
+        <span style="display:flex; gap:10px; flex-wrap:wrap;">
+          <a href="/l/${encodeURIComponent(code)}/" class="btn btn-outline">${escapeHtml(
+            str("languagePage", "Language page")
+          )}</a>
+          <a href="${escapeHtml(str("readPath", "/discover/read/"))}?lang=${encodeURIComponent(
+            code
+          )}" target="_blank" rel="noopener" class="btn btn-outline">${escapeHtml(
+            str("openFull", "Open full page")
+          )} &#8599;</a>
+        </span>
       </div>
       <h2 style="color:var(--ocean); margin-bottom:4px;">${displayEntry.language_title}</h2>
       <p style="color:#4a5960; margin-bottom:20px;">${displayEntry.language} &middot; unfoldingWord&reg; Open Bible Stories</p>
@@ -877,6 +885,8 @@
     fetchStoryFiles(entry).then((files) => {
       storyFiles = files;
       maxStory = storyFiles.length || 1;
+      if (initialStory && storyFiles.some((s) => s.num === initialStory)) current = initialStory;
+      initialStory = null;
       buildStorySelect();
       update();
     });
@@ -953,6 +963,8 @@
     // straight into the page with no browse list around it.
     const params = new URLSearchParams(window.location.search);
     const code = params.get("lang");
+    const storyParam = parseInt(params.get("story") || "", 10);
+    if (Number.isFinite(storyParam) && storyParam >= 1 && storyParam <= 50) initialStory = storyParam;
 
     if (!code) {
       fullReaderEl.innerHTML =

@@ -21,6 +21,7 @@
     "loading": "Loading languages...",
     "teams": "{n} teams have published this",
     "back": "Back to Discover",
-    "openFull": "Open full page"
+    "openFull": "Open full page",
+    "languagePage": "Language page"
   }
 }

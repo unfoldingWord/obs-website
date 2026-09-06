@@ -1,0 +1,25 @@
+{
+  "meta": {
+    "description": "Open Bible Stories in {language}: 50 illustrated Bible stories from Creation to Revelation to read, listen to, and download. Free under CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories in {language}",
+  "alsoKnownAs": "Also known as",
+  "codes": "Language code",
+  "region": "Region",
+  "publisherLabel": "Published by",
+  "formatsTitle": "Available formats",
+  "read": "Read online",
+  "pdf": "Download PDF",
+  "audio": "Listen (audio)",
+  "video": "Watch (video)",
+  "app": "Get the mobile app",
+  "extractTitle": "From story 1",
+  "storiesTitle": "All 50 stories",
+  "storyN": "Story {n}",
+  "version": "v{version}",
+  "teams": "{n} teams have published this language.",
+  "allLanguages": "All languages",
+  "license": "Free to use, adapt, and share under an open license",
+  "source": "Source on Door43",
+  "readStory": "Read this story"
+}

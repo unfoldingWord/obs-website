@@ -5,7 +5,7 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import type { CatalogLanguage } from '../data/catalog';
+import { languagePath, readerPath, classifyAssets, type CatalogLanguage } from '../data/catalog';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -62,8 +62,8 @@ export function websiteNode(inLanguage: string) {
 
 /** The work itself — the English source edition every translation derives
  *  from. Emitted on the homepage and Discover. The story count belongs on
- *  an ItemList of stories (story pages, Phase 3), and the translations list
- *  is its own ItemList on Discover — neither is stubbed here. */
+ *  an ItemList of stories (hubs carry one), and the translations list is
+ *  its own ItemList on Discover — neither is stubbed here. */
 export function workNode() {
   return {
     '@type': 'CreativeWork',
@@ -97,17 +97,18 @@ export function mobileAppNode() {
   };
 }
 
-/**
- * One CreativeWork per published translation. Deliberately has NO `url`
- * until /l/{code}/ hubs exist (#6): the only per-language URL today is a
- * fragment of the Discover page, and 200+ CreativeWorks pointing at
- * fragments of one document is wrong markup. The hub template should call
- * this and add `@id`/`url` plus an ItemList of the 50 stories.
- */
+export function hubId(code: string): string {
+  return `${SITE_URL}${languagePath(code)}#work`;
+}
+
+/** One CreativeWork per published translation, pointing at its hub. */
 export function translationNode(lang: CatalogLanguage, extra: Record<string, unknown> = {}) {
+  const name = lang.englishName ? `${PRODUCT_NAME} (${lang.title} / ${lang.englishName})` : `${PRODUCT_NAME} (${lang.title})`;
   return {
     '@type': 'CreativeWork',
-    name: `${PRODUCT_NAME} (${lang.title})`,
+    '@id': hubId(lang.code),
+    name,
+    url: `${SITE_URL}${languagePath(lang.code)}`,
     inLanguage: lang.code,
     license: LICENSE_URL,
     isAccessibleForFree: true,
@@ -128,9 +129,58 @@ export function translationListNode(languages: CatalogLanguage[]) {
     itemListElement: languages.map((lang, i) => ({
       '@type': 'ListItem',
       position: i + 1,
-      item: translationNode(lang),
+      item: { '@id': hubId(lang.code), '@type': 'CreativeWork', name: lang.title, url: `${SITE_URL}${languagePath(lang.code)}`, inLanguage: lang.code },
     })),
   };
+}
+
+/**
+ * Nodes for a language hub: the translation as a CreativeWork (with
+ * publisher, alternate names, dateModified, and download encodings that
+ * actually exist) plus an ItemList of its 50 stories linking into the reader.
+ * Story pages (Phase 3) will give each story its own @id; until then the
+ * reader deep link is the story URL.
+ */
+export function hubNodes(lang: CatalogLanguage) {
+  const assets = classifyAssets(lang);
+  const encodings = [
+    ...assets.pdf.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: a.url, name: a.name })),
+    ...assets.epub.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/epub+zip', contentUrl: a.url, name: a.name })),
+  ];
+  const publishers = Array.from(new Set(lang.entries.map((e) => e.owner).filter(Boolean)));
+  const alternateName = [lang.englishName, ...lang.altNames].filter(Boolean);
+  const extra: Record<string, unknown> = {
+    publisher: publishers.length === 1 && publishers[0] === 'unfoldingWord'
+      ? { '@id': PUBLISHER_ID }
+      : publishers.map((p) => ({ '@type': 'Organization', name: p, url: `https://git.door43.org/${p}` })),
+    sameAs: lang.entries.map((e) => `https://git.door43.org/${e.owner}/${e.name}`),
+    version: lang.entries[0]?.branch_or_tag_name ?? undefined,
+    dateModified: lang.updated ?? undefined,
+  };
+  if (alternateName.length) extra.alternateName = alternateName;
+  if (lang.extract?.text) extra.abstract = lang.extract.text;
+  if (encodings.length) extra.encoding = encodings;
+  const yt = assets.video.find((a) => /youtu\.?be/i.test(a.url));
+  if (yt) {
+    extra.video = { '@type': 'VideoObject', name: `${lang.title} — Open Bible Stories`, embedUrl: yt.url, inLanguage: lang.code };
+  }
+  const work = translationNode(lang, extra);
+
+  const stories = lang.stories ?? Array.from({ length: 50 }, (_, i) => ({ num: i + 1, title: null }));
+  const list = {
+    '@type': 'ItemList',
+    '@id': `${SITE_URL}${languagePath(lang.code)}#stories`,
+    name: `${lang.title} — 50 stories`,
+    numberOfItems: stories.length,
+    itemListOrder: 'https://schema.org/ItemListOrderAscending',
+    itemListElement: stories.map((s) => ({
+      '@type': 'ListItem',
+      position: s.num,
+      name: s.title ?? `Story ${s.num}`,
+      url: `${SITE_URL}${readerPath(lang.code, s.num)}`,
+    })),
+  };
+  return [work, list];
 }
 
 /** Serialize a graph safely for an inline <script> (no `</script>` escape). */

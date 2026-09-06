@@ -9,7 +9,30 @@
     "language_title": "English",
     "language_direction": "ltr",
     "metadata_type": "rc",
-    "attachment_types": { "pdf": true, "audio": true, "video": true }
+    "attachment_types": {
+      "pdf": true,
+      "audio": true,
+      "video": true
+    },
+    "released": "2026-01-15T10:00:00Z",
+    "ingredients": [
+      {
+        "path": "./content"
+      }
+    ],
+    "release": {
+      "assets": [
+        {
+          "name": "en_obs.pdf",
+          "browser_download_url": "https://example.test/en_obs.pdf",
+          "size": 12345
+        },
+        {
+          "name": "source.usfm",
+          "browser_download_url": "https://example.test/s.usfm"
+        }
+      ]
+    }
   },
   {
     "owner": "team-a",
@@ -20,7 +43,9 @@
     "language_title": "Kiswahili",
     "language_direction": "ltr",
     "metadata_type": "rc",
-    "attachment_types": { "pdf": true }
+    "attachment_types": {
+      "pdf": true
+    }
   },
   {
     "owner": "team-b",
@@ -30,7 +55,9 @@
     "language": "sw",
     "language_title": "Kiswahili",
     "metadata_type": "ts",
-    "attachment_types": { "stream": true }
+    "attachment_types": {
+      "stream": true
+    }
   },
   {
     "owner": "team-c",
@@ -41,7 +68,9 @@
     "language_title": "العربية",
     "language_direction": "rtl",
     "metadata_type": "rc",
-    "attachment_types": { "audio": true }
+    "attachment_types": {
+      "audio": true
+    }
   },
   {
     "owner": "team-d",
@@ -51,7 +80,9 @@
     "language": "ha",
     "language_title": "Hausa",
     "metadata_type": "rc",
-    "attachment_types": { "pdf": true }
+    "attachment_types": {
+      "pdf": true
+    }
   },
   {
     "owner": "team-e",

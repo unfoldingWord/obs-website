@@ -1,12 +1,19 @@
 // Typed access to the catalog snapshot written by scripts/fetch-catalog.mjs.
-// Every public statement about the published languages (count, list,
-// JSON-LD) must come from here so the facts cannot drift between pages.
+// Every public statement about the published languages (count, list, hubs,
+// JSON-LD, sitemap) must come from here so the facts cannot drift between
+// pages.
 //
 // src/data/catalog.json is committed as the offline fallback and refreshed
 // by the prebuild fetch on every build; the import is tolerant of the file
 // being absent so a fresh clone can still type-check, but a production build
 // (`fetch-catalog.mjs --required`) refuses to run without data.
-import { localePath } from '../i18n/config';
+import { locales, defaultLocale } from '../i18n/config';
+
+export interface CatalogAsset {
+  name: string;
+  url: string;
+  size: number | null;
+}
 
 export interface CatalogEntry {
   owner: string;
@@ -14,16 +21,45 @@ export interface CatalogEntry {
   branch_or_tag_name: string | null;
   title: string | null;
   metadata_type: string | null;
+  /** ISO date of the release, when the catalog reports one. */
+  released: string | null;
+  contentPath: string;
+  assets: CatalogAsset[];
+}
+
+export interface CatalogStory {
+  num: number;
+  /** Story title in the language, or null when the file could not be read. */
+  title: string | null;
+}
+
+export interface CatalogExtract {
+  title: string | null;
+  text: string;
+  reference: string | null;
 }
 
 export interface CatalogLanguage {
   /** Language code as used by DCS (IETF-style, e.g. "sw", "es-419", "kmz-x-..."). */
   code: string;
-  /** Language name from the resource manifest, usually the autonym. */
+  /** Language name in the language itself (autonym), from the manifest or langnames. */
   title: string;
+  /** English name from translationDatabase langnames, when it differs from the autonym. */
+  englishName: string | null;
+  altNames: string[];
+  region: string | null;
+  countryCodes: string[];
   direction: 'ltr' | 'rtl';
+  /** Self-hosted font pack the text needs; see fontHrefForScript(). */
+  script: 'latin' | 'cyrillic' | 'arabic' | 'nastaliq' | 'devanagari' | 'bengali' | 'myanmar' | 'han' | 'other';
   formats: { pdf: boolean; audio: boolean; video: boolean };
+  /** Most recent release date across publishing teams (ISO date). */
+  updated: string | null;
   entries: CatalogEntry[];
+  /** The 50 story titles in the language, or null when none could be read. */
+  stories: CatalogStory[] | null;
+  /** Opening of story 1 in the language, for the hub's indexable text sample. */
+  extract: CatalogExtract | null;
 }
 
 export interface CatalogSnapshot {
@@ -64,13 +100,44 @@ export function withCount(text: string): string {
   return text.replace(/\{count\}/g, String(languageCount));
 }
 
+/** Canonical public URL path of a language hub. `/l/` keeps content
+ *  languages out of the marketing-locale namespace (`/es/`, `/fr/`, …). */
+export function languagePath(code: string): string {
+  return `/l/${encodeURIComponent(code)}/`;
+}
+
+/** Full-page reader for a language, optionally opened at a story. */
+export function readerPath(code: string, story?: number): string {
+  const q = new URLSearchParams({ lang: code });
+  if (story) q.set('story', String(story));
+  return `/discover/read/?${q.toString()}`;
+}
+
 /**
- * Interim link for a language until /l/{code}/ hubs exist (#6): the Discover
- * deep link in the current locale, which discover.js opens on load and which
- * scrolls to the row (each <li> carries id={code}) without JS. This is a
- * fragment of the Discover page, NOT a distinct URL — never advertise it as a
- * canonical translation URL in JSON-LD or sitemaps.
+ * The marketing UI locale whose chrome (nav, footer, hub labels) best fits a
+ * content language: the same primary subtag when we have that locale
+ * ("es-419" → es, "pt-br" → pt, "sw" → sw), otherwise English.
  */
-export function languagePath(code: string, locale: string): string {
-  return `${localePath(locale, 'discover')}#${encodeURIComponent(code)}`;
+export function hubLocaleFor(code: string): string {
+  const primary = code.toLowerCase().split(/[-_]/)[0];
+  return locales.some((l) => l.code === primary) ? primary : defaultLocale;
+}
+
+/** Stylesheet for a detected script, or null when the Latin faces suffice. */
+export function fontHrefForScript(script: CatalogLanguage['script']): string | null {
+  const packs = new Set(['cyrillic', 'arabic', 'nastaliq', 'devanagari', 'bengali', 'myanmar', 'han']);
+  return packs.has(script) ? `/assets/fonts/${script}.css` : null;
+}
+
+/** Downloadable assets of a language, classified for the hub's format list. */
+export function classifyAssets(lang: CatalogLanguage) {
+  const all = lang.entries.flatMap((e) => e.assets.map((a) => ({ ...a, owner: e.owner })));
+  const pick = (re: RegExp) => all.filter((a) => re.test(a.name) || re.test(a.url));
+  return {
+    pdf: pick(/\.pdf$/i),
+    epub: pick(/\.epub$/i),
+    docx: pick(/\.docx$/i),
+    audio: pick(/\.mp3$|audio|mp3/i).filter((a) => !/\.mp4$|video/i.test(a.name)),
+    video: pick(/\.(mp4|3gp)$|video|youtu\.?be/i),
+  };
 }
