@@ -207,6 +207,26 @@ const SCRIPT_LOCALE: Partial<Record<CatalogLanguage['script'], string>> = {
 const ARABIC_COUNTRY_LOCALE: Record<string, string> = { IR: 'fa', AF: 'fa', TJ: 'fa', PK: 'ur' };
 
 /**
+ * The marketing locale a content language IS, or null when it is only
+ * related to one. "es-419" → es, "swh" → sw, "pt-br" → pt; a script subtag
+ * the locale does not share ("zh-hant", "ur-deva") is not the same language
+ * for this purpose and returns null.
+ *
+ * Two things read this: the hub chrome (step 1 of hubLocaleFor), and the
+ * story-level hreflang clusters in src/lib/sitemap.ts, which are limited to
+ * exactly these languages — the ones the site itself is published in.
+ */
+export function siteLocaleOf(code: string): string | null {
+  const parts = code.toLowerCase().split(/[-_]/);
+  const primary = LOCALE_ALIASES[parts[0]] ?? parts[0];
+  const locale = locales.find((l) => l.code === primary);
+  if (!locale) return null;
+  const subtag = parts.slice(1).find((p) => /^[a-z]{4}$/.test(p));
+  if (subtag && !locale.tag.toLowerCase().split('-').includes(subtag)) return null;
+  return locale.code;
+}
+
+/**
  * The marketing UI locale whose chrome (nav, footer, hub labels, FAQ) best
  * fits a content language:
  *
@@ -223,11 +243,8 @@ const ARABIC_COUNTRY_LOCALE: Record<string, string> = { IR: 'fa', AF: 'fa', TJ: 
  * its readers did not ask for.
  */
 export function hubLocaleFor(lang: Pick<CatalogLanguage, 'code' | 'script' | 'countryCodes'>): string {
-  const parts = lang.code.toLowerCase().split(/[-_]/);
-  const primary = LOCALE_ALIASES[parts[0]] ?? parts[0];
-  const locale = locales.find((l) => l.code === primary);
-  const subtag = parts.slice(1).find((p) => /^[a-z]{4}$/.test(p));
-  if (locale && !(subtag && !locale.tag.toLowerCase().split('-').includes(subtag))) return locale.code;
+  const exact = siteLocaleOf(lang.code);
+  if (exact) return exact;
 
   if (lang.script === 'arabic' || lang.script === 'nastaliq') {
     for (const cc of lang.countryCodes ?? []) {
