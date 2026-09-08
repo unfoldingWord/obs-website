@@ -29,12 +29,14 @@ if (existsSync(join(DIST, 'discover/read'))) {
 
 // 1. Every sitemap URL must have a page.
 let checked = 0;
+const locCount = new Map();
 for (const name of ['sitemap-pages.xml', 'sitemap-languages.xml', 'sitemap-stories.xml']) {
   const file = join(DIST, name);
   if (!existsSync(file)) {
     errors.push(`${name} is missing`);
     continue;
   }
+  let count = 0;
   for (const m of readFileSync(file, 'utf8').matchAll(/<loc>([^<]*)<\/loc>/g)) {
     const path = m[1].startsWith(SITE) ? m[1].slice(SITE.length) : null;
     if (!path) {
@@ -42,7 +44,24 @@ for (const name of ['sitemap-pages.xml', 'sitemap-languages.xml', 'sitemap-stori
       continue;
     }
     checked++;
+    count++;
     if (!existsSync(join(DIST, path, 'index.html'))) errors.push(`${name}: no page for ${path}`);
+  }
+  locCount.set(name, count);
+}
+
+// 1a. The index must advertise exactly the sitemaps that have URLs. An empty
+// <urlset> is invalid against the sitemaps.org schema (and Search Console
+// reports it as an empty sitemap), so a build with no story text — an outage,
+// or a fresh clone with no fetch — must leave sitemap-stories.xml out.
+const indexFile = join(DIST, 'sitemap-index.xml');
+if (!existsSync(indexFile)) {
+  errors.push('sitemap-index.xml is missing');
+} else {
+  const listed = [...readFileSync(indexFile, 'utf8').matchAll(/<loc>[^<]*\/([^/<]+\.xml)<\/loc>/g)].map((m) => m[1]);
+  for (const [name, count] of locCount) {
+    if (count > 0 && !listed.includes(name)) errors.push(`sitemap-index.xml does not list ${name} (${count} URLs)`);
+    if (count === 0 && listed.includes(name)) errors.push(`sitemap-index.xml lists ${name}, which has no URLs`);
   }
 }
 

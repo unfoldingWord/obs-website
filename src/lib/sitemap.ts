@@ -3,7 +3,7 @@
 // with lastmod from the catalog). robots.txt points at sitemap-index.xml.
 import { locales, defaultLocale, localizedSlugs, englishOnlySlugs, localePath } from '../i18n/config';
 import { languages, languagePath, storyPath } from '../data/catalog';
-import { hasStories } from '../data/stories';
+import { hasStories, storiesFor } from '../data/stories';
 import { SITE_URL } from './jsonld';
 
 export const SITE = SITE_URL;
@@ -14,6 +14,41 @@ export function xmlResponse(body: string): Response {
   return new Response(`<?xml version="1.0" encoding="UTF-8"?>\n${body}`, {
     headers: { 'Content-Type': 'application/xml; charset=utf-8' },
   });
+}
+
+/**
+ * Every story URL that has a page in THIS build: `storyNums` intersected with
+ * the stories actually present in the language's story file. `storyNums`
+ * alone is what a previous fetch found — the file it was written from is
+ * gitignored, so a build can have the file with fewer stories in it (a fetch
+ * that partly failed) and listing all of storyNums would advertise pages that
+ * were never built. getStaticPaths and the hub already intersect this way.
+ */
+export async function storyUrls(): Promise<{ loc: string; lastmod: string | null }[]> {
+  const urls: { loc: string; lastmod: string | null }[] = [];
+  for (const l of languages) {
+    // Only languages whose text is in this build — see hasStories().
+    if (!hasStories(l.code)) continue;
+    const built = new Set((await storiesFor(l.code)).map((s) => s.num));
+    for (const num of l.storyNums ?? []) {
+      if (!built.has(num)) continue;
+      urls.push({ loc: `${SITE}${storyPath(l.code, num)}`, lastmod: l.updated ?? null });
+    }
+  }
+  return urls;
+}
+
+/**
+ * The sitemaps to advertise: the ones that actually have URLs. An empty
+ * <urlset> is invalid against the sitemaps.org schema — Search Console
+ * reports it as an empty sitemap — so a build with no story text (an outage,
+ * or a fresh clone with no fetch) leaves sitemap-stories.xml out of the index
+ * rather than advertising nothing.
+ */
+export async function sitemapFiles(): Promise<string[]> {
+  const files = ['sitemap-pages.xml', 'sitemap-languages.xml'];
+  if ((await storyUrls()).length > 0) files.push('sitemap-stories.xml');
+  return files;
 }
 
 export function sitemapIndex(files: string[]): string {
@@ -62,15 +97,10 @@ export function languagesSitemap(): string {
  * "story-level hreflang belongs in the story sitemap" does not survive
  * contact with this many languages; the hub and marketing clusters stand.
  */
-export function storiesSitemap(): string {
-  const urls: string[] = [];
-  for (const l of languages) {
-    // Only languages whose text is in this build — see hasStories().
-    if (!hasStories(l.code)) continue;
-    const lastmod = l.updated ? `\n    <lastmod>${esc(l.updated)}</lastmod>` : '';
-    for (const num of l.storyNums ?? []) {
-      urls.push(`  <url>\n    <loc>${SITE}${storyPath(l.code, num)}</loc>${lastmod}\n  </url>`);
-    }
-  }
+export async function storiesSitemap(): Promise<string> {
+  const urls = (await storyUrls()).map(({ loc, lastmod }) => {
+    const mod = lastmod ? `\n    <lastmod>${esc(lastmod)}</lastmod>` : '';
+    return `  <url>\n    <loc>${loc}</loc>${mod}\n  </url>`;
+  });
   return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
 }

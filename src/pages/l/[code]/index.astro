@@ -40,7 +40,7 @@ import {
   type CatalogLanguage,
 } from '../../../data/catalog';
 import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
-import { hasStories } from '../../../data/stories';
+import { storiesFor } from '../../../data/stories';
 
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { code: lang.code }, props: { lang } }));
@@ -77,9 +77,12 @@ const videoFile = youtube ? undefined : assets.video.find((a) => /\.(mp4|3gp)$/i
 // The hub lists every story whose title was read; only those with full text
 // on disk get a link, so a link never lands on a page that was not built.
 const stories = readableStories(lang);
-// Only link stories whose text is in this build (see hasStories).
-const paged = new Set(hasStories(lang.code) ? (lang.storyNums ?? []) : []);
-const firstStory = paged.size ? (pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null) : null;
+// Only link stories whose text is in THIS build. `storyNums` is what a
+// previous fetch found and the story files are gitignored, so a build can
+// hold a file with fewer stories in it than storyNums claims; asking the
+// file itself is what keeps hub links, story routes and the sitemap in step.
+const paged = new Set((await storiesFor(lang.code)).map((s) => s.num));
+const firstStory = pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null;
 const partial = stories.length > 0 && stories.length < STORY_COUNT;
 const publishers = publishersOf(lang);
 const primary = lang.entries[0];
@@ -104,7 +107,7 @@ const image = storyImage(1);
   slug="discover"
   title={title}
   description={description}
-  jsonLd={hubNodes(lang)}
+  jsonLd={hubNodes(lang, paged)}
   canonicalPath={languagePath(lang.code)}
   htmlLang={lang.code}
   dir={lang.direction}

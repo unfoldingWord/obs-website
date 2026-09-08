@@ -6,7 +6,7 @@
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
 import { languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
-import { hasStories, type Story } from '../data/stories';
+import { type Story } from '../data/stories';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -148,7 +148,7 @@ export function translationListNode(languages: CatalogLanguage[]) {
  * media objects come with story pages (Phase 3, #16). Story pages will give
  * each story its own @id; until then the reader deep link is the story URL.
  */
-export function hubNodes(lang: CatalogLanguage) {
+export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
   const assets = classifyAssets(lang);
   const uiLocale = hubLocaleFor(lang.code);
   const encodings = [
@@ -171,9 +171,10 @@ export function hubNodes(lang: CatalogLanguage) {
   if (encodings.length) extra.encoding = encodings;
   const work = translationNode(lang, extra);
 
-  // Only stories that actually have a page — the ItemList must not advertise
-  // URLs that do not exist.
-  const stories = hasStories(lang.code) ? pagedStories(lang) : [];
+  // Only stories that actually have a page in this build — the ItemList must
+  // not advertise URLs that do not exist. The caller reads the built numbers
+  // from the language's story file (storyNums alone can overstate them).
+  const stories = pagedStories(lang).filter((s) => builtStoryNums.has(s.num));
   if (!stories.length) return [work];
   const list = {
     '@type': 'ItemList',

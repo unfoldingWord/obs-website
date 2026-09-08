@@ -1,4 +1,6 @@
 import type { APIRoute } from 'astro';
-import { sitemapIndex, xmlResponse } from '../lib/sitemap';
+import { sitemapFiles, sitemapIndex, xmlResponse } from '../lib/sitemap';
 
-export const GET: APIRoute = () => xmlResponse(sitemapIndex(['sitemap-pages.xml', 'sitemap-languages.xml', 'sitemap-stories.xml']));
+// sitemap-stories.xml is listed only when story pages were built in this
+// run — see sitemapFiles(); an empty <urlset> is not a valid sitemap.
+export const GET: APIRoute = async () => xmlResponse(sitemapIndex(await sitemapFiles()));
