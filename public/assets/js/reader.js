@@ -24,6 +24,28 @@
 
   // Story to open first, from a ?story= / #story-N deep link.
   let initialStory = null;
+
+  // Story text for this language, served by /l/{code}/stories.json (the same
+  // text the story pages are built from). When it is present the reader needs
+  // no Door43 request to read: no repo listing, no 50 title fetches, no fetch
+  // per story. Null when the endpoint is missing (a build with no story text),
+  // in which case every seam below falls back to the original live fetch.
+  let local = null;
+
+  /** Local stories apply only to the entry they were read from — switching
+   *  publishers has to go back to Door43 for that team's text. */
+  function localFor(entry) {
+    if (!local || !local.primary || !entry) return null;
+    return local.primary.owner === entry.owner && local.primary.name === entry.name
+      ? local
+      : null;
+  }
+
+  function localStory(entry, num) {
+    const bundle = localFor(entry);
+    if (!bundle) return null;
+    return bundle.stories.find((s) => s.num === num) || null;
+  }
   let activeReaderKeyHandler = null;
   function clearReaderKeyHandler() {
     if (activeReaderKeyHandler) {
@@ -146,6 +168,9 @@
   }
 
   function contentPathFor(entry) {
+    // Entries from /l/{code}/stories.json carry the path already resolved;
+    // ones from the live catalog carry the raw ingredients list.
+    if (entry.contentPath) return entry.contentPath;
     const ing = entry.ingredients && entry.ingredients[0];
     if (!ing || !ing.path) return "content";
     return ing.path.replace(/^\.\/?/, "").replace(/\/$/, "");
@@ -238,6 +263,16 @@
   // Fetches and parses one story into a slide deck for a given entry,
   // regardless of format.
   function loadStoryFrames(entry, storyFileEntry) {
+    const story = storyFileEntry && storyFileEntry.local;
+    if (story) {
+      return Promise.resolve({
+        title: story.title || "",
+        reference: story.reference || "",
+        // parseObsFrames yields {alt, image, text}; the build stores no alt
+        // text (the illustrations are decorative beside the story text).
+        frames: (story.frames || []).map((f) => ({ alt: "", image: f.image, text: f.text })),
+      });
+    }
     if (isTsFormat(entry)) {
       return fetchTsStoryContent(entry, storyFileEntry.file.name).then((data) =>
         tsStoryToFrames(storyFileEntry.num, data)
@@ -253,6 +288,9 @@
 
   // Cheap title-only fetch for populating the story picker's labels.
   function fetchStoryTitle(entry, storyFileEntry) {
+    if (storyFileEntry && storyFileEntry.local) {
+      return Promise.resolve(storyFileEntry.local.title || "");
+    }
     if (isTsFormat(entry)) {
       const titleUrl = `https://git.door43.org/${entry.owner}/${entry.name}/raw/${entry.branch_or_tag_name}/${storyFileEntry.file.name}/title.txt`;
       return fetch(titleUrl).then((res) => (res.ok ? res.text() : ""));
@@ -349,6 +387,14 @@
   // naming scheme it actually uses (verified real cases: "01.md" vs
   // "obs_story_1.md", plus the ts-format's numbered directories).
   function fetchStoryFiles(entry) {
+    const bundle = localFor(entry);
+    if (bundle) {
+      // Shape matches the remote listing: the reader only reads `.num`, and
+      // the local story rides along so loadStoryFrames needs no second lookup.
+      return Promise.resolve(
+        bundle.stories.map((s) => ({ num: s.num, local: s, file: { name: String(s.num) } }))
+      );
+    }
     if (isTsFormat(entry)) {
       return fetchTsStoryDirs(entry);
     }
@@ -479,6 +525,12 @@
     let maxStory = 1;
     let storyFiles = [];
     let audioByStory = {};
+    // Per-story audio is in the local bundle already; seeding it here means
+    // the player works without waiting on (or needing) the release lookup
+    // below, which is only still made for the YouTube embed and the PDF link.
+    (localFor(entry) ? localFor(entry).stories : []).forEach((s) => {
+      if (s.audio) audioByStory[s.num] = { name: s.audio, browser_download_url: s.audio };
+    });
     let audioTag = null;
 
     // ---- slide-deck state for the currently loaded story ----
@@ -785,15 +837,32 @@
       el.innerHTML =
         '<p style="color:#4a5960;">' + escapeHtml(strings.loading || "Loading\u2026") + "</p>";
 
-      return fetch(LANG_CATALOG_URL + encodeURIComponent(code))
-        .then((res) => res.json())
-        .then((data) => {
-          const group = (data.data || []).filter(
-            (e) => !/theological formation/i.test(e.title || "")
-          );
-          if (group.length === 0) throw new Error("no catalog entry for " + code);
-          el.innerHTML = "";
-          renderLanguageBody(group, el);
+      // Prefer this site's own copy of the stories: one same-origin request
+      // instead of a catalog lookup plus a repo listing plus 50 title
+      // fetches, and it keeps working when Door43 does not. Falls back to the
+      // live catalog when the endpoint is absent — a build made during a
+      // Door43 outage emits no story text at all.
+      return fetch("/l/" + encodeURIComponent(code) + "/stories.json")
+        .then((res) => (res.ok ? res.json() : null))
+        .catch(() => null)
+        .then((bundle) => {
+          if (bundle && bundle.entries && bundle.entries.length && bundle.stories && bundle.stories.length) {
+            local = bundle;
+            el.innerHTML = "";
+            renderLanguageBody(bundle.entries, el);
+            return;
+          }
+          local = null;
+          return fetch(LANG_CATALOG_URL + encodeURIComponent(code))
+            .then((res) => res.json())
+            .then((data) => {
+              const group = (data.data || []).filter(
+                (e) => !/theological formation/i.test(e.title || "")
+              );
+              if (group.length === 0) throw new Error("no catalog entry for " + code);
+              el.innerHTML = "";
+              renderLanguageBody(group, el);
+            });
         })
         .catch(() => {
           // The hub around this reader is static: the downloads, the story

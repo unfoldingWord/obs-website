@@ -1,8 +1,8 @@
 ---
 // One story in one language — the leaf of the content tree (#7).
 //
-// /l/{code}/{NN}-{slug}/ where {slug} is the canonical English slug, the same
-// in every language, so the URL is stable and ASCII whatever the script.
+// /l/{code}/story-{n}/ — the same shape as the reader's #story-{n}
+// fragment, so both ways of addressing a story read identically.
 //
 // Everything is in the initial HTML: the full text, the illustrations, the
 // Bible reference and the audio when a recording exists. No JavaScript is
@@ -19,7 +19,6 @@ import {
   languages,
   languagePath,
   storyPath,
-  storySlug,
   hubLocaleFor,
   fontHrefForScript,
   displayName,
@@ -41,7 +40,7 @@ export async function getStaticPaths() {
     const nums = (lang.storyNums ?? []).filter((num) => byNum.has(num));
     for (const num of nums) {
       paths.push({
-        params: { code: lang.code, story: `${String(num).padStart(2, '0')}-${storySlug(num)}` },
+        params: { code: lang.code, story: `story-${num}` },
         props: { lang, story: byNum.get(num)!, nums },
       });
     }

@@ -20,8 +20,6 @@ import {
   assetFormats,
   fetchMissingAssets,
   enrichAssets,
-  STORY_SLUGS,
-  storySlug,
   audioByStory,
   writeStoryFiles,
   clearReleasesCache,
@@ -301,15 +299,6 @@ test('enrichStories reuses the previous snapshot when the release is unchanged',
   assert.equal(fresh[0].stories[0].title, '1. The Creation');
 });
 
-test('storySlug returns the canonical English slug, identical in every language', () => {
-  assert.equal(STORY_SLUGS.length, 50);
-  assert.equal(new Set(STORY_SLUGS).size, 50, 'slugs must be unique — they are URL segments');
-  assert.equal(storySlug(1), 'the-creation');
-  assert.equal(storySlug(13), 'gods-covenant-with-israel');
-  assert.equal(storySlug(50), 'jesus-returns');
-  assert.ok(STORY_SLUGS.every((s) => /^[a-z0-9-]+$/.test(s)), 'slugs must be ASCII and URL-safe');
-});
-
 test('parseStoryMarkdown pairs each illustration with the text that follows it', () => {
   const p = parseStoryMarkdown(STORY_MD);
   assert.equal(p.frames.length, 2);
@@ -365,7 +354,6 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   assert.ok(!('storyAudio' in withBody), 'audio map is not left on the snapshot');
 
   const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
-  assert.equal(file.stories[0].slug, 'the-creation');
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
   assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
@@ -402,11 +390,3 @@ test('enrichStories refetches when the cached entry has no story file on disk', 
   assert.ok(calls > 0, 'a gitignored story file that is gone must force a refetch');
 });
 
-test('the slug table in src/data/story-slugs.ts matches this script', () => {
-  // Two copies exist because an .mjs build script and the Astro site cannot
-  // share a module; this test is what keeps them honest. A mismatch would
-  // silently produce story URLs that the sitemap and the routes disagree on.
-  const ts = readFileSync(new URL('../src/data/story-slugs.ts', import.meta.url), 'utf8');
-  const listed = [...ts.matchAll(/'([a-z0-9-]+)',/g)].map((m) => m[1]);
-  assert.deepEqual(listed, STORY_SLUGS);
-});

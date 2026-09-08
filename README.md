@@ -54,15 +54,19 @@ Failure policy: the snapshot is only overwritten by a complete, successful catal
 | --- | --- |
 | `/discover/`, `/{locale}/discover/` | Discovery only — the language list, search, format filters |
 | `/l/{code}/` | The language page: names, codes, formats, downloads, story list, license |
-| `/l/{code}/{NN}-{slug}/` | One story: full text, illustrations, audio when it exists |
+| `/l/{code}/story-{n}/` | One story: full text, illustrations, audio when it exists |
 
-`{slug}` is the canonical English slug for that story number (`src/data/story-slugs.ts`), identical in every language — `/l/sw/01-the-creation/`, `/l/hi/01-the-creation/`. Slugifying local titles would percent-encode badly for non-Latin scripts and would move a URL whenever a translation is revised. `scripts/fetch-catalog.mjs` holds the same table (an `.mjs` build script and the Astro site cannot share a module) and `npm test` fails if the two drift.
+A story is addressed the same way in both places: `/l/{code}/story-16/` as a page, `#story-16` as the reader's fragment. No title slug — one would either be English in every language's URLs or percent-encoded nonsense for non-Latin scripts, and it would move the URL whenever a translation was revised.
 
 There is no `/discover/read/`. That route hosted the JS reader; the reader itself now lives on the language hub, and each story additionally has its own static page.
 
 Two ways to read, deliberately, with one canonical URL each:
 
-- **On the hub** — `/assets/js/reader.js` mounts in place when someone opens a story: slide-flip navigation, a story picker, per-story audio, YouTube where it exists, and a publisher chooser when several teams have published the language. It reads the live DCS catalog for that one language, so a newly published release shows up without a rebuild. It is not loaded on arrival — a hub is mostly visited for downloads or a single story, and mounting it eagerly would fire a Door43 request on all 214 hubs.
+- **On the hub** — `/assets/js/reader.js` mounts in place when someone opens a story: slide-flip navigation, a story picker, per-story audio, YouTube where it exists, and a publisher chooser when several teams have published the language. It is not loaded on arrival — a hub is mostly visited for downloads or a single story, and mounting eagerly would fetch on all 214 hubs.
+
+  It reads **this site's own copy** of the stories, `/l/{code}/stories.json` (`src/pages/l/[code]/stories.json.ts`) — the same text the story pages are built from. Reading one story used to cost a catalog lookup, a repo listing, 50 title fetches and a fetch per story viewed; it is now one same-origin request, and the reader keeps working when Door43 is unreachable. Per-story audio is in that bundle too, so the player does not wait on anything remote.
+
+  Door43 is still consulted for two optional extras — the YouTube embed and the in-reader PDF link, which come from the repo's release history — and for a publisher the local text does not cover, since the build reads story text from one entry per language. Both fail quietly. When a build produced no story text at all (a Door43 outage), the endpoint is absent and the reader falls back to its original live-catalog path.
 - **The story pages** — static HTML, one canonical URL per story, crawlable and readable with no JavaScript. Each story page has a "Read in the reader" link back to `/l/{code}/#story-N`.
 
 Every "read" affordance on a hub — the Read online / Listen buttons, "Read this story" under the extract, and every row of the story list — has that story page as its `href`. `hub-reader.js` intercepts the click and opens the story in the reader instead. So crawlers follow real URLs, a visitor without JavaScript lands on a real page, and everyone else reads in place; the fragment is kept in step (`#story-N`) so the story stays shareable and Back works. Modified clicks (⌘/Ctrl/middle) are left alone, because opening a story in a new tab should give the story page.

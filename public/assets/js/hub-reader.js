@@ -5,7 +5,7 @@
   //
   // Every "read" affordance on the hub — the Read online / Listen buttons,
   // "Read this story" under the extract, and every row of the story list —
-  // points at that story's own page (/l/{code}/{NN}-{slug}/). Those are real
+  // points at that story's own page (/l/{code}/story-{n}/). Those are real
   // URLs: they are what search engines follow, what the sitemap lists, and
   // what a visitor without JavaScript gets. This script intercepts the click
   // and opens the story in the reader instead, in place.
@@ -23,7 +23,7 @@
   const section = el.closest(".hub-reader");
   const code = el.dataset.lang;
   const STORY_HREF = new RegExp(
-    "^/l/" + code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/(\\d\\d)-[^/]*/$"
+    "^/l/" + code.replace(/[.*+?^${}()|[\]\\]/g, "\\$&") + "/story-(\\d+)/$"
   );
 
   function storyFromHash() {

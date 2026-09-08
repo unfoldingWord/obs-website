@@ -8,8 +8,6 @@
 // being absent so a fresh clone can still type-check, but a production build
 // (`fetch-catalog.mjs --required`) refuses to run without data.
 import { locales, defaultLocale } from '../i18n/config';
-import { STORY_SLUGS, storySlug } from './story-slugs';
-export { STORY_SLUGS, storySlug };
 
 /** Stories in an Open Bible Stories edition. Mirrors STORY_COUNT in
  *  scripts/fetch-catalog.mjs (discover.js carries its own copy). */
@@ -68,7 +66,7 @@ export interface CatalogLanguage {
   stories: CatalogStory[] | null;
   /**
    * Story numbers that have full text on disk (src/data/stories/{code}.json)
-   * and therefore a page at /l/{code}/{NN}-{slug}/. The hub's links, the
+   * and therefore a page at /l/{code}/story-{n}/. The hub's links, the
    * story routes and sitemap-stories.xml all read this one field, so they
    * cannot disagree about which pages exist. Empty when the language has
    * titles but no readable bodies (legacy translationStudio repos).
@@ -123,15 +121,16 @@ export function languagePath(code: string): string {
 }
 
 /**
- * Canonical URL of one story: /l/{code}/{NN}-{slug}/.
+ * Canonical URL of one story: `/l/{code}/story-{n}/`.
  *
- * The slug is the canonical English one for that story number, identical in
- * every language, so URLs stay stable and ASCII — slugifying local titles
- * would percent-encode badly for non-Latin scripts and would move the URL
- * whenever a translation is revised.
+ * Deliberately the same shape as the reader's fragment (`#story-{n}`), so the
+ * two ways of addressing a story read identically. The number is not padded
+ * and there is no title slug: a slug would either be English in every
+ * language's URLs, or percent-encoded nonsense for non-Latin scripts, and
+ * would move the URL whenever a translation was revised.
  */
 export function storyPath(code: string, num: number): string {
-  return `${languagePath(code)}${String(num).padStart(2, '0')}-${storySlug(num)}/`;
+  return `${languagePath(code)}story-${num}/`;
 }
 
 /** Story numbers that have a page, in order. */

@@ -23,8 +23,6 @@ export interface StoryFrame {
 export interface Story {
   num: number;
   title: string;
-  /** Canonical English slug — the URL segment after the number. */
-  slug: string;
   /** "A Bible story from: Genesis 1-2", in the language, when present. */
   reference: string | null;
   frames: StoryFrame[];

@@ -84,14 +84,14 @@ for (const lang of languages) {
   // story pages, and that must stay a clean build rather than an error.
   const built = new Set(
     readdirSync(join(DIST, 'l', lang.code), { withFileTypes: true })
-      .filter((d) => d.isDirectory() && /^\d\d-/.test(d.name))
-      .map((d) => parseInt(d.name.slice(0, 2), 10))
+      .filter((d) => d.isDirectory() && /^story-\d+$/.test(d.name))
+      .map((d) => parseInt(d.name.slice(6), 10))
   );
   builtStories += built.size;
   const html = readFileSync(hub, 'utf8');
   const escaped = lang.code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
   const linked = new Set(
-    [...html.matchAll(new RegExp(`href="/l/${escaped}/(\\d\\d)-`, 'g'))].map((m) => parseInt(m[1], 10))
+    [...html.matchAll(new RegExp(`href="/l/${escaped}/story-(\\d+)/"`, 'g'))].map((m) => parseInt(m[1], 10))
   );
   const unlinked = [...built].filter((n) => !linked.has(n));
   if (unlinked.length) errors.push(`/l/${lang.code}/ does not link ${unlinked.length} of the ${built.size} story pages built for it`);
