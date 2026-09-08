@@ -48,4 +48,10 @@ Allow: /
 User-agent: DuckAssistBot
 Allow: /
 
+# An /llms.txt index of the language hubs and per-language markdown mirrors
+# also exists — https://openbiblestories.org/llms.txt — generated from the
+# same catalog as the HTML pages, so every URL in it resolves. It is a
+# convenience for fetchers that prefer markdown, not a substitute for the
+# sitemap below, which is the inventory search engines should use.
+
 Sitemap: https://openbiblestories.org/sitemap-index.xml

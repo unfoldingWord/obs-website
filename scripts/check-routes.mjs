@@ -8,6 +8,7 @@
 //   3. every language with story pages links to them from its hub
 //   4. every internal link into /l/ resolves to a built page
 //   5. the output fits Cloudflare Pages' 20,000-file limit
+//   6. /llms.txt lists only URLs that were built, and every markdown mirror
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -123,6 +124,32 @@ for (const file of htmlFiles(DIST)) {
   }
 }
 
+// 6. /llms.txt must list only URLs that 200 (#20). This is the whole point
+// of the file: an index that advertises 214 language pages whose URLs 404 is
+// worse than no index. Checked against the served file, not the source, so a
+// generation bug cannot pass.
+let llms = 0;
+const llmsFile = join(DIST, 'llms.txt');
+if (!existsSync(llmsFile)) {
+  errors.push('llms.txt is missing');
+} else {
+  const text = readFileSync(llmsFile, 'utf8');
+  for (const m of text.matchAll(new RegExp(`${SITE}(/[^\\s)]*)`, 'g'))) {
+    const path = m[1].replace(/[.,]$/, '');
+    llms++;
+    // Directory routes are index.html; the markdown mirrors are plain files.
+    const target = path.endsWith('/') ? join(DIST, path, 'index.html') : join(DIST, path);
+    if (!existsSync(target)) errors.push(`llms.txt lists ${path}, which was not built`);
+  }
+  // Every mirror that exists must be listed, or the index is stale.
+  const mirrors = existsSync(join(DIST, 'content'))
+    ? readdirSync(join(DIST, 'content')).filter((f) => f.endsWith('.md'))
+    : [];
+  for (const f of mirrors) {
+    if (!text.includes(`/content/${f}`)) errors.push(`llms.txt does not list /content/${f}`);
+  }
+}
+
 // 2b. Nothing may still reference the retired route.
 function* files(dir) {
   for (const name of readdirSync(dir)) {
@@ -149,5 +176,5 @@ if (errors.length) {
 }
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
-    `${links} links into /l/ resolve, ${all.length}/${MAX_FILES} files, no /discover/read/`
+    `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${all.length}/${MAX_FILES} files, no /discover/read/`
 );

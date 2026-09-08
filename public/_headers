@@ -40,6 +40,14 @@
   ! Cache-Control
   Cache-Control: public, no-cache, s-maxage=86400
 
+# Markdown mirrors of the story text (#20). Served as text/markdown so a
+# fetcher gets text rather than a download, and as UTF-8 explicitly: these
+# files are in 195 languages and a guessed charset mangles most of them.
+/content/*
+  ! Cache-Control
+  Cache-Control: public, max-age=300, s-maxage=86400, stale-while-revalidate=86400
+  Content-Type: text/markdown; charset=utf-8
+
 # Self-hosted fonts are content-stable variable woff2 files — same immutable
 # policy as images.
 /assets/fonts/*
