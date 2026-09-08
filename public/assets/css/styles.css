@@ -734,3 +734,32 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 .hub-license{font-size:0.9rem; color:#4a5960; margin:24px 0 0;}
 @media (max-width:760px){ .hub-extract-grid{grid-template-columns:1fr;} .hub-extract-grid img{max-width:360px;} }
 @media (max-width:640px){ .hub-facts{grid-template-columns:1fr;} .hub-facts dt{margin-top:8px;} }
+
+/* ---------- STORY PAGES (/l/{code}/{NN}-{slug}/) ---------- */
+/* A reading column, not a marketing page: one measure, generous leading, and
+   the illustration above the text it belongs to. Logical properties
+   throughout so RTL scripts mirror without a second rule set. */
+.story{padding:32px 0 56px;}
+.story .wrap{max-width:720px;}
+.story-crumb{display:flex; justify-content:space-between; align-items:baseline; gap:16px; flex-wrap:wrap; font-size:0.9rem; margin-bottom:14px;}
+.story-crumb a{color:var(--inspire-text); text-decoration:none;}
+.story-crumb a:hover{text-decoration:underline;}
+.story-count{color:#64747d;}
+.story h1{font-size:clamp(1.8rem, 4vw, 2.6rem); line-height:1.25; margin:0 0 22px;}
+.story-audio{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 30px; padding:12px 16px; background:var(--panel); border-radius:10px;}
+.story-audio-label{font-weight:700; color:var(--ocean); font-size:0.9rem;}
+.story-audio audio{height:36px; max-width:280px; flex:1 1 220px;}
+.story-frame{margin:0 0 34px;}
+.story-frame img{display:block; width:100%; max-width:480px; height:auto; border-radius:10px; margin-bottom:14px;}
+.story-frame p{font-size:1.15rem; line-height:1.8; margin:0; color:var(--tech);}
+.story-reference{color:#64747d; margin:0 0 32px; font-size:0.95rem;}
+.story-nav{display:flex; justify-content:space-between; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 26px; padding-top:22px; border-top:1px solid #e4e9ec;}
+.story-license{font-size:0.85rem; color:#64747d; margin:0;}
+/* Nastaliq and other tall scripts clip at the Latin-tuned leading. */
+html:lang(ur) .story-frame p{line-height:2.2;}
+@media (max-width:640px){
+  .story-frame p{font-size:1.08rem;}
+  .story-nav .btn{flex:1 1 auto; text-align:center;}
+}
+/* A story whose title was read but whose text was not — shown, not linked. */
+.hub-story-unlinked{display:flex; gap:12px; align-items:baseline; padding:8px 10px; color:#64747d;}

@@ -4,6 +4,7 @@
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
+import { join } from 'node:path';
 import {
   groupLanguages,
   applyLangnames,
@@ -19,6 +20,11 @@ import {
   assetFormats,
   fetchMissingAssets,
   enrichAssets,
+  STORY_SLUGS,
+  storySlug,
+  audioByStory,
+  writeStoryFiles,
+  clearReleasesCache,
   sortLanguages,
 } from './fetch-catalog.mjs';
 
@@ -142,6 +148,7 @@ test('scriptFor maps Urdu in Arabic script to the Nastaliq pack', () => {
 });
 
 test('fetchMissingAssets pulls an advertised PDF from the newest release that has one', async () => {
+  clearReleasesCache();
   const entry = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v3', assets: [] };
   const releases = JSON.stringify([
     { tag_name: 'v3', draft: false, published_at: '2026-03-01T00:00:00Z', assets: [] },
@@ -156,11 +163,14 @@ test('fetchMissingAssets pulls an advertised PDF from the newest release that ha
   assert.deepEqual(both.map((a) => a.url), ['https://e/v2/sw_obs.pdf', 'https://e/v1/audio.zip'], 'video not found anywhere → nothing invented');
   const own = [{ name: 'x.pdf', url: 'https://e/x.pdf', size: 1 }];
   assert.equal(await fetchMissingAssets({ ...entry, assets: own }, { pdf: true, audio: false, video: false }, f), own, 'nothing missing → no lookup');
-  assert.equal(calls, 2);
+  // One releases request per repo per run: the second lookup for the same
+  // owner/name is served from the cache (see clearReleasesCache).
+  assert.equal(calls, 1);
   assert.deepEqual(assetFormats(both), { pdf: true, audio: true, video: false });
 });
 
 test('enrichAssets reuses cached assets for unchanged entries', async () => {
+  clearReleasesCache();
   let calls = 0;
   const f = fakeFetch(() => { calls++; return '[]'; });
   const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [{ owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2026-01-01', assets: [] }] };
@@ -267,7 +277,13 @@ test('fetchStories falls through to the next team when the first repo has no sto
   assert.equal(none.extract, null);
 });
 
-test('enrichStories reuses the previous snapshot when the release is unchanged', async () => {
+test('enrichStories reuses the previous snapshot when the release is unchanged', async (t) => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
+  // Bodies live in src/data/stories/, so reuse requires that file to exist.
+  writeFileSync(join(storiesDir, 'en.json'), JSON.stringify({ code: 'en', stories: [] }));
   let calls = 0;
   const f = fakeFetch((url) => {
     calls++;
@@ -276,11 +292,121 @@ test('enrichStories reuses the previous snapshot when the release is unchanged',
   const lang = { code: 'en', script: 'latin', entries: [{ owner: 'o', name: 'en_obs', branch_or_tag_name: 'v1', released: '2026-01-01', metadata_type: 'rc', contentPath: 'content' }] };
   const previous = { languages: [{ ...lang, stories: [{ num: 1, title: 'cached' }], extract: { title: 'c', text: 'cached', reference: null }, script: 'latin' }] };
   const quiet = { log() {} };
-  const reused = await enrichStories([lang], previous, f, quiet);
+  const reused = await enrichStories([lang], previous, f, quiet, storiesDir);
   assert.equal(calls, 0);
   assert.equal(reused[0].stories[0].title, 'cached');
   const changed = { ...lang, entries: [{ ...lang.entries[0], branch_or_tag_name: 'v2' }] };
-  const fresh = await enrichStories([changed], previous, f, quiet);
+  const fresh = await enrichStories([changed], previous, f, quiet, storiesDir);
   assert.ok(calls > 0);
   assert.equal(fresh[0].stories[0].title, '1. The Creation');
+});
+
+test('storySlug returns the canonical English slug, identical in every language', () => {
+  assert.equal(STORY_SLUGS.length, 50);
+  assert.equal(new Set(STORY_SLUGS).size, 50, 'slugs must be unique — they are URL segments');
+  assert.equal(storySlug(1), 'the-creation');
+  assert.equal(storySlug(13), 'gods-covenant-with-israel');
+  assert.equal(storySlug(50), 'jesus-returns');
+  assert.ok(STORY_SLUGS.every((s) => /^[a-z0-9-]+$/.test(s)), 'slugs must be ASCII and URL-safe');
+});
+
+test('parseStoryMarkdown pairs each illustration with the text that follows it', () => {
+  const p = parseStoryMarkdown(STORY_MD);
+  assert.equal(p.frames.length, 2);
+  assert.equal(p.frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.match(p.frames[0].text, /^This is how/);
+  assert.equal(p.frames[1].text, 'God spoke, and light appeared. He called the light day.');
+  assert.deepEqual(p.paragraphs, p.frames.map((f) => f.text), 'paragraphs stay in step with frames');
+});
+
+test('parseStoryMarkdown handles a titled image link and a frame with no image', () => {
+  const p = parseStoryMarkdown('# T\n\n![a](https://cdn/x.jpg "caption")\n\nWith image.\n\nNo image.\n');
+  assert.equal(p.frames[0].image, 'https://cdn/x.jpg');
+  assert.equal(p.frames[1].image, null);
+});
+
+test('audioByStory takes the newest release with per-story mp3s, preferring bitrate', () => {
+  const releases = [
+    { tag_name: 'v6', assets: [
+      { name: 'en_obs_v6_01_32kbps.mp3', browser_download_url: 'https://e/lo.mp3' },
+      { name: 'en_obs_v6_01_128kbps.mp3', browser_download_url: 'https://e/hi.mp3' },
+      { name: 'en_obs_v6_02_128kbps.mp3', browser_download_url: 'https://e/2.mp3' },
+    ] },
+    { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.mp3', browser_download_url: 'https://e/old.mp3' }] },
+  ];
+  const map = audioByStory(releases);
+  assert.equal(map[1], 'https://e/hi.mp3', 'higher bitrate wins');
+  assert.equal(map[2], 'https://e/2.mp3');
+  assert.deepEqual(audioByStory([]), {});
+  assert.deepEqual(audioByStory([{ assets: [{ name: 'whole_obs.zip', browser_download_url: 'https://e/z.zip' }] }]), {});
+});
+
+test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
+  const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+
+  const withBody = {
+    code: 'sw',
+    storyAudio: { 1: 'https://e/1.mp3' },
+    stories: [
+      { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
+      { num: 2, title: 'Dhambi', body: null },
+    ],
+  };
+  const noBody = { code: 'zz', stories: [{ num: 1, title: 'T', body: null }] };
+
+  const written = writeStoryFiles([withBody, noBody], dir);
+  assert.equal(written, 1, 'only the language with bodies gets a file');
+  assert.deepEqual(withBody.storyNums, [1], 'only stories with a body get a page');
+  assert.deepEqual(noBody.storyNums, []);
+  assert.deepEqual(withBody.stories, [{ num: 1, title: 'Uumbaji' }, { num: 2, title: 'Dhambi' }], 'hub list keeps every title');
+  assert.ok(!('storyAudio' in withBody), 'audio map is not left on the snapshot');
+
+  const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
+  assert.equal(file.stories[0].slug, 'the-creation');
+  assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
+  assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
+});
+
+test('writeStoryFiles keeps storyNums for a language reused from the snapshot', async (t) => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  writeFileSync(join(dir, 'sw.json'), JSON.stringify({ code: 'sw', stories: [] }));
+
+  // Cache hit: titles came back from the snapshot, bodies did not.
+  const reused = { code: 'sw', storyNums: [1, 2, 3], stories: [{ num: 1, title: 'Uumbaji' }] };
+  writeStoryFiles([reused], dir);
+  assert.deepEqual(reused.storyNums, [1, 2, 3], 'existing pages are not dropped when bodies are cached');
+
+  const orphan = { code: 'qq', storyNums: [1, 2], stories: [{ num: 1, title: 'x' }] };
+  writeStoryFiles([orphan], dir);
+  assert.deepEqual(orphan.storyNums, [], 'no file on disk → no story pages claimed');
+});
+
+test('enrichStories refetches when the cached entry has no story file on disk', async (t) => {
+  const { mkdtempSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const empty = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(empty, { recursive: true, force: true }));
+
+  let calls = 0;
+  const f = fakeFetch((url) => { calls++; return url.endsWith('/01.md') ? STORY_MD : null; });
+  const lang = { code: 'en', script: 'latin', entries: [{ owner: 'o', name: 'en_obs', branch_or_tag_name: 'v1', released: '2026-01-01', metadata_type: 'rc', contentPath: 'content' }] };
+  const previous = { languages: [{ ...lang, stories: [{ num: 1, title: 'cached' }], storyNums: [1], extract: null, script: 'latin' }] };
+  await enrichStories([lang], previous, f, { log() {} }, empty);
+  assert.ok(calls > 0, 'a gitignored story file that is gone must force a refetch');
+});
+
+test('the slug table in src/data/story-slugs.ts matches this script', () => {
+  // Two copies exist because an .mjs build script and the Astro site cannot
+  // share a module; this test is what keeps them honest. A mismatch would
+  // silently produce story URLs that the sitemap and the routes disagree on.
+  const ts = readFileSync(new URL('../src/data/story-slugs.ts', import.meta.url), 'utf8');
+  const listed = [...ts.matchAll(/'([a-z0-9-]+)',/g)].map((m) => m[1]);
+  assert.deepEqual(listed, STORY_SLUGS);
 });

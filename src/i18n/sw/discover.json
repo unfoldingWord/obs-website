@@ -18,11 +18,6 @@
     "status": "Lugha {shown} kati ya {total} zilizochapishwa",
     "noMatch": "Bado hakuna lugha inayolingana na utafutaji huo.",
     "noMatchFormat": "Hakuna lugha inayolingana na utafutaji huo na muundo huo — jaribu muundo mwingine.",
-    "loading": "Inapakia lugha...",
-    "teams": "Timu {n} zimechapisha hii",
-    "back": "Rudi kwenye Vumbua",
-    "openFull": "Fungua ukurasa mzima",
-    "languagePage": "Vipakuliwa na maelezo",
-    "offline": "Kusoma mtandaoni hakupatikani kwa sasa (Door43 haifikiki). Bado unaweza kufungua lugha yoyote kwa vipakuliwa vyake."
+    "teams": "Timu {n} zimechapisha hii"
   }
 }

@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "description": "{story} — verhaal {n} uit Open Bijbelverhalen in het {language}. Lees de volledige tekst, bekijk de illustraties en luister naar de audio. Gratis onder een open licentie."
+  },
+  "storyN": "Verhaal {n} van {total}",
+  "listen": "Luister naar dit verhaal",
+  "previous": "Vorige",
+  "next": "Volgende",
+  "allStories": "Alle verhalen in het {language}",
+  "license": "Vrij te gebruiken, aan te passen en te delen onder een open licentie (CC BY-SA 4.0)."
+}

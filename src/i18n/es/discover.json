@@ -18,11 +18,6 @@
     "status": "{shown} de {total} idiomas publicados",
     "noMatch": "Todavía ningún idioma coincide con esa búsqueda.",
     "noMatchFormat": "Ningún idioma coincide con esa búsqueda y ese formato; prueba con otro formato.",
-    "loading": "Cargando idiomas...",
-    "teams": "{n} equipos lo han publicado",
-    "back": "Volver a Descubre",
-    "openFull": "Abrir en página completa",
-    "languagePage": "Descargas y detalles",
-    "offline": "La lectura en línea no está disponible ahora (no se puede acceder a Door43). Aún puedes abrir cualquier idioma para ver sus descargas."
+    "teams": "{n} equipos lo han publicado"
   }
 }

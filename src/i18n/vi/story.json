@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "description": "{story} — câu chuyện {n} trong Những Câu Chuyện Kinh Thánh Mở bằng tiếng {language}. Đọc toàn văn, xem tranh minh họa và nghe âm thanh. Miễn phí theo giấy phép mở."
+  },
+  "storyN": "Câu chuyện {n} / {total}",
+  "listen": "Nghe câu chuyện này",
+  "previous": "Trước",
+  "next": "Tiếp",
+  "allStories": "Tất cả câu chuyện bằng tiếng {language}",
+  "license": "Được tự do sử dụng, chuyển thể và chia sẻ theo giấy phép mở (CC BY-SA 4.0)."
+}

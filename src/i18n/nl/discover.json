@@ -18,11 +18,6 @@
     "status": "{shown} van {total} gepubliceerde talen",
     "noMatch": "Nog geen taal komt overeen met die zoekopdracht.",
     "noMatchFormat": "Geen taal komt overeen met die zoekopdracht en dat formaat — probeer een ander formaat.",
-    "loading": "Talen laden...",
-    "teams": "{n} teams hebben dit gepubliceerd",
-    "back": "Terug naar Ontdekken",
-    "openFull": "Op volledige pagina openen",
-    "languagePage": "Downloads en details",
-    "offline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). Je kunt nog steeds elke taal openen voor de downloads."
+    "teams": "{n} teams hebben dit gepubliceerd"
   }
 }

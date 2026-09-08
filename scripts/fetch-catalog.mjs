@@ -53,7 +53,7 @@
 //     languages — visibly wrong on purpose, never a stale placeholder);
 //   - OBS_CATALOG_STORIES=0 skips story fetching (offline development).
 import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs';
-import { dirname } from 'node:path';
+import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 export const CATALOG_URL =
@@ -64,6 +64,30 @@ const required = process.argv.includes('--required') && !process.env.OBS_CATALOG
 const fetchStoriesEnabled = process.env.OBS_CATALOG_STORIES !== '0';
 
 export const STORY_COUNT = 50;
+
+/** Canonical English slugs for the 50 stories, from the unfoldingWord/en_obs
+ *  v9 titles. Deliberately identical in every language so story URLs are
+ *  stable and ASCII: slugifying local titles would percent-encode badly for
+ *  non-Latin scripts and would move a URL whenever a translation is revised.
+ *  Index 0 is story 1. */
+export const STORY_SLUGS = [
+  'the-creation', 'sin-enters-the-world', 'the-flood', 'gods-covenant-with-abraham', 'the-son-of-promise',
+  'god-provides-for-isaac', 'god-blesses-jacob', 'god-saves-joseph-and-his-family', 'god-calls-moses', 'the-ten-plagues',
+  'the-passover', 'the-exodus', 'gods-covenant-with-israel', 'wandering-in-the-wilderness', 'the-promised-land',
+  'the-deliverers', 'gods-covenant-with-david', 'the-divided-kingdom', 'the-prophets', 'the-exile-and-return',
+  'god-promises-the-messiah', 'the-birth-of-john', 'the-birth-of-jesus', 'john-baptizes-jesus', 'satan-tempts-jesus',
+  'jesus-starts-his-ministry', 'the-story-of-the-good-samaritan', 'the-rich-young-ruler', 'the-story-of-the-unmerciful-servant', 'jesus-feeds-thousands-of-people',
+  'jesus-walks-on-water', 'jesus-heals-a-demon-possessed-man-and-a-sick-woman', 'the-story-of-the-farmer', 'jesus-teaches-other-stories', 'the-story-of-the-compassionate-father',
+  'the-transfiguration', 'jesus-raises-lazarus-from-the-dead', 'jesus-is-betrayed', 'jesus-is-put-on-trial', 'jesus-is-crucified',
+  'god-raises-jesus-from-the-dead', 'jesus-returns-to-heaven', 'the-church-begins', 'peter-and-john-heal-a-beggar', 'stephen-and-philip',
+  'saul-becomes-a-follower-of-jesus', 'paul-and-silas-in-philippi', 'jesus-is-the-promised-messiah', 'gods-new-covenant', 'jesus-returns',
+];
+
+/** URL slug for a story number, e.g. 1 -> "the-creation". */
+export function storySlug(num) {
+  return STORY_SLUGS[num - 1] ?? String(num);
+}
+
 const PAGE_SIZE = 1000;
 const CONCURRENCY = 24;
 const EXTRACT_MAX_CHARS = 520;
@@ -108,22 +132,53 @@ export function assetFormats(assets) {
  * assets plus the found files (tagged with their release), or the original
  * list when nothing is missing or the lookup fails. Never throws.
  */
+// One releases lookup per repo per run: the PDF/audio/video backfill and the
+// per-story audio map both need the same list.
+const releasesCache = new Map();
+
+/** Drop the per-run releases cache. Only needed by tests, which exercise
+ *  several fake repos that share owner/name across cases. */
+export function clearReleasesCache() {
+  releasesCache.clear();
+}
+
+/** Non-draft releases of an entry's repo, newest first. [] on any failure. */
+async function fetchReleases(entry, fetchImpl = fetch) {
+  const key = `${entry.owner}/${entry.name}`;
+  if (releasesCache.has(key)) return releasesCache.get(key);
+  let ordered = [];
+  try {
+    const body = await fetchText(`https://git.door43.org/api/v1/repos/${entry.owner}/${entry.name}/releases`, fetchImpl);
+    const releases = body ? JSON.parse(body) : [];
+    if (Array.isArray(releases)) {
+      ordered = releases
+        .filter((r) => r && !r.draft)
+        .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
+    }
+  } catch {
+    ordered = [];
+  }
+  releasesCache.set(key, ordered);
+  return ordered;
+}
+
+/**
+ * Per-story mp3 URLs for one entry, or {} when the repo publishes none.
+ * The entry's own `assets` list is capped at 40 files and so cannot hold a
+ * 50-story audio set — this reads the release history directly.
+ */
+export async function fetchStoryAudio(entry, fetchImpl = fetch) {
+  if (!entry?.owner || !entry?.name) return {};
+  return audioByStory(await fetchReleases(entry, fetchImpl));
+}
+
 export async function fetchMissingAssets(entry, wanted, fetchImpl = fetch) {
   const own = entry.assets || [];
   const have = assetFormats(own);
   const missing = ['pdf', 'audio', 'video'].filter((k) => wanted[k] && !have[k]);
   if (!missing.length || !entry.owner || !entry.name) return own;
-  let releases;
-  try {
-    const body = await fetchText(`https://git.door43.org/api/v1/repos/${entry.owner}/${entry.name}/releases`, fetchImpl);
-    releases = body ? JSON.parse(body) : [];
-  } catch {
-    return own;
-  }
-  if (!Array.isArray(releases)) return own;
-  const ordered = releases
-    .filter((r) => r && !r.draft)
-    .sort((a, b) => new Date(b.published_at || 0) - new Date(a.published_at || 0));
+  const ordered = await fetchReleases(entry, fetchImpl);
+  if (!ordered.length) return own;
   const extra = [];
   for (const key of missing) {
     for (const r of ordered) {
@@ -262,28 +317,76 @@ export function sortLanguages(languages) {
   return [...languages].sort((a, b) => key(a).localeCompare(key(b), 'en'));
 }
 
-/** Parse one Resource Container story markdown file into title/paragraphs/reference. */
+/**
+ * Parse one Resource Container story markdown file.
+ *
+ * Returns `paragraphs` (text only, for the hub extract) and `frames` — each
+ * illustration paired with the text that follows it, which is what a story
+ * page renders. Story images are language-independent: every translation
+ * references the same cdn.door43.org/obs/jpg/.../obs-en-{NN}-{FF}.jpg files.
+ */
 export function parseStoryMarkdown(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n/, '');
   const blocks = body.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
   let title = '';
   let reference = '';
   const paragraphs = [];
+  const frames = [];
+  let pendingImage = null;
   blocks.forEach((block, i) => {
     const heading = i === 0 && block.match(/^#{1,6}\s*(.*)$/);
     if (heading) {
       title = heading[1].trim();
       return;
     }
-    if (/^!\[[^\]]*\]\([^)]+\)$/.test(block)) return; // image line
+    const image = block.match(/^!\[[^\]]*\]\(([^)\s]+)[^)]*\)$/);
+    if (image) {
+      pendingImage = image[1];
+      return;
+    }
     const ref = i === blocks.length - 1 && block.match(/^[_*](.+)[_*]$/);
     if (ref) {
       reference = ref[1].trim();
       return;
     }
-    paragraphs.push(block.replace(/\s+/g, ' ').trim());
+    const text = block.replace(/\s+/g, ' ').trim();
+    paragraphs.push(text);
+    frames.push({ image: pendingImage, text });
+    pendingImage = null;
   });
-  return { title, paragraphs, reference };
+  return { title, paragraphs, reference, frames };
+}
+
+/**
+ * Map story number -> mp3 URL from a repo's release assets, newest release
+ * first. Mirrors the reader's old latestReleaseWithAllExt('.mp3'): a text
+ * release and an audio release are often different tags. Prefers the higher
+ * bitrate when a story ships several (…_01_128kbps.mp3 over …_01_32kbps.mp3).
+ */
+export function audioByStory(releases) {
+  const bitrate = (name) => {
+    const m = name.match(/(\d+)kbps/i);
+    return m ? parseInt(m[1], 10) : 0;
+  };
+  for (const release of releases || []) {
+    const out = {};
+    for (const a of release?.assets || []) {
+      if (!a || !a.name || !a.browser_download_url || !/\.mp3$/i.test(a.name)) continue;
+      const m = a.name.match(/(?:^|[_-])(\d{2})(?:[_-]|\.)/);
+      if (!m) continue;
+      const n = parseInt(m[1], 10);
+      if (n < 1 || n > STORY_COUNT) continue;
+      const prev = out[n];
+      if (!prev || bitrate(a.name) > bitrate(prev.name)) out[n] = { name: a.name, url: a.browser_download_url };
+    }
+    const nums = Object.keys(out);
+    if (nums.length) {
+      const urls = {};
+      for (const n of nums) urls[n] = out[n].url;
+      return urls;
+    }
+  }
+  return {};
 }
 
 /** First paragraphs of a story, capped, for the hub's in-language extract. */
@@ -450,9 +553,18 @@ async function fetchStoriesFrom(code, entry, fetchImpl) {
         if (md == null) return { num, title: null };
         const parsed = parseStoryMarkdown(md);
         if (num === 1) extract = makeExtract(parsed);
-        return { num, title: parsed.title || null };
+        return {
+          num,
+          title: parsed.title || null,
+          body: parsed.frames.length
+            ? { reference: parsed.reference || null, frames: parsed.frames }
+            : null,
+        };
       }
       const title = (await fetchText(urls.title, fetchImpl))?.trim() || null;
+      // Legacy translationStudio repos store each frame in its own file and
+      // only the first two are fetched here, so a ts story yields a title and
+      // an extract but no full body — it gets no story page.
       if (num === 1) {
         const frames = [];
         for (const u of urls.frames) {
@@ -462,7 +574,7 @@ async function fetchStoriesFrom(code, entry, fetchImpl) {
         const reference = (await fetchText(urls.reference, fetchImpl))?.trim() || '';
         extract = makeExtract({ title: title || '', paragraphs: frames, reference });
       }
-      return { num, title };
+      return { num, title, body: null };
     } catch (err) {
       return { num, title: null };
     }
@@ -476,16 +588,25 @@ async function fetchStoriesFrom(code, entry, fetchImpl) {
  * Enrich every language with stories/extract, reusing the previous snapshot
  * for entries whose release has not changed.
  */
-export async function enrichStories(languages, previous, fetchImpl = fetch, log = console) {
+export async function enrichStories(languages, previous, fetchImpl = fetch, log = console, storiesDir = STORIES_DIR) {
   const prevByCode = new Map((previous?.languages || []).map((l) => [l.code, l]));
   const keyOf = (l) => (l.entries || []).map(entryKey).join('|');
   let fetched = 0;
   let reused = 0;
   const out = await mapLimit(languages, Math.max(1, Math.floor(CONCURRENCY / 8)), async (lang) => {
     const prev = prevByCode.get(lang.code);
-    if (prev && prev.stories && keyOf(prev) === keyOf(lang)) {
+    // Story bodies live in src/data/stories/, which is gitignored: a cached
+    // catalog entry is only reusable when that file survived too, otherwise
+    // the language would end up with a hub and no story pages.
+    if (prev && prev.stories && keyOf(prev) === keyOf(lang) && hasStoryFile(lang.code, storiesDir)) {
       reused++;
-      return { ...lang, stories: prev.stories, extract: prev.extract, script: prev.script || lang.script };
+      return {
+        ...lang,
+        stories: prev.stories,
+        storyNums: prev.storyNums ?? [],
+        extract: prev.extract,
+        script: prev.script || lang.script,
+      };
     }
     const result = await fetchStories(lang, fetchImpl);
     fetched++;
@@ -519,7 +640,17 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
       if (assets !== entry.assets) fetched++;
       entries.push({ ...entry, assets });
     }
-    return { ...lang, entries };
+    // Per-story mp3s for the story pages. Only for languages that advertise
+    // audio, and the releases list is cached, so this adds no fetches for
+    // entries whose assets were just looked up.
+    let storyAudio;
+    if (wanted.audio) {
+      for (const entry of lang.entries) {
+        const map = await fetchStoryAudio(entry, fetchImpl);
+        if (Object.keys(map).length) { storyAudio = map; break; }
+      }
+    }
+    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}) };
   });
   log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
   return out;
@@ -535,6 +666,53 @@ export function buildSnapshot(languages) {
     languageCount: languages.length,
     languages,
   };
+}
+
+const STORIES_DIR = fileURLToPath(new URL('../src/data/stories', import.meta.url));
+
+/** True when this language already has its story file on disk. */
+export function hasStoryFile(code, dir = STORIES_DIR) {
+  return existsSync(join(dir, `${code}.json`));
+}
+
+/**
+ * Split the story bodies out of the snapshot into one file per language
+ * (src/data/stories/{code}.json, generated and gitignored — together they are
+ * tens of MB, far too much for the committed catalog).
+ *
+ * Mutates each language: `stories` keeps only {num,title} for the hub list,
+ * and `storyNums` records which stories actually have a page. Hub links, the
+ * story routes and sitemap-stories.xml all read `storyNums`, so they cannot
+ * disagree about which pages exist.
+ */
+export function writeStoryFiles(languages, dir = STORIES_DIR) {
+  mkdirSync(dir, { recursive: true });
+  let written = 0;
+  for (const lang of languages) {
+    const audio = lang.storyAudio || {};
+    const full = (lang.stories || [])
+      .filter((s) => s.body && s.body.frames.length)
+      .map((s) => ({
+        num: s.num,
+        title: s.title || `Story ${s.num}`,
+        slug: storySlug(s.num),
+        reference: s.body.reference,
+        frames: s.body.frames,
+        audio: audio[s.num] || null,
+      }));
+    lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
+    delete lang.storyAudio;
+    if (!full.length) {
+      // Reused from the previous snapshot: the bodies were never re-fetched,
+      // but the file is still on disk, so keep the numbers it already had.
+      if (!(Array.isArray(lang.storyNums) && hasStoryFile(lang.code, dir))) lang.storyNums = [];
+      continue;
+    }
+    lang.storyNums = full.map((s) => s.num);
+    writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories: full }) + '\n');
+    written++;
+  }
+  return written;
 }
 
 function writeSnapshot(snapshot) {
@@ -605,7 +783,11 @@ if (isMain) {
     console.warn('[catalog] OBS_CATALOG_STORIES=0 — skipping story fetch; hubs will have no titles/extracts');
   }
 
+  const storyFiles = writeStoryFiles(languages);
   const snapshot = writeSnapshot(buildSnapshot(languages));
   const withExtract = languages.filter((l) => l.extract).length;
+  const withPages = languages.filter((l) => (l.storyNums || []).length).length;
+  const storyPages = languages.reduce((n, l) => n + (l.storyNums || []).length, 0);
   console.log(`[catalog] ${snapshot.languageCount} languages (${entries.length} entries), ${withExtract} with story extracts → src/data/catalog.json`);
+  console.log(`[catalog] stories: ${storyFiles} file(s) written, ${withPages} languages with ${storyPages} story pages → src/data/stories/`);
 }

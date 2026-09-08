@@ -23,9 +23,10 @@ The site is localized into 16 languages — the same setup as churchbased.bible.
 - `src/components/LanguageSwitcher.astro` — the language dropdown in the header.
 - Non-Latin scripts (and Cyrillic) get self-hosted font packs, same policy as the Latin faces: `scripts/build-font-css.mjs` (run automatically before dev/build) emits one stylesheet per script into `public/assets/fonts/` from the `@fontsource` packages, and `Base.astro` links only the current page's pack (see `fontHrefFor()` in `src/i18n/config.ts`). The font-family overrides in `styles.css` are keyed on `<html data-script="…">`, which `Base.astro` sets from the locale's `script` (marketing pages) or the detected script of the content language (`/l/{code}/` hubs); ar/ur/fa render RTL.
 - The legal pages (`/license/`, `/privacy/`, `/terms-of-use/`) and the 404 page are English-only — no `/{lang}/` variants, no switcher.
-- The Discover language list is prerendered at build time (see "Catalog data" below), ordered by English name so scripts do not decide position, with the English name as each row's secondary line and a `data-search` index (autonym, English name, alternate names, code) so "Swahili" finds Kiswahili. Its browse UI strings (status line, empty and offline states, Back button) are localized via `browse.*` in `discover.json`, passed to `discover.js` as `data-*` attributes. The inline reader itself and the Resources browser (`resources.js`) are still English-only.
+- The Discover language list is prerendered at build time (see "Catalog data" below), ordered by English name so scripts do not decide position, with the English name as each row's secondary line and a `data-search` index (autonym, English name, alternate names, code) so "Swahili" finds Kiswahili. Each row is a plain link to that language's hub, so a click is an ordinary navigation. Its browse UI strings (status line, empty states) are localized via `browse.*` in `discover.json`, passed to `discover.js` as `data-*` attributes. Story pages take their labels from `story.json`; the Resources browser (`resources.js`) is still English-only.
 - `meta.title` / `meta.description` are per page and per locale. The homepage title is built from the localized tagline (`ui.siteTitle — home.hero.title`). Descriptions may contain `{count}`, which is replaced with the published-language count at build time.
 - `npm run check:locales` — verifies every locale has every file, structure matches English, and embedded links are untouched; prints an untranslated ratio per locale.
+- `npm run check:routes` — run after a build: every sitemap URL resolves to a built page, every hub links its story pages, `/discover/read/` stays gone, and the output fits Cloudflare Pages' 20,000-file limit.
 
 ## Catalog data and public facts
 
@@ -39,7 +40,7 @@ The site is localized into 16 languages — the same setup as churchbased.bible.
 Everything public that states a fact about the languages reads from the snapshot:
 
 - the language count on the homepage and Why OBS (`lang-count.js` only animates the served number; it no longer fetches anything),
-- the prerendered language list on `/discover/` — each row links to the language's hub; `discover.js` intercepts clicks to open the inline reader and never changes the list from the live catalog (that would let it drift from the count),
+- the prerendered language list on `/discover/` — each row links to the language's hub, and `discover.js` only filters those rows; it never fetches the catalog or changes the list (that would let it drift from the count),
 - the `/l/{code}/` **language hubs** (see below), `sitemap-languages.xml`, and the JSON-LD on Discover and the hubs,
 - `{count}` in localized meta descriptions.
 
@@ -47,20 +48,40 @@ So the public definition of "languages" is: **distinct language codes with a pub
 
 Failure policy: the snapshot is only overwritten by a complete, successful catalog fetch. `npm run build` fails only when the catalog fetch fails *and* no snapshot exists (Cloudflare then keeps the previous deployment live). Enrichment failures (langnames, a story file) never fail the build — the field falls back to the previous snapshot or null. `npm run dev` warns and writes an empty snapshot instead, and every page then states 0 languages — visibly wrong on purpose; there is no hardcoded placeholder count. `OBS_CATALOG_ALLOW_EMPTY=1` forces a build through offline.
 
+## URL scheme
+
+| URL | What it is |
+| --- | --- |
+| `/discover/`, `/{locale}/discover/` | Discovery only — the language list, search, format filters |
+| `/l/{code}/` | The language page: names, codes, formats, downloads, story list, license |
+| `/l/{code}/{NN}-{slug}/` | One story: full text, illustrations, audio when it exists |
+
+`{slug}` is the canonical English slug for that story number (`src/data/story-slugs.ts`), identical in every language — `/l/sw/01-the-creation/`, `/l/hi/01-the-creation/`. Slugifying local titles would percent-encode badly for non-Latin scripts and would move a URL whenever a translation is revised. `scripts/fetch-catalog.mjs` holds the same table (an `.mjs` build script and the Astro site cannot share a module) and `npm test` fails if the two drift.
+
+There is no `/discover/read/`. Reading was a client-side reader there; stories are static pages now and no JavaScript is involved in reading them.
+
 ## Language hubs (`/l/{code}/`)
 
-`src/pages/l/[code]/index.astro` renders one static page per published language — the canonical public URL for "Open Bible Stories in {language}". `/l/` keeps content languages out of the marketing-locale namespace (`/es/`, `/fr/`, …). Everything is in the initial HTML, ordered for a reader first: name (autonym as H1, or the English name when no autonym is known), then the actions — read online, listen (in the reader), watch, one primary PDF with its size, the full-audio zip with its size, EPUB/DOCX; the general mobile app is a note, not a per-language format — then the story-1 illustration with an in-language extract, the story titles that were actually read from the repo (usually all 50, never padded; a partial repo says `{n} of 50` and points to Translate), and at the foot an "About this translation" block with code, alternate names, region, publishers (version, date, their other PDFs) and the license. Story links open the full-page reader in the hub's UI locale (`/{ui}/discover/read/?lang={code}&story={n}`; story pages will replace these links); the reader's Back button returns to the hub, which works when Door43 does not. `<html lang>`/`dir`, `data-script` and the font pack follow the content language (script detected from the fetched text; Urdu → Nastaliq); the chrome and labels use the marketing locale with the same primary subtag and script, else English (`src/i18n/{lang}/hub.json`). Hubs have a self-referencing canonical, no hreflang cluster, no locale switcher. Their JSON-LD is a `CreativeWork` (`inLanguage`, license, `isAccessibleForFree`, `translationOfWork`, publisher, `alternateName`, `dateModified`, PDF/EPUB `encoding`, the extract as `abstract`) plus an `ItemList` of the readable stories. No `VideoObject` yet: Google requires `thumbnailUrl`/`uploadDate`, which arrive with media objects on story pages.
+`src/pages/l/[code]/index.astro` renders one static page per published language — the canonical public URL for "Open Bible Stories in {language}". `/l/` keeps content languages out of the marketing-locale namespace (`/es/`, `/fr/`, …). Everything is in the initial HTML, ordered for a reader first: name (autonym as H1, or the English name when no autonym is known), then the actions — read online, listen (in the reader), watch, one primary PDF with its size, the full-audio zip with its size, EPUB/DOCX; the general mobile app is a note, not a per-language format — then the story-1 illustration with an in-language extract, the story titles that were actually read from the repo (usually all 50, never padded; a partial repo says `{n} of 50` and points to Translate), and at the foot an "About this translation" block with code, alternate names, region, publishers (version, date, their other PDFs) and the license. Story links go to that story's own page (`/l/{code}/{NN}-{slug}/`); a story whose title was read but whose text was not is shown without a link, so a link never lands on a page that was not built. `<html lang>`/`dir`, `data-script` and the font pack follow the content language (script detected from the fetched text; Urdu → Nastaliq); the chrome and labels use the marketing locale with the same primary subtag and script, else English (`src/i18n/{lang}/hub.json`). Hubs have a self-referencing canonical, no hreflang cluster, no locale switcher. Their JSON-LD is a `CreativeWork` (`inLanguage`, license, `isAccessibleForFree`, `translationOfWork`, publisher, `alternateName`, `dateModified`, PDF/EPUB `encoding`, the extract as `abstract`) plus an `ItemList` of the readable stories. No `VideoObject` yet: Google requires `thumbnailUrl`/`uploadDate`, which arrive with media objects on story pages.
 
 Standardized entity strings (also in `src/lib/jsonld.ts`):
 - Product name: **unfoldingWord Open Bible Stories**
 - License sentence: *Free to use, adapt, and share under CC BY-SA 4.0.*
 - Canonical host: `https://openbiblestories.org` (www redirects to it).
 
+## Story pages (`/l/{code}/{NN}-{slug}/`)
+
+`src/pages/l/[code]/[story]/index.astro` renders one page per (language, story) that has full text — 9,062 of them at the last build, across 195 languages. Everything is in the initial HTML: the story title, every illustration paired with the paragraph it belongs to, the Bible reference, previous/next links and a link back to the hub. Where a release publishes per-story mp3s, an `<audio>` element carries the recording for that story. `<html lang>`/`dir`, `data-script` and the font pack follow the content language, exactly as on the hub; labels come from `src/i18n/{lang}/story.json`. Self-referencing canonical, no hreflang cluster. JSON-LD is one `CreativeWork` with the full `text`, `isPartOf` the hub's work, the first illustration as `image`, and an `AudioObject` only where a recording exists.
+
+Which stories have a page is decided by one field — `storyNums` on the catalog record. The hub's links, the story routes and `sitemap-stories.xml` all read it, so they cannot disagree; `npm run check:routes` proves it after every build.
+
+Story text is **not** in the committed snapshot. `scripts/fetch-catalog.mjs` writes one file per language into `src/data/stories/` (generated, gitignored, ~66MB); `src/data/stories.ts` loads them lazily so a story page pulls in only its own language. The build already downloads every story file to read its title, so keeping the body costs no extra requests — but it does mean a story file that is missing (a fresh clone, a cleaned checkout) forces that language to be re-fetched rather than reused from the snapshot cache.
+
 ## SEO plumbing
 
 - `src/lib/jsonld.ts` builds one JSON-LD `@graph` per page (emitted by `Base.astro`): `Organization` (unfoldingWord) + `WebSite` with a `SearchAction` to `/discover/?q=` on every page; `CreativeWork` for the work on the homepage and Discover; an `ItemList` of translations pointing at the hubs on the English Discover page only; `hubNodes()` for each `/l/{code}/` page. Media objects (`AudioObject`/`VideoObject`) are only to be emitted where a real file exists — never as empty placeholders. `sameAs` lists only URLs that appear on the site; add YouTube / app-store / Wikidata links once confirmed.
 - hreflang: `Base.astro` emits the full reciprocal 16-locale set plus `x-default` (→ English) on every localized page. Legal pages, the 404 and the language hubs have no alternates. Story-level clusters will come with story pages (sitemap method).
-- Sitemaps: `src/pages/sitemap-index.xml.ts` → `sitemap-pages.xml` (marketing pages with the same hreflang alternates as the HTML; no 404) and `sitemap-languages.xml` (one hub per published language, `lastmod` from the latest release). Generated by `src/lib/sitemap.ts`; `robots.txt` points at the index. A stories sitemap will be added with story pages.
+- Sitemaps: `src/pages/sitemap-index.xml.ts` → `sitemap-pages.xml` (marketing pages with the same hreflang alternates as the HTML; no 404), `sitemap-languages.xml` (one hub per published language, `lastmod` from the latest release) and `sitemap-stories.xml` (one entry per story page). Generated by `src/lib/sitemap.ts`; `robots.txt` points at the index. **Story pages carry no hreflang alternates**: story N exists in ~214 languages, so a reciprocal cluster would be roughly 2.3M `<xhtml:link>` elements — gigabytes, far past the 50MB per-sitemap limit. Issue #9's "story-level hreflang belongs in the story sitemap" does not survive contact with this many languages.
 - `og:locale` and `og:locale:alternate` are emitted per locale.
 
 ## Crawlers and AI policy
@@ -70,11 +91,11 @@ Standardized entity strings (also in `src/lib/jsonld.ts`):
 ## Structure
 
 - `src/layouts/Base.astro` — the shared page shell: `<head>` (including canonical/Open Graph/Twitter meta), skip link, header/nav, footer, and the `nav.js` script tag. Nav highlighting comes from each page's `active` prop. There is exactly one nav, in one order, on every page.
-- `src/pages/` — one `.astro` file per route (`src/pages/features/index.astro` → `/features/`). Each page passes its title/description to the layout and supplies only its `<main>` content, plus any per-page script tags via the named `scripts` slot. `src/pages/l/[code]/index.astro` generates the language hubs; `src/pages/sitemap-*.xml.ts` the sitemaps.
+- `src/pages/` — one `.astro` file per route (`src/pages/features/index.astro` → `/features/`). Each page passes its title/description to the layout and supplies only its `<main>` content, plus any per-page script tags via the named `scripts` slot. `src/pages/l/[code]/index.astro` generates the language hubs, `src/pages/l/[code]/[story]/index.astro` the story pages, and `src/pages/sitemap-*.xml.ts` the sitemaps.
 - `public/` — copied to the site root verbatim at build time:
   - `assets/css/styles.css` — shared stylesheet (includes the `@font-face` rules for the self-hosted fonts).
   - `assets/fonts/` — self-hosted variable woff2 files for Montserrat and Nunito Sans (latin + latin-ext), replacing the old render-blocking fonts.googleapis.com request.
-  - `assets/js/` — small vanilla-JS behaviors (nav, tabs, discover filtering), loaded as plain script tags (`is:inline`), not bundled.
+  - `assets/js/` — small vanilla-JS behaviors (nav, tabs, discover filtering), loaded as plain script tags (`is:inline`), not bundled. Nothing here fetches Door43 any more: `discover.js` only filters the prerendered rows, and reading is static HTML.
   - `assets/img/` — images and decorative SVGs.
   - `_redirects` / `_headers` — Cloudflare routing/caching rules (see below).
 
@@ -86,7 +107,7 @@ Build settings: build command `npm run build`, output directory `dist` (also dec
 
 Current `_redirects` / `_headers` rules:
 - `https://www.openbiblestories.org/*` 301s to the apex — requires both hostnames to be attached to the Pages project as custom domains (host-based rules only fire for attached domains).
-- `/library`, `/library/*` and `/create/library/*` redirect (301) to `/discover/` — the old Library browser was retired in favor of Discover, which now covers search, format filters, and the inline reader. Legacy `#code--team` fragments survive the redirect and `discover.js` opens the language from the hash.
+- `/library`, `/library/*` and `/create/library/*` redirect (301) to `/discover/` — the old Library browser was retired in favor of Discover, which now covers search, format filters, and the inline reader. Legacy `#code--team` fragments survive the redirect, and `discover.js` forwards them to that language's hub (fragments never reach the server, so this has to happen client-side).
 - `/features/*` redirects (301) to `/why-obs/` (renamed to match its nav label), and `/resources/*` redirects (301) to `/translate/#resources` (the standalone page was folded into the Translate page's Resources tab).
 - HTML (`/*`): `public, max-age=300, s-maxage=86400, stale-while-revalidate=86400` — browsers revalidate after five minutes, the edge holds pages until the next deploy purges them. If public pages still come back `no-store` / `cf-cache-status: DYNAMIC`, a zone-level Cache Rule or Browser Cache TTL in the Cloudflare dashboard is overriding this file and must be changed there.
 - `/assets/img/*` is cached for 1 year (`immutable`) since filenames don't change.

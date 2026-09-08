@@ -1,0 +1,109 @@
+// `npm run check:routes` — post-build assertions about the public URL scheme.
+// Run after `npm run build`. Astro has no test harness here, and the failure
+// mode this change can introduce is a sitemap URL with no page behind it, so
+// this mirrors the check-locales.mjs pattern and gates the invariants:
+//
+//   1. every sitemap <loc> resolves to a built page
+//   2. the retired /discover/read/ route stays gone, and nothing links to it
+//   3. every language with story pages links to them from its hub
+//   4. the output fits Cloudflare Pages' 20,000-file limit
+import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+const DIST = fileURLToPath(new URL('../dist', import.meta.url));
+const CATALOG = fileURLToPath(new URL('../src/data/catalog.json', import.meta.url));
+const SITE = 'https://openbiblestories.org';
+const MAX_FILES = 20000;
+const errors = [];
+
+if (!existsSync(DIST)) {
+  console.error('dist/ not found — run `npm run build` first.');
+  process.exit(1);
+}
+
+// 2a. The retired route.
+if (existsSync(join(DIST, 'discover/read'))) {
+  errors.push('dist/discover/read/ exists — the standalone reader must be gone.');
+}
+
+// 1. Every sitemap URL must have a page.
+let checked = 0;
+for (const name of ['sitemap-pages.xml', 'sitemap-languages.xml', 'sitemap-stories.xml']) {
+  const file = join(DIST, name);
+  if (!existsSync(file)) {
+    errors.push(`${name} is missing`);
+    continue;
+  }
+  for (const m of readFileSync(file, 'utf8').matchAll(/<loc>([^<]*)<\/loc>/g)) {
+    const path = m[1].startsWith(SITE) ? m[1].slice(SITE.length) : null;
+    if (!path) {
+      errors.push(`${name}: <loc> is not on the canonical host: ${m[1]}`);
+      continue;
+    }
+    checked++;
+    if (!existsSync(join(DIST, path, 'index.html'))) errors.push(`${name}: no page for ${path}`);
+  }
+}
+
+// 3. Hub story links and the built story pages must agree.
+const { languages } = JSON.parse(readFileSync(CATALOG, 'utf8'));
+let storyPages = 0;
+let builtStories = 0;
+for (const lang of languages) {
+  const nums = lang.storyNums ?? [];
+  storyPages += nums.length;
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) {
+    errors.push(`no hub built for ${lang.code}`);
+    continue;
+  }
+  // Compare against the pages this build actually produced, not against the
+  // snapshot's storyNums: a build with no story text (a Door43 outage, or a
+  // clone with src/data/stories/ absent) legitimately ships hubs and no
+  // story pages, and that must stay a clean build rather than an error.
+  const built = new Set(
+    readdirSync(join(DIST, 'l', lang.code), { withFileTypes: true })
+      .filter((d) => d.isDirectory() && /^\d\d-/.test(d.name))
+      .map((d) => parseInt(d.name.slice(0, 2), 10))
+  );
+  builtStories += built.size;
+  const html = readFileSync(hub, 'utf8');
+  const escaped = lang.code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const linked = new Set(
+    [...html.matchAll(new RegExp(`href="/l/${escaped}/(\\d\\d)-`, 'g'))].map((m) => parseInt(m[1], 10))
+  );
+  const unlinked = [...built].filter((n) => !linked.has(n));
+  if (unlinked.length) errors.push(`/l/${lang.code}/ does not link ${unlinked.length} of the ${built.size} story pages built for it`);
+  const dangling = [...linked].filter((n) => !built.has(n));
+  if (dangling.length) errors.push(`/l/${lang.code}/ links ${dangling.length} story page(s) that were not built: ${dangling.slice(0, 3).join(', ')}`);
+}
+
+// 2b. Nothing may still reference the retired route.
+function* files(dir) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) yield* files(p);
+    else yield p;
+  }
+}
+const all = [...files(DIST)];
+const stale = all.filter((f) => /\.(html|xml)$/.test(f) && readFileSync(f, 'utf8').includes('discover/read'));
+if (stale.length) {
+  errors.push(`${stale.length} file(s) still reference /discover/read/: ${stale.slice(0, 3).map((f) => f.slice(DIST.length)).join(', ')}`);
+}
+
+// 4. Cloudflare Pages refuses a deployment over 20,000 files.
+if (all.length > MAX_FILES) {
+  errors.push(`${all.length} files — over the Cloudflare Pages limit of ${MAX_FILES}.`);
+}
+
+if (errors.length) {
+  for (const e of errors.slice(0, 12)) console.error(`✗ ${e}`);
+  if (errors.length > 12) console.error(`  …and ${errors.length - 12} more`);
+  process.exit(1);
+}
+console.log(
+  `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
+    `${all.length}/${MAX_FILES} files, no /discover/read/`
+);

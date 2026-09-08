@@ -2,7 +2,8 @@
 // split: marketing pages with their hreflang cluster, and language hubs
 // with lastmod from the catalog). robots.txt points at sitemap-index.xml.
 import { locales, defaultLocale, localizedSlugs, englishOnlySlugs, localePath } from '../i18n/config';
-import { languages, languagePath } from '../data/catalog';
+import { languages, languagePath, storyPath } from '../data/catalog';
+import { hasStories } from '../data/stories';
 import { SITE_URL } from './jsonld';
 
 export const SITE = SITE_URL;
@@ -49,5 +50,27 @@ export function languagesSitemap(): string {
     const lastmod = l.updated ? `\n    <lastmod>${esc(l.updated)}</lastmod>` : '';
     return `  <url>\n    <loc>${SITE}${languagePath(l.code)}</loc>${lastmod}\n  </url>`;
   });
+  return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+}
+
+/**
+ * Story pages, one entry per (language, story) that actually has text.
+ *
+ * Deliberately no hreflang alternates. Story N exists in ~214 languages, so a
+ * reciprocal cluster would be roughly 214 × 10,700 ≈ 2.3M <xhtml:link>
+ * elements — gigabytes, far past the 50MB per-sitemap limit. Issue #9's
+ * "story-level hreflang belongs in the story sitemap" does not survive
+ * contact with this many languages; the hub and marketing clusters stand.
+ */
+export function storiesSitemap(): string {
+  const urls: string[] = [];
+  for (const l of languages) {
+    // Only languages whose text is in this build — see hasStories().
+    if (!hasStories(l.code)) continue;
+    const lastmod = l.updated ? `\n    <lastmod>${esc(l.updated)}</lastmod>` : '';
+    for (const num of l.storyNums ?? []) {
+      urls.push(`  <url>\n    <loc>${SITE}${storyPath(l.code, num)}</loc>${lastmod}\n  </url>`);
+    }
+  }
   return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
 }

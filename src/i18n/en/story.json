@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "description": "{story} — story {n} of Open Bible Stories in {language}. Read the full text, see the illustrations, and listen to the audio. Free under an open license."
+  },
+  "storyN": "Story {n} of {total}",
+  "listen": "Listen to this story",
+  "previous": "Previous",
+  "next": "Next",
+  "allStories": "All stories in {language}",
+  "license": "Free to use, adapt, and share under an open license (CC BY-SA 4.0)."
+}

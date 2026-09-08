@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "description": "{story} — hadithi ya {n} kutoka Hadithi za Biblia Wazi katika {language}. Soma maandishi kamili, tazama picha na sikiliza sauti. Bila malipo chini ya leseni huria."
+  },
+  "storyN": "Hadithi {n} kati ya {total}",
+  "listen": "Sikiliza hadithi hii",
+  "previous": "Iliyotangulia",
+  "next": "Inayofuata",
+  "allStories": "Hadithi zote katika {language}",
+  "license": "Bila malipo kutumia, kubadilisha na kushiriki chini ya leseni huria (CC BY-SA 4.0)."
+}

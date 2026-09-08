@@ -7,7 +7,9 @@
 // by the prebuild fetch on every build; the import is tolerant of the file
 // being absent so a fresh clone can still type-check, but a production build
 // (`fetch-catalog.mjs --required`) refuses to run without data.
-import { locales, defaultLocale, localePath } from '../i18n/config';
+import { locales, defaultLocale } from '../i18n/config';
+import { STORY_SLUGS, storySlug } from './story-slugs';
+export { STORY_SLUGS, storySlug };
 
 /** Stories in an Open Bible Stories edition. Mirrors STORY_COUNT in
  *  scripts/fetch-catalog.mjs (discover.js carries its own copy). */
@@ -64,6 +66,14 @@ export interface CatalogLanguage {
   entries: CatalogEntry[];
   /** The 50 story titles in the language, or null when none could be read. */
   stories: CatalogStory[] | null;
+  /**
+   * Story numbers that have full text on disk (src/data/stories/{code}.json)
+   * and therefore a page at /l/{code}/{NN}-{slug}/. The hub's links, the
+   * story routes and sitemap-stories.xml all read this one field, so they
+   * cannot disagree about which pages exist. Empty when the language has
+   * titles but no readable bodies (legacy translationStudio repos).
+   */
+  storyNums?: number[];
   /** Opening of story 1 in the language, for the hub's indexable text sample. */
   extract: CatalogExtract | null;
 }
@@ -112,11 +122,22 @@ export function languagePath(code: string): string {
   return `/l/${encodeURIComponent(code)}/`;
 }
 
-/** Full-page reader for a language in a UI locale, optionally opened at a story. */
-export function readerPath(code: string, story?: number, locale: string = defaultLocale): string {
-  const q = new URLSearchParams({ lang: code });
-  if (story) q.set('story', String(story));
-  return `${localePath(locale, 'discover-read')}?${q.toString()}`;
+/**
+ * Canonical URL of one story: /l/{code}/{NN}-{slug}/.
+ *
+ * The slug is the canonical English one for that story number, identical in
+ * every language, so URLs stay stable and ASCII — slugifying local titles
+ * would percent-encode badly for non-Latin scripts and would move the URL
+ * whenever a translation is revised.
+ */
+export function storyPath(code: string, num: number): string {
+  return `${languagePath(code)}${String(num).padStart(2, '0')}-${storySlug(num)}/`;
+}
+
+/** Story numbers that have a page, in order. */
+export function pagedStories(lang: CatalogLanguage): CatalogStory[] {
+  const nums = new Set(lang.storyNums ?? []);
+  return (lang.stories ?? []).filter((s) => nums.has(s.num));
 }
 
 /**

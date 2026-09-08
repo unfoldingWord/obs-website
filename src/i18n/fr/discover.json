@@ -18,11 +18,6 @@
     "status": "{shown} langues sur {total} publiées",
     "noMatch": "Aucune langue ne correspond encore à cette recherche.",
     "noMatchFormat": "Aucune langue ne correspond à cette recherche et à ce format — essayez un autre format.",
-    "loading": "Chargement des langues...",
-    "teams": "{n} équipes l'ont publié",
-    "back": "Retour à Découvrir",
-    "openFull": "Ouvrir en pleine page",
-    "languagePage": "Téléchargements et détails",
-    "offline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Vous pouvez toujours ouvrir une langue pour ses téléchargements."
+    "teams": "{n} équipes l'ont publié"
   }
 }

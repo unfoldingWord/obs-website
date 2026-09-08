@@ -18,11 +18,6 @@
     "status": "{shown} trong {total} ngôn ngữ đã phát hành",
     "noMatch": "Chưa có ngôn ngữ nào khớp với tìm kiếm đó.",
     "noMatchFormat": "Không có ngôn ngữ nào khớp với tìm kiếm và định dạng đó — hãy thử định dạng khác.",
-    "loading": "Đang tải ngôn ngữ...",
-    "teams": "{n} đội ngũ đã phát hành bản này",
-    "back": "Quay lại Khám phá",
-    "openFull": "Mở toàn trang",
-    "languagePage": "Tải xuống và chi tiết",
-    "offline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Bạn vẫn có thể mở bất kỳ ngôn ngữ nào để tải xuống."
+    "teams": "{n} đội ngũ đã phát hành bản này"
   }
 }

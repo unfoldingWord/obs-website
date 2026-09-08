@@ -24,11 +24,12 @@ import {
   STORY_COUNT,
   languages,
   languagePath,
-  readerPath,
+  storyPath,
   hubLocaleFor,
   fontHrefForScript,
   classifyAssets,
   readableStories,
+  pagedStories,
   publishersOf,
   youtubeOf,
   primaryPdf,
@@ -39,6 +40,7 @@ import {
   type CatalogLanguage,
 } from '../../../data/catalog';
 import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
+import { hasStories } from '../../../data/stories';
 
 export function getStaticPaths() {
   return languages.map((lang) => ({ params: { code: lang.code }, props: { lang } }));
@@ -72,12 +74,20 @@ const youtube = youtubeOf(lang);
 const pdf = primaryPdf(lang);
 const audioZip = audioZipOf(lang);
 const videoFile = youtube ? undefined : assets.video.find((a) => /\.(mp4|3gp)$/i.test(a.name));
+// The hub lists every story whose title was read; only those with full text
+// on disk get a link, so a link never lands on a page that was not built.
 const stories = readableStories(lang);
+// Only link stories whose text is in this build (see hasStories).
+const paged = new Set(hasStories(lang.code) ? (lang.storyNums ?? []) : []);
+const firstStory = paged.size ? (pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null) : null;
 const partial = stories.length > 0 && stories.length < STORY_COUNT;
 const publishers = publishersOf(lang);
 const primary = lang.entries[0];
 const fontHref = fontHrefForScript(lang.script);
-const read = (story?: number) => readerPath(lang.code, story, uiLocale);
+const read = (story?: number) => {
+  const num = story ?? firstStory;
+  return num ? storyPath(lang.code, num) : languagePath(lang.code);
+};
 const withSize = (label: string, size: number | null) => (formatSize(size) ? `${label} · ${formatSize(size)}` : label);
 // DCS tags already carry a leading "v".
 const version = (tag: string) => tag.replace(/^v/i, '');
@@ -145,7 +155,7 @@ const image = storyImage(1);
           <p>{lang.extract.text}</p>
           {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
         </blockquote>
-        <p lang={ui.tag} dir={ui.dir}><a href={read(1)} class="btn btn-outline">{t.readStory}</a></p>
+        <p lang={ui.tag} dir={ui.dir}><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
       </div>
     </div>
   </section>
@@ -164,10 +174,18 @@ const image = storyImage(1);
       <ol class="hub-story-list" lang={lang.code} dir={lang.direction}>
         {stories.map((s) => (
           <li>
-            <a href={read(s.num)}>
-              <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
-              <span class="hub-story-title">{s.title}</span>
-            </a>
+            {paged.has(s.num) ? (
+              <a href={storyPath(lang.code, s.num)}>
+                <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+                <span class="hub-story-title">{s.title}</span>
+              </a>
+            ) : (
+              /* Title was read but the body was not — no page to link to. */
+              <span class="hub-story-unlinked">
+                <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+                <span class="hub-story-title">{s.title}</span>
+              </span>
+            )}
           </li>
         ))}
       </ol>

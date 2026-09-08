@@ -5,7 +5,8 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import { languagePath, readerPath, classifyAssets, hubLocaleFor, readableStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
+import { languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
+import { hasStories, type Story } from '../data/stories';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -170,7 +171,9 @@ export function hubNodes(lang: CatalogLanguage) {
   if (encodings.length) extra.encoding = encodings;
   const work = translationNode(lang, extra);
 
-  const stories = readableStories(lang);
+  // Only stories that actually have a page — the ItemList must not advertise
+  // URLs that do not exist.
+  const stories = hasStories(lang.code) ? pagedStories(lang) : [];
   if (!stories.length) return [work];
   const list = {
     '@type': 'ItemList',
@@ -182,10 +185,45 @@ export function hubNodes(lang: CatalogLanguage) {
       '@type': 'ListItem',
       position: i + 1,
       name: s.title,
-      url: `${SITE_URL}${readerPath(lang.code, s.num, uiLocale)}`,
+      url: `${SITE_URL}${storyPath(lang.code, s.num)}`,
     })),
   };
   return [work, list];
+}
+
+/**
+ * One story page: the story as a part of its language's translation, with the
+ * full text so an answer engine can quote it, and an AudioObject only when a
+ * real recording exists — never an empty placeholder.
+ */
+export function storyNodes(lang: CatalogLanguage, story: Story) {
+  const url = `${SITE_URL}${storyPath(lang.code, story.num)}`;
+  const node: Record<string, unknown> = {
+    '@type': 'CreativeWork',
+    '@id': `${url}#story`,
+    name: story.title,
+    url,
+    position: story.num,
+    inLanguage: lang.code,
+    license: LICENSE_URL,
+    isAccessibleForFree: true,
+    isPartOf: { '@id': hubId(lang.code) },
+    publisher: { '@id': PUBLISHER_ID },
+    text: story.frames.map((f) => f.text).join(' '),
+  };
+  const image = story.frames.find((f) => f.image)?.image;
+  if (image) node.image = image;
+  if (story.reference) node.citation = story.reference;
+  if (story.audio) {
+    node.audio = {
+      '@type': 'AudioObject',
+      contentUrl: story.audio,
+      encodingFormat: 'audio/mpeg',
+      inLanguage: lang.code,
+      name: story.title,
+    };
+  }
+  return [node];
 }
 
 /** Serialize a graph safely for an inline <script> (no `</script>` escape). */

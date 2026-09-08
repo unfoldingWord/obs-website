@@ -51,13 +51,6 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
       data-status={t.browse.status}
       data-no-match={t.browse.noMatch}
       data-no-match-format={t.browse.noMatchFormat}
-      data-loading={t.browse.loading}
-      data-teams={t.browse.teams}
-      data-back={t.browse.back}
-      data-open-full={t.browse.openFull}
-      data-read-path={localePath(locale, 'discover-read')}
-      data-language-page={t.browse.languagePage}
-      data-offline={t.browse.offline}
     >
       <div class="library-tools">
         <div class="search-box">
@@ -105,8 +98,6 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
         }
       </ul>
     </div>
-
-    <div id="lang-detail" hidden style="max-width:820px; margin:28px auto 0;"></div>
   </div>
 </section>
 

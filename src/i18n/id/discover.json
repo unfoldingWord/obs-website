@@ -18,11 +18,6 @@
     "status": "{shown} dari {total} bahasa yang diterbitkan",
     "noMatch": "Belum ada bahasa yang cocok dengan pencarian itu.",
     "noMatchFormat": "Tidak ada bahasa yang cocok dengan pencarian dan format itu — coba format lain.",
-    "loading": "Memuat bahasa...",
-    "teams": "{n} tim telah menerbitkan ini",
-    "back": "Kembali ke Temukan",
-    "openFull": "Buka halaman penuh",
-    "languagePage": "Unduhan & detail",
-    "offline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Anda masih dapat membuka bahasa apa pun untuk unduhannya."
+    "teams": "{n} tim telah menerbitkan ini"
   }
 }

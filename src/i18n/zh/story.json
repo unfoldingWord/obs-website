@@ -1,0 +1,11 @@
+{
+  "meta": {
+    "description": "{story}——{language}《开放圣经故事》第 {n} 个故事。阅读全文、观看插图并收听音频。以开放许可免费提供。"
+  },
+  "storyN": "故事 {n} / {total}",
+  "listen": "收听此故事",
+  "previous": "上一个",
+  "next": "下一个",
+  "allStories": "{language}的所有故事",
+  "license": "可在开放许可（CC BY-SA 4.0）下自由使用、改编和分享。"
+}
