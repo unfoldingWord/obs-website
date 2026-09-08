@@ -690,6 +690,47 @@ html[data-script="han"]{
   --heading-font:'Noto Sans SC', 'Montserrat', sans-serif;
   --body-font:'Noto Sans SC', 'Nunito Sans', sans-serif;
 }
+/* Scripts with no marketing locale — these exist only because published
+   translations do (/l/or/, /l/gu/, /l/ta/, /l/te/, /l/kn/, /l/ml/, /l/pa/,
+   /l/lo/, /l/am/ and the 30-odd smaller languages that share their
+   scripts). detectScript() in scripts/fetch-catalog.mjs decides which one a
+   language gets. */
+html[data-script="gurmukhi"]{
+  --heading-font:'Noto Sans Gurmukhi', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Gurmukhi', 'Nunito Sans', sans-serif;
+}
+html[data-script="gujarati"]{
+  --heading-font:'Noto Sans Gujarati', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Gujarati', 'Nunito Sans', sans-serif;
+}
+html[data-script="oriya"]{
+  --heading-font:'Noto Sans Oriya', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Oriya', 'Nunito Sans', sans-serif;
+}
+html[data-script="tamil"]{
+  --heading-font:'Noto Sans Tamil', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Tamil', 'Nunito Sans', sans-serif;
+}
+html[data-script="telugu"]{
+  --heading-font:'Noto Sans Telugu', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Telugu', 'Nunito Sans', sans-serif;
+}
+html[data-script="kannada"]{
+  --heading-font:'Noto Sans Kannada', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Kannada', 'Nunito Sans', sans-serif;
+}
+html[data-script="malayalam"]{
+  --heading-font:'Noto Sans Malayalam', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Malayalam', 'Nunito Sans', sans-serif;
+}
+html[data-script="lao"]{
+  --heading-font:'Noto Sans Lao', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Lao', 'Nunito Sans', sans-serif;
+}
+html[data-script="ethiopic"]{
+  --heading-font:'Noto Sans Ethiopic', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Ethiopic', 'Nunito Sans', sans-serif;
+}
 /* Nastaliq script is tall — give Urdu text extra breathing room. The
    heading override needs !important to beat the per-page inline
    line-height styles, which were tuned for Latin ascenders and clip

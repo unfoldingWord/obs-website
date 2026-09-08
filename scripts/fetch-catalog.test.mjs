@@ -17,6 +17,7 @@ import {
   compactAssets,
   chooseAutonym,
   scriptFor,
+  scriptSample,
   assetFormats,
   fetchMissingAssets,
   enrichAssets,
@@ -211,6 +212,37 @@ test('detectScript picks the dominant block', () => {
   assert.equal(detectScript(''), 'latin');
 });
 
+// The scripts with no marketing locale. These 38 languages used to detect as
+// `other` and shipped no font pack at all — real text from their hubs, so a
+// regression here means their hubs go back to empty boxes.
+test('detectScript covers the Indic, Lao and Ethiopic scripts the catalog publishes', () => {
+  assert.equal(detectScript('ଏହିପରି ହେଲା । ଛ ଦିନରେ ପରମେଶ୍ୱର'), 'oriya');
+  assert.equal(detectScript('આ રીતે સઘળાંની શરુઆત થઈ'), 'gujarati');
+  assert.equal(detectScript('ਇਸ ਤਰ੍ਹਾਂ ਹਰ ਇੱਕ ਚੀਜ਼ ਦੀ ਸ਼ੁਰੂਆਤ ਹੋਈ'), 'gurmukhi');
+  assert.equal(detectScript('தேவன் ஆதியிலே எல்லாவற்றையும் படைத்தார்'), 'tamil');
+  assert.equal(detectScript('ఆదిలో దేవుడు ఈ విధంగా సమస్త సృష్టిని'), 'telugu');
+  assert.equal(detectScript('ದೇವರು ಆದಿಯಲ್ಲಿ ಎಲ್ಲವನ್ನೂ ಹೀಗೆ ಉಂಟುಮಾಡಿದನು'), 'kannada');
+  assert.equal(detectScript('ആദിയില്‍ ദൈവം ഇപ്രകാരമാണ്'), 'malayalam');
+  assert.equal(detectScript('ນີ້ຄືຈຸດເລີ່ມຕົ້ນຂອງສັບພະສິ່ງທັງໝົດ'), 'lao');
+  assert.equal(detectScript('ከዚህ ቀጥሎ የምንመለከተው እግዚአብሔር'), 'ethiopic');
+});
+
+// Danda (U+0964) sits in the Devanagari block but is shared punctuation
+// across the Indic scripts. Counting it as Devanagari is what made short
+// Odia samples — which use it heavily — detect as the wrong script.
+test('detectScript ignores the shared Indic danda', () => {
+  assert.equal(detectScript('ଛ ଦିନ ।।।।।।।।।।।।।।।।'), 'oriya');
+});
+
+test('scriptSample reads the extract and every story title', () => {
+  const sample = scriptSample({
+    extract: { title: 'ଶୀର୍ଷକ', text: 'ପାଠ୍ୟ', reference: null },
+    stories: [{ num: 1, title: 'ଏକ' }, { num: 2, title: null }],
+  });
+  assert.equal(sample, 'ଶୀର୍ଷକ ପାଠ୍ୟ ଏକ');
+  assert.equal(scriptSample({ extract: null, stories: null }), '');
+});
+
 test('storyUrls mirrors discover.js for RC and ts repos', () => {
   const rc = storyUrls({ owner: 'o', name: 'r', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' }, 7);
   assert.equal(rc.rc, 'https://git.door43.org/o/r/raw/v1/content/07.md');
@@ -297,6 +329,30 @@ test('enrichStories reuses the previous snapshot when the release is unchanged',
   const fresh = await enrichStories([changed], previous, f, quiet, storiesDir);
   assert.ok(calls > 0);
   assert.equal(fresh[0].stories[0].title, '1. The Creation');
+});
+
+// A cached record keeps its text but not its verdict about the script:
+// widening detectScript() has to reach the ~200 languages that publish
+// nothing new, or their font packs never arrive.
+test('enrichStories re-derives the script of a reused record', async (t) => {
+  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
+  writeFileSync(join(storiesDir, 'or.json'), JSON.stringify({ code: 'or', stories: [] }));
+  const lang = { code: 'or', script: 'latin', entries: [{ owner: 'o', name: 'or_obs', branch_or_tag_name: 'v1', released: '2026-01-01', metadata_type: 'rc', contentPath: 'content' }] };
+  const previous = {
+    languages: [{
+      ...lang,
+      stories: [{ num: 1, title: 'ସୃଷ୍ଟି' }],
+      extract: { title: 'ସୃଷ୍ଟି', text: 'ଏହିପରି ହେଲା ଛ ଦିନରେ ପରମେଶ୍ୱର', reference: null },
+      // What the old detector wrote for this language.
+      script: 'other',
+    }],
+  };
+  const [out] = await enrichStories([lang], previous, fakeFetch(() => null), { log() {} }, storiesDir);
+  assert.equal(out.script, 'oriya');
+  assert.equal(out.stories[0].title, 'ସୃଷ୍ଟି');
 });
 
 test('parseStoryMarkdown pairs each illustration with the text that follows it', () => {

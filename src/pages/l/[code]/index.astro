@@ -51,7 +51,7 @@ interface Props {
 }
 const { lang } = Astro.props;
 
-const uiLocale = hubLocaleFor(lang.code);
+const uiLocale = hubLocaleFor(lang);
 const ui = byCode(uiLocale);
 const t = content(uiLocale, 'hub');
 

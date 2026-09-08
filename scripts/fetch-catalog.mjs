@@ -383,16 +383,44 @@ export function makeExtract({ title, paragraphs, reference }, maxChars = EXTRACT
   return { title: title || null, text, reference: reference || null };
 }
 
-/** Which self-hosted font pack a text needs, by dominant Unicode block. */
+/**
+ * Which self-hosted font pack a text needs, by dominant Unicode block.
+ *
+ * Every name returned here except `other` must have an entry in the PACKS
+ * map in scripts/build-font-css.mjs, a matching `html[data-script="…"]`
+ * rule in public/assets/css/styles.css, and be listed in
+ * `fontHrefForScript()` in src/data/catalog.ts — otherwise the language
+ * renders in whatever face the visitor's OS happens to have, which for most
+ * of these scripts is nothing at all. `other` is the honest fallback for a
+ * script we ship no pack for; it should be empty for the current catalog
+ * (see `npm run check:scripts`).
+ */
 export function detectScript(text) {
-  const counts = { arabic: 0, devanagari: 0, bengali: 0, myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0 };
+  const counts = {
+    arabic: 0, devanagari: 0, bengali: 0, gurmukhi: 0, gujarati: 0, oriya: 0,
+    tamil: 0, telugu: 0, kannada: 0, malayalam: 0, lao: 0, ethiopic: 0,
+    myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0,
+  };
   for (const ch of String(text || '')) {
     const c = ch.codePointAt(0);
     if (c < 0x80 || (c >= 0xc0 && c <= 0x24f)) { if (/\p{L}/u.test(ch)) counts.latin++; }
     else if (c >= 0x400 && c <= 0x52f) counts.cyrillic++;
     else if ((c >= 0x600 && c <= 0x6ff) || (c >= 0x750 && c <= 0x77f) || (c >= 0xfb50 && c <= 0xfdff) || (c >= 0xfe70 && c <= 0xfeff)) counts.arabic++;
+    // Danda and double danda live in the Devanagari block but are shared
+    // punctuation across the Indic scripts below — counting them as
+    // Devanagari is what made short Odia and Gujarati samples ambiguous.
+    else if (c === 0x964 || c === 0x965) { /* shared Indic punctuation */ }
     else if (c >= 0x900 && c <= 0x97f) counts.devanagari++;
     else if (c >= 0x980 && c <= 0x9ff) counts.bengali++;
+    else if (c >= 0xa00 && c <= 0xa7f) counts.gurmukhi++;
+    else if (c >= 0xa80 && c <= 0xaff) counts.gujarati++;
+    else if (c >= 0xb00 && c <= 0xb7f) counts.oriya++;
+    else if (c >= 0xb80 && c <= 0xbff) counts.tamil++;
+    else if (c >= 0xc00 && c <= 0xc7f) counts.telugu++;
+    else if (c >= 0xc80 && c <= 0xcff) counts.kannada++;
+    else if (c >= 0xd00 && c <= 0xd7f) counts.malayalam++;
+    else if (c >= 0xe80 && c <= 0xeff) counts.lao++;
+    else if ((c >= 0x1200 && c <= 0x139f) || (c >= 0x2d80 && c <= 0x2ddf)) counts.ethiopic++;
     else if (c >= 0x1000 && c <= 0x109f) counts.myanmar++;
     else if ((c >= 0x4e00 && c <= 0x9fff) || (c >= 0x3400 && c <= 0x4dbf) || (c >= 0x3000 && c <= 0x30ff)) counts.han++;
     else if (/\p{L}/u.test(ch)) counts.other++;
@@ -557,9 +585,19 @@ async function fetchStoriesFrom(code, entry, fetchImpl) {
       return { num, title: null };
     }
   });
-  const sample = [extract?.title, extract?.text, ...stories.map((s) => s.title)].filter(Boolean).join(' ');
   const anyTitle = stories.some((s) => s.title);
-  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, sample) };
+  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, scriptSample({ extract, stories })) };
+}
+
+/**
+ * The text the script detector reads for a language: its extract plus every
+ * story title. Used both after a fetch and when reusing a cached snapshot
+ * record, so a language's `script` is always what the CURRENT detector makes
+ * of its text — widening detectScript() takes effect on the next build
+ * instead of waiting for that language to publish a new release.
+ */
+export function scriptSample({ extract, stories }) {
+  return [extract?.title, extract?.text, ...(stories || []).map((s) => s.title)].filter(Boolean).join(' ');
 }
 
 /**
@@ -583,7 +621,8 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
         stories: prev.stories,
         storyNums: prev.storyNums ?? [],
         extract: prev.extract,
-        script: prev.script || lang.script,
+        // Re-derived, not copied: see scriptSample().
+        script: scriptFor(lang.code, scriptSample(prev)) || prev.script || lang.script,
       };
     }
     const result = await fetchStories(lang, fetchImpl);

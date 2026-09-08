@@ -150,7 +150,7 @@ export function translationListNode(languages: CatalogLanguage[]) {
  */
 export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
   const assets = classifyAssets(lang);
-  const uiLocale = hubLocaleFor(lang.code);
+  const uiLocale = hubLocaleFor(lang);
   const encodings = [
     ...assets.pdf.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: a.url, name: a.name })),
     ...assets.epub.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/epub+zip', contentUrl: a.url, name: a.name })),

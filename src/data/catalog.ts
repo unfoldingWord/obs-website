@@ -56,8 +56,16 @@ export interface CatalogLanguage {
   region: string | null;
   countryCodes: string[];
   direction: 'ltr' | 'rtl';
-  /** Self-hosted font pack the text needs; see fontHrefForScript(). */
-  script: 'latin' | 'cyrillic' | 'arabic' | 'nastaliq' | 'devanagari' | 'bengali' | 'myanmar' | 'han' | 'other';
+  /** Self-hosted font pack the text needs; see fontHrefForScript(). The
+   *  values are what detectScript() in scripts/fetch-catalog.mjs can return;
+   *  `other` means no pack exists for the script and the text renders in
+   *  whatever face the visitor's OS has (`npm run check:scripts` fails on
+   *  it, so a newly published script gets noticed rather than shipped
+   *  unreadable). */
+  script:
+    | 'latin' | 'cyrillic' | 'arabic' | 'nastaliq' | 'devanagari' | 'bengali'
+    | 'gurmukhi' | 'gujarati' | 'oriya' | 'tamil' | 'telugu' | 'kannada'
+    | 'malayalam' | 'lao' | 'ethiopic' | 'myanmar' | 'han' | 'other';
   formats: { pdf: boolean; audio: boolean; video: boolean };
   /** Most recent release date across publishing teams (ISO date). */
   updated: string | null;
@@ -140,19 +148,94 @@ export function pagedStories(lang: CatalogLanguage): CatalogStory[] {
 }
 
 /**
- * The marketing UI locale whose chrome (nav, footer, hub labels) best fits a
- * content language: the same primary subtag when we have that locale
- * ("es-419" → es, "pt-br" → pt, "sw" → sw), otherwise English. A script
- * subtag the locale does not share ("zh-hant" vs zh-Hans, "ur-deva" vs ur)
- * falls back to English rather than serving chrome in the wrong script.
+ * ISO 639-3 codes that ARE one of our marketing locales under a different
+ * spelling. DCS uses both ("fas-x-eastfars" is Persian, "swh" is the
+ * Swahili macrolanguage's main member), and a two-letter lookup alone would
+ * send both to English.
  */
-export function hubLocaleFor(code: string): string {
-  const parts = code.toLowerCase().split(/[-_]/);
-  const locale = locales.find((l) => l.code === parts[0]);
-  if (!locale) return defaultLocale;
-  const script = parts.slice(1).find((p) => /^[a-z]{4}$/.test(p));
-  if (script && !locale.tag.toLowerCase().split('-').includes(script)) return defaultLocale;
-  return locale.code;
+const LOCALE_ALIASES: Record<string, string> = {
+  swh: 'sw', swa: 'sw',
+  fas: 'fa', pes: 'fa', prs: 'fa',
+  arb: 'ar',
+  urd: 'ur',
+  hin: 'hi',
+  ben: 'bn',
+  zho: 'zh', cmn: 'zh',
+  ind: 'id',
+  vie: 'vi',
+  nld: 'nl',
+  por: 'pt',
+  spa: 'es',
+  fra: 'fr',
+  rus: 'ru',
+  mya: 'my',
+};
+
+/**
+ * The marketing locale that reads in the same script as a content language.
+ *
+ * Only 18 of 214 published languages share a primary subtag with one of the
+ * 16 marketing locales, so without this the other 196 hubs — every Bhojpuri,
+ * Awadhi and Bagheli reader — get their chrome, their FAQ and their format
+ * labels in English. A locale in the same script is not the same language,
+ * but for these it is a regional language the reader is far more likely to
+ * read than English: Hindi for the 88 Devanagari languages of India and
+ * Nepal, Bengali for the Bengali-script ones, Russian across the
+ * Cyrillic-script languages of Central Asia.
+ *
+ * Scripts with no marketing locale (Odia, Gujarati, Tamil, Telugu, Kannada,
+ * Malayalam, Gurmukhi, Lao, Ethiopic) are deliberately absent — they stay on
+ * English until those locales exist. The content text itself (the H1, the
+ * extract, the story titles and every story page) is always in the content
+ * language whatever this returns.
+ */
+const SCRIPT_LOCALE: Partial<Record<CatalogLanguage['script'], string>> = {
+  devanagari: 'hi',
+  bengali: 'bn',
+  arabic: 'ar',
+  nastaliq: 'ur',
+  cyrillic: 'ru',
+  myanmar: 'my',
+  han: 'zh',
+};
+
+/**
+ * Within the Arabic script, country beats script: a reader of an Iranian or
+ * Afghan language reads Persian, and one in Pakistan reads Urdu, sooner than
+ * Modern Standard Arabic.
+ */
+const ARABIC_COUNTRY_LOCALE: Record<string, string> = { IR: 'fa', AF: 'fa', TJ: 'fa', PK: 'ur' };
+
+/**
+ * The marketing UI locale whose chrome (nav, footer, hub labels, FAQ) best
+ * fits a content language:
+ *
+ * 1. the same language — the same primary subtag or an ISO 639-3 alias for
+ *    it ("es-419" → es, "pt-br" → pt, "swh" → sw, "fas-x-eastfars" → fa);
+ * 2. failing that, a locale in the same script, refined by country for the
+ *    Arabic script (see SCRIPT_LOCALE / ARABIC_COUNTRY_LOCALE);
+ * 3. failing that, English.
+ *
+ * A script subtag the locale does not share ("zh-hant" vs zh-Hans,
+ * "ur-deva" vs ur) drops out of step 1 — chrome must not be in a script the
+ * page's own text is not written in — and is answered by step 2, which reads
+ * the script of the text itself: "ur-deva" gets Hindi, not Urdu in a script
+ * its readers did not ask for.
+ */
+export function hubLocaleFor(lang: Pick<CatalogLanguage, 'code' | 'script' | 'countryCodes'>): string {
+  const parts = lang.code.toLowerCase().split(/[-_]/);
+  const primary = LOCALE_ALIASES[parts[0]] ?? parts[0];
+  const locale = locales.find((l) => l.code === primary);
+  const subtag = parts.slice(1).find((p) => /^[a-z]{4}$/.test(p));
+  if (locale && !(subtag && !locale.tag.toLowerCase().split('-').includes(subtag))) return locale.code;
+
+  if (lang.script === 'arabic' || lang.script === 'nastaliq') {
+    for (const cc of lang.countryCodes ?? []) {
+      const byCountry = ARABIC_COUNTRY_LOCALE[cc.toUpperCase()];
+      if (byCountry) return byCountry;
+    }
+  }
+  return SCRIPT_LOCALE[lang.script] ?? defaultLocale;
 }
 
 /** Name to show as the hub's H1: the autonym, or the English name when the
@@ -206,10 +289,19 @@ export function formatSize(n: number | null | undefined): string | null {
   return `${mb.toFixed(mb > 10 ? 0 : 1)} MB`;
 }
 
+/** Every script we ship a self-hosted font pack for — the keys of PACKS in
+ *  scripts/build-font-css.mjs. `latin` is served by the committed variable
+ *  faces and needs no pack; `other` has none, which is what
+ *  `npm run check:scripts` looks for. */
+export const FONT_PACKS = [
+  'cyrillic', 'arabic', 'nastaliq', 'devanagari', 'bengali', 'gurmukhi',
+  'gujarati', 'oriya', 'tamil', 'telugu', 'kannada', 'malayalam', 'lao',
+  'ethiopic', 'myanmar', 'han',
+] as const;
+
 /** Stylesheet for a detected script, or null when the Latin faces suffice. */
 export function fontHrefForScript(script: CatalogLanguage['script']): string | null {
-  const packs = new Set(['cyrillic', 'arabic', 'nastaliq', 'devanagari', 'bengali', 'myanmar', 'han']);
-  return packs.has(script) ? `/assets/fonts/${script}.css` : null;
+  return (FONT_PACKS as readonly string[]).includes(script) ? `/assets/fonts/${script}.css` : null;
 }
 
 /** Downloadable assets of a language, classified for the hub's format list.

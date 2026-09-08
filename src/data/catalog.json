@@ -1129,7 +1129,7 @@
     "EG"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "ethiopic",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -8545,7 +8545,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -8841,7 +8841,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -12143,7 +12143,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -13835,7 +13835,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -14965,7 +14965,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -15558,7 +15558,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -16758,7 +16758,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -17063,7 +17063,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -18604,7 +18604,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -19703,7 +19703,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -20006,7 +20006,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -21732,7 +21732,7 @@
     "RW"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -26880,7 +26880,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -27370,7 +27370,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -27683,7 +27683,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -28286,7 +28286,7 @@
     "SG"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "kannada",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -31387,7 +31387,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -31899,7 +31899,7 @@
     "PK"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -32195,7 +32195,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -32488,7 +32488,7 @@
    "region": "Asia",
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -33069,7 +33069,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -33935,7 +33935,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -34945,7 +34945,7 @@
     "MM"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "lao",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -36140,7 +36140,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -37909,7 +37909,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -38545,7 +38545,7 @@
     "BH"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "malayalam",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -39734,7 +39734,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -41982,7 +41982,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -45449,7 +45449,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -47813,7 +47813,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -48927,7 +48927,7 @@
     "TZ"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gurmukhi",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -50125,7 +50125,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -51888,7 +51888,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -52193,7 +52193,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -58916,7 +58916,7 @@
     "KH"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "tamil",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -59234,7 +59234,7 @@
     "AE"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "telugu",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -64018,7 +64018,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,

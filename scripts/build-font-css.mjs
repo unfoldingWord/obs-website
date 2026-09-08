@@ -24,7 +24,10 @@ const FILES_OUT = join(OUT, 'files');
 // those per-subset CSS files instead of the all-subset {weight}.css — the
 // cyrillic pack must not re-declare the latin ranges the committed variable
 // fonts already serve). Keys match the `script` field in src/i18n/config.ts
-// and the :lang() rules in public/assets/css/styles.css.
+// (marketing locales), the values detectScript() can return in
+// scripts/fetch-catalog.mjs (content languages), the packs listed by
+// fontHrefForScript() in src/data/catalog.ts, and the
+// html[data-script="…"] rules in public/assets/css/styles.css.
 const PACKS = {
   arabic: [{ pkg: '@fontsource/noto-sans-arabic', weights: [400, 700] }],
   nastaliq: [{ pkg: '@fontsource/noto-nastaliq-urdu', weights: [400, 700] }],
@@ -32,6 +35,20 @@ const PACKS = {
   bengali: [{ pkg: '@fontsource/noto-sans-bengali', weights: [400, 700] }],
   myanmar: [{ pkg: '@fontsource/noto-sans-myanmar', weights: [400, 700] }],
   han: [{ pkg: '@fontsource/noto-sans-sc', weights: [400, 700] }],
+  // The scripts below carry no marketing locale — they exist because the
+  // published translations do: 17 languages in Odia script, 14 in Gujarati,
+  // and one each in Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Lao and
+  // Ethiopic. Without a pack their hubs and story pages rendered in
+  // whatever the visitor's OS had, which for most of these is nothing.
+  gurmukhi: [{ pkg: '@fontsource/noto-sans-gurmukhi', weights: [400, 700] }],
+  gujarati: [{ pkg: '@fontsource/noto-sans-gujarati', weights: [400, 700] }],
+  oriya: [{ pkg: '@fontsource/noto-sans-oriya', weights: [400, 700] }],
+  tamil: [{ pkg: '@fontsource/noto-sans-tamil', weights: [400, 700] }],
+  telugu: [{ pkg: '@fontsource/noto-sans-telugu', weights: [400, 700] }],
+  kannada: [{ pkg: '@fontsource/noto-sans-kannada', weights: [400, 700] }],
+  malayalam: [{ pkg: '@fontsource/noto-sans-malayalam', weights: [400, 700] }],
+  lao: [{ pkg: '@fontsource/noto-sans-lao', weights: [400, 700] }],
+  ethiopic: [{ pkg: '@fontsource/noto-sans-ethiopic', weights: [400, 700] }],
   cyrillic: [
     { pkg: '@fontsource/nunito-sans', weights: [400, 600, 700], subsets: ['cyrillic', 'cyrillic-ext'] },
     { pkg: '@fontsource/montserrat', weights: [700, 800, 900], subsets: ['cyrillic', 'cyrillic-ext'] },

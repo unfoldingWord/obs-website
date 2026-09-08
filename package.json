@@ -9,6 +9,7 @@
     "build": "astro build",
     "preview": "astro preview",
     "check:locales": "node scripts/check-locales.mjs",
+    "check:scripts": "node scripts/check-scripts.mjs",
     "fetch:catalog": "node scripts/fetch-catalog.mjs",
     "test": "node --test scripts/*.test.mjs",
     "check:routes": "node scripts/check-routes.mjs"
@@ -22,8 +23,17 @@
     "@fontsource/noto-sans-arabic": "^5.3.0",
     "@fontsource/noto-sans-bengali": "^5.3.0",
     "@fontsource/noto-sans-devanagari": "^5.3.0",
+    "@fontsource/noto-sans-ethiopic": "^5.3.0",
+    "@fontsource/noto-sans-gujarati": "^5.3.0",
+    "@fontsource/noto-sans-gurmukhi": "^5.3.0",
+    "@fontsource/noto-sans-kannada": "^5.3.0",
+    "@fontsource/noto-sans-lao": "^5.3.0",
+    "@fontsource/noto-sans-malayalam": "^5.3.0",
     "@fontsource/noto-sans-myanmar": "^5.3.0",
+    "@fontsource/noto-sans-oriya": "^5.3.0",
     "@fontsource/noto-sans-sc": "^5.3.0",
+    "@fontsource/noto-sans-tamil": "^5.3.0",
+    "@fontsource/noto-sans-telugu": "^5.3.0",
     "@fontsource/nunito-sans": "^5.2.0"
   }
 }
