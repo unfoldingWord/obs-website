@@ -125,10 +125,11 @@ const image = storyImage(1);
     {showEnglish && <p class="hub-english-name">{lang.englishName}</p>}
 
     <ul class="hub-format-list">
-      {/* #read opens the reader in place; with no JS the fragment is inert
-          and the link below it (the story list) is still the way through. */}
-      <li><a class="btn btn-primary" href="#read">{t.read}</a></li>
-      {lang.formats.audio && <li><a class="btn btn-outline" href="#read">{t.audio}</a></li>}
+      {/* These point at the first story's own page — a real URL that works
+          without JavaScript and that crawlers follow. hub-reader.js
+          intercepts the click and opens the reader in place instead. */}
+      <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>
+      {lang.formats.audio && <li><a class="btn btn-outline" href={read()}>{t.audio}</a></li>}
       {lang.formats.video && (
         <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? read()} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
       )}
@@ -160,7 +161,7 @@ const image = storyImage(1);
           <p>{lang.extract.text}</p>
           {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
         </blockquote>
-        <p lang={ui.tag} dir={ui.dir}><a href={firstStory ? `#story-${firstStory}` : "#read"} class="btn btn-outline">{t.readStory}</a></p>
+        <p lang={ui.tag} dir={ui.dir}><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
       </div>
     </div>
   </section>
