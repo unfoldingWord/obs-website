@@ -10,6 +10,8 @@
     "preview": "astro preview",
     "check:locales": "node scripts/check-locales.mjs",
     "check:scripts": "node scripts/check-scripts.mjs",
+    "baseline": "node scripts/geo-baseline.mjs",
+    "review": "node scripts/review-strings.mjs",
     "fetch:catalog": "node scripts/fetch-catalog.mjs",
     "test": "node --test scripts/*.test.mjs",
     "check:routes": "node scripts/check-routes.mjs"
