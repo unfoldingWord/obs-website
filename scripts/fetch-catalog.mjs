@@ -367,6 +367,50 @@ export function audioByStory(releases) {
   return {};
 }
 
+/**
+ * Per-story video URLs from a release history, the same shape and rule as
+ * audioByStory: the story number is the two-digit group in the filename
+ * (`en_obs_v6_23_360p.mp4`), and where a story has several renditions the
+ * SMALLEST resolution wins. A 70MB 720p file is not what to put in a page
+ * for someone on a phone in a place where OBS is most used; the hub still
+ * links the whole set.
+ */
+export function videoByStory(releases) {
+  const height = (name) => {
+    const m = name.match(/(\d{3,4})p/i);
+    return m ? parseInt(m[1], 10) : 99999;
+  };
+  for (const release of releases || []) {
+    const out = {};
+    for (const a of release?.assets || []) {
+      if (!a || !a.name || !a.browser_download_url || !/\.(mp4|3gp)$/i.test(a.name)) continue;
+      const m = a.name.match(/(?:^|[_-])(\d{2})(?:[_-]|\.)/);
+      if (!m) continue;
+      const n = parseInt(m[1], 10);
+      if (n < 1 || n > STORY_COUNT) continue;
+      const prev = out[n];
+      if (!prev || height(a.name) < height(prev.name)) out[n] = { name: a.name, url: a.browser_download_url };
+    }
+    const nums = Object.keys(out);
+    if (nums.length) {
+      const urls = {};
+      for (const n of nums) urls[n] = out[n].url;
+      return urls;
+    }
+  }
+  return {};
+}
+
+/**
+ * Per-story video URLs for one entry, or {} when the repo publishes none.
+ * Same reason as fetchStoryAudio for reading the release history rather than
+ * the entry's capped `assets` list.
+ */
+export async function fetchStoryVideo(entry, fetchImpl = fetch) {
+  if (!entry?.owner || !entry?.name) return {};
+  return videoByStory(await fetchReleases(entry, fetchImpl));
+}
+
 /** First paragraphs of a story, capped, for the hub's in-language extract. */
 export function makeExtract({ title, paragraphs, reference }, maxChars = EXTRACT_MAX_CHARS) {
   let text = '';
@@ -667,7 +711,18 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
         if (Object.keys(map).length) { storyAudio = map; break; }
       }
     }
-    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}) };
+    // Per-story video files, same rule (#16): a story page should offer that
+    // story's own recording rather than sending everyone to a multi-gigabyte
+    // zip of all 50. Playlist links (most languages publish a YouTube
+    // playlist, not files) are not per-story and stay on the hub.
+    let storyVideo;
+    if (wanted.video) {
+      for (const entry of lang.entries) {
+        const map = await fetchStoryVideo(entry, fetchImpl);
+        if (Object.keys(map).length) { storyVideo = map; break; }
+      }
+    }
+    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}), ...(storyVideo ? { storyVideo } : {}) };
   });
   log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
   return out;
@@ -707,6 +762,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
   let written = 0;
   for (const lang of languages) {
     const audio = lang.storyAudio || {};
+    const video = lang.storyVideo || {};
     const full = (lang.stories || [])
       .filter((s) => s.body && s.body.frames.length)
       .map((s) => ({
@@ -715,9 +771,11 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
         reference: s.body.reference,
         frames: s.body.frames,
         audio: audio[s.num] || null,
+        video: video[s.num] || null,
       }));
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
+    delete lang.storyVideo;
     if (!full.length) {
       // Reused from the previous snapshot: the bodies were never re-fetched,
       // but the file is still on disk, so keep the numbers it already had.

@@ -153,7 +153,11 @@ const image = storyImage(1);
 {lang.extract && (
   <section class="hub-extract">
     <div class="wrap hub-extract-grid">
-      <img src={image} alt={lang.extract.title ?? ''} width="360" height="203" loading="lazy" decoding="async" />
+      {/* Language-appropriate alt (#16): the story-1 illustration, described
+          in the hub's own language and naming the language, rather than the
+          bare story title (or nothing) that every one of the 214 hubs used
+          to share. */}
+      <img src={image} alt={fill(t.extractAlt, { language: name, story: lang.extract.title ?? '' })} lang={ui.tag} width="360" height="203" loading="lazy" decoding="async" />
       <div>
         <h2 lang={ui.tag} dir={ui.dir}>{t.extractTitle}</h2>
         <blockquote lang={lang.code} dir={lang.direction}>

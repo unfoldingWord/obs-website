@@ -14,6 +14,7 @@
   "video": "ကြည့်ရန် (ဗီဒီယို)",
   "app": "မိုဘိုင်းအက်ပ် ရယူရန်",
   "extractTitle": "ဇာတ်လမ်း ၁ မှ",
+  "extractAlt": "{language} ဘာသာဖြင့် Open Bible Stories မှ ပုံတစ်ပုံ",
   "storiesTitle": "ဇာတ်လမ်းများ ({total} ခုအနက် {n} ခု)",
   "version": "v{version}",
   "teams": "အဖွဲ့ {n} ဖွဲ့ ဤဘာသာစကားကို ထုတ်ဝေထားသည်။",

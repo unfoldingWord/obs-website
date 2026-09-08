@@ -28,6 +28,9 @@ export interface Story {
   frames: StoryFrame[];
   /** Per-story mp3 from the newest release that has one, else null. */
   audio: string | null;
+  /** Per-story video file (smallest rendition published), else null. Absent
+   *  in story files written before #16 — read it as optional. */
+  video?: string | null;
 }
 
 interface StoryFile {

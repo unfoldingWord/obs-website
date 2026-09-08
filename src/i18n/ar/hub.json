@@ -14,6 +14,7 @@
   "video": "شاهد (فيديو)",
   "app": "احصل على تطبيق الجوال",
   "extractTitle": "من القصة 1",
+  "extractAlt": "صورة من Open Bible Stories بلغة {language}",
   "storiesTitle": "القصص ({n} من {total})",
   "version": "الإصدار {version}",
   "teams": "نشر هذه اللغة {n} فرق.",

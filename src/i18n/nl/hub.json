@@ -14,6 +14,7 @@
   "video": "Bekijken (video)",
   "app": "Download de mobiele app",
   "extractTitle": "Uit verhaal 1",
+  "extractAlt": "Een illustratie uit Open Bible Stories in het {language}",
   "storiesTitle": "Verhalen ({n} van {total})",
   "version": "v{version}",
   "teams": "{n} teams hebben deze taal gepubliceerd.",

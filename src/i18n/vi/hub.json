@@ -14,6 +14,7 @@
   "video": "Xem (video)",
   "app": "Tải ứng dụng di động",
   "extractTitle": "Trích từ câu chuyện 1",
+  "extractAlt": "Một tranh minh họa của Open Bible Stories bằng tiếng {language}",
   "storiesTitle": "Câu chuyện ({n} / {total})",
   "version": "v{version}",
   "teams": "{n} đội ngũ đã phát hành ngôn ngữ này.",

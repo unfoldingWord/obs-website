@@ -14,6 +14,7 @@
   "video": "Tazama (video)",
   "app": "Pata programu ya simu",
   "extractTitle": "Kutoka hadithi ya 1",
+  "extractAlt": "Picha kutoka Open Bible Stories katika {language}",
   "storiesTitle": "Hadithi ({n} kati ya {total})",
   "version": "v{version}",
   "teams": "Timu {n} zimechapisha lugha hii.",

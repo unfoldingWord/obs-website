@@ -14,6 +14,7 @@
   "video": "Смотреть (видео)",
   "app": "Мобильное приложение",
   "extractTitle": "Из истории 1",
+  "extractAlt": "Иллюстрация из Open Bible Stories на языке {language}",
   "storiesTitle": "Истории ({n} из {total})",
   "version": "v{version}",
   "teams": "Этот язык опубликовали {n} команд(ы).",

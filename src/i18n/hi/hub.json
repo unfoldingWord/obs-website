@@ -14,6 +14,7 @@
   "video": "देखें (वीडियो)",
   "app": "मोबाइल ऐप प्राप्त करें",
   "extractTitle": "कहानी 1 से",
+  "extractAlt": "{language} में Open Bible Stories का एक चित्र",
   "storiesTitle": "कहानियाँ ({total} में से {n})",
   "version": "v{version}",
   "teams": "{n} दलों ने यह भाषा प्रकाशित की है।",

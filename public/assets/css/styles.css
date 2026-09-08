@@ -804,9 +804,17 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 .story-crumb a:hover{text-decoration:underline;}
 .story-count{color:#64747d;}
 .story h1{font-size:clamp(1.8rem, 4vw, 2.6rem); line-height:1.25; margin:0 0 22px;}
-.story-audio{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 30px; padding:12px 16px; background:var(--panel); border-radius:10px;}
+.story-media{margin:0 0 30px;}
+.story-audio, .story-video{display:flex; align-items:center; gap:12px; flex-wrap:wrap; margin:0 0 12px; padding:12px 16px; background:var(--panel); border-radius:10px;}
 .story-audio-label{font-weight:700; color:var(--ocean); font-size:0.9rem;}
 .story-audio audio{height:36px; max-width:280px; flex:1 1 220px;}
+.story-video video{width:100%; max-width:360px; height:auto; border-radius:8px; background:#000;}
+/* Download links for this story's own audio/video — the per-story
+   alternative to a multi-gigabyte zip of all fifty (#16). */
+.story-media-dl{color:var(--inspire-text); text-decoration:underline; font-size:0.9rem;}
+/* The story text below is the transcript of the recording; saying so is what
+   makes the connection legible to a reader as well as to a crawler. */
+.story-transcript-note{color:#4a5960; font-size:0.9rem; margin:0;}
 .story-frame{margin:0 0 34px;}
 .story-frame img{display:block; width:100%; max-width:480px; height:auto; border-radius:10px; margin-bottom:14px;}
 .story-frame p{font-size:1.15rem; line-height:1.8; margin:0; color:var(--tech);}

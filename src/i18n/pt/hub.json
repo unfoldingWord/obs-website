@@ -14,6 +14,7 @@
   "video": "Assistir (vídeo)",
   "app": "Baixar o aplicativo",
   "extractTitle": "Da história 1",
+  "extractAlt": "Uma ilustração de Open Bible Stories em {language}",
   "storiesTitle": "Histórias ({n} de {total})",
   "version": "v{version}",
   "teams": "{n} equipes publicaram este idioma.",

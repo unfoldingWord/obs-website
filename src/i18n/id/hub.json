@@ -14,6 +14,7 @@
   "video": "Tonton (video)",
   "app": "Dapatkan aplikasi seluler",
   "extractTitle": "Dari cerita 1",
+  "extractAlt": "Ilustrasi dari Open Bible Stories dalam bahasa {language}",
   "storiesTitle": "Cerita ({n} dari {total})",
   "version": "v{version}",
   "teams": "{n} tim telah menerbitkan bahasa ini.",

@@ -22,6 +22,7 @@ import {
   fetchMissingAssets,
   enrichAssets,
   audioByStory,
+  videoByStory,
   writeStoryFiles,
   clearReleasesCache,
   sortLanguages,
@@ -386,6 +387,28 @@ test('audioByStory takes the newest release with per-story mp3s, preferring bitr
   assert.deepEqual(audioByStory([{ assets: [{ name: 'whole_obs.zip', browser_download_url: 'https://e/z.zip' }] }]), {});
 });
 
+// Per-story video (#16): same numbering rule as the audio map, but the
+// SMALLEST rendition wins — a story page is often opened on a phone on a
+// slow connection, and the hub still links the full set.
+test('videoByStory takes the newest release with per-story files, preferring the smallest rendition', () => {
+  const releases = [
+    { tag_name: 'v6', assets: [
+      { name: 'en_obs_v6_01_720p.mp4', browser_download_url: 'https://e/big.mp4' },
+      { name: 'en_obs_v6_01_360p.mp4', browser_download_url: 'https://e/small.mp4' },
+      { name: 'en_obs_v6_02_360p.mp4', browser_download_url: 'https://e/2.mp4' },
+      { name: 'en_obs_v6_all.zip', browser_download_url: 'https://e/all.zip' },
+    ] },
+    { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.3gp', browser_download_url: 'https://e/old.3gp' }] },
+  ];
+  const map = videoByStory(releases);
+  assert.equal(map[1], 'https://e/small.mp4', 'smallest rendition wins');
+  assert.equal(map[2], 'https://e/2.mp4');
+  assert.equal(Object.keys(map).length, 2, 'the zip is not a per-story file');
+  assert.deepEqual(videoByStory([]), {});
+  // A YouTube playlist is not a per-story file and must not become one.
+  assert.deepEqual(videoByStory([{ assets: [{ name: 'YouTube - Playlist', browser_download_url: 'https://www.youtube.com/playlist?list=X' }] }]), {});
+});
+
 test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
   const { tmpdir } = await import('node:os');
@@ -395,6 +418,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const withBody = {
     code: 'sw',
     storyAudio: { 1: 'https://e/1.mp3' },
+    storyVideo: { 1: 'https://e/1.mp4' },
     stories: [
       { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
       { num: 2, title: 'Dhambi', body: null },
@@ -408,9 +432,11 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   assert.deepEqual(noBody.storyNums, []);
   assert.deepEqual(withBody.stories, [{ num: 1, title: 'Uumbaji' }, { num: 2, title: 'Dhambi' }], 'hub list keeps every title');
   assert.ok(!('storyAudio' in withBody), 'audio map is not left on the snapshot');
+  assert.ok(!('storyVideo' in withBody), 'video map is not left on the snapshot');
 
   const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[0].video, 'https://e/1.mp4');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
   assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
 });

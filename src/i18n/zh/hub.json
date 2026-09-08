@@ -14,6 +14,7 @@
   "video": "观看（视频）",
   "app": "获取移动应用",
   "extractTitle": "故事 1 节选",
+  "extractAlt": "{language} Open Bible Stories 的一幅插图",
   "storiesTitle": "故事（{n} / {total}）",
   "version": "v{version}",
   "teams": "已有 {n} 个团队发布此语言。",

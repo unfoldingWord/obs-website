@@ -170,10 +170,15 @@ export function translationListNode(languages: CatalogLanguage[]) {
  * Nodes for a language hub: the translation as a CreativeWork (with
  * publisher, alternate names, dateModified, and download encodings that
  * actually exist) plus an ItemList of the stories that were actually read
- * from the repo, linking into the reader. No VideoObject: Google requires
- * name/thumbnailUrl/uploadDate for it, which the catalog does not have —
- * media objects come with story pages (Phase 3, #16). Story pages will give
- * each story its own @id; until then the reader deep link is the story URL.
+ * from the repo, linking into the reader.
+ *
+ * Downloadable files are `encoding` MediaObjects — PDF, EPUB, and the
+ * full-audio zip where a release publishes one. Still no VideoObject here
+ * (#16): what most languages publish is a YouTube *playlist*, which is not
+ * one video and has neither a duration nor an upload date; it goes in
+ * `sameAs` as another canonical home for the language. Per-story recordings
+ * are real media and carry Audio/VideoObject on the story pages, where the
+ * transcript sits beside them.
  */
 export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
   const assets = classifyAssets(lang);
@@ -181,6 +186,16 @@ export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
   const encodings = [
     ...assets.pdf.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/pdf', contentUrl: a.url, name: a.name })),
     ...assets.epub.map((a) => ({ '@type': 'MediaObject', encodingFormat: 'application/epub+zip', contentUrl: a.url, name: a.name })),
+    ...assets.audio
+      .filter((a) => /\.zip$/i.test(a.name))
+      .map((a) => ({
+        '@type': 'MediaObject',
+        encodingFormat: 'application/zip',
+        contentUrl: a.url,
+        name: a.name,
+        inLanguage: lang.code,
+        ...(a.size ? { contentSize: String(a.size) } : {}),
+      })),
   ];
   const publishers = publishersOf(lang);
   const alternateName = [lang.englishName, ...lang.altNames].filter(Boolean);
@@ -188,7 +203,13 @@ export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
     publisher: publishers.length === 1 && publishers[0] === 'unfoldingWord'
       ? { '@id': PUBLISHER_ID }
       : publishers.map((p) => ({ '@type': 'Organization', name: p, url: `https://git.door43.org/${p}` })),
-    sameAs: lang.entries.map((e) => `https://git.door43.org/${e.owner}/${e.name}`),
+    // The repos the translation lives in, plus the language's YouTube
+    // playlist where one exists (#16/#18: the other places a searcher or a
+    // model already meets this translation, tied to the canonical hub).
+    sameAs: [
+      ...lang.entries.map((e) => `https://git.door43.org/${e.owner}/${e.name}`),
+      ...assets.video.filter((a) => /youtu\.?be/i.test(a.url)).map((a) => a.url),
+    ],
     version: lang.entries[0]?.branch_or_tag_name ?? undefined,
     dateModified: lang.updated ?? undefined,
     image: storyImage(1),
@@ -221,8 +242,15 @@ export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
 
 /**
  * One story page: the story as a part of its language's translation, with the
- * full text so an answer engine can quote it, and an AudioObject only when a
- * real recording exists — never an empty placeholder.
+ * full text so an answer engine can quote it, and Audio/VideoObject only
+ * when a real recording exists — never an empty placeholder.
+ *
+ * The media objects carry `transcript` (#16): the page's visible text IS the
+ * transcript of the recording, in the same language, which is what lets a
+ * search engine index what the audio or video says. `uploadDate` and
+ * `thumbnailUrl` — required by Google for a VideoObject — come from the
+ * release date and the story's first illustration, so a VideoObject is
+ * emitted only when both exist.
  */
 export function storyNodes(lang: CatalogLanguage, story: Story) {
   const url = `${SITE_URL}${storyPath(lang.code, story.num)}`;
@@ -242,6 +270,7 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
   const image = story.frames.find((f) => f.image)?.image;
   if (image) node.image = image;
   if (story.reference) node.citation = story.reference;
+  const transcript = node.text as string;
   if (story.audio) {
     node.audio = {
       '@type': 'AudioObject',
@@ -249,6 +278,25 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
       encodingFormat: 'audio/mpeg',
       inLanguage: lang.code,
       name: story.title,
+      transcript,
+      license: LICENSE_URL,
+      isAccessibleForFree: true,
+    };
+  }
+  if (story.video && image && lang.updated) {
+    node.video = {
+      '@type': 'VideoObject',
+      name: story.title,
+      description: story.title,
+      contentUrl: story.video,
+      encodingFormat: /\.3gp$/i.test(story.video) ? 'video/3gpp' : 'video/mp4',
+      thumbnailUrl: image,
+      uploadDate: lang.updated,
+      inLanguage: lang.code,
+      transcript,
+      license: LICENSE_URL,
+      isAccessibleForFree: true,
+      publisher: { '@id': PUBLISHER_ID },
     };
   }
   return [node];

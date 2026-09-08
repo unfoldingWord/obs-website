@@ -14,6 +14,7 @@
   "video": "Regarder (vidéo)",
   "app": "Obtenir l'application mobile",
   "extractTitle": "Extrait de l'histoire 1",
+  "extractAlt": "Une illustration d'Open Bible Stories en {language}",
   "storiesTitle": "Histoires ({n} sur {total})",
   "version": "v{version}",
   "teams": "{n} équipes ont publié cette langue.",
