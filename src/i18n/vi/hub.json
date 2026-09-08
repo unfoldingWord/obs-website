@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "description": "Open Bible Stories bằng {language}: 50 câu chuyện Kinh Thánh có tranh minh họa, từ Sáng Thế đến Khải Huyền, để đọc, nghe và tải. Miễn phí theo CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories bằng {language}",
+  "alsoKnownAs": "Còn gọi là",
+  "codes": "Mã ngôn ngữ",
+  "region": "Khu vực",
+  "publisherLabel": "Phát hành bởi",
+  "formatsTitle": "Định dạng có sẵn",
+  "read": "Đọc trực tuyến",
+  "pdf": "Tải PDF",
+  "audio": "Nghe (âm thanh)",
+  "video": "Xem (video)",
+  "app": "Tải ứng dụng di động",
+  "extractTitle": "Trích từ câu chuyện 1",
+  "storiesTitle": "Câu chuyện ({n} / {total})",
+  "version": "v{version}",
+  "teams": "{n} đội ngũ đã phát hành ngôn ngữ này.",
+  "allLanguages": "Tất cả ngôn ngữ",
+  "license": "Miễn phí sử dụng, chỉnh sửa và chia sẻ theo giấy phép mở",
+  "source": "Nguồn trên Door43",
+  "readStory": "Đọc câu chuyện này",
+  "partial": "Đến nay đã dịch {n} trong {total} câu chuyện.",
+  "partialLink": "Giúp dịch phần còn lại",
+  "audioZip": "Tải toàn bộ âm thanh ({size})",
+  "about": "Về bản dịch này",
+  "readerTitle": "Đọc trực tuyến",
+  "readerLoading": "Đang tải…",
+  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động."
+}

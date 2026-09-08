@@ -1,0 +1,12 @@
+{
+  "meta": {
+    "description": "{story} — história {n} de Histórias Bíblicas Abertas em {language}. Leia o texto completo, veja as ilustrações e ouça o áudio. Grátis sob uma licença aberta."
+  },
+  "storyN": "História {n} de {total}",
+  "listen": "Ouvir esta história",
+  "previous": "Anterior",
+  "next": "Próxima",
+  "allStories": "Todas as histórias em {language}",
+  "license": "Livre para usar, adaptar e compartilhar sob uma licença aberta (CC BY-SA 4.0).",
+  "openInReader": "Ler no leitor"
+}

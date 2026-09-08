@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "description": "Open Bible Stories katika {language}: hadithi 50 za Biblia zenye picha, kutoka Uumbaji hadi Ufunuo, za kusoma, kusikiliza na kupakua. Bila malipo chini ya CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories katika {language}",
+  "alsoKnownAs": "Pia inajulikana kama",
+  "codes": "Msimbo wa lugha",
+  "region": "Eneo",
+  "publisherLabel": "Imechapishwa na",
+  "formatsTitle": "Miundo inayopatikana",
+  "read": "Soma mtandaoni",
+  "pdf": "Pakua PDF",
+  "audio": "Sikiliza (sauti)",
+  "video": "Tazama (video)",
+  "app": "Pata programu ya simu",
+  "extractTitle": "Kutoka hadithi ya 1",
+  "storiesTitle": "Hadithi ({n} kati ya {total})",
+  "version": "v{version}",
+  "teams": "Timu {n} zimechapisha lugha hii.",
+  "allLanguages": "Lugha zote",
+  "license": "Bila malipo kutumia, kubadilisha na kushiriki chini ya leseni huria",
+  "source": "Chanzo kwenye Door43",
+  "readStory": "Soma hadithi hii",
+  "partial": "Hadithi {n} kati ya {total} zimetafsiriwa hadi sasa.",
+  "partialLink": "Saidia kutafsiri zilizobaki",
+  "audioZip": "Pakua sauti zote ({size})",
+  "about": "Kuhusu tafsiri hii",
+  "readerTitle": "Soma mtandaoni",
+  "readerLoading": "Inapakia…",
+  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi."
+}

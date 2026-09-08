@@ -49,7 +49,7 @@ export const defaultLocale = 'en';
 
 /** Pages that exist in every locale. */
 export const localizedSlugs = [
-  'home', 'why-obs', 'discover', 'discover-read',
+  'home', 'why-obs', 'discover',
   'translate', 'create', 'contact',
 ] as const;
 /** Legal pages and the 404 stay English-only at the site root. */
@@ -66,7 +66,6 @@ const slugPaths: Record<PageSlug, string> = {
   home: '',
   'why-obs': 'why-obs/',
   discover: 'discover/',
-  'discover-read': 'discover/read/',
   translate: 'translate/',
   create: 'create/',
   contact: 'contact/',

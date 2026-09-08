@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "description": "Open Bible Stories in het {language}: 50 geïllustreerde Bijbelverhalen van de Schepping tot Openbaring om te lezen, te beluisteren en te downloaden. Gratis onder CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories in het {language}",
+  "alsoKnownAs": "Ook bekend als",
+  "codes": "Taalcode",
+  "region": "Regio",
+  "publisherLabel": "Gepubliceerd door",
+  "formatsTitle": "Beschikbare formaten",
+  "read": "Online lezen",
+  "pdf": "Pdf downloaden",
+  "audio": "Luisteren (audio)",
+  "video": "Bekijken (video)",
+  "app": "Download de mobiele app",
+  "extractTitle": "Uit verhaal 1",
+  "storiesTitle": "Verhalen ({n} van {total})",
+  "version": "v{version}",
+  "teams": "{n} teams hebben deze taal gepubliceerd.",
+  "allLanguages": "Alle talen",
+  "license": "Gratis te gebruiken, aan te passen en te delen onder een open licentie",
+  "source": "Bron op Door43",
+  "readStory": "Dit verhaal lezen",
+  "partial": "Tot nu toe zijn {n} van de {total} verhalen vertaald.",
+  "partialLink": "Help de rest te vertalen",
+  "audioZip": "Alle audio downloaden ({size})",
+  "about": "Over deze vertaling",
+  "readerTitle": "Online lezen",
+  "readerLoading": "Laden…",
+  "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds."
+}

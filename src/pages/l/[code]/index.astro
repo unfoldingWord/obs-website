@@ -1,0 +1,265 @@
+---
+// Language hub: one static page per published OBS translation, generated from
+// the build-time catalog snapshot (src/data/catalog.ts). This is the public
+// canonical URL for "Open Bible Stories in {language}" (#6): everything a
+// crawler or answer engine needs is in the initial HTML — autonym, English
+// and alternate names, codes, region, formats that actually exist, the story
+// titles that were actually read from the repo (usually all 50), an
+// in-language extract of story 1, the publishers, and CC BY-SA attribution.
+// The reader itself is still the Discover reader; story pages (Phase 3) will
+// replace the deep links here.
+//
+// Order is for the human reader first: name → actions (read / listen / watch /
+// download) → a taste of the text → the story list → the catalog facts
+// (codes, region, publishers) and license at the foot. Crawlers get the same
+// facts wherever they sit.
+//
+// The page chrome (nav, footer, labels) uses the marketing locale whose
+// primary subtag matches the content language, otherwise English; the
+// <html lang>/dir and the font pack follow the CONTENT language.
+import Base from '../../../layouts/Base.astro';
+import { content } from '../../../i18n/content';
+import { byCode, localePath } from '../../../i18n/config';
+import {
+  STORY_COUNT,
+  languages,
+  languagePath,
+  storyPath,
+  hubLocaleFor,
+  fontHrefForScript,
+  classifyAssets,
+  readableStories,
+  pagedStories,
+  publishersOf,
+  youtubeOf,
+  primaryPdf,
+  audioZipOf,
+  formatSize,
+  displayName,
+  storyImage,
+  type CatalogLanguage,
+} from '../../../data/catalog';
+import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
+import { storiesFor } from '../../../data/stories';
+
+export function getStaticPaths() {
+  return languages.map((lang) => ({ params: { code: lang.code }, props: { lang } }));
+}
+
+interface Props {
+  lang: CatalogLanguage;
+}
+const { lang } = Astro.props;
+
+const uiLocale = hubLocaleFor(lang.code);
+const ui = byCode(uiLocale);
+const t = content(uiLocale, 'hub');
+
+const fill = (s: string, vars: Record<string, string | number>) =>
+  Object.entries(vars).reduce((acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)), s);
+
+// The name the reader sees: autonym, or the English name when the autonym is
+// unknown (the code never stands as a heading).
+const name = displayName(lang);
+const showEnglish = lang.englishName && lang.englishName !== name;
+
+// Title pattern from #6: "{Autonym} ({English name}, {code}) | Open Bible Stories".
+const nameBits = [showEnglish ? lang.englishName : null, lang.code].filter(Boolean).join(', ');
+const title = `${name} (${nameBits}) | Open Bible Stories`;
+const langLabel = showEnglish ? `${name} (${lang.englishName})` : name;
+const description = fill(t.meta.description, { language: langLabel });
+
+const assets = classifyAssets(lang);
+const youtube = youtubeOf(lang);
+const pdf = primaryPdf(lang);
+const audioZip = audioZipOf(lang);
+const videoFile = youtube ? undefined : assets.video.find((a) => /\.(mp4|3gp)$/i.test(a.name));
+// The hub lists every story whose title was read; only those with full text
+// on disk get a link, so a link never lands on a page that was not built.
+const stories = readableStories(lang);
+// Only link stories whose text is in THIS build. `storyNums` is what a
+// previous fetch found and the story files are gitignored, so a build can
+// hold a file with fewer stories in it than storyNums claims; asking the
+// file itself is what keeps hub links, story routes and the sitemap in step.
+const paged = new Set((await storiesFor(lang.code)).map((s) => s.num));
+const firstStory = pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null;
+const partial = stories.length > 0 && stories.length < STORY_COUNT;
+const publishers = publishersOf(lang);
+const primary = lang.entries[0];
+const fontHref = fontHrefForScript(lang.script);
+const read = (story?: number) => {
+  const num = story ?? firstStory;
+  return num ? storyPath(lang.code, num) : languagePath(lang.code);
+};
+const withSize = (label: string, size: number | null) => (formatSize(size) ? `${label} · ${formatSize(size)}` : label);
+// DCS tags already carry a leading "v".
+const version = (tag: string) => tag.replace(/^v/i, '');
+const pdfsOf = (owner: string) => assets.pdf.filter((a) => a.owner === owner && a.url !== pdf?.url);
+// The app is the general OBS app (Play Store ignores hl= for most codes and
+// the app does not ship every language), so it is offered as a note, not
+// as a per-language format.
+const appUrl = 'https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp';
+const image = storyImage(1);
+---
+
+<Base
+  locale={uiLocale}
+  slug="discover"
+  title={title}
+  description={description}
+  jsonLd={hubNodes(lang, paged)}
+  canonicalPath={languagePath(lang.code)}
+  htmlLang={lang.code}
+  dir={lang.direction}
+  alternates={false}
+  fontHref={fontHref}
+  script={lang.script}
+  ogImage={image}
+>
+
+<section class="page-header hub-header" lang={ui.tag} dir={ui.dir}>
+  <div class="wrap">
+    <a class="btn btn-outline hub-back" href={localePath(uiLocale, 'discover')}>&larr; {t.allLanguages}</a>
+    <p class="eyebrow">{fill(t.eyebrow, { language: name })}</p>
+    <h1 lang={lang.code} dir={lang.direction}>{name}</h1>
+    {showEnglish && <p class="hub-english-name">{lang.englishName}</p>}
+
+    <ul class="hub-format-list">
+      {/* These point at the first story's own page — a real URL that works
+          without JavaScript and that crawlers follow. hub-reader.js
+          intercepts the click and opens the reader in place instead. */}
+      <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>
+      {lang.formats.audio && <li><a class="btn btn-outline" href={read()}>{t.audio}</a></li>}
+      {lang.formats.video && (
+        <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? read()} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
+      )}
+      {pdf && (
+        <li><a class="btn btn-outline" href={pdf.url} rel="noopener" title={pdf.name}>{withSize(t.pdf, pdf.size)}</a></li>
+      )}
+      {audioZip && (
+        <li><a class="btn btn-outline" href={audioZip.url} rel="noopener" title={audioZip.name}>{formatSize(audioZip.size) ? fill(t.audioZip, { size: formatSize(audioZip.size)! }) : t.audioZip.replace(/\s*[（(]\{size\}[)）]/, '')}</a></li>
+      )}
+      {assets.epub.slice(0, 1).map((a) => (
+        <li><a class="btn btn-outline" href={a.url} rel="noopener" title={a.name}>{withSize('EPUB', a.size)}</a></li>
+      ))}
+      {assets.docx.slice(0, 1).map((a) => (
+        <li><a class="btn btn-outline" href={a.url} rel="noopener" title={a.name}>{withSize('DOCX', a.size)}</a></li>
+      ))}
+    </ul>
+    <p class="hub-app-note"><a href={appUrl} target="_blank" rel="noopener">{t.app}</a></p>
+  </div>
+</section>
+
+{lang.extract && (
+  <section class="hub-extract">
+    <div class="wrap hub-extract-grid">
+      <img src={image} alt={lang.extract.title ?? ''} width="360" height="203" loading="lazy" decoding="async" />
+      <div>
+        <h2 lang={ui.tag} dir={ui.dir}>{t.extractTitle}</h2>
+        <blockquote lang={lang.code} dir={lang.direction}>
+          {lang.extract.title && <p class="hub-extract-title">{lang.extract.title}</p>}
+          <p>{lang.extract.text}</p>
+          {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
+        </blockquote>
+        <p lang={ui.tag} dir={ui.dir}><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
+      </div>
+    </div>
+  </section>
+)}
+
+<!-- The reader. Mounted by /assets/js/reader.js, which reads the live DCS
+     catalog for this language, so a newly published release appears here
+     without a rebuild. Everything around it — downloads, the story list, the
+     story pages — is static and works without JavaScript, so this section
+     simply stays collapsed if the script or Door43 is unavailable. -->
+<section class="hub-reader" id="read" hidden>
+  <div class="wrap">
+    <h2 lang={ui.tag} dir={ui.dir}>{t.readerTitle}</h2>
+    <div
+      id="hub-reader"
+      data-lang={lang.code}
+      data-loading={t.readerLoading}
+      data-offline={t.readerOffline}
+    ></div>
+  </div>
+</section>
+
+{stories.length > 0 && (
+  <section class="hub-stories">
+    <div class="wrap">
+      <h2 lang={ui.tag} dir={ui.dir}>{fill(t.storiesTitle, { n: stories.length, total: STORY_COUNT })}</h2>
+      {partial && (
+        <p class="hub-partial" lang={ui.tag} dir={ui.dir}>
+          {fill(t.partial, { n: stories.length, total: STORY_COUNT })}
+          <a href={localePath(uiLocale, 'translate')}>{t.partialLink}</a>
+        </p>
+      )}
+      <ol class="hub-story-list" lang={lang.code} dir={lang.direction}>
+        {stories.map((s) => (
+          <li>
+            {paged.has(s.num) ? (
+              <a href={storyPath(lang.code, s.num)}>
+                <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+                <span class="hub-story-title">{s.title}</span>
+              </a>
+            ) : (
+              /* Title was read but the body was not — no page to link to. */
+              <span class="hub-story-unlinked">
+                <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+                <span class="hub-story-title">{s.title}</span>
+              </span>
+            )}
+          </li>
+        ))}
+      </ol>
+    </div>
+  </section>
+)}
+
+<section class="hub-about" lang={ui.tag} dir={ui.dir}>
+  <div class="wrap">
+    <h2>{t.about}</h2>
+    <dl class="hub-facts">
+      <dt>{t.codes}</dt>
+      <dd><code>{lang.code}</code></dd>
+      {lang.altNames.length > 0 && (
+        <>
+          <dt>{t.alsoKnownAs}</dt>
+          <dd>{lang.altNames.join(', ')}</dd>
+        </>
+      )}
+      {lang.region && (
+        <>
+          <dt>{t.region}</dt>
+          <dd>{lang.region}{lang.countryCodes.length > 0 && <span class="hub-cc"> ({lang.countryCodes.join(', ')})</span>}</dd>
+        </>
+      )}
+      <dt>{t.publisherLabel}</dt>
+      <dd>
+        <ul class="hub-publishers">
+          {lang.entries.map((e) => (
+            <li>
+              <a href={`https://git.door43.org/${e.owner}/${e.name}`} rel="noopener">{e.owner}</a>
+              {e.branch_or_tag_name && <span class="hub-version"> {fill(t.version, { version: version(e.branch_or_tag_name) })}</span>}
+              {e.released && <span class="hub-version"> · {e.released}</span>}
+              {pdfsOf(e.owner).map((a) => (
+                <span class="hub-version"> · <a href={a.url} rel="noopener" title={a.name}>PDF{a.tag ? ` ${a.tag}` : ''}{formatSize(a.size) ? ` (${formatSize(a.size)})` : ''}</a></span>
+              ))}
+            </li>
+          ))}
+        </ul>
+      </dd>
+    </dl>
+    <p class="hub-license">
+      <strong>unfoldingWord® Open Bible Stories</strong> — {t.license}
+      <a href={LICENSE_URL} rel="license noopener">CC BY-SA 4.0</a>.
+      {publishers.length > 1 ? fill(t.teams, { n: publishers.length }) : ''}
+      {primary && <span> <a href={`https://git.door43.org/${primary.owner}/${primary.name}`} rel="noopener">{t.source}</a></span>}
+    </p>
+  </div>
+</section>
+
+<script is:inline src="/assets/js/reader.js" slot="scripts"></script>
+<script is:inline src="/assets/js/hub-reader.js" slot="scripts"></script>
+
+</Base>

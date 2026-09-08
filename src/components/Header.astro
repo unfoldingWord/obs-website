@@ -6,8 +6,11 @@ interface Props {
   locale: string;
   ui: any;
   slug: PageSlug;
+  /** Show the locale switcher (defaults to: the page has locale variants). */
+  switcher?: boolean;
 }
-const { locale, ui, slug } = Astro.props;
+const { locale, ui, slug, switcher } = Astro.props;
+const showSwitcher = switcher ?? isLocalized(slug);
 ---
 
 <header class="site-nav">
@@ -25,7 +28,7 @@ const { locale, ui, slug } = Astro.props;
         ))
       }
     </nav>
-    {isLocalized(slug) && (
+    {showSwitcher && (
       <LanguageSwitcher locale={locale} slug={slug} label={ui.strings?.languageLabel ?? 'Language'} />
     )}
     <button class="menu-btn" aria-label={ui.strings?.menuLabel ?? 'Open menu'} aria-expanded="false">&#9776;</button>

@@ -1,4 +1,51 @@
+# Open Bible Stories — crawl policy
+#
+# Everything on this site is public and licensed CC BY-SA 4.0, and the point
+# of the site is to be found in the language of the query. Search engines
+# and live-retrieval agents (the crawlers behind ChatGPT search, Perplexity,
+# Claude search, Copilot, Gemini grounding) are therefore explicitly
+# allowed, each in its own group so a broader per-agent rule elsewhere
+# cannot override them.
+#
+# TRAINING POLICY (intentional): Cloudflare's managed robots.txt for this
+# zone prepends `Content-Signal: search=yes, ai-train=no, use=reference` and
+# `Disallow: /` for bulk training crawlers (GPTBot, Google-Extended,
+# ClaudeBot, CCBot, Bytespider, Applebot-Extended, Amazonbot,
+# meta-externalagent). That is a rights decision made in the Cloudflare
+# dashboard, not in this file; see README → "Crawlers and AI policy". The
+# retrieval agents below are NOT training crawlers and must not be in that
+# managed block list.
+
 User-agent: *
+Allow: /
+
+# Search engines
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
+# Live retrieval / answer engines (not training)
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Claude-User
+Allow: /
+
+User-agent: DuckAssistBot
 Allow: /
 
 Sitemap: https://openbiblestories.org/sitemap-index.xml

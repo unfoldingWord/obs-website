@@ -1,0 +1,135 @@
+---
+// One story in one language — the leaf of the content tree (#7).
+//
+// /l/{code}/story-{n}/ — the same shape as the reader's #story-{n}
+// fragment, so both ways of addressing a story read identically.
+//
+// Everything is in the initial HTML: the full text, the illustrations, the
+// Bible reference and the audio when a recording exists. No JavaScript is
+// involved in reading — this replaces the client-side reader that used to
+// live at /discover/read/.
+//
+// As on the hub, <html lang>/dir and the font pack follow the CONTENT
+// language while the chrome and labels use the closest marketing locale.
+import Base from '../../../../layouts/Base.astro';
+import { content } from '../../../../i18n/content';
+import { byCode } from '../../../../i18n/config';
+import {
+  STORY_COUNT,
+  languages,
+  languagePath,
+  storyPath,
+  hubLocaleFor,
+  fontHrefForScript,
+  displayName,
+  type CatalogLanguage,
+} from '../../../../data/catalog';
+import { storiesFor, type Story } from '../../../../data/stories';
+import { storyNodes } from '../../../../lib/jsonld';
+
+export async function getStaticPaths() {
+  // storyNums says which stories this language has; the story file says which
+  // of them this build has the text for. A page is made only where both agree,
+  // and `nums` — what prev/next step through — is that same intersection, so a
+  // partial build (a Door43 outage mid-fetch) cannot link to a page it skipped.
+  const paths = [];
+  for (const lang of languages) {
+    if (!(lang.storyNums ?? []).length) continue;
+    const stories = await storiesFor(lang.code);
+    const byNum = new Map(stories.map((s) => [s.num, s]));
+    const nums = (lang.storyNums ?? []).filter((num) => byNum.has(num));
+    for (const num of nums) {
+      paths.push({
+        params: { code: lang.code, story: `story-${num}` },
+        props: { lang, story: byNum.get(num)!, nums },
+      });
+    }
+  }
+  return paths;
+}
+
+interface Props {
+  lang: CatalogLanguage;
+  story: Story;
+  /** The story numbers this build made pages for, in order — prev/next. */
+  nums: number[];
+}
+const { lang, story, nums } = Astro.props;
+
+const uiLocale = hubLocaleFor(lang.code);
+const ui = byCode(uiLocale);
+const t = content(uiLocale, 'story');
+
+const fill = (s: string, vars: Record<string, string | number>) =>
+  Object.entries(vars).reduce((acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)), s);
+
+const name = displayName(lang);
+const i = nums.indexOf(story.num);
+const prev = i > 0 ? nums[i - 1] : null;
+const next = i >= 0 && i < nums.length - 1 ? nums[i + 1] : null;
+
+const title = `${story.title} — ${name} | Open Bible Stories`;
+const description = fill(t.meta.description, { story: story.title, n: story.num, language: name });
+const firstImage = story.frames.find((f) => f.image)?.image;
+---
+
+<Base
+  locale={uiLocale}
+  slug="discover"
+  title={title}
+  description={description}
+  jsonLd={storyNodes(lang, story)}
+  canonicalPath={storyPath(lang.code, story.num)}
+  htmlLang={lang.code}
+  dir={lang.direction}
+  alternates={false}
+  fontHref={fontHrefForScript(lang.script)}
+  script={lang.script}
+  ogImage={firstImage}
+>
+
+<article class="story">
+  <div class="wrap">
+    <nav class="story-crumb" lang={ui.tag} dir={ui.dir}>
+      <a href={languagePath(lang.code)}>&larr; {fill(t.allStories, { language: name })}</a>
+      <span class="story-count">{fill(t.storyN, { n: story.num, total: STORY_COUNT })}</span>
+    </nav>
+
+    <h1 lang={lang.code} dir={lang.direction}>{story.title}</h1>
+
+    {story.audio && (
+      <p class="story-audio" lang={ui.tag} dir={ui.dir}>
+        <span class="story-audio-label">{t.listen}</span>
+        <audio controls preload="none" src={story.audio}></audio>
+      </p>
+    )}
+
+    <div class="story-frames" lang={lang.code} dir={lang.direction}>
+      {story.frames.map((f) => (
+        <div class="story-frame">
+          {f.image && <img src={f.image} alt="" width="360" height="203" loading="lazy" decoding="async" />}
+          <p>{f.text}</p>
+        </div>
+      ))}
+    </div>
+
+    {story.reference && (
+      <p class="story-reference" lang={lang.code} dir={lang.direction}><em>{story.reference}</em></p>
+    )}
+
+    <p class="story-open-reader" lang={ui.tag} dir={ui.dir}>
+      <a class="btn btn-outline" href={`${languagePath(lang.code)}#story-${story.num}`}>{t.openInReader}</a>
+    </p>
+
+    <nav class="story-nav" lang={ui.tag} dir={ui.dir}>
+      {prev
+        ? <a class="btn btn-outline" href={storyPath(lang.code, prev)} rel="prev">&larr; {t.previous}</a>
+        : <span></span>}
+      {next && <a class="btn btn-outline" href={storyPath(lang.code, next)} rel="next">{t.next} &rarr;</a>}
+    </nav>
+
+    <p class="story-license" lang={ui.tag} dir={ui.dir}>{t.license}</p>
+  </div>
+</article>
+
+</Base>

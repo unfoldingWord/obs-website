@@ -1,6 +1,7 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
+import { languageCount, withCount } from '../../data/catalog';
 
 interface Props {
   locale: string;
@@ -15,7 +16,7 @@ const cardIcons = [
 ];
 ---
 
-<Base locale={locale} slug="why-obs" title={t.meta.title} description={t.meta.description}>
+<Base locale={locale} slug="why-obs" title={t.meta.title} description={withCount(t.meta.description)}>
 
 <!-- SECTION 1 — HERO: the story. -->
 <!-- PRIVACY: this story is anonymized on purpose — no name, no photo of the individual. -->
@@ -108,10 +109,11 @@ const cardIcons = [
       }
     </div>
 
-    <!-- LIVE IMPACT: the real, currently-published count — fetched live. -->
+    <!-- The published-language count, from the DCS catalog at build time
+         (src/data/catalog.ts) — the same number the homepage and Discover show. -->
     <div style="text-align:center; margin-top:56px; padding-top:40px; border-top:1px solid rgba(1,66,99,0.12);">
       <div class="big-stat">
-        <span class="big-stat-num" id="lang-count" data-target="214">214</span>
+        <span class="big-stat-num" id="lang-count" data-target={languageCount}>{languageCount}</span>
         <span class="big-stat-label" set:html={t.world.statLabel} />
       </div>
     </div>

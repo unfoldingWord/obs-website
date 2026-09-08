@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "description": "Open Bible Stories en {language} : 50 histoires bibliques illustrées, de la Création à l'Apocalypse, à lire, écouter et télécharger. Gratuit sous CC BY-SA 4.0."
+  },
+  "eyebrow": "Open Bible Stories en {language}",
+  "alsoKnownAs": "Aussi appelé",
+  "codes": "Code de langue",
+  "region": "Région",
+  "publisherLabel": "Publié par",
+  "formatsTitle": "Formats disponibles",
+  "read": "Lire en ligne",
+  "pdf": "Télécharger le PDF",
+  "audio": "Écouter (audio)",
+  "video": "Regarder (vidéo)",
+  "app": "Obtenir l'application mobile",
+  "extractTitle": "Extrait de l'histoire 1",
+  "storiesTitle": "Histoires ({n} sur {total})",
+  "version": "v{version}",
+  "teams": "{n} équipes ont publié cette langue.",
+  "allLanguages": "Toutes les langues",
+  "license": "Libre d'utilisation, d'adaptation et de partage sous licence ouverte",
+  "source": "Source sur Door43",
+  "readStory": "Lire cette histoire",
+  "partial": "{n} histoires sur {total} sont traduites pour l'instant.",
+  "partialLink": "Aidez à traduire le reste",
+  "audioZip": "Télécharger tout l'audio ({size})",
+  "about": "À propos de cette traduction",
+  "readerTitle": "Lire en ligne",
+  "readerLoading": "Chargement…",
+  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements et les pages d'histoires fonctionnent toujours."
+}

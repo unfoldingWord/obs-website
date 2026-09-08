@@ -1,0 +1,31 @@
+{
+  "meta": {
+    "description": "{language} Open Bible Stories：从创世到启示录的 50 个图文圣经故事，可阅读、聆听和下载。以 CC BY-SA 4.0 许可免费提供。"
+  },
+  "eyebrow": "{language} Open Bible Stories",
+  "alsoKnownAs": "又称",
+  "codes": "语言代码",
+  "region": "地区",
+  "publisherLabel": "发布者",
+  "formatsTitle": "可用格式",
+  "read": "在线阅读",
+  "pdf": "下载 PDF",
+  "audio": "聆听（音频）",
+  "video": "观看（视频）",
+  "app": "获取移动应用",
+  "extractTitle": "故事 1 节选",
+  "storiesTitle": "故事（{n} / {total}）",
+  "version": "v{version}",
+  "teams": "已有 {n} 个团队发布此语言。",
+  "allLanguages": "所有语言",
+  "license": "可在开放许可下自由使用、改编和分享",
+  "source": "Door43 上的源文件",
+  "readStory": "阅读此故事",
+  "partial": "目前已翻译 {total} 个故事中的 {n} 个。",
+  "partialLink": "帮助翻译其余故事",
+  "audioZip": "下载全部音频（{size}）",
+  "about": "关于此译本",
+  "readerTitle": "在线阅读",
+  "readerLoading": "加载中…",
+  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。"
+}
