@@ -735,7 +735,7 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 @media (max-width:760px){ .hub-extract-grid{grid-template-columns:1fr;} .hub-extract-grid img{max-width:360px;} }
 @media (max-width:640px){ .hub-facts{grid-template-columns:1fr;} .hub-facts dt{margin-top:8px;} }
 
-/* ---------- STORY PAGES (/l/{code}/{NN}-{slug}/) ---------- */
+/* ---------- STORY PAGES (/l/{code}/story-{n}/) ---------- */
 /* A reading column, not a marketing page: one measure, generous leading, and
    the illustration above the text it belongs to. Logical properties
    throughout so RTL scripts mirror without a second rule set. */

@@ -11,7 +11,7 @@
   //
   // Reading used to happen here, in a client-side reader that fetched the
   // live catalog and the story files. Stories are static pages now
-  // (/l/{code}/{NN}-{slug}/), so that code is gone along with the catalog
+  // (/l/{code}/story-{n}/), so that code is gone along with the catalog
   // fetch, its localStorage cache, and the offline/failure states they
   // needed. Nothing on this page talks to Door43 any more.
   const listEl = document.getElementById("lang-list");

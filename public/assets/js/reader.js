@@ -5,7 +5,7 @@
   // Lifted verbatim out of discover.js, where it used to serve both the
   // inline Discover detail view and the standalone /discover/read/ page.
   // Both of those are gone: Discover only discovers, and each story also has
-  // its own static page (/l/{code}/{NN}-{slug}/) for crawlers and for
+  // its own static page (/l/{code}/story-{n}/) for crawlers and for
   // reading without JavaScript. This is the in-place reading experience —
   // slide-flip navigation, a story picker, per-story audio, YouTube where it
   // exists, and the publisher chooser when several teams have published the

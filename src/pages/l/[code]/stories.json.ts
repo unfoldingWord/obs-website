@@ -56,11 +56,12 @@ export const GET: APIRoute = async ({ props }) => {
       })),
     }),
     {
-      headers: {
-        'Content-Type': 'application/json; charset=utf-8',
-        // Same policy as the HTML: a story only changes when a build deploys.
-        'Cache-Control': 'public, max-age=300, s-maxage=86400, stale-while-revalidate=86400',
-      },
+      // A static build writes the body to a file and drops these headers,
+      // so what is actually served comes from the `/*` rule in
+      // public/_headers — which is the policy this wants anyway: a story only
+      // changes when a build deploys. Content-Type is kept because it is what
+      // `astro dev` and `astro preview` answer with.
+      headers: { 'Content-Type': 'application/json; charset=utf-8' },
     }
   );
 };

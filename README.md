@@ -82,11 +82,11 @@ Standardized entity strings (also in `src/lib/jsonld.ts`):
 - License sentence: *Free to use, adapt, and share under CC BY-SA 4.0.*
 - Canonical host: `https://openbiblestories.org` (www redirects to it).
 
-## Story pages (`/l/{code}/{NN}-{slug}/`)
+## Story pages (`/l/{code}/story-{n}/`)
 
 `src/pages/l/[code]/[story]/index.astro` renders one page per (language, story) that has full text — 9,062 of them at the last build, across 195 languages. Everything is in the initial HTML: the story title, every illustration paired with the paragraph it belongs to, the Bible reference, previous/next links and a link back to the hub. Where a release publishes per-story mp3s, an `<audio>` element carries the recording for that story. `<html lang>`/`dir`, `data-script` and the font pack follow the content language, exactly as on the hub; labels come from `src/i18n/{lang}/story.json`. Self-referencing canonical, no hreflang cluster. JSON-LD is one `CreativeWork` with the full `text`, `isPartOf` the hub's work, the first illustration as `image`, and an `AudioObject` only where a recording exists.
 
-Which stories have a page is decided by one field — `storyNums` on the catalog record. The hub's links, the story routes and `sitemap-stories.xml` all read it, so they cannot disagree; `npm run check:routes` proves it after every build.
+Which stories have a page is `storyNums` on the catalog record intersected with the story text this build holds: the metadata says which stories a language has, `src/data/stories/{code}.json` says which of them the build can render. The hub's links, the story routes, prev/next and `sitemap-stories.xml` are all built from that same intersection, so a partial fetch cannot leave a link pointing at a page that was skipped; `npm run check:routes` proves it after every build, and also that every link into `/l/` resolves.
 
 Story text is **not** in the committed snapshot. `scripts/fetch-catalog.mjs` writes one file per language into `src/data/stories/` (generated, gitignored, ~66MB); `src/data/stories.ts` loads them lazily so a story page pulls in only its own language. The build already downloads every story file to read its title, so keeping the body costs no extra requests — but it does mean a story file that is missing (a fresh clone, a cleaned checkout) forces that language to be re-fetched rather than reused from the snapshot cache.
 
