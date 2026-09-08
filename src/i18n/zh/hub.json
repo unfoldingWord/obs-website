@@ -24,5 +24,8 @@
   "partial": "目前已翻译 {total} 个故事中的 {n} 个。",
   "partialLink": "帮助翻译其余故事",
   "audioZip": "下载全部音频（{size}）",
-  "about": "关于此译本"
+  "about": "关于此译本",
+  "readerTitle": "在线阅读",
+  "readerLoading": "加载中…",
+  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。"
 }

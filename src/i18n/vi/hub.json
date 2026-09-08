@@ -24,5 +24,8 @@
   "partial": "Đến nay đã dịch {n} trong {total} câu chuyện.",
   "partialLink": "Giúp dịch phần còn lại",
   "audioZip": "Tải toàn bộ âm thanh ({size})",
-  "about": "Về bản dịch này"
+  "about": "Về bản dịch này",
+  "readerTitle": "Đọc trực tuyến",
+  "readerLoading": "Đang tải…",
+  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động."
 }

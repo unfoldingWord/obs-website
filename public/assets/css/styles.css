@@ -763,3 +763,9 @@ html:lang(ur) .story-frame p{line-height:2.2;}
 }
 /* A story whose title was read but whose text was not — shown, not linked. */
 .hub-story-unlinked{display:flex; gap:12px; align-items:baseline; padding:8px 10px; color:#64747d;}
+
+/* The reader, embedded on a language hub. The section ships hidden and
+   hub-reader.js reveals it on first open, so there is nothing to lay out
+   until someone actually asks to read. */
+.hub-reader{scroll-margin-top:16px;}
+.story-open-reader{margin:0 0 24px;}

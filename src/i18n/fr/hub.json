@@ -24,5 +24,8 @@
   "partial": "{n} histoires sur {total} sont traduites pour l'instant.",
   "partialLink": "Aidez à traduire le reste",
   "audioZip": "Télécharger tout l'audio ({size})",
-  "about": "À propos de cette traduction"
+  "about": "À propos de cette traduction",
+  "readerTitle": "Lire en ligne",
+  "readerLoading": "Chargement…",
+  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements et les pages d'histoires fonctionnent toujours."
 }

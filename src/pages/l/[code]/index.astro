@@ -125,8 +125,10 @@ const image = storyImage(1);
     {showEnglish && <p class="hub-english-name">{lang.englishName}</p>}
 
     <ul class="hub-format-list">
-      <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>
-      {lang.formats.audio && <li><a class="btn btn-outline" href={read()}>{t.audio}</a></li>}
+      {/* #read opens the reader in place; with no JS the fragment is inert
+          and the link below it (the story list) is still the way through. */}
+      <li><a class="btn btn-primary" href="#read">{t.read}</a></li>
+      {lang.formats.audio && <li><a class="btn btn-outline" href="#read">{t.audio}</a></li>}
       {lang.formats.video && (
         <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? read()} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
       )}
@@ -158,11 +160,28 @@ const image = storyImage(1);
           <p>{lang.extract.text}</p>
           {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
         </blockquote>
-        <p lang={ui.tag} dir={ui.dir}><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
+        <p lang={ui.tag} dir={ui.dir}><a href={firstStory ? `#story-${firstStory}` : "#read"} class="btn btn-outline">{t.readStory}</a></p>
       </div>
     </div>
   </section>
 )}
+
+<!-- The reader. Mounted by /assets/js/reader.js, which reads the live DCS
+     catalog for this language, so a newly published release appears here
+     without a rebuild. Everything around it — downloads, the story list, the
+     story pages — is static and works without JavaScript, so this section
+     simply stays collapsed if the script or Door43 is unavailable. -->
+<section class="hub-reader" id="read" hidden>
+  <div class="wrap">
+    <h2 lang={ui.tag} dir={ui.dir}>{t.readerTitle}</h2>
+    <div
+      id="hub-reader"
+      data-lang={lang.code}
+      data-loading={t.readerLoading}
+      data-offline={t.readerOffline}
+    ></div>
+  </div>
+</section>
 
 {stories.length > 0 && (
   <section class="hub-stories">
@@ -238,5 +257,8 @@ const image = storyImage(1);
     </p>
   </div>
 </section>
+
+<script is:inline src="/assets/js/reader.js" slot="scripts"></script>
+<script is:inline src="/assets/js/hub-reader.js" slot="scripts"></script>
 
 </Base>

@@ -7,5 +7,6 @@
   "previous": "Anterior",
   "next": "Siguiente",
   "allStories": "Todas las historias en {language}",
-  "license": "Libre para usar, adaptar y compartir bajo una licencia abierta (CC BY-SA 4.0)."
+  "license": "Libre para usar, adaptar y compartir bajo una licencia abierta (CC BY-SA 4.0).",
+  "openInReader": "Leer en el lector"
 }

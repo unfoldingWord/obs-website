@@ -24,5 +24,8 @@
   "partial": "{n} of {total} stories are translated so far.",
   "partialLink": "Help translate the rest",
   "audioZip": "Download all audio ({size})",
-  "about": "About this translation"
+  "about": "About this translation",
+  "readerTitle": "Read online",
+  "readerLoading": "Loading…",
+  "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work."
 }

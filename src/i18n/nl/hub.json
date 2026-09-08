@@ -24,5 +24,8 @@
   "partial": "Tot nu toe zijn {n} van de {total} verhalen vertaald.",
   "partialLink": "Help de rest te vertalen",
   "audioZip": "Alle audio downloaden ({size})",
-  "about": "Over deze vertaling"
+  "about": "Over deze vertaling",
+  "readerTitle": "Online lezen",
+  "readerLoading": "Laden…",
+  "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds."
 }

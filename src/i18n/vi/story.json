@@ -7,5 +7,6 @@
   "previous": "Trước",
   "next": "Tiếp",
   "allStories": "Tất cả câu chuyện bằng tiếng {language}",
-  "license": "Được tự do sử dụng, chuyển thể và chia sẻ theo giấy phép mở (CC BY-SA 4.0)."
+  "license": "Được tự do sử dụng, chuyển thể và chia sẻ theo giấy phép mở (CC BY-SA 4.0).",
+  "openInReader": "Đọc trong trình đọc"
 }

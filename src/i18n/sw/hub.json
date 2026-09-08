@@ -24,5 +24,8 @@
   "partial": "Hadithi {n} kati ya {total} zimetafsiriwa hadi sasa.",
   "partialLink": "Saidia kutafsiri zilizobaki",
   "audioZip": "Pakua sauti zote ({size})",
-  "about": "Kuhusu tafsiri hii"
+  "about": "Kuhusu tafsiri hii",
+  "readerTitle": "Soma mtandaoni",
+  "readerLoading": "Inapakia…",
+  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi."
 }

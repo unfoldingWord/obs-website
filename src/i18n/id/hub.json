@@ -24,5 +24,8 @@
   "partial": "Sejauh ini {n} dari {total} cerita telah diterjemahkan.",
   "partialLink": "Bantu terjemahkan sisanya",
   "audioZip": "Unduh semua audio ({size})",
-  "about": "Tentang terjemahan ini"
+  "about": "Tentang terjemahan ini",
+  "readerTitle": "Baca online",
+  "readerLoading": "Memuat…",
+  "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi."
 }

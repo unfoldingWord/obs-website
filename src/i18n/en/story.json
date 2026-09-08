@@ -7,5 +7,6 @@
   "previous": "Previous",
   "next": "Next",
   "allStories": "All stories in {language}",
-  "license": "Free to use, adapt, and share under an open license (CC BY-SA 4.0)."
+  "license": "Free to use, adapt, and share under an open license (CC BY-SA 4.0).",
+  "openInReader": "Read in the reader"
 }
