@@ -75,7 +75,10 @@ export async function languageMarkdown(lang: CatalogLanguage): Promise<string> {
 function storyMarkdown(lang: CatalogLanguage, story: Story): string {
   // Most translations already number the title ("1. Uumbaji"), a few do not;
   // prefixing unconditionally gave "## 1. 1. Uumbaji".
-  const numbered = /^\s*\d{1,2}\s*[.．、:：)]/.test(story.title);
+  // \p{Nd}, not \d: the titles are numbered in their own digits — Arabic-Indic
+  // (٢.), Devanagari (२.), Bengali (২.) — and an ASCII-only test re-numbered
+  // every one of them.
+  const numbered = /^\s*\p{Nd}{1,2}\s*[.．。、:：)]/u.test(story.title);
   const heading = numbered ? story.title.trim() : `${story.num}. ${story.title}`;
   const lines = [`## ${heading}`, '', `${SITE_URL}${storyPath(lang.code, story.num)}`, ''];
   for (const f of story.frames) {
