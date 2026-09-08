@@ -6,7 +6,8 @@
 //   1. every sitemap <loc> resolves to a built page
 //   2. the retired /discover/read/ route stays gone, and nothing links to it
 //   3. every language with story pages links to them from its hub
-//   4. the output fits Cloudflare Pages' 20,000-file limit
+//   4. every internal link into /l/ resolves to a built page
+//   5. the output fits Cloudflare Pages' 20,000-file limit
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -98,6 +99,30 @@ for (const lang of languages) {
   if (dangling.length) errors.push(`/l/${lang.code}/ links ${dangling.length} story page(s) that were not built: ${dangling.slice(0, 3).join(', ')}`);
 }
 
+// 4. Every link into the content tree must resolve. Check 3 covers the hubs;
+// this covers every other page that links into /l/ — story prev/next above
+// all, which steps through a list that has to be the pages this build made
+// and not the snapshot's storyNums.
+function* htmlFiles(dir) {
+  for (const name of readdirSync(dir)) {
+    const p = join(dir, name);
+    if (statSync(p).isDirectory()) yield* htmlFiles(p);
+    else if (p.endsWith('.html')) yield p;
+  }
+}
+let links = 0;
+for (const file of htmlFiles(DIST)) {
+  const from = file.slice(DIST.length);
+  const seen = new Set();
+  for (const m of readFileSync(file, 'utf8').matchAll(/href="(\/l\/[^"#?]*)/g)) {
+    const path = m[1];
+    if (!path.endsWith('/') || seen.has(path)) continue;
+    seen.add(path);
+    links++;
+    if (!existsSync(join(DIST, path, 'index.html'))) errors.push(`${from} links ${path}, which was not built`);
+  }
+}
+
 // 2b. Nothing may still reference the retired route.
 function* files(dir) {
   for (const name of readdirSync(dir)) {
@@ -112,7 +137,7 @@ if (stale.length) {
   errors.push(`${stale.length} file(s) still reference /discover/read/: ${stale.slice(0, 3).map((f) => f.slice(DIST.length)).join(', ')}`);
 }
 
-// 4. Cloudflare Pages refuses a deployment over 20,000 files.
+// 5. Cloudflare Pages refuses a deployment over 20,000 files.
 if (all.length > MAX_FILES) {
   errors.push(`${all.length} files — over the Cloudflare Pages limit of ${MAX_FILES}.`);
 }
@@ -124,5 +149,5 @@ if (errors.length) {
 }
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
-    `${all.length}/${MAX_FILES} files, no /discover/read/`
+    `${links} links into /l/ resolve, ${all.length}/${MAX_FILES} files, no /discover/read/`
 );

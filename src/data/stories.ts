@@ -7,8 +7,11 @@
 // import.meta.glob without `eager` returns a loader per file, so a story
 // page pulls in only its own language.
 //
-// Which stories have a page is decided by `storyNums` on the catalog record,
-// not by this file, so routes, hub links and the sitemap cannot disagree.
+// Which stories get a page is `storyNums` on the catalog record intersected
+// with what this file holds: the metadata says which stories the language has,
+// and this says which of them the build has the text for. Hub links, the
+// sitemap and prev/next are all built from that same intersection, so a
+// partial fetch cannot leave a link pointing at a page that was skipped.
 
 /** One illustration and the text that follows it. `image` is null for a
  *  paragraph that has no illustration of its own. */

@@ -29,20 +29,20 @@ import { storiesFor, type Story } from '../../../../data/stories';
 import { storyNodes } from '../../../../lib/jsonld';
 
 export async function getStaticPaths() {
-  // Enumerated from storyNums (metadata only) so no story text is loaded
-  // here; the page body pulls in just its own language's file.
+  // storyNums says which stories this language has; the story file says which
+  // of them this build has the text for. A page is made only where both agree,
+  // and `nums` — what prev/next step through — is that same intersection, so a
+  // partial build (a Door43 outage mid-fetch) cannot link to a page it skipped.
   const paths = [];
   for (const lang of languages) {
-    const nums = lang.storyNums ?? [];
-    if (!nums.length) continue;
+    if (!(lang.storyNums ?? []).length) continue;
     const stories = await storiesFor(lang.code);
     const byNum = new Map(stories.map((s) => [s.num, s]));
+    const nums = (lang.storyNums ?? []).filter((num) => byNum.has(num));
     for (const num of nums) {
-      const story = byNum.get(num);
-      if (!story) continue;
       paths.push({
         params: { code: lang.code, story: `${String(num).padStart(2, '0')}-${storySlug(num)}` },
-        props: { lang, story, nums },
+        props: { lang, story: byNum.get(num)!, nums },
       });
     }
   }
@@ -52,6 +52,7 @@ export async function getStaticPaths() {
 interface Props {
   lang: CatalogLanguage;
   story: Story;
+  /** The story numbers this build made pages for, in order — prev/next. */
   nums: number[];
 }
 const { lang, story, nums } = Astro.props;
