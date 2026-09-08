@@ -27,5 +27,25 @@
   "about": "Kuhusu tafsiri hii",
   "readerTitle": "Soma mtandaoni",
   "readerLoading": "Inapakia…",
-  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi."
+  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi.",
+  "faqTitle": "Maswali kuhusu Open Bible Stories katika {language}",
+  "faqMore": "Maswali na majibu zaidi",
+  "faq": [
+    {
+      "q": "Open Bible Stories katika {language} ni nini?",
+      "a": "Open Bible Stories ni mkusanyiko wa hadithi 50 za Biblia zenye picha, kutoka Uumbaji hadi Ufunuo, zilizotafsiriwa katika {language}. Unaweza kusoma kila hadithi kwenye tovuti hii, na kusikiliza, kutazama au kupakua pale miundo hiyo inapatikana katika {language}."
+    },
+    {
+      "q": "Je, hii ni tafsiri ya Biblia yote?",
+      "a": "Hapana. Hadithi hizi zinasimulia matukio ya Biblia; hazikuwa tafsiri ya Biblia yote katika {language}. Timu nyingi hutafsiri hadithi kwanza, na kutoka hapo huendelea kutafsiri Maandiko yenyewe."
+    },
+    {
+      "q": "Naweza kunakili, kuchapisha au kubadilisha hadithi hizi?",
+      "a": "Ndiyo. Open Bible Stories inaweza kutumiwa, kubadilishwa na kushirikiwa bila malipo chini ya leseni ya Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0): inakili, ichapishe, irekodi au ujenge juu yake — hata kwa biashara — ikiwa unatambua kazi ya awali na unatoa kile unachotengeneza chini ya leseni ile ile."
+    },
+    {
+      "q": "Nawezaje kusaidia kukamilisha au kuboresha tafsiri ya {language}?",
+      "a": "Tafsiri hufanywa na timu kutoka jamii ya lugha yenyewe. Ukurasa wa Tafsiri unaeleza jinsi timu inavyofanya kazi, inavyohakiki tafsiri yake pamoja na makanisa ya mahali, na inavyopata msaada kutoka unfoldingWord."
+    }
+  ]
 }

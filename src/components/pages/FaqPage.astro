@@ -1,0 +1,67 @@
+---
+// Localized questions and answers (#17).
+//
+// Generative engines quote short, direct answers to real questions, and they
+// quote them in the language of the question. The rest of the site is
+// marketing prose; this page is the one place where "is Open Bible Stories a
+// Bible translation?", "may I print it?" and "which story is Easter?" are
+// answered in two or three sentences, in each of the 16 locales, in the
+// initial HTML.
+//
+// Shape follows the guidance in #17: the question is an H2, the answer opens
+// with the answer itself and only then adds detail. FAQPage JSON-LD is
+// emitted here — on the marketing locales, where the visible text and the
+// structured data are the same words. The language hubs carry their own
+// short FAQ (hub.json → faq) without schema, because 214 near-identical
+// FAQPage nodes would be exactly the boilerplate Google's guidelines warn
+// about.
+import Base from '../../layouts/Base.astro';
+import { content } from '../../i18n/content';
+import { withCount } from '../../data/catalog';
+import { faqPageNode } from '../../lib/jsonld';
+import { localizeLinks } from '../../i18n/config';
+
+interface Props {
+  locale: string;
+}
+const { locale } = Astro.props;
+const t = content(locale, 'faq');
+
+// `{count}` is the published-language count; in-copy links stay inside the
+// current locale (localizeLinks leaves /license/ and other English-only
+// pages at the root).
+const prose = (s: string) => localizeLinks(withCount(s), locale);
+const questions: { q: string; a: string }[] = t.questions.map((item: { q: string; a: string }) => ({
+  q: withCount(item.q),
+  a: prose(item.a),
+}));
+---
+
+<Base
+  locale={locale}
+  slug="faq"
+  title={t.meta.title}
+  description={withCount(t.meta.description)}
+  jsonLd={[faqPageNode(locale, questions)]}
+>
+
+<section class="page-header">
+  <div class="wrap">
+    <p class="eyebrow">{t.eyebrow}</p>
+    <h1>{t.title}</h1>
+    <p class="page-header-sub" set:html={prose(t.intro)} />
+  </div>
+</section>
+
+<section>
+  <div class="wrap faq-list">
+    {questions.map(({ q, a }) => (
+      <div class="faq-item">
+        <h2>{q}</h2>
+        <p set:html={a} />
+      </div>
+    ))}
+  </div>
+</section>
+
+</Base>

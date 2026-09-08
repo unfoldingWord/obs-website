@@ -7,6 +7,7 @@
 // license.
 import { languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
 import { type Story } from '../data/stories';
+import { localePath } from '../i18n/config';
 
 export const SITE_URL = 'https://openbiblestories.org';
 export const PRODUCT_NAME = 'unfoldingWord Open Bible Stories';
@@ -95,6 +96,32 @@ export function mobileAppNode() {
     isAccessibleForFree: true,
     installUrl: PLAY_STORE_URL,
     publisher: { '@id': PUBLISHER_ID },
+  };
+}
+
+/**
+ * FAQPage for one locale's /faq/ page (#17).
+ *
+ * Emitted only on the marketing FAQ pages, where the visible H2/answer text
+ * and the structured data are the same words — the requirement Google states
+ * for FAQ rich results. The hubs' own FAQ block is deliberately visible-only:
+ * 214 near-identical FAQPage nodes would be boilerplate.
+ *
+ * `answers` arrive as HTML (the copy carries links); `acceptedAnswer.text`
+ * may contain HTML, so it is passed through as written.
+ */
+export function faqPageNode(locale: string, questions: { q: string; a: string }[]) {
+  return {
+    '@type': 'FAQPage',
+    '@id': `${SITE_URL}${localePath(locale, 'faq')}#faq`,
+    inLanguage: locale,
+    isPartOf: { '@id': WEBSITE_ID },
+    publisher: { '@id': PUBLISHER_ID },
+    mainEntity: questions.map(({ q, a }) => ({
+      '@type': 'Question',
+      name: q,
+      acceptedAnswer: { '@type': 'Answer', text: a },
+    })),
   };
 }
 

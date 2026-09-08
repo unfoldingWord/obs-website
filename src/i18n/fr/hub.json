@@ -27,5 +27,25 @@
   "about": "À propos de cette traduction",
   "readerTitle": "Lire en ligne",
   "readerLoading": "Chargement…",
-  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements et les pages d'histoires fonctionnent toujours."
+  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements et les pages d'histoires fonctionnent toujours.",
+  "faqTitle": "Questions sur Open Bible Stories en {language}",
+  "faqMore": "Plus de questions et réponses",
+  "faq": [
+    {
+      "q": "Qu'est-ce qu'Open Bible Stories en {language} ?",
+      "a": "Open Bible Stories est un ensemble de 50 récits bibliques illustrés, de la Création à l'Apocalypse, traduits en {language}. Vous pouvez lire tous les récits sur ce site, et les écouter, les regarder ou les télécharger là où ces formats existent en {language}."
+    },
+    {
+      "q": "S'agit-il d'une traduction de toute la Bible ?",
+      "a": "Non. Ces récits racontent des passages bibliques ; ils ne sont pas une traduction de toute la Bible en {language}. Beaucoup d'équipes traduisent d'abord les récits, puis poursuivent avec la traduction de l'Écriture elle-même."
+    },
+    {
+      "q": "Puis-je copier, imprimer ou adapter ces récits ?",
+      "a": "Oui. Open Bible Stories est libre d'utilisation, d'adaptation et de partage sous la licence Creative Commons Attribution-Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0) : copiez-les, imprimez-les, enregistrez-les ou construisez dessus — y compris à des fins commerciales — à condition de créditer l'œuvre originale et de publier ce que vous produisez sous la même licence."
+    },
+    {
+      "q": "Comment puis-je aider à achever ou à améliorer la traduction en {language} ?",
+      "a": "Les traductions sont faites par des équipes issues de la communauté linguistique elle-même. La page Traduire explique comment une équipe travaille, comment elle vérifie sa traduction avec les Églises locales et comment obtenir l'aide d'unfoldingWord."
+    }
+  ]
 }

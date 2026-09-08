@@ -27,5 +27,25 @@
   "about": "About this translation",
   "readerTitle": "Read online",
   "readerLoading": "Loading…",
-  "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work."
+  "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work.",
+  "faqTitle": "Questions about Open Bible Stories in {language}",
+  "faqMore": "More questions and answers",
+  "faq": [
+    {
+      "q": "What is Open Bible Stories in {language}?",
+      "a": "Open Bible Stories is a set of 50 illustrated Bible stories, from Creation to Revelation, translated into {language}. You can read every story on this site, and listen, watch or download it where those formats exist in {language}."
+    },
+    {
+      "q": "Is this a translation of the whole Bible?",
+      "a": "No. These stories retell biblical accounts; they are not a translation of the whole Bible into {language}. Many teams translate the stories first, and go on from there to translate Scripture itself."
+    },
+    {
+      "q": "Can I copy, print, or adapt these stories?",
+      "a": "Yes. Open Bible Stories is free to use, adapt and share under the Creative Commons Attribution-ShareAlike 4.0 license (CC BY-SA 4.0): copy it, print it, record it or build on it — including commercially — as long as you credit the original work and release what you make under the same license."
+    },
+    {
+      "q": "How can I help finish or improve the {language} translation?",
+      "a": "Translations are made by teams from the language community. The Translate page explains how a team works, checks its translation with local churches, and gets help from unfoldingWord."
+    }
+  ]
 }

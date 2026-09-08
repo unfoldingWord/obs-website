@@ -27,5 +27,25 @@
   "about": "Over deze vertaling",
   "readerTitle": "Online lezen",
   "readerLoading": "Laden…",
-  "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds."
+  "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds.",
+  "faqTitle": "Vragen over Open Bible Stories in het {language}",
+  "faqMore": "Meer vragen en antwoorden",
+  "faq": [
+    {
+      "q": "Wat is Open Bible Stories in het {language}?",
+      "a": "Open Bible Stories is een reeks van 50 geïllustreerde Bijbelverhalen, van de schepping tot Openbaring, vertaald in het {language}. Je kunt alle verhalen op deze site lezen, en ze beluisteren, bekijken of downloaden waar die formaten in het {language} bestaan."
+    },
+    {
+      "q": "Is dit een vertaling van de hele Bijbel?",
+      "a": "Nee. Deze verhalen vertellen Bijbelgedeelten na; ze zijn geen vertaling van de hele Bijbel in het {language}. Veel teams vertalen eerst de verhalen en gaan van daaruit verder met het vertalen van de Schrift zelf."
+    },
+    {
+      "q": "Mag ik deze verhalen kopiëren, afdrukken of aanpassen?",
+      "a": "Ja. Open Bible Stories mag vrij gebruikt, aangepast en gedeeld worden onder de licentie Creative Commons Naamsvermelding-GelijkDelen 4.0 (CC BY-SA 4.0): kopiëren, afdrukken, opnemen of erop voortbouwen — ook commercieel — zolang je het oorspronkelijke werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt."
+    },
+    {
+      "q": "Hoe kan ik helpen de vertaling in het {language} af te maken of te verbeteren?",
+      "a": "Vertalingen worden gemaakt door teams uit de taalgemeenschap zelf. De pagina Vertalen legt uit hoe een team werkt, hoe het zijn vertaling controleert met plaatselijke kerken en hoe het hulp krijgt van unfoldingWord."
+    }
+  ]
 }

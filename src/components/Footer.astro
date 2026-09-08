@@ -18,6 +18,9 @@ const { locale, ui } = Astro.props;
             <a href={localePath(locale, item.slug)}>{item.label}</a>
           ))
         }
+        {/* The FAQ is footer-linked, not in the nav: the primary nav stays
+            the same five items in the same order on every page. */}
+        <a href={localePath(locale, 'faq')}>{ui.strings?.faqLabel ?? 'FAQ'}</a>
       </div>
     </div>
     <p class="footer-credit" set:html={ui.footerCredit} />

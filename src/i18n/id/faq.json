@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Pertanyaan tentang Open Bible Stories",
+    "description": "Apa itu Open Bible Stories, cara membaca atau mengunduhnya dalam {count} bahasa, apa yang diizinkan lisensi terbukanya, dan cara memulai penerjemahan."
+  },
+  "eyebrow": "Tanya jawab",
+  "title": "Pertanyaan tentang Open Bible Stories",
+  "intro": "Jawaban singkat, langsung ke intinya. Jika pertanyaan Anda tidak ada di sini, <a href=\"/contact/\">kirim pesan kepada kami</a>.",
+  "questions": [
+    {
+      "q": "Apa itu Open Bible Stories?",
+      "a": "Open Bible Stories adalah kumpulan 50 cerita Alkitab bergambar, dari Penciptaan sampai Wahyu. Setiap cerita menuturkan kembali satu bagian Kitab Suci dalam beberapa halaman dan disertai gambar, sehingga dapat dibaca, didengarkan, atau diceritakan dengan suara. unfoldingWord menerbitkannya, gereja setempat dan tim penerjemah menerjemahkannya, dan siapa pun boleh memakainya dengan bebas."
+    },
+    {
+      "q": "Apakah Open Bible Stories sebuah terjemahan Alkitab?",
+      "a": "Bukan. Ke-50 cerita ini menuturkan kembali kisah-kisah Alkitab; semuanya bukan terjemahan seluruh teks Alkitab. Banyak tim menerjemahkannya lebih dahulu karena pekerjaan itu selesai dalam hitungan bulan, bukan tahun: gereja mereka langsung memiliki bahan Kitab Suci untuk dipakai, dan tim memperoleh latihan serta kebiasaan pemeriksaan yang dibutuhkan sebelum menerjemahkan Alkitab itu sendiri."
+    },
+    {
+      "q": "Tersedia dalam berapa bahasa?",
+      "a": "Saat ini {count} bahasa sudah memiliki terjemahan yang diterbitkan, dan lebih banyak sedang dikerjakan. Setiap bahasa punya halamannya sendiri yang memuat daftar cerita, format yang tersedia dalam bahasa itu, dan tim yang menerbitkannya. <a href=\"/discover/\">Lihat semua bahasa</a>."
+    },
+    {
+      "q": "Bagaimana cara membaca, mendengarkan, atau mengunduhnya dalam bahasa saya?",
+      "a": "Buka <a href=\"/discover/\">Jelajahi</a>, cari bahasa Anda, dan buka halamannya. Di sana Anda dapat membaca semua cerita, mendengarkan jika ada rekaman, menonton jika ada video, serta mengunduh PDF atau berkas audio. Tidak perlu akun dan semuanya gratis."
+    },
+    {
+      "q": "Bolehkah saya menyalin, mencetak, menyesuaikan, atau merekam cerita ini?",
+      "a": "Boleh. Cerita-cerita ini diterbitkan di bawah lisensi Creative Commons Atribusi-BerbagiSerupa 4.0 (CC BY-SA 4.0). Anda boleh menyalin, mencetak, merekam, menyiarkan, atau menyesuaikannya &mdash; termasuk untuk tujuan komersial &mdash; selama Anda mencantumkan karya aslinya dan menerbitkan hasil karya Anda di bawah lisensi yang sama. Biarkan merek unfoldingWord&reg; tetap ada pada salinan yang tidak diubah, dan hapus merek itu jika Anda mengubah atau menerjemahkan karyanya; sebutkan apa yang Anda ubah dan cantumkan atribusi berikut: &ldquo;Karya asli oleh unfoldingWord tersedia di https://openbiblestories.org&rdquo;. Ilustrasinya adalah &copy; Sweet Publishing dan dibagikan di bawah CC BY-SA 3.0. <a href=\"/license/\">Halaman lisensi</a> memuat teks lengkapnya."
+    },
+    {
+      "q": "Bagaimana saya memulai penerjemahan dalam bahasa saya?",
+      "a": "Mulailah dari halaman <a href=\"/translate/\">Terjemahkan</a>: halaman itu menjelaskan prosesnya, perangkatnya, dan cara memeriksa terjemahan bersama gereja-gereja yang akan memakainya. Penerjemahan dikerjakan oleh tim dari komunitas bahasa itu sendiri, dan unfoldingWord dapat membantu mencari pelatihan serta jaringan tim lain."
+    },
+    {
+      "q": "Cerita mana yang menceritakan Injil, kisah Abraham, atau Paskah?",
+      "a": "Cerita-cerita disusun mengikuti urutan Alkitab, jadi mudah dicari berdasarkan nomor. Penciptaan dan kejatuhan manusia adalah cerita 1 sampai 3, perjanjian Allah dengan Abraham dimulai pada cerita 4, Paskah Yahudi dan keluarnya bangsa Israel adalah cerita 11 dan 12, dan Perjanjian Lama ditutup dengan janji tentang Mesias pada cerita 21. Kehidupan Yesus berjalan dari kelahiran-Nya pada cerita 23 melalui pelayanan dan perumpamaan-Nya; penyaliban adalah cerita 40, kebangkitan cerita 41, dan kenaikan-Nya ke surga cerita 42. Gereja dimulai pada cerita 43, dan tiga cerita terakhir &mdash; 48, 49, dan 50 &mdash; menjelaskan Injil dan kedatangan Kristus kembali."
+    },
+    {
+      "q": "Siapa yang membuat Open Bible Stories?",
+      "a": "unfoldingWord&reg; mengembangkannya bersama <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Setiap terjemahan adalah hasil kerja tim dari komunitas bahasa tersebut, dan setiap halaman bahasa menyebutkan tim yang menerbitkannya. Berkas sumbernya ada di Door43, tempat siapa pun dapat melihat keadaan terkini sebuah terjemahan."
+    }
+  ]
+}

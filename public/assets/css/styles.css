@@ -776,6 +776,23 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 @media (max-width:760px){ .hub-extract-grid{grid-template-columns:1fr;} .hub-extract-grid img{max-width:360px;} }
 @media (max-width:640px){ .hub-facts{grid-template-columns:1fr;} .hub-facts dt{margin-top:8px;} }
 
+/* ---------- QUESTIONS AND ANSWERS ----------
+   One reading measure, answer directly under its question, no accordion:
+   the answers are two or three sentences each and they are the point of the
+   page (#17), so hiding them behind a click would hide them from the
+   keyboard, from Reader mode, and from a crawler's first pass. Shared by the
+   /faq/ pages (.faq-item, H2 + P) and the hubs' short FAQ (a DL). */
+.faq-list{max-width:760px; margin:0 auto;}
+.faq-item + .faq-item{margin-top:32px;}
+.faq-item h2{font-size:clamp(1.15rem, 2.4vw, 1.45rem); color:var(--ocean); margin:0 0 10px;}
+.faq-item p{color:var(--tech); max-width:none;}
+.faq-list a{color:var(--inspire-text); text-decoration:underline;}
+.hub-faq{padding:8px 0 0;}
+.hub-faq .faq-list{margin:0;}
+.hub-faq dt{font-family:var(--heading-font); font-weight:800; color:var(--ocean); margin-top:26px;}
+.hub-faq dd{margin:8px 0 0; color:var(--tech);}
+.hub-faq > .wrap > p{margin-top:26px;}
+
 /* ---------- STORY PAGES (/l/{code}/story-{n}/) ---------- */
 /* A reading column, not a marketing page: one measure, generous leading, and
    the illustration above the text it belongs to. Logical properties

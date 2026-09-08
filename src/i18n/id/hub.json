@@ -27,5 +27,25 @@
   "about": "Tentang terjemahan ini",
   "readerTitle": "Baca online",
   "readerLoading": "Memuat…",
-  "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi."
+  "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi.",
+  "faqTitle": "Pertanyaan tentang Open Bible Stories dalam bahasa {language}",
+  "faqMore": "Pertanyaan dan jawaban lainnya",
+  "faq": [
+    {
+      "q": "Apa itu Open Bible Stories dalam bahasa {language}?",
+      "a": "Open Bible Stories adalah kumpulan 50 cerita Alkitab bergambar, dari Penciptaan sampai Wahyu, yang diterjemahkan ke dalam bahasa {language}. Anda dapat membaca setiap cerita di situs ini, serta mendengarkan, menonton, atau mengunduhnya jika format itu tersedia dalam bahasa {language}."
+    },
+    {
+      "q": "Apakah ini terjemahan seluruh Alkitab?",
+      "a": "Bukan. Cerita-cerita ini menuturkan kembali kisah Alkitab; semuanya bukan terjemahan seluruh Alkitab ke dalam bahasa {language}. Banyak tim menerjemahkan cerita ini lebih dahulu, lalu melanjutkan dengan menerjemahkan Kitab Suci itu sendiri."
+    },
+    {
+      "q": "Bolehkah saya menyalin, mencetak, atau menyesuaikan cerita ini?",
+      "a": "Boleh. Open Bible Stories bebas dipakai, disesuaikan, dan dibagikan di bawah lisensi Creative Commons Atribusi-BerbagiSerupa 4.0 (CC BY-SA 4.0): salin, cetak, rekam, atau kembangkan lebih lanjut — termasuk untuk tujuan komersial — selama Anda mencantumkan karya aslinya dan menerbitkan hasil karya Anda di bawah lisensi yang sama."
+    },
+    {
+      "q": "Bagaimana saya bisa membantu menyelesaikan atau memperbaiki terjemahan bahasa {language}?",
+      "a": "Penerjemahan dikerjakan oleh tim dari komunitas bahasa itu sendiri. Halaman Terjemahkan menjelaskan cara kerja sebuah tim, cara memeriksa terjemahan bersama gereja setempat, dan cara mendapatkan bantuan dari unfoldingWord."
+    }
+  ]
 }

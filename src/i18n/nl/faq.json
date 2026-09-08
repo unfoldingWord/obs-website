@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Vragen over Open Bible Stories",
+    "description": "Wat Open Bible Stories is, hoe je het in {count} talen leest of downloadt, wat de open licentie toestaat en hoe je een vertaling begint."
+  },
+  "eyebrow": "Vragen en antwoorden",
+  "title": "Vragen over Open Bible Stories",
+  "intro": "Korte antwoorden, meteen het belangrijkste. Staat jouw vraag er niet bij? <a href=\"/contact/\">Schrijf ons</a>.",
+  "questions": [
+    {
+      "q": "Wat is Open Bible Stories?",
+      "a": "Open Bible Stories is een reeks van 50 geïllustreerde Bijbelverhalen, van de schepping tot Openbaring. Elk verhaal vertelt een Bijbelgedeelte in een paar pagina's na, met platen erbij, zodat het gelezen, beluisterd of hardop verteld kan worden. unfoldingWord geeft het uit, plaatselijke kerken en vertaalteams vertalen het, en iedereen mag het vrij gebruiken."
+    },
+    {
+      "q": "Is Open Bible Stories een Bijbelvertaling?",
+      "a": "Nee. De 50 verhalen vertellen Bijbelgedeelten na; ze zijn geen vertaling van de hele Bijbeltekst. Veel teams vertalen ze eerst, omdat dat maanden kost en geen jaren: hun kerk heeft dan meteen Bijbelse inhoud om te gebruiken, en het team doet de ervaring en de controlegewoonten op die het nodig heeft voordat het de Bijbel zelf vertaalt."
+    },
+    {
+      "q": "In hoeveel talen is het beschikbaar?",
+      "a": "Er zijn nu {count} talen met een gepubliceerde vertaling, en er komen er meer bij. Elke taal heeft een eigen pagina met de verhalen, de formaten die in die taal bestaan en het team dat ze heeft gepubliceerd. <a href=\"/discover/\">Bekijk alle talen</a>."
+    },
+    {
+      "q": "Hoe lees, beluister of download ik het in mijn taal?",
+      "a": "Open <a href=\"/discover/\">Ontdek</a>, zoek je taal en open die pagina. Daar kun je alle verhalen lezen, beluisteren waar een opname bestaat, bekijken waar er video is, en een pdf of de audiobestanden downloaden. Je hebt geen account nodig en niets kost geld."
+    },
+    {
+      "q": "Mag ik deze verhalen kopiëren, afdrukken, aanpassen of opnemen?",
+      "a": "Ja. De verhalen staan onder de licentie Creative Commons Naamsvermelding-GelijkDelen 4.0 (CC BY-SA 4.0). Je mag ze kopiëren, afdrukken, opnemen, uitzenden of aanpassen &mdash; ook commercieel &mdash; zolang je het oorspronkelijke werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt. Laat het handelsmerk unfoldingWord&reg; staan op onveranderde kopieën en haal het weg als je het werk wijzigt of vertaalt; vermeld wat je hebt veranderd en schrijf erbij: &ldquo;Het oorspronkelijke werk van unfoldingWord is beschikbaar via https://openbiblestories.org&rdquo;. De illustraties zijn &copy; Sweet Publishing en worden gedeeld onder CC BY-SA 3.0. Op de <a href=\"/license/\">licentiepagina</a> staat de volledige tekst."
+    },
+    {
+      "q": "Hoe begin ik een vertaling in mijn taal?",
+      "a": "Begin bij de pagina <a href=\"/translate/\">Vertalen</a>: die legt het proces uit, de hulpmiddelen, en hoe je een vertaling controleert met de kerken die haar gaan gebruiken. Het vertaalwerk wordt gedaan door teams uit de taalgemeenschap zelf, en unfoldingWord kan helpen met training en een netwerk van andere teams."
+    },
+    {
+      "q": "Welke verhalen vertellen het evangelie, het verhaal van Abraham of Pasen?",
+      "a": "De verhalen staan in Bijbelse volgorde, dus je vindt ze eenvoudig op nummer. De schepping en de zondeval zijn verhaal 1 tot 3, Gods verbond met Abraham begint bij verhaal 4, het Pascha en de uittocht zijn verhaal 11 en 12, en het Oude Testament sluit af met de belofte van de Messias in verhaal 21. Het leven van Jezus loopt van zijn geboorte in verhaal 23 door zijn bediening en gelijkenissen heen; de kruisiging is verhaal 40, de opstanding verhaal 41 en zijn terugkeer naar de hemel verhaal 42. De kerk begint in verhaal 43, en de laatste drie &mdash; 48, 49 en 50 &mdash; leggen het evangelie en de terugkeer van Christus uit."
+    },
+    {
+      "q": "Wie maakt Open Bible Stories?",
+      "a": "unfoldingWord&reg; ontwikkelt het samen met de <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Elke vertaling is het werk van een team uit die taalgemeenschap, en op elke taalpagina staat welk team haar heeft gepubliceerd. De bronbestanden staan op Door43, waar iedereen de huidige stand van een vertaling kan zien."
+    }
+  ]
+}

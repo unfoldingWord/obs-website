@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Maswali kuhusu Open Bible Stories",
+    "description": "Open Bible Stories ni nini, jinsi ya kuisoma au kuipakua katika lugha {count}, leseni huria inaruhusu nini, na jinsi ya kuanza tafsiri."
+  },
+  "eyebrow": "Maswali na majibu",
+  "title": "Maswali kuhusu Open Bible Stories",
+  "intro": "Majibu mafupi, jibu kwanza. Kama swali lako halipo hapa, <a href=\"/contact/\">tuandikie</a>.",
+  "questions": [
+    {
+      "q": "Open Bible Stories ni nini?",
+      "a": "Open Bible Stories ni mkusanyiko wa hadithi 50 za Biblia zenye picha, kutoka Uumbaji hadi Ufunuo. Kila hadithi inasimulia fungu la Maandiko katika kurasa chache pamoja na picha, hivyo inaweza kusomwa, kusikilizwa au kusimuliwa kwa sauti. unfoldingWord inaichapisha, makanisa ya mahali na timu za utafsiri wanaitafsiri, na mtu yeyote anaweza kuitumia bila malipo."
+    },
+    {
+      "q": "Je, Open Bible Stories ni tafsiri ya Biblia?",
+      "a": "Hapana. Hadithi 50 zinasimulia matukio ya Biblia; hazikuwa tafsiri ya maandiko yote ya Biblia. Timu nyingi huzitafsiri kwanza kwa sababu kazi hiyo inachukua miezi badala ya miaka: kanisa lao linapata maudhui ya Maandiko ya kutumia sasa, na timu inapata mazoezi na utaratibu wa uhakiki inaohitaji kabla ya kutafsiri Biblia yenyewe."
+    },
+    {
+      "q": "Inapatikana katika lugha ngapi?",
+      "a": "Leo lugha {count} zina tafsiri iliyochapishwa, na nyingine zinaendelea. Kila moja ina ukurasa wake unaoorodhesha hadithi, miundo inayopatikana katika lugha hiyo, na timu iliyoichapisha. <a href=\"/discover/\">Ona lugha zote</a>."
+    },
+    {
+      "q": "Nawezaje kuisoma, kuisikiliza au kuipakua katika lugha yangu?",
+      "a": "Fungua <a href=\"/discover/\">Gundua</a>, tafuta lugha yako, na ufungue ukurasa wake. Hapo unaweza kusoma hadithi zote, kusikiliza pale kunakopatikana rekodi, kutazama pale kunakopatikana video, na kupakua PDF au faili za sauti. Hakuna akaunti inayohitajika, na hakuna kitu kinachogharimu."
+    },
+    {
+      "q": "Naweza kunakili, kuchapisha, kubadilisha au kurekodi hadithi hizi?",
+      "a": "Ndiyo. Hadithi zinatolewa chini ya leseni ya Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0). Unaweza kuzinakili, kuzichapisha, kuzirekodi, kuzitangaza au kuzibadilisha &mdash; hata kwa biashara &mdash; ikiwa unatambua kazi ya awali na unatoa kile unachotengeneza chini ya leseni ile ile. Acha alama ya biashara unfoldingWord&reg; kwenye nakala zisizobadilishwa, na iondoe ikiwa unabadilisha au kutafsiri kazi hiyo; sema ulichobadilisha na utambue hivi: &ldquo;Kazi ya awali ya unfoldingWord inapatikana kutoka https://openbiblestories.org&rdquo;. Picha ni &copy; Sweet Publishing na zinashirikiwa chini ya CC BY-SA 3.0. <a href=\"/license/\">Ukurasa wa leseni</a> una maandishi kamili."
+    },
+    {
+      "q": "Nawezaje kuanza tafsiri katika lugha yangu?",
+      "a": "Anza na ukurasa wa <a href=\"/translate/\">Tafsiri</a>: unaeleza mchakato, zana, na jinsi ya kuhakiki tafsiri pamoja na makanisa yatakayoitumia. Tafsiri hufanywa na timu kutoka jamii ya lugha yenyewe, na unfoldingWord inaweza kusaidia kupata mafunzo na mtandao wa timu nyingine."
+    },
+    {
+      "q": "Hadithi zipi zinasimulia injili, hadithi ya Abrahamu, au Pasaka?",
+      "a": "Hadithi zinafuata mpangilio wa Biblia, hivyo ni rahisi kuzipata kwa nambari. Uumbaji na anguko ni hadithi 1 hadi 3, agano la Mungu na Abrahamu linaanza hadithi ya 4, Pasaka ya Kiyahudi na Kutoka ni hadithi 11 na 12, na Agano la Kale linamalizika kwa ahadi ya Masihi katika hadithi ya 21. Maisha ya Yesu yanaanza kwa kuzaliwa kwake katika hadithi ya 23 na yanaendelea kwa huduma yake na mifano yake; kusulubiwa ni hadithi ya 40, ufufuo hadithi ya 41, na kupaa kwake mbinguni hadithi ya 42. Kanisa linaanza katika hadithi ya 43, na hadithi tatu za mwisho &mdash; 48, 49 na 50 &mdash; zinaeleza injili na kurudi kwa Kristo."
+    },
+    {
+      "q": "Nani anaandaa Open Bible Stories?",
+      "a": "unfoldingWord&reg; inaiandaa pamoja na <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Kila tafsiri ni kazi ya timu kutoka jamii ya lugha hiyo, na kila ukurasa wa lugha unataja timu iliyoichapisha. Faili za asili zipo kwenye Door43, ambapo mtu yeyote anaweza kuona hali ya tafsiri kwa sasa."
+    }
+  ]
+}

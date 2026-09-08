@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Câu hỏi về Open Bible Stories",
+    "description": "Open Bible Stories là gì, cách đọc hoặc tải về trong {count} ngôn ngữ, giấy phép mở cho phép làm gì, và cách bắt đầu một bản dịch."
+  },
+  "eyebrow": "Hỏi và đáp",
+  "title": "Câu hỏi về Open Bible Stories",
+  "intro": "Câu trả lời ngắn, vào thẳng vấn đề. Nếu không thấy câu hỏi của bạn ở đây, hãy <a href=\"/contact/\">viết cho chúng tôi</a>.",
+  "questions": [
+    {
+      "q": "Open Bible Stories là gì?",
+      "a": "Open Bible Stories là bộ 50 câu chuyện Kinh Thánh có tranh minh họa, từ sự Sáng thế đến sách Khải huyền. Mỗi câu chuyện kể lại một đoạn Kinh Thánh trong vài trang kèm tranh, nên có thể đọc, nghe hoặc kể lớn tiếng. unfoldingWord xuất bản bộ này, các hội thánh địa phương và các nhóm dịch thuật dịch nó, và ai cũng có thể dùng miễn phí."
+    },
+    {
+      "q": "Open Bible Stories có phải là một bản dịch Kinh Thánh không?",
+      "a": "Không. 50 câu chuyện kể lại các trình thuật Kinh Thánh; đó không phải bản dịch toàn bộ văn bản Kinh Thánh. Nhiều nhóm dịch bộ này trước vì công việc chỉ mất vài tháng thay vì nhiều năm: hội thánh của họ có ngay nội dung Kinh Thánh để dùng, còn nhóm dịch có được kinh nghiệm và thói quen kiểm tra cần thiết trước khi dịch chính Kinh Thánh."
+    },
+    {
+      "q": "Bộ này có bao nhiêu ngôn ngữ?",
+      "a": "Hiện có {count} ngôn ngữ đã xuất bản bản dịch, và nhiều ngôn ngữ khác đang được thực hiện. Mỗi ngôn ngữ có trang riêng liệt kê các câu chuyện, những định dạng có trong ngôn ngữ đó, và nhóm đã xuất bản. <a href=\"/discover/\">Xem tất cả các ngôn ngữ</a>."
+    },
+    {
+      "q": "Làm sao để đọc, nghe hoặc tải về trong ngôn ngữ của tôi?",
+      "a": "Mở <a href=\"/discover/\">Khám phá</a>, tìm ngôn ngữ của bạn và mở trang của ngôn ngữ đó. Ở đó bạn có thể đọc mọi câu chuyện, nghe khi có bản thu âm, xem khi có video, và tải PDF hoặc các tệp âm thanh. Không cần tài khoản và không mất phí."
+    },
+    {
+      "q": "Tôi có được sao chép, in, chuyển thể hoặc thu âm các câu chuyện này không?",
+      "a": "Có. Các câu chuyện được phát hành theo giấy phép Creative Commons Ghi công-Chia sẻ tương tự 4.0 (CC BY-SA 4.0). Bạn có thể sao chép, in, thu âm, phát sóng hoặc chuyển thể &mdash; kể cả cho mục đích thương mại &mdash; miễn là ghi công tác phẩm gốc và phát hành sản phẩm của bạn theo cùng giấy phép đó. Hãy giữ nhãn hiệu unfoldingWord&reg; trên các bản sao không thay đổi, và bỏ nhãn hiệu đó nếu bạn sửa đổi hoặc dịch tác phẩm; hãy nêu rõ bạn đã thay đổi điều gì và ghi công như sau: &ldquo;Tác phẩm gốc của unfoldingWord có tại https://openbiblestories.org&rdquo;. Tranh minh họa thuộc &copy; Sweet Publishing và được chia sẻ theo CC BY-SA 3.0. <a href=\"/license/\">Trang giấy phép</a> có toàn văn."
+    },
+    {
+      "q": "Làm sao để bắt đầu một bản dịch trong ngôn ngữ của tôi?",
+      "a": "Hãy bắt đầu với trang <a href=\"/translate/\">Dịch</a>: trang này giải thích quy trình, các công cụ, và cách kiểm tra bản dịch cùng với những hội thánh sẽ sử dụng nó. Việc dịch do các nhóm thuộc chính cộng đồng ngôn ngữ đó thực hiện, và unfoldingWord có thể giúp bạn tìm chương trình huấn luyện cũng như mạng lưới các nhóm khác."
+    },
+    {
+      "q": "Câu chuyện nào kể về phúc âm, về Áp-ra-ham, hay về sự phục sinh?",
+      "a": "Các câu chuyện theo trình tự Kinh Thánh, nên dễ tìm theo số. Sự sáng thế và sự sa ngã là câu chuyện 1 đến 3, giao ước của Đức Chúa Trời với Áp-ra-ham bắt đầu ở câu chuyện 4, Lễ Vượt Qua và cuộc xuất hành là câu chuyện 11 và 12, và Cựu Ước kết thúc với lời hứa về Đấng Mê-si-a ở câu chuyện 21. Cuộc đời Chúa Giê-xu bắt đầu từ sự giáng sinh ở câu chuyện 23 rồi đến chức vụ và các ẩn dụ của Ngài; sự đóng đinh là câu chuyện 40, sự phục sinh là 41, và việc Ngài trở về trời là 42. Hội thánh khởi đầu ở câu chuyện 43, và ba câu chuyện cuối &mdash; 48, 49 và 50 &mdash; giải thích phúc âm và sự trở lại của Đấng Christ."
+    },
+    {
+      "q": "Ai làm ra Open Bible Stories?",
+      "a": "unfoldingWord&reg; phát triển bộ này cùng với <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Mỗi bản dịch là công việc của một nhóm thuộc cộng đồng ngôn ngữ đó, và mỗi trang ngôn ngữ đều nêu tên nhóm đã xuất bản. Các tệp nguồn nằm trên Door43, nơi ai cũng có thể xem tình trạng hiện tại của một bản dịch."
+    }
+  ]
+}

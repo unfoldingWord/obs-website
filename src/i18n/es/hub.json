@@ -27,5 +27,25 @@
   "about": "Acerca de esta traducción",
   "readerTitle": "Leer en línea",
   "readerLoading": "Cargando…",
-  "readerOffline": "La lectura en línea no está disponible ahora (no se puede acceder a Door43). Las descargas y las páginas de historias siguen funcionando."
+  "readerOffline": "La lectura en línea no está disponible ahora (no se puede acceder a Door43). Las descargas y las páginas de historias siguen funcionando.",
+  "faqTitle": "Preguntas sobre Open Bible Stories en {language}",
+  "faqMore": "Más preguntas y respuestas",
+  "faq": [
+    {
+      "q": "¿Qué es Open Bible Stories en {language}?",
+      "a": "Open Bible Stories es un conjunto de 50 historias bíblicas ilustradas, desde la Creación hasta el Apocalipsis, traducidas al {language}. Puede leer todas las historias en este sitio, y escucharlas, verlas o descargarlas donde esos formatos existan en {language}."
+    },
+    {
+      "q": "¿Es esta una traducción de toda la Biblia?",
+      "a": "No. Estas historias relatan pasajes bíblicos; no son una traducción de toda la Biblia al {language}. Muchos equipos traducen primero las historias y desde ahí siguen con la traducción de la Escritura misma."
+    },
+    {
+      "q": "¿Puedo copiar, imprimir o adaptar estas historias?",
+      "a": "Sí. Open Bible Stories se puede usar, adaptar y compartir libremente bajo la licencia Creative Commons Atribución-CompartirIgual 4.0 (CC BY-SA 4.0): cópielas, imprímalas, grábelas o construya sobre ellas —incluso con fines comerciales— siempre que dé crédito a la obra original y publique lo que haga bajo la misma licencia."
+    },
+    {
+      "q": "¿Cómo puedo ayudar a terminar o mejorar la traducción al {language}?",
+      "a": "Las traducciones las hacen equipos de la propia comunidad lingüística. La página Traducir explica cómo trabaja un equipo, cómo revisa su traducción con las iglesias locales y cómo recibir ayuda de unfoldingWord."
+    }
+  ]
 }

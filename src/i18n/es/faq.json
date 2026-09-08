@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Preguntas sobre Open Bible Stories",
+    "description": "Qué es Open Bible Stories, cómo leerlo o descargarlo en {count} idiomas, qué permite su licencia abierta y cómo iniciar una traducción."
+  },
+  "eyebrow": "Preguntas y respuestas",
+  "title": "Preguntas sobre Open Bible Stories",
+  "intro": "Respuestas breves, al grano. Si su pregunta no está aquí, <a href=\"/contact/\">escríbanos</a>.",
+  "questions": [
+    {
+      "q": "¿Qué es Open Bible Stories?",
+      "a": "Open Bible Stories es un conjunto de 50 historias bíblicas ilustradas, desde la Creación hasta el Apocalipsis. Cada historia relata un pasaje de la Escritura en pocas páginas y lo acompaña con imágenes, de modo que se puede leer, escuchar o contar en voz alta. unfoldingWord lo publica, las iglesias locales y los equipos de traducción lo traducen, y cualquier persona puede usarlo libremente."
+    },
+    {
+      "q": "¿Open Bible Stories es una traducción de la Biblia?",
+      "a": "No. Las 50 historias relatan pasajes bíblicos; no son una traducción de todo el texto bíblico. Muchos equipos las traducen primero porque eso se puede lograr en meses y no en años: le da a su iglesia contenido bíblico para usar ahora, y le da al equipo la práctica y los hábitos de revisión que necesita antes de traducir la Biblia misma."
+    },
+    {
+      "q": "¿En cuántos idiomas está disponible?",
+      "a": "Hoy hay {count} idiomas con una traducción publicada, y hay más en proceso. Cada uno tiene su propia página con las historias, los formatos que existen en ese idioma y el equipo que lo publicó. <a href=\"/discover/\">Vea todos los idiomas</a>."
+    },
+    {
+      "q": "¿Cómo lo leo, lo escucho o lo descargo en mi idioma?",
+      "a": "Abra <a href=\"/discover/\">Descubrir</a>, busque su idioma y entre en su página. Desde allí puede leer todas las historias, escucharlas donde existe una grabación, verlas donde hay video y descargar un PDF o los archivos de audio. No hace falta crear una cuenta y nada tiene costo."
+    },
+    {
+      "q": "¿Puedo copiar, imprimir, adaptar o grabar estas historias?",
+      "a": "Sí. Las historias se publican bajo la licencia Creative Commons Atribución-CompartirIgual 4.0 (CC BY-SA 4.0). Puede copiarlas, imprimirlas, grabarlas, transmitirlas o adaptarlas &mdash;incluso con fines comerciales&mdash; siempre que dé crédito a la obra original y publique lo que haga bajo la misma licencia. Conserve la marca unfoldingWord&reg; en las copias sin modificar, y quítela si cambia o traduce la obra; indique qué cambió y atribúyala así: &ldquo;La obra original de unfoldingWord está disponible en https://openbiblestories.org&rdquo;. Las ilustraciones son &copy; Sweet Publishing y se comparten bajo CC BY-SA 3.0. La <a href=\"/license/\">página de licencia</a> tiene el texto completo."
+    },
+    {
+      "q": "¿Cómo inicio una traducción en mi idioma?",
+      "a": "Empiece por la página <a href=\"/translate/\">Traducir</a>: explica el proceso, las herramientas y cómo revisar una traducción con las iglesias que la van a usar. La traducción la hacen equipos de la propia comunidad lingüística, no personas ajenas a ella, y unfoldingWord puede ayudarle a encontrar capacitación y una red de otros equipos."
+    },
+    {
+      "q": "¿Qué historias cuentan el evangelio, la historia de Abraham o la Pascua?",
+      "a": "Las historias siguen el orden bíblico, así que es fácil encontrarlas por número. La Creación y la caída son las historias 1 a 3, el pacto de Dios con Abraham comienza en la historia 4, la Pascua y el Éxodo son las historias 11 y 12, y el Antiguo Testamento cierra con la promesa del Mesías en la historia 21. La vida de Jesús va desde su nacimiento en la historia 23 y sigue con su ministerio y sus parábolas; la crucifixión es la historia 40, la resurrección la 41 y su regreso al cielo la 42. La iglesia comienza en la historia 43, y las tres últimas &mdash;48, 49 y 50&mdash; explican el evangelio y el regreso de Cristo."
+    },
+    {
+      "q": "¿Quién hace Open Bible Stories?",
+      "a": "unfoldingWord&reg; lo desarrolla junto con la <a href=\"https://door43.org/\">comunidad misionera mundial Door43</a>. Cada traducción es obra de un equipo de esa comunidad lingüística, y cada página de idioma nombra al equipo que la publicó. Los archivos fuente están en Door43, donde cualquiera puede ver el estado actual de una traducción."
+    }
+  ]
+}

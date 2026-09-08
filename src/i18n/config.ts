@@ -50,7 +50,7 @@ export const defaultLocale = 'en';
 /** Pages that exist in every locale. */
 export const localizedSlugs = [
   'home', 'why-obs', 'discover',
-  'translate', 'create', 'contact',
+  'translate', 'create', 'contact', 'faq',
 ] as const;
 /** Legal pages and the 404 stay English-only at the site root. */
 export const englishOnlySlugs = ['license', 'privacy', 'terms-of-use', '404'] as const;
@@ -69,6 +69,12 @@ const slugPaths: Record<PageSlug, string> = {
   translate: 'translate/',
   create: 'create/',
   contact: 'contact/',
+  // Linked from the footer rather than the nav: the primary nav is the same
+  // five items in the same order on every page (WCAG 3.2.3), and the FAQ is
+  // a reference page people arrive at from search, not a step in the site's
+  // own journey. It is in the sitemap and the hreflang cluster like any
+  // other localized page.
+  faq: 'faq/',
   license: 'license/',
   privacy: 'privacy/',
   'terms-of-use': 'terms-of-use/',
