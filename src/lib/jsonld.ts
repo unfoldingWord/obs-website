@@ -283,7 +283,14 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
       isAccessibleForFree: true,
     };
   }
-  if (story.video && image && lang.updated) {
+  // `uploadDate` is the publish date of the release THIS FILE came from
+  // (story.videoDate), never the language's newest release: a video is
+  // published once and the text revised several times afterwards, so
+  // lang.updated made every later text release rewrite the apparent upload
+  // date of an unchanged video. Google requires the field, so a story file
+  // that predates it (or a release with no date) gets no VideoObject rather
+  // than a wrong one.
+  if (story.video && image && story.videoDate) {
     node.video = {
       '@type': 'VideoObject',
       name: story.title,
@@ -291,7 +298,7 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
       contentUrl: story.video,
       encodingFormat: /\.3gp$/i.test(story.video) ? 'video/3gpp' : 'video/mp4',
       thumbnailUrl: image,
-      uploadDate: lang.updated,
+      uploadDate: story.videoDate,
       inLanguage: lang.code,
       transcript,
       license: LICENSE_URL,

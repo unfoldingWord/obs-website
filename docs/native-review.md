@@ -8,13 +8,34 @@ come from `src/i18n/{locale}/hub.json`; the actions listed are the ones that
 exist; and since the hub-locale change, 132 of the 214 hubs take their chrome
 from a locale in the same script rather than English.
 
-One criterion is left, and it is a person rather than a commit: **a speaker
-or translator reading the EN, `sw`, `es`, `hi` and `ar` strings and saying
-whether that is how someone would actually put it.** Those strings were
+Two criteria are left. The first is a person rather than a commit: **a
+speaker or translator reading the EN, `sw`, `es`, `hi` and `ar` strings and
+saying whether that is how someone would actually put it.** Those strings were
 written the same way the rest of this localization was — carefully, but
 without a native reader — and they are what a person sees *before* they read
 a word of the translation itself. The story text is the work of the
 translation teams and needs no review here; the wrapper around it does.
+
+The second is the one #17 states as "each language hub has at least a 2–3
+sentence definition in the content language", and it is **not met** — not by
+the hub FAQ, and not by the regional chrome fallback. Being exact about it:
+
+- 17 catalog codes ARE one of the 16 marketing locales, so their hubs carry
+  the definition in their own language.
+- The other ~197 carry it in a regional language of the same script (Hindi on
+  `/l/bho/`, Persian on `/l/azb/`) or in English (`/l/ha/`, and every
+  Latin-script language). Hindi is not Bhojpuri. Regional chrome is a real
+  improvement over English for those readers, and it is not the same claim.
+- What every hub does carry in its own language is the H1 autonym, the
+  story-1 extract, the story titles, and the story pages themselves. That is
+  real in-language content; it is not a definition of what Open Bible Stories
+  is.
+
+Closing it means either translated `faqStories`/`faq` strings per content
+language — 197 languages, so a translation-team task, not a code task — or
+amending the criterion to "in the hub's chrome language, with the extract in
+the content language". Either way it is a decision for #17, and until it is
+made, these hubs should not be counted as localized-FAQ coverage.
 
 ## Getting a sheet
 
@@ -77,11 +98,14 @@ Two things in the same conversation, both cheap and both blocked on the same
 person:
 
 - The `in-language` rows of the search baseline
-  ([`search-visibility.md`](search-visibility.md)): two or three phrases a
-  speaker would actually type for "Bible stories", "Bible stories PDF" and
-  "listen to Bible stories". Nothing else in the measurement plan needs a
-  translator, and machine-translating those phrases would produce a
-  confident, wrong zero.
+  ([`search-visibility.md`](search-visibility.md)): the sheet leaves **six
+  blank rows** per language, each labelled with its intent — "Bible stories",
+  "Bible stories PDF or printable", "listen to Bible stories", "Bible stories
+  for children", how they would ask an assistant for them, and the name
+  people actually use for the language. Six, not two: the generator writes
+  19–23 rows on its own and these are what bring the sheet to the ~30 #19
+  asks for. Nothing else in the measurement plan needs a translator, and
+  machine-translating these phrases would produce a confident, wrong zero.
 - Whether the autonym on the hub is right. It comes from the DCS manifest or
   `langnames.json`, and for a handful of languages it is the English name
   under a different spelling.

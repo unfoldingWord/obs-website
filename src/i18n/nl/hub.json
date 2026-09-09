@@ -31,10 +31,15 @@
   "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds.",
   "faqTitle": "Vragen over Open Bible Stories in het {language}",
   "faqMore": "Meer vragen en antwoorden",
+  "faqStories": {
+    "all": "Alle 50 zijn in het {language} vertaald, en elk ervan is op deze pagina te lezen.",
+    "some": "{n} ervan zijn tot nu toe in het {language} op deze pagina te lezen, en er worden meer vertaald.",
+    "none": "De verhalen zijn op deze pagina nog niet in het {language} te lezen; de downloads die er zijn, staan hierboven."
+  },
   "faq": [
     {
       "q": "Wat is Open Bible Stories in het {language}?",
-      "a": "Open Bible Stories is een reeks van 50 geïllustreerde Bijbelverhalen, van de schepping tot Openbaring, vertaald in het {language}. Je kunt alle verhalen op deze site lezen, en ze beluisteren, bekijken of downloaden waar die formaten in het {language} bestaan."
+      "a": "Open Bible Stories is een reeks van 50 geïllustreerde Bijbelverhalen, van de schepping tot Openbaring. {stories} Waar audio, video of een pdf in het {language} bestaat, kun je die ook beluisteren, bekijken of downloaden."
     },
     {
       "q": "Is dit een vertaling van de hele Bijbel?",

@@ -31,10 +31,15 @@
   "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi.",
   "faqTitle": "Maswali kuhusu Open Bible Stories katika {language}",
   "faqMore": "Maswali na majibu zaidi",
+  "faqStories": {
+    "all": "Zote 50 zimetafsiriwa katika {language}, na kila moja inaweza kusomwa kwenye ukurasa huu.",
+    "some": "{n} kati yake zinaweza kusomwa katika {language} kwenye ukurasa huu hadi sasa, na nyingine zinaendelea kutafsiriwa.",
+    "none": "Hadithi haziwezi kusomwa kwenye ukurasa huu katika {language} bado; upakuaji wowote uliopo umeorodheshwa juu."
+  },
   "faq": [
     {
       "q": "Open Bible Stories katika {language} ni nini?",
-      "a": "Open Bible Stories ni mkusanyiko wa hadithi 50 za Biblia zenye picha, kutoka Uumbaji hadi Ufunuo, zilizotafsiriwa katika {language}. Unaweza kusoma kila hadithi kwenye tovuti hii, na kusikiliza, kutazama au kupakua pale miundo hiyo inapatikana katika {language}."
+      "a": "Open Bible Stories ni mkusanyiko wa hadithi 50 za Biblia zenye picha, kutoka Uumbaji hadi Ufunuo. {stories} Pale ambapo sauti, video au PDF inapatikana katika {language}, unaweza pia kusikiliza, kutazama au kupakua."
     },
     {
       "q": "Je, hii ni tafsiri ya Biblia yote?",

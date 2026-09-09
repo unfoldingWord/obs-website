@@ -84,6 +84,15 @@ const stories = readableStories(lang);
 const paged = new Set((await storiesFor(lang.code)).map((s) => s.num));
 const firstStory = pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null;
 const partial = stories.length > 0 && stories.length < STORY_COUNT;
+// How many stories a visitor can actually READ here — the ones the story list
+// links, not the titles that were read from the repo. The hub FAQ's first
+// answer is built from this, so it cannot promise stories that have no page
+// (see the comment on the FAQ section below).
+const readable = stories.filter((s) => paged.has(s.num)).length;
+const storiesSentence = fill(
+  readable === 0 ? t.faqStories.none : readable >= STORY_COUNT ? t.faqStories.all : t.faqStories.some,
+  { language: name, n: readable, total: STORY_COUNT }
+);
 const publishers = publishersOf(lang);
 const primary = lang.entries[0];
 const fontHref = fontHrefForScript(lang.script);
@@ -220,12 +229,28 @@ const image = storyImage(1);
   </section>
 )}
 
-<!-- A short FAQ, in the hub's language (#17). Four questions that people and
-     answer engines actually ask about a translation: what it is, whether it
-     is the whole Bible, what the license lets them do, and how to help
-     finish it. The license answer means "may I print this?" is answerable
-     here without opening /license/. Visible text only — no FAQPage JSON-LD
-     on 214 near-identical blocks; the marketing /faq/ pages carry that. -->
+<!-- A short FAQ (#17). Four questions that people and answer engines actually
+     ask about a translation: what it is, whether it is the whole Bible, what
+     the license lets them do, and how to help finish it. The license answer
+     means "may I print this?" is answerable here without opening /license/.
+     Visible text only — no FAQPage JSON-LD on 214 near-identical blocks; the
+     marketing /faq/ pages carry that.
+
+     LANGUAGE: these answers are in the hub's CHROME language (see
+     hubLocaleFor), which is the content language only for the 17 codes the
+     site itself is published in, and a regional language of the same script
+     for most of the rest. #17 also asks for a 2-3 sentence definition in the
+     CONTENT language on every hub; that criterion is not met by this block
+     and is deliberately still open — see docs/native-review.md. The
+     content-language text on a hub is the H1, the story-1 extract and the
+     story titles.
+
+     The first answer's story sentence is chosen from what this build can
+     actually render (faqStories.all / .some / .none). It used to promise all
+     50 unconditionally, which on /l/awa/ (1 readable) and /l/azb/ (50 titles,
+     no readable bodies) told readers and crawlers that missing content was
+     there. Note the two are different things: azb IS translated, the text
+     just is not readable here, so the "none" wording says exactly that. -->
 <section class="hub-faq" lang={ui.tag} dir={ui.dir}>
   <div class="wrap">
     <h2>{fill(t.faqTitle, { language: name })}</h2>
@@ -233,7 +258,7 @@ const image = storyImage(1);
       {t.faq.map((item: { q: string; a: string }) => (
         <>
           <dt>{fill(item.q, { language: name })}</dt>
-          <dd>{fill(item.a, { language: name })}</dd>
+          <dd>{fill(item.a, { language: name, stories: storiesSentence })}</dd>
         </>
       ))}
     </dl>

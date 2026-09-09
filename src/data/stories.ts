@@ -31,6 +31,16 @@ export interface Story {
   /** Per-story video file (smallest rendition published), else null. Absent
    *  in story files written before #16 — read it as optional. */
   video?: string | null;
+  /**
+   * Publish date of the release the video came from (ISO date), or null.
+   *
+   * Not the language's newest release: a video is published once and the text
+   * revised several times afterwards, so taking the language's `updated`
+   * silently rewrote the apparent upload date of an unchanged video on every
+   * text release. `uploadDate` is required for a VideoObject, so the node is
+   * omitted when this is missing rather than guessed.
+   */
+  videoDate?: string | null;
 }
 
 interface StoryFile {

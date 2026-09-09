@@ -3,6 +3,7 @@
 //  - structure (keys, array lengths) matches English
 //  - embedded HTML links/hrefs are untouched
 //  - protected terms survive translation
+//  - no HTML entities in the files rendered as plain text (see PLAIN_TEXT)
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
 
@@ -11,6 +12,15 @@ const LOCALES = ['en', 'es', 'fr', 'hi', 'ru', 'ar', 'zh', 'sw', 'pt', 'id', 'vi
 const PAGES = ['ui', 'home', 'why-obs', 'discover', 'translate', 'create', 'contact', 'faq', 'hub', 'story'];
 // Keys whose values must be byte-identical to English (routing/link data).
 const ASSET_KEYS = new Set(['slug', 'id']);
+/**
+ * Files whose strings are rendered as TEXT, not HTML: the hubs and story
+ * pages print them through `{…}`, which escapes, so an `&mdash;` in one of
+ * these shows up as the literal characters "&mdash;" on the page. It did, in
+ * four locales' hub FAQ answers. Pages that use `set:html` (the marketing
+ * copy, faq.json) may keep entities.
+ */
+const PLAIN_TEXT = new Set(['hub', 'story']);
+const ENTITY_RE = /&(?:[a-zA-Z][a-zA-Z0-9]{1,30}|#\d{1,6}|#x[0-9a-fA-F]{1,6});/;
 
 let errors = 0;
 const err = (m) => {
@@ -63,6 +73,17 @@ for (const locale of LOCALES) {
     } catch (e) {
       err(`${locale}/${page}.json invalid JSON: ${e.message}`);
       continue;
+    }
+    // Applies to English too: these files are printed escaped, in every
+    // locale, so an entity is a literal "&mdash;" on the page.
+    if (PLAIN_TEXT.has(page)) {
+      (function entities(value, path) {
+        if (typeof value === 'string') {
+          const m = value.match(ENTITY_RE);
+          if (m) err(`${locale}/${page} ${path}: HTML entity "${m[0]}" in a plain-text string — use the character itself`);
+        } else if (Array.isArray(value)) value.forEach((v, i) => entities(v, `${path}[${i}]`));
+        else if (value && typeof value === 'object') for (const [k, v] of Object.entries(value)) entities(v, path ? `${path}.${k}` : k);
+      })(data, '');
     }
     if (locale === 'en') continue;
     const base = JSON.parse(readFileSync(join(ROOT, 'src/i18n/en', `${page}.json`), 'utf8'));

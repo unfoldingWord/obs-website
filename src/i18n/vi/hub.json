@@ -31,10 +31,15 @@
   "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động.",
   "faqTitle": "Câu hỏi về Open Bible Stories bằng tiếng {language}",
   "faqMore": "Thêm câu hỏi và trả lời",
+  "faqStories": {
+    "all": "Cả 50 câu chuyện đã được dịch sang tiếng {language}, và mỗi câu chuyện đều có thể đọc trên trang này.",
+    "some": "Hiện có {n} câu chuyện có thể đọc bằng tiếng {language} trên trang này, và những câu khác đang được dịch.",
+    "none": "Các câu chuyện chưa thể đọc bằng tiếng {language} trên trang này; những tệp tải về nếu có được liệt kê ở trên."
+  },
   "faq": [
     {
       "q": "Open Bible Stories bằng tiếng {language} là gì?",
-      "a": "Open Bible Stories là bộ 50 câu chuyện Kinh Thánh có tranh minh họa, từ sự Sáng thế đến sách Khải huyền, được dịch sang tiếng {language}. Bạn có thể đọc mọi câu chuyện trên trang này, và nghe, xem hoặc tải về khi những định dạng đó có trong tiếng {language}."
+      "a": "Open Bible Stories là bộ 50 câu chuyện Kinh Thánh có tranh minh họa, từ sự Sáng thế đến sách Khải huyền. {stories} Ở đâu có bản âm thanh, video hoặc PDF bằng tiếng {language}, bạn cũng có thể nghe, xem hoặc tải về."
     },
     {
       "q": "Đây có phải bản dịch toàn bộ Kinh Thánh không?",

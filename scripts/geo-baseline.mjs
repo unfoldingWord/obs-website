@@ -9,8 +9,10 @@
 //
 // What this CANNOT do is invent in-language query wording ("hadithi za
 // biblia", "قصص الكتاب المقدس"). Those rows are for a speaker to add; the
-// sheet carries a blank, clearly-marked row per language so the gap is
-// visible instead of implied. See docs/native-review.md.
+// sheet carries six blank rows per language, each labelled with the intent
+// it is for, so the gap is visible instead of implied — and so the sheet
+// reaches the sample size #19 asks for once they are filled. See
+// docs/native-review.md.
 //
 //   node scripts/geo-baseline.mjs                 # priority languages -> stdout
 //   node scripts/geo-baseline.mjs --all           # every published language
@@ -29,6 +31,20 @@ const CATALOG = fileURLToPath(new URL('../src/data/catalog.json', import.meta.ur
  * different experiment). Override by naming codes on the command line.
  */
 const PRIORITY = ['en', 'sw', 'es-419', 'hi', 'ar', 'id'];
+
+/**
+ * What each blank in-language row is for. A speaker writes the phrase they
+ * would really type or say for each of these; the generator never guesses
+ * them. Keep this list and the ask in docs/search-visibility.md in step.
+ */
+const IN_LANGUAGE_INTENTS = [
+  'Bible stories',
+  'Bible stories PDF or printable',
+  'listen to Bible stories',
+  'Bible stories for children',
+  'ask an assistant for Bible stories in this language',
+  'the name people use for this language',
+];
 
 /** Where a query is asked. Search engines and answer engines are logged the
  *  same way so one sheet answers "are we findable at all". */
@@ -57,11 +73,13 @@ const csv = (v) => {
 };
 
 /**
- * The queries for one language. `kind` says what each row tests, because the
- * three fail differently: a brand query failing means the hub is not indexed
- * at all; a descriptive query failing means the hub does not read as "Bible
- * stories in X"; a format query failing means the PDF/audio is not
- * discoverable even though it exists.
+ * The rows for one language: 19-23 generated ones plus six blanks.
+ *
+ * `kind` says what each row tests, because they fail differently: a brand
+ * query failing means the hub is not indexed at all; a descriptive query
+ * failing means the hub does not read as "Bible stories in X"; a format query
+ * failing means the PDF or audio exists and is undiscoverable; a prompt
+ * failing means an answer engine will not name it.
  */
 function queriesFor(lang) {
   const name = lang.englishName || lang.title;
@@ -82,12 +100,41 @@ function queriesFor(lang) {
   if (lang.formats?.pdf) rows.push(['format', `${name} Bible stories PDF download`]);
   if (lang.formats?.audio) rows.push(['format', `${name} audio Bible stories listen`]);
   if (lang.formats?.video) rows.push(['format', `${name} Bible stories video`]);
-  // Prompts, not queries: the wording people give an answer engine.
-  rows.push(['prompt', `Are there simple illustrated Bible stories in ${name}? Where can I download them?`]);
-  rows.push(['prompt', `What is Open Bible Stories and is it available in ${name}?`]);
-  // The row a speaker fills in. Never pre-filled with a machine translation:
-  // a wrong phrase measured for a quarter is worse than a blank one.
-  rows.push(['in-language (TO BE WRITTEN BY A SPEAKER)', '']);
+
+  // Prompts, not queries: the wording people give an answer engine, which is
+  // sentence-shaped and asks for a recommendation rather than a page. These
+  // are the intents worth sampling, one prompt each — a dozen-plus DISTINCT
+  // prompts per language, not two repeated across surfaces (asking the same
+  // question of six engines is six observations of one prompt, and #19 asks
+  // for a prompt sample, not an engine sample).
+  const prompts = [
+    `Are there simple illustrated Bible stories in ${name}? Where can I download them?`,
+    `What is Open Bible Stories and is it available in ${name}?`,
+    `I want to read Bible stories to children in ${name}. What is available for free?`,
+    `Is there a free Bible story book in ${name} that my church can print?`,
+    `What Bible resources exist in ${name}, and is any of them openly licensed?`,
+    `Is Open Bible Stories in ${name} a Bible translation, or something else?`,
+    `What is the difference between Open Bible Stories in ${name} and a full Bible in ${name}?`,
+    `Which Open Bible Stories cover the life of Jesus, and are they available in ${name}?`,
+    `May I record or adapt Open Bible Stories in ${name}? What does the license allow?`,
+    `How would a church start translating Open Bible Stories into ${name}?`,
+    `Who publishes Open Bible Stories in ${name}, and where does the text come from?`,
+    `Is there Scripture content in ${name} for people who cannot read?`,
+  ];
+  if (lang.formats?.audio) prompts.push(`Where can I listen to Bible stories in ${name}?`);
+  if (lang.formats?.video) prompts.push(`Where can I watch Bible story videos in ${name}?`);
+  // Asked the way a speaker of the language would name it, not the way an
+  // English catalog does.
+  if (autonym && autonym !== name) prompts.push(`Where is the official page for Open Bible Stories in ${autonym}?`);
+  for (const p of prompts) rows.push(['prompt', p]);
+  // The rows a speaker fills in, one per intent, never pre-filled with a
+  // machine translation: a wrong phrase measured for a quarter produces a
+  // confident zero. Six blanks rather than one, because the generated rows
+  // come to 20-24 per language and #19 asks for about 30 — the count and the
+  // intents are spelled out in docs/search-visibility.md.
+  for (const intent of IN_LANGUAGE_INTENTS) {
+    rows.push([`in-language (TO BE WRITTEN BY A SPEAKER: ${intent})`, '']);
+  }
   return rows;
 }
 

@@ -31,10 +31,15 @@
   "readerOffline": "La lectura en línea no está disponible ahora (no se puede acceder a Door43). Las descargas y las páginas de historias siguen funcionando.",
   "faqTitle": "Preguntas sobre Open Bible Stories en {language}",
   "faqMore": "Más preguntas y respuestas",
+  "faqStories": {
+    "all": "Las 50 están traducidas al {language}, y todas se pueden leer en esta página.",
+    "some": "{n} de ellas se pueden leer en {language} en esta página hasta ahora, y se están traduciendo más.",
+    "none": "Las historias todavía no se pueden leer en esta página en {language}; las descargas que existan aparecen más arriba."
+  },
   "faq": [
     {
       "q": "¿Qué es Open Bible Stories en {language}?",
-      "a": "Open Bible Stories es un conjunto de 50 historias bíblicas ilustradas, desde la Creación hasta el Apocalipsis, traducidas al {language}. Puede leer todas las historias en este sitio, y escucharlas, verlas o descargarlas donde esos formatos existan en {language}."
+      "a": "Open Bible Stories es un conjunto de 50 historias bíblicas ilustradas, desde la Creación hasta el Apocalipsis. {stories} Donde exista audio, video o un PDF en {language}, también puede escucharlo, verlo o descargarlo."
     },
     {
       "q": "¿Es esta una traducción de toda la Biblia?",

@@ -24,6 +24,7 @@ import {
   audioByStory,
   videoByStory,
   writeStoryFiles,
+  mergeStoryMedia,
   clearReleasesCache,
   sortLanguages,
 } from './fetch-catalog.mjs';
@@ -401,12 +402,28 @@ test('videoByStory takes the newest release with per-story files, preferring the
     { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.3gp', browser_download_url: 'https://e/old.3gp' }] },
   ];
   const map = videoByStory(releases);
-  assert.equal(map[1], 'https://e/small.mp4', 'smallest rendition wins');
-  assert.equal(map[2], 'https://e/2.mp4');
+  assert.equal(map[1].url, 'https://e/small.mp4', 'smallest rendition wins');
+  assert.equal(map[2].url, 'https://e/2.mp4');
   assert.equal(Object.keys(map).length, 2, 'the zip is not a per-story file');
   assert.deepEqual(videoByStory([]), {});
   // A YouTube playlist is not a per-story file and must not become one.
   assert.deepEqual(videoByStory([{ assets: [{ name: 'YouTube - Playlist', browser_download_url: 'https://www.youtube.com/playlist?list=X' }] }]), {});
+});
+
+// The video's own release date, not the language's newest release: a video is
+// published once and the text revised repeatedly, and taking the language's
+// `updated` rewrote the apparent upload date of an unchanged video every time.
+test('videoByStory carries the publish date of the release the file came from', () => {
+  const releases = [
+    { tag_name: 'v9', published_at: '2023-03-03T00:00:00Z', assets: [{ name: 'en_obs_v9.pdf', browser_download_url: 'https://e/t.pdf' }] },
+    { tag_name: 'v8', published_at: '2020-04-24T10:11:12Z', assets: [{ name: 'en_obs_v8_01_360p.mp4', browser_download_url: 'https://e/1.mp4' }] },
+  ];
+  const map = videoByStory(releases);
+  assert.equal(map[1].date, '2020-04-24', 'the video release, not the newest text release');
+  // No publish date on the release -> null, and the page omits the
+  // VideoObject rather than inventing an uploadDate.
+  const undated = videoByStory([{ assets: [{ name: 'x_obs_01_360p.mp4', browser_download_url: 'https://e/u.mp4' }] }]);
+  assert.equal(undated[1].date, null);
 });
 
 test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
@@ -418,7 +435,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const withBody = {
     code: 'sw',
     storyAudio: { 1: 'https://e/1.mp3' },
-    storyVideo: { 1: 'https://e/1.mp4' },
+    storyVideo: { 1: { url: 'https://e/1.mp4', date: '2020-04-24' } },
     stories: [
       { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
       { num: 2, title: 'Dhambi', body: null },
@@ -437,8 +454,70 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
   assert.equal(file.stories[0].video, 'https://e/1.mp4');
+  assert.equal(file.stories[0].videoDate, '2020-04-24');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
   assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
+});
+
+// Reproduces the reported defect: an existing checkout whose story text is
+// reused from the snapshot never gained the video the release history had, so
+// upgrading a built checkout showed no player and no VideoObject until the
+// text release happened to change.
+test('writeStoryFiles merges new media into a cached pre-video story file', async (t) => {
+  const { mkdtempSync, writeFileSync, readFileSync, rmSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+
+  // A story file written before #16: no video field at all.
+  writeFileSync(join(dir, 'en.json'), JSON.stringify({
+    code: 'en',
+    stories: [
+      { num: 1, title: 'The Creation', reference: null, frames: [{ image: null, text: 'x' }], audio: null },
+      { num: 2, title: 'Sin', reference: null, frames: [{ image: null, text: 'y' }], audio: null },
+    ],
+  }));
+
+  // Text reused (no bodies on the record), media freshly fetched.
+  const lang = {
+    code: 'en',
+    storyNums: [1, 2],
+    storyAudio: { 1: 'https://e/1.mp3' },
+    storyVideo: { 1: { url: 'https://example.com/01.mp4', date: '2020-04-24' } },
+    stories: [{ num: 1, title: 'The Creation', body: null }, { num: 2, title: 'Sin', body: null }],
+  };
+  const written = writeStoryFiles([lang], dir);
+  assert.equal(written, 0, 'no story file is rewritten from scratch');
+  assert.deepEqual(lang.storyNums, [1, 2], 'the cached numbers survive');
+
+  const file = JSON.parse(readFileSync(join(dir, 'en.json'), 'utf8'));
+  assert.equal(file.stories[0].video, 'https://example.com/01.mp4');
+  assert.equal(file.stories[0].videoDate, '2020-04-24');
+  assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[1].video, undefined, 'a story with no media is untouched');
+  assert.equal(file.stories[0].frames[0].text, 'x', 'the text is never rewritten');
+});
+
+test('mergeStoryMedia is a no-op with no media, no file, or unchanged media', async (t) => {
+  const { mkdtempSync, writeFileSync, rmSync, statSync } = await import('node:fs');
+  const { tmpdir } = await import('node:os');
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  assert.equal(mergeStoryMedia('nope', { 1: 'https://e/1.mp3' }, {}, dir), false, 'no story file');
+  writeFileSync(join(dir, 'sw.json'), JSON.stringify({
+    code: 'sw',
+    stories: [{ num: 1, title: 'Uumbaji', frames: [], audio: 'https://e/1.mp3', video: 'https://e/1.mp4', videoDate: '2020-01-01' }],
+  }));
+  assert.equal(mergeStoryMedia('sw', {}, {}, dir), false, 'nothing discovered');
+  assert.equal(
+    mergeStoryMedia('sw', { 1: 'https://e/1.mp3' }, { 1: { url: 'https://e/1.mp4', date: '2020-01-01' } }, dir),
+    false,
+    'already current'
+  );
+  // A corrupt file keeps whatever it has instead of throwing.
+  writeFileSync(join(dir, 'zz.json'), 'not json');
+  assert.equal(mergeStoryMedia('zz', { 1: 'https://e/1.mp3' }, {}, dir), false);
+  assert.ok(statSync(join(dir, 'zz.json')).size > 0);
 });
 
 test('writeStoryFiles keeps storyNums for a language reused from the snapshot', async (t) => {

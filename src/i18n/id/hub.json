@@ -31,10 +31,15 @@
   "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi.",
   "faqTitle": "Pertanyaan tentang Open Bible Stories dalam bahasa {language}",
   "faqMore": "Pertanyaan dan jawaban lainnya",
+  "faqStories": {
+    "all": "Ke-50 cerita sudah diterjemahkan ke dalam bahasa {language}, dan semuanya dapat dibaca di halaman ini.",
+    "some": "Sejauh ini {n} di antaranya dapat dibaca dalam bahasa {language} di halaman ini, dan yang lain sedang diterjemahkan.",
+    "none": "Cerita-cerita ini belum dapat dibaca dalam bahasa {language} di halaman ini; unduhan yang tersedia dicantumkan di atas."
+  },
   "faq": [
     {
       "q": "Apa itu Open Bible Stories dalam bahasa {language}?",
-      "a": "Open Bible Stories adalah kumpulan 50 cerita Alkitab bergambar, dari Penciptaan sampai Wahyu, yang diterjemahkan ke dalam bahasa {language}. Anda dapat membaca setiap cerita di situs ini, serta mendengarkan, menonton, atau mengunduhnya jika format itu tersedia dalam bahasa {language}."
+      "a": "Open Bible Stories adalah kumpulan 50 cerita Alkitab bergambar, dari Penciptaan sampai Wahyu. {stories} Jika ada audio, video, atau PDF dalam bahasa {language}, Anda juga dapat mendengarkan, menonton, atau mengunduhnya."
     },
     {
       "q": "Apakah ini terjemahan seluruh Alkitab?",

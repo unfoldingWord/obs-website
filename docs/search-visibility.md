@@ -68,7 +68,7 @@ Columns: `language_code, autonym, english_name, hub_url, kind,
 query_or_prompt, surface, date_checked, obs_appears, position_or_cited,
 url_cited, notes`.
 
-`kind` matters when reading results, because the three fail for different
+`kind` matters when reading results, because these fail for different
 reasons:
 
 - **brand** (`Open Bible Stories Hausa`) — failing means the hub is not
@@ -80,7 +80,8 @@ reasons:
 - **format** (`Hausa Bible stories PDF download`) — failing means the file
   exists and is undiscoverable.
 - **prompt** — the wording someone gives an answer engine.
-- **in-language** — deliberately blank. See the next section.
+- **in-language** — six deliberately blank rows per language, each labelled
+  with the intent it is for. See the next section.
 
 `url_cited` is the column that decides whether this work paid off: if an
 answer engine cites `live.door43.org` or a third-party aggregator instead of
@@ -91,13 +92,16 @@ signalling has not landed (#18).
 
 The generator will not machine-translate query wording. A wrong phrase
 measured for a quarter is worse than a blank one: it produces a confident
-zero. Each language therefore gets one row marked
-`in-language (TO BE WRITTEN BY A SPEAKER)`.
+zero. Each language therefore gets six blank rows, each labelled with the
+intent it is for: `in-language (TO BE WRITTEN BY A SPEAKER: listen to Bible
+stories)` and so on.
 
 Filling those rows is the same conversation as the native review of the hub
-strings — see [`native-review.md`](native-review.md) and #21. Two or three
-phrases per language is enough: what a speaker would actually type for
-"Bible stories", "Bible stories PDF" and "listen to Bible stories".
+strings — see [`native-review.md`](native-review.md) and #21. The sheet has
+**six** such rows per language, each labelled with its intent: "Bible
+stories", "Bible stories PDF or printable", "listen to Bible stories",
+"Bible stories for children", how they would ask an assistant for them, and
+the name people actually use for the language.
 
 ## Quarterly generative check
 
@@ -114,9 +118,22 @@ Once a quarter, and again whenever a new hub language ships:
    between them — a link to the PR is enough. Without that, a movement is
    uninterpretable.
 
-Sample size: ~30 prompts per priority language is enough to see a pattern;
-the generator emits more rows than that per language, so trim rather than
-add.
+Sample size, stated exactly, because the arithmetic matters and an
+undersized baseline reads as a confident zero:
+
+| Per priority language | Distinct rows |
+| --- | --- |
+| `prompt` rows the generator writes | 13–14 (two are gated on the language having audio or video, one on it having a distinct autonym) |
+| `brand` / `descriptive` / `exonym` / `format` query rows | 6–9, depending on alternate names and formats |
+| **Generated total** | **19–23** (measured: ar and id 19, sw and es-419 20, hi 22, en 23) |
+| `in-language` blanks the generator leaves for a speaker | 6 |
+| **Sheet total once filled in** | **25–29** |
+
+So #19's "~30 prompts per priority language" is reached only once the six
+in-language rows are written; the generator alone stops at 19–23, and it is
+not meant to guess the rest. Each row is then observed on all six surfaces,
+so ~30 distinct prompts is ~180 observations — do not report the second
+number as the sample size.
 
 ## Freshness
 

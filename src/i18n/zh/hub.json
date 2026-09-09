@@ -31,10 +31,15 @@
   "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。",
   "faqTitle": "关于 {language} Open Bible Stories 的问答",
   "faqMore": "更多问答",
+  "faqStories": {
+    "all": "全部 50 个故事都已译成 {language}，每一个都可以在本页阅读。",
+    "some": "目前有 {n} 个故事可以用 {language} 在本页阅读，其余正在翻译。",
+    "none": "这些故事目前还不能在本页以 {language} 阅读；若有可下载的文件，已列在上方。"
+  },
   "faq": [
     {
       "q": "{language} 的 Open Bible Stories 是什么？",
-      "a": "Open Bible Stories 是一套 50 个配图的圣经故事，从创造到启示录，已翻译成 {language}。你可以在本站阅读每一个故事；若 {language} 有相应格式，也可以聆听、观看或下载。"
+      "a": "Open Bible Stories 是一套 50 个配图的圣经故事，从创造到启示录。{stories} 若 {language} 有音频、视频或 PDF，你也可以聆听、观看或下载。"
     },
     {
       "q": "这是整本圣经的译本吗？",

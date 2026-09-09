@@ -31,10 +31,15 @@
   "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work.",
   "faqTitle": "Questions about Open Bible Stories in {language}",
   "faqMore": "More questions and answers",
+  "faqStories": {
+    "all": "All 50 are translated into {language}, and every one of them can be read on this page.",
+    "some": "{n} of them can be read in {language} on this page so far, and more are being translated.",
+    "none": "The stories cannot be read on this page in {language} yet — any downloads that exist are listed above."
+  },
   "faq": [
     {
       "q": "What is Open Bible Stories in {language}?",
-      "a": "Open Bible Stories is a set of 50 illustrated Bible stories, from Creation to Revelation, translated into {language}. You can read every story on this site, and listen, watch or download it where those formats exist in {language}."
+      "a": "Open Bible Stories is a set of 50 illustrated Bible stories, from Creation to Revelation. {stories} Where audio, video or a PDF exists in {language}, you can listen, watch or download it too."
     },
     {
       "q": "Is this a translation of the whole Bible?",

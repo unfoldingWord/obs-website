@@ -368,12 +368,20 @@ export function audioByStory(releases) {
 }
 
 /**
- * Per-story video URLs from a release history, the same shape and rule as
+ * Per-story video from a release history, the same numbering rule as
  * audioByStory: the story number is the two-digit group in the filename
  * (`en_obs_v6_23_360p.mp4`), and where a story has several renditions the
  * SMALLEST resolution wins. A 70MB 720p file is not what to put in a page
  * for someone on a phone in a place where OBS is most used; the hub still
  * links the whole set.
+ *
+ * Returns `{ [num]: { url, date } }`. `date` is the publish date of the
+ * release the file came from, NOT the language's newest release: a video is
+ * usually published once and the text revised several times afterwards, so
+ * using the language's `updated` made every later text release silently
+ * rewrite the apparent upload date of an unchanged video. It becomes
+ * `uploadDate` on the story page's VideoObject, which is omitted entirely
+ * when the date is unknown.
  */
 export function videoByStory(releases) {
   const height = (name) => {
@@ -393,9 +401,10 @@ export function videoByStory(releases) {
     }
     const nums = Object.keys(out);
     if (nums.length) {
-      const urls = {};
-      for (const n of nums) urls[n] = out[n].url;
-      return urls;
+      const date = release.published_at ? String(release.published_at).slice(0, 10) : null;
+      const videos = {};
+      for (const n of nums) videos[n] = { url: out[n].url, date };
+      return videos;
     }
   }
   return {};
@@ -760,6 +769,7 @@ export function hasStoryFile(code, dir = STORIES_DIR) {
 export function writeStoryFiles(languages, dir = STORIES_DIR) {
   mkdirSync(dir, { recursive: true });
   let written = 0;
+  let merged = 0;
   for (const lang of languages) {
     const audio = lang.storyAudio || {};
     const video = lang.storyVideo || {};
@@ -771,7 +781,8 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
         reference: s.body.reference,
         frames: s.body.frames,
         audio: audio[s.num] || null,
-        video: video[s.num] || null,
+        video: video[s.num]?.url ?? null,
+        videoDate: video[s.num]?.date ?? null,
       }));
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
@@ -780,13 +791,58 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
       // Reused from the previous snapshot: the bodies were never re-fetched,
       // but the file is still on disk, so keep the numbers it already had.
       if (!(Array.isArray(lang.storyNums) && hasStoryFile(lang.code, dir))) lang.storyNums = [];
+      // The media maps ARE re-fetched every run, though (they are cheap — one
+      // releases lookup per repo, cached), so a language whose text was reused
+      // can still have media the story file predates. Without this, upgrading
+      // an existing checkout never gained a video player or an AudioObject
+      // until the text release happened to change.
+      if (mergeStoryMedia(lang.code, audio, video, dir)) merged++;
       continue;
     }
     lang.storyNums = full.map((s) => s.num);
     writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories: full }) + '\n');
     written++;
   }
+  if (merged) console.log(`[catalog] stories: merged media into ${merged} cached story file(s)`);
   return written;
+}
+
+/**
+ * Fold freshly discovered per-story audio/video into a story file whose text
+ * was reused from the snapshot. Returns true when the file was rewritten.
+ *
+ * Only fills in or corrects media fields — the text, frames and titles in the
+ * file are the authority and are never touched here. Never throws: a story
+ * file that cannot be read or parsed simply keeps whatever it has, exactly as
+ * the rest of the story pipeline treats it.
+ */
+export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR) {
+  if (!Object.keys(audio).length && !Object.keys(video).length) return false;
+  const file = join(dir, `${code}.json`);
+  if (!existsSync(file)) return false;
+  let data;
+  try {
+    data = JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return false;
+  }
+  if (!Array.isArray(data?.stories)) return false;
+  let changed = false;
+  for (const story of data.stories) {
+    const a = audio[story.num] ?? null;
+    const v = video[story.num] ?? null;
+    if (a && story.audio !== a) {
+      story.audio = a;
+      changed = true;
+    }
+    if (v && (story.video !== v.url || (story.videoDate ?? null) !== (v.date ?? null))) {
+      story.video = v.url;
+      story.videoDate = v.date ?? null;
+      changed = true;
+    }
+  }
+  if (changed) writeFileSync(file, JSON.stringify(data) + '\n');
+  return changed;
 }
 
 function writeSnapshot(snapshot) {
