@@ -5,7 +5,8 @@
 //
 //   1. every sitemap <loc> resolves to a built page
 //   2. the retired /discover/read/ route stays gone, and nothing links to it
-//   3. every language with story pages links to them from its hub
+//   3. every language with story pages links to them from its hub, and every
+//      hub that lists titles offers some way to read them (never a self-link)
 //   4. every internal link into /l/ resolves to a built page
 //   5. the output fits Cloudflare Pages' 20,000-file limit
 //   6. /llms.txt lists only URLs that were built, and every markdown mirror
@@ -98,6 +99,32 @@ for (const lang of languages) {
   if (unlinked.length) errors.push(`/l/${lang.code}/ does not link ${unlinked.length} of the ${built.size} story pages built for it`);
   const dangling = [...linked].filter((n) => !built.has(n));
   if (dangling.length) errors.push(`/l/${lang.code}/ links ${dangling.length} story page(s) that were not built: ${dangling.slice(0, 3).join(', ')}`);
+}
+
+// 3a. Every hub that lists story titles must offer a way to reach them.
+//
+// This is the check that was missing when "Read online" on the 18 legacy
+// (translationStudio) hubs pointed at the hub's own URL: the link existed and
+// resolved — to the page it was already on — so it reloaded and did nothing.
+// A link-existence check cannot see that; a *self*-link in a read control is
+// the signal, so this looks for one, and for the presence of at least one
+// reader entry point (a story-page link, `#story-N`, or `#read`).
+for (const lang of languages) {
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) continue;
+  const titles = (lang.stories ?? []).filter((s) => s.title).length;
+  if (!titles) continue;
+  const html = readFileSync(hub, 'utf8');
+  const escaped = lang.code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const actions = html.match(/<ul class="hub-format-list">[\s\S]*?<\/ul>/);
+  if (actions && new RegExp(`href="/l/${escaped}/"`).test(actions[0])) {
+    errors.push(`/l/${lang.code}/ has a read control pointing at the hub itself — clicking it reloads the page and opens nothing`);
+  }
+  const canRead =
+    new RegExp(`href="/l/${escaped}/story-\\d+/"`).test(html) || /href="#story-\d+"/.test(html) || /href="#read"/.test(html);
+  if (!canRead) {
+    errors.push(`/l/${lang.code}/ lists ${titles} story title(s) but offers no way to read them (no story page, no #story-N, no #read)`);
+  }
 }
 
 // 4. Every link into the content tree must resolve. Check 3 covers the hubs;

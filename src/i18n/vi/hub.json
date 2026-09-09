@@ -29,12 +29,13 @@
   "readerTitle": "Đọc trực tuyến",
   "readerLoading": "Đang tải…",
   "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động.",
+  "readerNeedsJs": "Các câu chuyện này được đọc trong trình đọc trên trang này, và trình đọc cần JavaScript. Nếu không có JavaScript, hãy dùng các tệp tải về ở trên, hoặc liên kết đến nguồn Door43 ở cuối trang này.",
   "faqTitle": "Câu hỏi về Open Bible Stories bằng tiếng {language}",
   "faqMore": "Thêm câu hỏi và trả lời",
   "faqStories": {
     "all": "Cả 50 câu chuyện đã được dịch sang tiếng {language}, và mỗi câu chuyện đều có thể đọc trên trang này.",
     "some": "Hiện có {n} câu chuyện có thể đọc bằng tiếng {language} trên trang này, và những câu khác đang được dịch.",
-    "none": "Các câu chuyện chưa thể đọc bằng tiếng {language} trên trang này; những tệp tải về nếu có được liệt kê ở trên."
+    "none": "Các câu chuyện này chưa có trang riêng trên trang web này bằng tiếng {language} — hãy đọc trong trình đọc trên trang này, hoặc dùng các tệp tải về được liệt kê ở trên."
   },
   "faq": [
     {

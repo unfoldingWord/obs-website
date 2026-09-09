@@ -29,12 +29,13 @@
   "readerTitle": "Read online",
   "readerLoading": "Loading…",
   "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work.",
+  "readerNeedsJs": "These stories are read in a reader on this page, which needs JavaScript. Without it, use the downloads above, or the Door43 source link at the foot of this page.",
   "faqTitle": "Questions about Open Bible Stories in {language}",
   "faqMore": "More questions and answers",
   "faqStories": {
     "all": "All 50 are translated into {language}, and every one of them can be read on this page.",
     "some": "{n} of them can be read in {language} on this page so far, and more are being translated.",
-    "none": "The stories cannot be read on this page in {language} yet — any downloads that exist are listed above."
+    "none": "These stories do not have their own pages on this site in {language} yet — read them in the reader on this page, or use any downloads listed above."
   },
   "faq": [
     {

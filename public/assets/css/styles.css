@@ -749,6 +749,9 @@ html:not([data-script="latin"]):not([data-script="cyrillic"]) .eyebrow{letter-sp
 .hub-english-name{font-size:1.25rem; color:#4a5960; margin:0 0 18px; font-weight:600;}
 .hub-format-list{list-style:none; padding:0; margin:22px 0 0; display:flex; flex-wrap:wrap; gap:12px;}
 .hub-app-note{margin:18px 0 0; font-size:0.95rem; color:#4a5960;}
+/* Shown only inside <noscript>, on the hubs whose read controls are reader
+   fragments (see read() in src/pages/l/[code]/index.astro). */
+.hub-js-note{margin:18px 0 0; font-size:0.95rem; color:#4a5960; max-width:640px;}
 /* Inline links inside the hub's text need a non-colour cue (WCAG 1.4.1);
    the global a{} rule strips both colour and underline. */
 .hub-facts a, .hub-license a, .hub-app-note a, .hub-partial a{color:var(--inspire-text); text-decoration:underline;}

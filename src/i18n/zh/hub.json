@@ -29,12 +29,13 @@
   "readerTitle": "在线阅读",
   "readerLoading": "加载中…",
   "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。",
+  "readerNeedsJs": "这些故事是在本页的阅读器中阅读的，阅读器需要 JavaScript。若没有 JavaScript，请使用上方的下载文件，或本页底部的 Door43 源文件链接。",
   "faqTitle": "关于 {language} Open Bible Stories 的问答",
   "faqMore": "更多问答",
   "faqStories": {
     "all": "全部 50 个故事都已译成 {language}，每一个都可以在本页阅读。",
     "some": "目前有 {n} 个故事可以用 {language} 在本页阅读，其余正在翻译。",
-    "none": "这些故事目前还不能在本页以 {language} 阅读；若有可下载的文件，已列在上方。"
+    "none": "这些故事在本站还没有 {language} 的独立页面——请在本页的阅读器中阅读，或使用上方列出的下载文件。"
   },
   "faq": [
     {

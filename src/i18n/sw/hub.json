@@ -29,12 +29,13 @@
   "readerTitle": "Soma mtandaoni",
   "readerLoading": "Inapakia…",
   "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi.",
+  "readerNeedsJs": "Hadithi hizi zinasomwa katika kisomaji kwenye ukurasa huu, ambacho kinahitaji JavaScript. Bila JavaScript, tumia upakuaji ulio juu, au kiungo cha chanzo cha Door43 chini ya ukurasa huu.",
   "faqTitle": "Maswali kuhusu Open Bible Stories katika {language}",
   "faqMore": "Maswali na majibu zaidi",
   "faqStories": {
     "all": "Zote 50 zimetafsiriwa katika {language}, na kila moja inaweza kusomwa kwenye ukurasa huu.",
     "some": "{n} kati yake zinaweza kusomwa katika {language} kwenye ukurasa huu hadi sasa, na nyingine zinaendelea kutafsiriwa.",
-    "none": "Hadithi haziwezi kusomwa kwenye ukurasa huu katika {language} bado; upakuaji wowote uliopo umeorodheshwa juu."
+    "none": "Hadithi hizi hazina kurasa zao kwenye tovuti hii katika {language} bado — zisome katika kisomaji kwenye ukurasa huu, au tumia upakuaji uliotajwa juu."
   },
   "faq": [
     {

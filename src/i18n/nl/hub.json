@@ -29,12 +29,13 @@
   "readerTitle": "Online lezen",
   "readerLoading": "Laden…",
   "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds.",
+  "readerNeedsJs": "Deze verhalen worden gelezen in een lezer op deze pagina, waarvoor JavaScript nodig is. Zonder JavaScript kun je de downloads hierboven gebruiken, of de link naar de bron op Door43 onderaan deze pagina.",
   "faqTitle": "Vragen over Open Bible Stories in het {language}",
   "faqMore": "Meer vragen en antwoorden",
   "faqStories": {
     "all": "Alle 50 zijn in het {language} vertaald, en elk ervan is op deze pagina te lezen.",
     "some": "{n} ervan zijn tot nu toe in het {language} op deze pagina te lezen, en er worden meer vertaald.",
-    "none": "De verhalen zijn op deze pagina nog niet in het {language} te lezen; de downloads die er zijn, staan hierboven."
+    "none": "Deze verhalen hebben op deze site nog geen eigen pagina's in het {language} — lees ze in de lezer op deze pagina, of gebruik de downloads hierboven."
   },
   "faq": [
     {

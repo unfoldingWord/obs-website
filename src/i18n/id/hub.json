@@ -29,12 +29,13 @@
   "readerTitle": "Baca online",
   "readerLoading": "Memuat…",
   "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi.",
+  "readerNeedsJs": "Cerita-cerita ini dibaca dalam pembaca di halaman ini, yang memerlukan JavaScript. Tanpa JavaScript, gunakan unduhan di atas, atau tautan sumber Door43 di bagian bawah halaman ini.",
   "faqTitle": "Pertanyaan tentang Open Bible Stories dalam bahasa {language}",
   "faqMore": "Pertanyaan dan jawaban lainnya",
   "faqStories": {
     "all": "Ke-50 cerita sudah diterjemahkan ke dalam bahasa {language}, dan semuanya dapat dibaca di halaman ini.",
     "some": "Sejauh ini {n} di antaranya dapat dibaca dalam bahasa {language} di halaman ini, dan yang lain sedang diterjemahkan.",
-    "none": "Cerita-cerita ini belum dapat dibaca dalam bahasa {language} di halaman ini; unduhan yang tersedia dicantumkan di atas."
+    "none": "Cerita-cerita ini belum memiliki halaman sendiri di situs ini dalam bahasa {language} — bacalah di pembaca pada halaman ini, atau gunakan unduhan yang tercantum di atas."
   },
   "faq": [
     {
