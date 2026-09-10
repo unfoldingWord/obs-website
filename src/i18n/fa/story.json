@@ -4,9 +4,16 @@
   },
   "storyN": "داستان {n} از {total}",
   "listen": "شنیدن این داستان",
+  "watch": "این داستان را ببینید",
+  "downloadAudio": "دانلود صدا",
+  "downloadVideo": "دانلود ویدیو",
+  "transcriptNote": "واژه‌های این ضبط در پایین، به زبان {language} آمده است.",
+  "imageAlt": "{story} — تصویر {n}",
   "previous": "قبلی",
   "next": "بعدی",
   "allStories": "همه داستان‌ها به زبان {language}",
   "license": "رایگان برای استفاده، اقتباس و اشتراک‌گذاری تحت مجوز باز (CC BY-SA 4.0).",
-  "openInReader": "خواندن در خواننده"
+  "openInReader": "خواندن در خواننده",
+  "audioFile": "فایل صوتی",
+  "videoFile": "ویدیو"
 }

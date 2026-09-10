@@ -4,9 +4,16 @@
   },
   "storyN": "История {n} из {total}",
   "listen": "Слушать эту историю",
+  "watch": "Посмотрите эту историю",
+  "downloadAudio": "Скачать аудио",
+  "downloadVideo": "Скачать видео",
+  "transcriptNote": "Слова этой записи приведены ниже, на языке {language}.",
+  "imageAlt": "{story} — иллюстрация {n}",
   "previous": "Назад",
   "next": "Далее",
   "allStories": "Все истории на языке {language}",
   "license": "Свободно для использования, адаптации и распространения по открытой лицензии (CC BY-SA 4.0).",
-  "openInReader": "Читать в ридере"
+  "openInReader": "Читать в ридере",
+  "audioFile": "Аудиофайл",
+  "videoFile": "Видео"
 }

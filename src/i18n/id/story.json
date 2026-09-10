@@ -4,9 +4,16 @@
   },
   "storyN": "Cerita {n} dari {total}",
   "listen": "Dengarkan cerita ini",
+  "watch": "Tonton cerita ini",
+  "downloadAudio": "Unduh audio",
+  "downloadVideo": "Unduh video",
+  "transcriptNote": "Kata-kata dalam rekaman ini ada di bawah, dalam bahasa {language}.",
+  "imageAlt": "{story} — ilustrasi {n}",
   "previous": "Sebelumnya",
   "next": "Berikutnya",
   "allStories": "Semua cerita dalam bahasa {language}",
   "license": "Bebas digunakan, diadaptasi, dan dibagikan di bawah lisensi terbuka (CC BY-SA 4.0).",
-  "openInReader": "Baca di pembaca"
+  "openInReader": "Baca di pembaca",
+  "audioFile": "Berkas audio",
+  "videoFile": "Video"
 }

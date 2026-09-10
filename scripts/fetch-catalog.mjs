@@ -303,6 +303,27 @@ export function sortLanguages(languages) {
  * page renders. Story images are language-independent: every translation
  * references the same cdn.door43.org/obs/jpg/.../obs-en-{NN}-{FF}.jpg files.
  */
+/**
+ * True when a repo's story text is a placeholder rather than a translation.
+ *
+ * 14 published languages ship an OBS repo whose story 1 says only "Video
+ * only" (or "Audio/Video only") and links to a player — the translation
+ * exists as recordings, not as text. The old client-side reader guarded
+ * against this (`isStubContent` in public/assets/js/reader.js, same pattern,
+ * same 300-character window) and preferred a team whose text was real; the
+ * build-time pipeline that replaced the reader had no equivalent, so the
+ * placeholder became the story: a story page titled "Video only", a
+ * CreativeWork whose `text` was that sentence, a markdown mirror, a sitemap
+ * URL, and a hub FAQ counting it as one readable story.
+ *
+ * Keep this in step with reader.js — the reader still reads the live catalog
+ * when it falls back, so both paths have to agree about what is not a story.
+ */
+export function isStubContent(text) {
+  if (!text) return false;
+  return /video[\s-]*only/i.test(String(text).slice(0, 300));
+}
+
 export function parseStoryMarkdown(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n/, '');
   const blocks = body.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
@@ -336,7 +357,7 @@ export function parseStoryMarkdown(md) {
 }
 
 /**
- * Map story number -> mp3 URL from a repo's release assets, newest release
+ * Map story number -> `{ url, size }` from a repo's release assets, newest release
  * first. Mirrors the reader's old latestReleaseWithAllExt('.mp3'): a text
  * release and an audio release are often different tags. Prefers the higher
  * bitrate when a story ships several (…_01_128kbps.mp3 over …_01_32kbps.mp3).
@@ -355,16 +376,69 @@ export function audioByStory(releases) {
       const n = parseInt(m[1], 10);
       if (n < 1 || n > STORY_COUNT) continue;
       const prev = out[n];
-      if (!prev || bitrate(a.name) > bitrate(prev.name)) out[n] = { name: a.name, url: a.browser_download_url };
+      if (!prev || bitrate(a.name) > bitrate(prev.name)) out[n] = { name: a.name, url: a.browser_download_url, size: a.size ?? null };
     }
     const nums = Object.keys(out);
     if (nums.length) {
       const urls = {};
-      for (const n of nums) urls[n] = out[n].url;
+      for (const n of nums) urls[n] = { url: out[n].url, size: out[n].size ?? null };
       return urls;
     }
   }
   return {};
+}
+
+/**
+ * Per-story video from a release history, the same numbering rule as
+ * audioByStory: the story number is the two-digit group in the filename
+ * (`en_obs_v6_23_360p.mp4`), and where a story has several renditions the
+ * SMALLEST resolution wins. A 70MB 720p file is not what to put in a page
+ * for someone on a phone in a place where OBS is most used; the hub still
+ * links the whole set.
+ *
+ * Returns `{ [num]: { url, date, size } }`. `date` is the publish date of the
+ * release the file came from, NOT the language's newest release: a video is
+ * usually published once and the text revised several times afterwards, so
+ * using the language's `updated` made every later text release silently
+ * rewrite the apparent upload date of an unchanged video. It becomes
+ * `uploadDate` on the story page's VideoObject, which is omitted entirely
+ * when the date is unknown.
+ */
+export function videoByStory(releases) {
+  const height = (name) => {
+    const m = name.match(/(\d{3,4})p/i);
+    return m ? parseInt(m[1], 10) : 99999;
+  };
+  for (const release of releases || []) {
+    const out = {};
+    for (const a of release?.assets || []) {
+      if (!a || !a.name || !a.browser_download_url || !/\.(mp4|3gp)$/i.test(a.name)) continue;
+      const m = a.name.match(/(?:^|[_-])(\d{2})(?:[_-]|\.)/);
+      if (!m) continue;
+      const n = parseInt(m[1], 10);
+      if (n < 1 || n > STORY_COUNT) continue;
+      const prev = out[n];
+      if (!prev || height(a.name) < height(prev.name)) out[n] = { name: a.name, url: a.browser_download_url, size: a.size ?? null };
+    }
+    const nums = Object.keys(out);
+    if (nums.length) {
+      const date = release.published_at ? String(release.published_at).slice(0, 10) : null;
+      const videos = {};
+      for (const n of nums) videos[n] = { url: out[n].url, date, size: out[n].size ?? null };
+      return videos;
+    }
+  }
+  return {};
+}
+
+/**
+ * Per-story video URLs for one entry, or {} when the repo publishes none.
+ * Same reason as fetchStoryAudio for reading the release history rather than
+ * the entry's capped `assets` list.
+ */
+export async function fetchStoryVideo(entry, fetchImpl = fetch) {
+  if (!entry?.owner || !entry?.name) return {};
+  return videoByStory(await fetchReleases(entry, fetchImpl));
 }
 
 /** First paragraphs of a story, capped, for the hub's in-language extract. */
@@ -383,16 +457,44 @@ export function makeExtract({ title, paragraphs, reference }, maxChars = EXTRACT
   return { title: title || null, text, reference: reference || null };
 }
 
-/** Which self-hosted font pack a text needs, by dominant Unicode block. */
+/**
+ * Which self-hosted font pack a text needs, by dominant Unicode block.
+ *
+ * Every name returned here except `other` must have an entry in the PACKS
+ * map in scripts/build-font-css.mjs, a matching `html[data-script="…"]`
+ * rule in public/assets/css/styles.css, and be listed in
+ * `fontHrefForScript()` in src/data/catalog.ts — otherwise the language
+ * renders in whatever face the visitor's OS happens to have, which for most
+ * of these scripts is nothing at all. `other` is the honest fallback for a
+ * script we ship no pack for; it should be empty for the current catalog
+ * (see `npm run check:scripts`).
+ */
 export function detectScript(text) {
-  const counts = { arabic: 0, devanagari: 0, bengali: 0, myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0 };
+  const counts = {
+    arabic: 0, devanagari: 0, bengali: 0, gurmukhi: 0, gujarati: 0, oriya: 0,
+    tamil: 0, telugu: 0, kannada: 0, malayalam: 0, lao: 0, ethiopic: 0,
+    myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0,
+  };
   for (const ch of String(text || '')) {
     const c = ch.codePointAt(0);
     if (c < 0x80 || (c >= 0xc0 && c <= 0x24f)) { if (/\p{L}/u.test(ch)) counts.latin++; }
     else if (c >= 0x400 && c <= 0x52f) counts.cyrillic++;
     else if ((c >= 0x600 && c <= 0x6ff) || (c >= 0x750 && c <= 0x77f) || (c >= 0xfb50 && c <= 0xfdff) || (c >= 0xfe70 && c <= 0xfeff)) counts.arabic++;
+    // Danda and double danda live in the Devanagari block but are shared
+    // punctuation across the Indic scripts below — counting them as
+    // Devanagari is what made short Odia and Gujarati samples ambiguous.
+    else if (c === 0x964 || c === 0x965) { /* shared Indic punctuation */ }
     else if (c >= 0x900 && c <= 0x97f) counts.devanagari++;
     else if (c >= 0x980 && c <= 0x9ff) counts.bengali++;
+    else if (c >= 0xa00 && c <= 0xa7f) counts.gurmukhi++;
+    else if (c >= 0xa80 && c <= 0xaff) counts.gujarati++;
+    else if (c >= 0xb00 && c <= 0xb7f) counts.oriya++;
+    else if (c >= 0xb80 && c <= 0xbff) counts.tamil++;
+    else if (c >= 0xc00 && c <= 0xc7f) counts.telugu++;
+    else if (c >= 0xc80 && c <= 0xcff) counts.kannada++;
+    else if (c >= 0xd00 && c <= 0xd7f) counts.malayalam++;
+    else if (c >= 0xe80 && c <= 0xeff) counts.lao++;
+    else if ((c >= 0x1200 && c <= 0x139f) || (c >= 0x2d80 && c <= 0x2ddf)) counts.ethiopic++;
     else if (c >= 0x1000 && c <= 0x109f) counts.myanmar++;
     else if ((c >= 0x4e00 && c <= 0x9fff) || (c >= 0x3400 && c <= 0x4dbf) || (c >= 0x3000 && c <= 0x30ff)) counts.han++;
     else if (/\p{L}/u.test(ch)) counts.other++;
@@ -413,14 +515,105 @@ export function scriptFor(code, sample) {
   return script;
 }
 
-/** Story file URLs for one entry, mirroring public/assets/js/discover.js. */
+/** Raw-file base URL for one entry's repo at its release ref. */
+export function rawBase(entry) {
+  return `https://git.door43.org/${entry.owner}/${entry.name}/raw/${entry.branch_or_tag_name}`;
+}
+
+/** Story file URLs for one entry, mirroring public/assets/js/discover.js.
+ *  The two `frames` are the legacy translationStudio fallback used only when
+ *  the repo's tree listing is unavailable — see fetchTsFrames(). */
 export function storyUrls(entry, num) {
-  const base = `https://git.door43.org/${entry.owner}/${entry.name}/raw/${entry.branch_or_tag_name}`;
+  const base = rawBase(entry);
   const nn = pad(num);
   if (entry.metadata_type === 'ts') {
     return { title: `${base}/${nn}/title.txt`, frames: [`${base}/${nn}/01.txt`, `${base}/${nn}/02.txt`], reference: `${base}/${nn}/reference.txt`, rc: null };
   }
   return { rc: `${base}/${entry.contentPath || 'content'}/${nn}.md` };
+}
+
+/** Gitea recursive tree listing for one entry's repo at its release ref. */
+export function treeUrl(entry, page = 1) {
+  const ref = encodeURIComponent(entry.branch_or_tag_name);
+  return `https://git.door43.org/api/v1/repos/${entry.owner}/${entry.name}/git/trees/${ref}?recursive=true&per_page=1000&page=${page}`;
+}
+
+/**
+ * Frame files per story in a legacy translationStudio repo, keyed by story
+ * number, from one or more tree listings.
+ *
+ * A tS repo stores one directory per story and one file per frame
+ * (`07/01.txt`, `07/02.txt`, …), so the frame count varies by story and is
+ * not knowable without a listing. `title.txt` and `reference.txt` live in the
+ * same directory and are not frames.
+ */
+export function tsFramesFromTree(...trees) {
+  const out = new Map();
+  for (const tree of trees) {
+    for (const node of tree?.tree || []) {
+      if (node.type && node.type !== 'blob') continue;
+      const m = String(node.path || '').match(/^(\d{2})\/(\d{2})\.txt$/);
+      if (!m) continue;
+      const num = parseInt(m[1], 10);
+      if (!num || num > STORY_COUNT) continue;
+      if (!out.has(num)) out.set(num, []);
+      out.get(num).push(node.path);
+    }
+  }
+  for (const paths of out.values()) paths.sort();
+  return out;
+}
+
+/**
+ * Read a tS repo's frame layout. Returns null when the listing cannot be
+ * read, which is the signal to fall back to the titles-only behaviour rather
+ * than to probe several hundred frame URLs per language.
+ */
+export async function fetchTsFrames(entry, fetchImpl = fetch, maxPages = 6) {
+  const trees = [];
+  try {
+    for (let page = 1; page <= maxPages; page++) {
+      const body = await fetchText(treeUrl(entry, page), fetchImpl);
+      if (body == null) break;
+      let tree;
+      try {
+        tree = JSON.parse(body);
+      } catch {
+        return null;
+      }
+      trees.push(tree);
+      // Gitea pages the tree and flags a listing it had to cut short. Stop as
+      // soon as a page is short or the listing says it is complete.
+      if (!tree?.truncated || !Array.isArray(tree.tree) || tree.tree.length === 0) break;
+    }
+  } catch {
+    return null;
+  }
+  if (!trees.length) return null;
+  const frames = tsFramesFromTree(...trees);
+  return frames.size ? frames : null;
+}
+
+/**
+ * One frame of a tS story. The frame files are plain text, but many carry the
+ * illustration as a markdown image on its own line, exactly as the RC
+ * markdown does — so a frame yields the same {image, text} shape the RC path
+ * produces and the story pages already render.
+ */
+export function parseTsFrame(raw) {
+  if (raw == null) return null;
+  let image = null;
+  const kept = [];
+  for (const line of String(raw).split('\n')) {
+    const m = line.trim().match(/^!\[[^\]]*\]\(([^)\s]+)[^)]*\)$/);
+    if (m) {
+      if (!image) image = m[1];
+      continue;
+    }
+    kept.push(line);
+  }
+  const text = kept.join(' ').replace(/\s+/g, ' ').trim();
+  return { image, text };
 }
 
 /** Identity of the release the cached stories were fetched from. */
@@ -511,7 +704,7 @@ export async function fetchCatalog(fetchImpl = fetch) {
  * title, and `stories` is null when no entry has any. Never throws.
  */
 export async function fetchStories(language, fetchImpl = fetch) {
-  let result = { stories: null, extract: null, script: 'latin' };
+  let result = { stories: null, extract: null, script: 'latin', layout: null, bodies: 0 };
   for (const entry of language.entries) {
     if (!entry?.owner || !entry?.name || !entry?.branch_or_tag_name) continue;
     result = await fetchStoriesFrom(language.code, entry, fetchImpl);
@@ -521,45 +714,107 @@ export async function fetchStories(language, fetchImpl = fetch) {
 }
 
 async function fetchStoriesFrom(code, entry, fetchImpl) {
-  const nums = Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
+  const layout = entry.metadata_type === 'ts' ? 'ts' : 'rc';
+  const { stories, extract } =
+    layout === 'ts' ? await fetchTsStories(entry, fetchImpl) : await fetchRcStories(entry, fetchImpl);
+  // A placeholder repo is not a translation of the stories (see
+  // isStubContent). Returning no stories lets fetchStories fall through to
+  // the next publishing team, exactly as the reader used to: another team may
+  // have real text for this language. When every team is a placeholder the
+  // language keeps its video and download buttons — which is what actually
+  // exists for it — and gets no story pages, no mirror and no sitemap URLs.
+  const first = stories.find((st) => st.num === 1) ?? stories[0];
+  const sample = [first?.title, ...(first?.body?.frames ?? []).map((f) => f.text)].filter(Boolean).join(' ');
+  if (isStubContent(sample)) {
+    return { stories: null, extract: null, script: scriptFor(code, '') || 'latin', layout, bodies: 0, stub: true };
+  }
+  const anyTitle = stories.some((s) => s.title);
+  return {
+    stories: anyTitle ? stories : null,
+    extract,
+    script: scriptFor(code, scriptSample({ extract, stories })),
+    // Reported by enrichStories, so the build log says whether a layout
+    // actually produced readable stories. `layout` and `bodies` are stripped
+    // before the snapshot is written (buildSnapshot keeps only public facts).
+    layout,
+    bodies: stories.filter((s) => s.body && s.body.frames.length).length,
+  };
+}
+
+const storyNums = () => Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
+
+/** Resource Container repos: one markdown file per story. */
+async function fetchRcStories(entry, fetchImpl) {
   let extract = null;
-  const stories = await mapLimit(nums, 8, async (num) => {
-    const urls = storyUrls(entry, num);
+  const stories = await mapLimit(storyNums(), 8, async (num) => {
     try {
-      if (urls.rc) {
-        const md = await fetchText(urls.rc, fetchImpl);
-        if (md == null) return { num, title: null };
-        const parsed = parseStoryMarkdown(md);
-        if (num === 1) extract = makeExtract(parsed);
-        return {
-          num,
-          title: parsed.title || null,
-          body: parsed.frames.length
-            ? { reference: parsed.reference || null, frames: parsed.frames }
-            : null,
-        };
-      }
-      const title = (await fetchText(urls.title, fetchImpl))?.trim() || null;
-      // Legacy translationStudio repos store each frame in its own file and
-      // only the first two are fetched here, so a ts story yields a title and
-      // an extract but no full body — it gets no story page.
-      if (num === 1) {
-        const frames = [];
-        for (const u of urls.frames) {
-          const t = await fetchText(u, fetchImpl);
-          if (t && t.trim()) frames.push(t.trim());
-        }
-        const reference = (await fetchText(urls.reference, fetchImpl))?.trim() || '';
-        extract = makeExtract({ title: title || '', paragraphs: frames, reference });
-      }
-      return { num, title, body: null };
-    } catch (err) {
+      const md = await fetchText(storyUrls(entry, num).rc, fetchImpl);
+      if (md == null) return { num, title: null };
+      const parsed = parseStoryMarkdown(md);
+      if (num === 1) extract = makeExtract(parsed);
+      return {
+        num,
+        title: parsed.title || null,
+        body: parsed.frames.length ? { reference: parsed.reference || null, frames: parsed.frames } : null,
+      };
+    } catch {
       return { num, title: null };
     }
   });
-  const sample = [extract?.title, extract?.text, ...stories.map((s) => s.title)].filter(Boolean).join(' ');
-  const anyTitle = stories.some((s) => s.title);
-  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, sample) };
+  return { stories, extract };
+}
+
+/**
+ * Legacy translationStudio repos: one directory per story, one file per
+ * frame, plus title.txt and reference.txt. The frame count varies per story,
+ * so the repo's tree listing decides which files to read — one request per
+ * repo rather than a probe per frame.
+ *
+ * When that listing cannot be read the language degrades to what it produced
+ * before this path existed: titles, and an extract from the first two frames
+ * of story 1, with no story bodies and so no story pages. That is a worse
+ * page, not a broken build, and it is what an outage of the tree API should
+ * cost.
+ */
+async function fetchTsStories(entry, fetchImpl) {
+  const framesByStory = await fetchTsFrames(entry, fetchImpl);
+  const base = rawBase(entry);
+  let extract = null;
+  const stories = await mapLimit(storyNums(), 8, async (num) => {
+    const nn = pad(num);
+    try {
+      const title = (await fetchText(`${base}/${nn}/title.txt`, fetchImpl))?.trim() || null;
+      const paths = framesByStory?.get(num) ?? [];
+      const raw = paths.length
+        ? await mapLimit(paths, 4, (path) => fetchText(`${base}/${path}`, fetchImpl))
+        : await mapLimit(storyUrls(entry, num).frames, 2, (url) => (num === 1 ? fetchText(url, fetchImpl) : null));
+      const frames = raw.map(parseTsFrame).filter((f) => f && f.text);
+      const reference = (await fetchText(`${base}/${nn}/reference.txt`, fetchImpl))?.trim() || '';
+      if (num === 1) extract = makeExtract({ title: title || '', paragraphs: frames.map((f) => f.text), reference });
+      return {
+        num,
+        title,
+        // Only a listed repo yields a body: the two-frame fallback is an
+        // extract's worth of text, not the story, and must not be published
+        // as one.
+        body: paths.length && frames.length ? { reference: reference || null, frames } : null,
+      };
+    } catch {
+      return { num, title: null };
+    }
+  });
+  return { stories, extract };
+}
+
+/**
+ * The text the script detector reads for a language: its extract plus every
+ * story title. Used both after a fetch and when reusing a cached snapshot
+ * record, so a language's `script` is always what the CURRENT detector makes
+ * of its text — widening detectScript() takes effect on the next build
+ * instead of waiting for that language to publish a new release.
+ */
+export function scriptSample({ extract, stories }) {
+  return [extract?.title, extract?.text, ...(stories || []).map((s) => s.title)].filter(Boolean).join(' ');
 }
 
 /**
@@ -583,7 +838,8 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
         stories: prev.stories,
         storyNums: prev.storyNums ?? [],
         extract: prev.extract,
-        script: prev.script || lang.script,
+        // Re-derived, not copied: see scriptSample().
+        script: scriptFor(lang.code, scriptSample(prev)) || prev.script || lang.script,
       };
     }
     const result = await fetchStories(lang, fetchImpl);
@@ -591,6 +847,46 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
     return { ...lang, ...result };
   });
   log.log(`[catalog] stories: fetched ${fetched} languages, reused ${reused} from the previous snapshot`);
+
+  // Per-layout outcome. A legacy translationStudio repo whose tree listing
+  // cannot be read still yields titles, so the build stays green and those
+  // languages silently lose their story pages — exactly the failure that is
+  // invisible in a deploy log otherwise. Name it.
+  const titlesOnly = [];
+  const stubs = [];
+  const tally = { rc: { langs: 0, bodies: 0 }, ts: { langs: 0, bodies: 0 } };
+  for (const lang of out) {
+    if (lang.stub) stubs.push(lang.code);
+    const t = tally[lang.layout];
+    if (!t) continue;
+    t.langs++;
+    t.bodies += lang.bodies ?? 0;
+    if (lang.stories && !lang.bodies) titlesOnly.push(lang.code);
+  }
+  if (stubs.length) {
+    log.log(
+      `[catalog] stories: ${stubs.length} language(s) publish a placeholder ("Video only") instead of story text, ` +
+        `so they get no story pages: ${stubs.join(', ')}`
+    );
+  }
+  for (const [layout, t] of Object.entries(tally)) {
+    if (t.langs) log.log(`[catalog] stories: ${layout} layout — ${t.langs} languages fetched, ${t.bodies} story bodies read`);
+  }
+  if (titlesOnly.length) {
+    // Some callers pass a logger with only .log (the tests do), and a missing
+    // .warn here would throw partway through the catalog fetch — turning a
+    // degraded language into a failed deploy.
+    const warn = log.warn ? log.warn.bind(log) : log.log.bind(log);
+    warn(
+      `[catalog] stories: ${titlesOnly.length} language(s) yielded titles but NO story bodies, so they get no story pages: ` +
+        `${titlesOnly.slice(0, 20).join(', ')}${titlesOnly.length > 20 ? ', …' : ''}`
+    );
+  }
+  for (const lang of out) {
+    delete lang.layout;
+    delete lang.bodies;
+    delete lang.stub;
+  }
   return out;
 }
 
@@ -628,7 +924,18 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
         if (Object.keys(map).length) { storyAudio = map; break; }
       }
     }
-    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}) };
+    // Per-story video files, same rule (#16): a story page should offer that
+    // story's own recording rather than sending everyone to a multi-gigabyte
+    // zip of all 50. Playlist links (most languages publish a YouTube
+    // playlist, not files) are not per-story and stay on the hub.
+    let storyVideo;
+    if (wanted.video) {
+      for (const entry of lang.entries) {
+        const map = await fetchStoryVideo(entry, fetchImpl);
+        if (Object.keys(map).length) { storyVideo = map; break; }
+      }
+    }
+    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}), ...(storyVideo ? { storyVideo } : {}) };
   });
   log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
   return out;
@@ -666,8 +973,10 @@ export function hasStoryFile(code, dir = STORIES_DIR) {
 export function writeStoryFiles(languages, dir = STORIES_DIR) {
   mkdirSync(dir, { recursive: true });
   let written = 0;
+  let merged = 0;
   for (const lang of languages) {
     const audio = lang.storyAudio || {};
+    const video = lang.storyVideo || {};
     const full = (lang.stories || [])
       .filter((s) => s.body && s.body.frames.length)
       .map((s) => ({
@@ -675,21 +984,73 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
         title: s.title || `Story ${s.num}`,
         reference: s.body.reference,
         frames: s.body.frames,
-        audio: audio[s.num] || null,
+        audio: audio[s.num]?.url ?? null,
+        audioSize: audio[s.num]?.size ?? null,
+        video: video[s.num]?.url ?? null,
+        videoDate: video[s.num]?.date ?? null,
+        videoSize: video[s.num]?.size ?? null,
       }));
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
+    delete lang.storyVideo;
     if (!full.length) {
       // Reused from the previous snapshot: the bodies were never re-fetched,
       // but the file is still on disk, so keep the numbers it already had.
       if (!(Array.isArray(lang.storyNums) && hasStoryFile(lang.code, dir))) lang.storyNums = [];
+      // The media maps ARE re-fetched every run, though (they are cheap — one
+      // releases lookup per repo, cached), so a language whose text was reused
+      // can still have media the story file predates. Without this, upgrading
+      // an existing checkout never gained a video player or an AudioObject
+      // until the text release happened to change.
+      if (mergeStoryMedia(lang.code, audio, video, dir)) merged++;
       continue;
     }
     lang.storyNums = full.map((s) => s.num);
     writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories: full }) + '\n');
     written++;
   }
+  if (merged) console.log(`[catalog] stories: merged media into ${merged} cached story file(s)`);
   return written;
+}
+
+/**
+ * Fold freshly discovered per-story audio/video into a story file whose text
+ * was reused from the snapshot. Returns true when the file was rewritten.
+ *
+ * Only fills in or corrects media fields — the text, frames and titles in the
+ * file are the authority and are never touched here. Never throws: a story
+ * file that cannot be read or parsed simply keeps whatever it has, exactly as
+ * the rest of the story pipeline treats it.
+ */
+export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR) {
+  if (!Object.keys(audio).length && !Object.keys(video).length) return false;
+  const file = join(dir, `${code}.json`);
+  if (!existsSync(file)) return false;
+  let data;
+  try {
+    data = JSON.parse(readFileSync(file, 'utf8'));
+  } catch {
+    return false;
+  }
+  if (!Array.isArray(data?.stories)) return false;
+  let changed = false;
+  for (const story of data.stories) {
+    const a = audio[story.num] ?? null;
+    const v = video[story.num] ?? null;
+    if (a && (story.audio !== a.url || (story.audioSize ?? null) !== (a.size ?? null))) {
+      story.audio = a.url;
+      story.audioSize = a.size ?? null;
+      changed = true;
+    }
+    if (v && (story.video !== v.url || (story.videoDate ?? null) !== (v.date ?? null) || (story.videoSize ?? null) !== (v.size ?? null))) {
+      story.video = v.url;
+      story.videoDate = v.date ?? null;
+      story.videoSize = v.size ?? null;
+      changed = true;
+    }
+  }
+  if (changed) writeFileSync(file, JSON.stringify(data) + '\n');
+  return changed;
 }
 
 function writeSnapshot(snapshot) {

@@ -1129,7 +1129,7 @@
     "EG"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "ethiopic",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -3268,216 +3268,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#awa--OBS-OBS4All--awa_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "azb",
@@ -6888,216 +6680,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#und-x-bhagiliyani--OBS-OBS4All--und-x-bhagiliyani_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "bgw",
@@ -8545,7 +8129,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -8841,7 +8425,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -12143,7 +11727,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -12461,216 +12045,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#und-x-chopali--OBS-OBS4All--und-x-chopali_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "und-x-choudhancy",
@@ -12705,216 +12081,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#und-x-choudhancy--OBS-OBS4All--und-x-choudhancy_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "cdj",
@@ -13835,7 +13003,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -14965,7 +14133,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -15558,7 +14726,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -16758,7 +15926,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -17063,7 +16231,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -18604,7 +17772,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -19703,7 +18871,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -20006,7 +19174,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -20895,216 +20063,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#gdx--OBS-OBS4All--gdx_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "gof",
@@ -21732,7 +20692,7 @@
     "RW"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -22068,216 +21028,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#gju--OBS-OBS4All--gju_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "rmy-x-vg",
@@ -26066,216 +24818,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#ins--BCS--ins_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "id",
@@ -26880,7 +25424,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -27370,7 +25914,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -27683,7 +26227,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -28286,7 +26830,7 @@
     "SG"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "kannada",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -31387,7 +29931,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -31899,7 +30443,7 @@
     "PK"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -32195,7 +30739,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -32488,7 +31032,7 @@
    "region": "Asia",
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -33069,7 +31613,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -33935,7 +32479,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -34458,216 +33002,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#und-x-lahouli--OBS-OBS4All--und-x-lahouli_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "lki",
@@ -34945,7 +33281,7 @@
     "MM"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "lao",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -36140,7 +34476,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -37909,7 +36245,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -38545,7 +36881,7 @@
     "BH"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "malayalam",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -39734,7 +38070,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -41982,7 +40318,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -45228,216 +43564,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#noi--OBS-OBS4All--noi_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "or",
@@ -45449,7 +43577,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -47589,216 +45717,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#lae--OBS-OBS4All--lae_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "peg",
@@ -47813,7 +45733,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -48927,7 +46847,7 @@
     "TZ"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gurmukhi",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -50125,7 +48045,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -51039,216 +48959,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#rnp--OBS-OBS4All--rnp_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "ru",
@@ -51888,7 +49600,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": false,
@@ -52193,7 +49905,7 @@
     "IN"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "oriya",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -53381,216 +51093,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#xsr--OBS-OBS4All--xsr_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "sgh",
@@ -58916,7 +56420,7 @@
     "KH"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "tamil",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -59234,7 +56738,7 @@
     "AE"
    ],
    "direction": "ltr",
-   "script": "other",
+   "script": "telugu",
    "formats": {
     "pdf": true,
     "audio": false,
@@ -59859,216 +57363,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Video only",
-    "text": "This version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#thf--OBS-OBS4All--thf_obs.1)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   },
   {
    "code": "thl",
@@ -64018,7 +61314,7 @@
    "region": null,
    "countryCodes": [],
    "direction": "ltr",
-   "script": "other",
+   "script": "gujarati",
    "formats": {
     "pdf": false,
     "audio": true,
@@ -65270,216 +62566,8 @@
      ]
     }
    ],
-   "stories": [
-    {
-     "num": 1,
-     "title": "Audio/Video only"
-    },
-    {
-     "num": 2,
-     "title": null
-    },
-    {
-     "num": 3,
-     "title": null
-    },
-    {
-     "num": 4,
-     "title": null
-    },
-    {
-     "num": 5,
-     "title": null
-    },
-    {
-     "num": 6,
-     "title": null
-    },
-    {
-     "num": 7,
-     "title": null
-    },
-    {
-     "num": 8,
-     "title": null
-    },
-    {
-     "num": 9,
-     "title": null
-    },
-    {
-     "num": 10,
-     "title": null
-    },
-    {
-     "num": 11,
-     "title": null
-    },
-    {
-     "num": 12,
-     "title": null
-    },
-    {
-     "num": 13,
-     "title": null
-    },
-    {
-     "num": 14,
-     "title": null
-    },
-    {
-     "num": 15,
-     "title": null
-    },
-    {
-     "num": 16,
-     "title": null
-    },
-    {
-     "num": 17,
-     "title": null
-    },
-    {
-     "num": 18,
-     "title": null
-    },
-    {
-     "num": 19,
-     "title": null
-    },
-    {
-     "num": 20,
-     "title": null
-    },
-    {
-     "num": 21,
-     "title": null
-    },
-    {
-     "num": 22,
-     "title": null
-    },
-    {
-     "num": 23,
-     "title": null
-    },
-    {
-     "num": 24,
-     "title": null
-    },
-    {
-     "num": 25,
-     "title": null
-    },
-    {
-     "num": 26,
-     "title": null
-    },
-    {
-     "num": 27,
-     "title": null
-    },
-    {
-     "num": 28,
-     "title": null
-    },
-    {
-     "num": 29,
-     "title": null
-    },
-    {
-     "num": 30,
-     "title": null
-    },
-    {
-     "num": 31,
-     "title": null
-    },
-    {
-     "num": 32,
-     "title": null
-    },
-    {
-     "num": 33,
-     "title": null
-    },
-    {
-     "num": 34,
-     "title": null
-    },
-    {
-     "num": 35,
-     "title": null
-    },
-    {
-     "num": 36,
-     "title": null
-    },
-    {
-     "num": 37,
-     "title": null
-    },
-    {
-     "num": 38,
-     "title": null
-    },
-    {
-     "num": 39,
-     "title": null
-    },
-    {
-     "num": 40,
-     "title": null
-    },
-    {
-     "num": 41,
-     "title": null
-    },
-    {
-     "num": 42,
-     "title": null
-    },
-    {
-     "num": 43,
-     "title": null
-    },
-    {
-     "num": 44,
-     "title": null
-    },
-    {
-     "num": 45,
-     "title": null
-    },
-    {
-     "num": 46,
-     "title": null
-    },
-    {
-     "num": 47,
-     "title": null
-    },
-    {
-     "num": 48,
-     "title": null
-    },
-    {
-     "num": 49,
-     "title": null
-    },
-    {
-     "num": 50,
-     "title": null
-    }
-   ],
-   "extract": {
-    "title": "Audio/Video only",
-    "text": "This version of OBS is audio/video only. [Click here to play the video](https://www.youtube.com/playlist?list=PLJB4l3NFDo4eMnRYOTQLQH3dS_H2WlFD5)",
-    "reference": null
-   },
-   "storyNums": [
-    1
-   ]
+   "stories": null,
+   "storyNums": []
   }
  ]
 }

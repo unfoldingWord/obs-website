@@ -4,9 +4,16 @@
   },
   "storyN": "Verhaal {n} van {total}",
   "listen": "Luister naar dit verhaal",
+  "watch": "Bekijk dit verhaal",
+  "downloadAudio": "Audio downloaden",
+  "downloadVideo": "Video downloaden",
+  "transcriptNote": "De woorden van deze opname staan hieronder, in het {language}.",
+  "imageAlt": "{story} — illustratie {n}",
   "previous": "Vorige",
   "next": "Volgende",
   "allStories": "Alle verhalen in het {language}",
   "license": "Vrij te gebruiken, aan te passen en te delen onder een open licentie (CC BY-SA 4.0).",
-  "openInReader": "Lezen in de lezer"
+  "openInReader": "Lezen in de lezer",
+  "audioFile": "Audiobestand",
+  "videoFile": "Video"
 }

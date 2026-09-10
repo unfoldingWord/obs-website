@@ -21,6 +21,14 @@
 //                   <html data-script> which styles.css keys the font-family
 //                   overrides on (marketing pages take it from their locale)
 //   ogImage       — absolute social image URL (default: the story-boat photo)
+//   chrome        — chrome strings this page rendered, as
+//                   { "<rendered text>": { k: "<dotted key>", a: {args} } }.
+//                   Only the single-URL pages (the hubs and story pages) pass
+//                   it: they have no locale variants, so a visitor whose
+//                   preferred locale differs from the baked one has the
+//                   chrome swapped in the browser from /assets/i18n/{code}.json
+//                   (see public/assets/js/locale.js). Locale-scoped pages
+//                   need none — they are redirected to their own variant.
 //
 // Named slot "scripts" carries per-page script tags after nav.js.
 //
@@ -28,7 +36,7 @@
 // Create/Translate and added a sixth item — a WCAG 3.2.3 Consistent
 // Navigation failure; /resources/ was folded into the Translate page's
 // Resources tab).
-import { locales, byCode, defaultLocale, localePath, fontHrefFor, isLocalized, type PageSlug } from '../i18n/config';
+import { locales, byCode, defaultLocale, localePath, fontHrefFor, isLocalized, localizedSlugs, slugPaths, type PageSlug } from '../i18n/config';
 import { content } from '../i18n/content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -48,9 +56,10 @@ interface Props {
   fontHref?: string | null;
   script?: string;
   ogImage?: string;
+  chrome?: Record<string, { k: string; a?: Record<string, string | number> }>;
 }
 
-const { locale, slug, title, description, jsonLd = [], canonicalPath, htmlLang, dir, alternates, fontHref: fontOverride, script, ogImage: ogOverride } = Astro.props;
+const { locale, slug, title, description, jsonLd = [], canonicalPath, htmlLang, dir, alternates, fontHref: fontOverride, script, ogImage: ogOverride, chrome } = Astro.props;
 const def = byCode(locale);
 const ui = content(locale, 'ui');
 const localized = alternates ?? isLocalized(slug);
@@ -73,6 +82,45 @@ const graph = serializeGraph([organizationNode(), websiteNode(lang), ...jsonLd])
 // Open Graph locale tags use underscores (es_MX), not BCP-47 hyphens. Only
 // marketing locales have a meaningful og:locale cluster.
 const ogLocale = def.tag.replace('-', '_');
+
+// The header, footer and skip link are rendered here, so their strings are
+// registered here too — the page's own `chrome` prop covers only what the
+// page itself renders. Without this a swapped hub kept an untranslated nav.
+const chromeAll = chrome
+  ? {
+      ...Object.fromEntries(
+        [
+          ['ui.siteTitle', ui.siteTitle],
+          ['ui.strings.skipToContent', ui.strings?.skipToContent],
+          ['ui.strings.menuLabel', ui.strings?.menuLabel],
+          ['ui.strings.languageLabel', ui.strings?.languageLabel],
+          ['ui.strings.faqLabel', ui.strings?.faqLabel],
+          ['ui.legal.license', ui.legal?.license],
+          ['ui.legal.privacy', ui.legal?.privacy],
+          ['ui.legal.terms', ui.legal?.terms],
+          ...ui.nav.map((item: { label: string }, i: number) => [`ui.nav.${i}.label`, item.label]),
+        ]
+          .filter(([, v]) => typeof v === 'string' && v)
+          .map(([k, v]) => [String(v).trim(), { k }])
+      ),
+      ...chrome,
+    }
+  : undefined;
+
+// What public/assets/js/locale.js needs to resolve the visitor's preferred
+// interface language: the locales this site is published in, their BCP-47
+// tags (to match against navigator.languages), this page's own locale, and
+// whether this page has locale variants to redirect to.
+const localeMeta = JSON.stringify({
+  locale,
+  defaultLocale,
+  alternates: localized,
+  locales: locales.map((l) => l.code),
+  tags: Object.fromEntries(locales.map((l) => [l.code, l.tag])),
+  // Needed to put nav and footer hrefs back when a visitor picks the locale
+  // the page was built in.
+  slugs: Object.fromEntries(localizedSlugs.map((sl) => [sl, slugPaths[sl]])),
+});
 ---
 
 <html lang={lang} dir={direction} data-script={dataScript}>
@@ -118,6 +166,13 @@ const ogLocale = def.tag.replace('-', '_');
 <link rel="icon" href="/assets/img/favicon.ico" sizes="any" />
 <link rel="stylesheet" href="/assets/css/styles.css" />
 <script type="application/ld+json" set:html={graph} />
+<!-- The interface-language preference (public/assets/js/locale.js). In <head>
+     and not deferred: a visitor whose language has its own copy of this page
+     is redirected there, and that must happen before the browser paints a
+     page they are about to leave. The chrome swap in the same script waits
+     for the DOM. -->
+<script is:inline set:html={`window.__obsLocale=${localeMeta}`} />
+<script is:inline src="/assets/js/locale.js"></script>
 <GoogleAnalytics />
 <slot name="head" />
 </head>
@@ -125,7 +180,12 @@ const ogLocale = def.tag.replace('-', '_');
 
 <a class="skip-link" href="#main">{ui.strings?.skipToContent ?? 'Skip to content'}</a>
 
-<Header locale={locale} ui={ui} slug={slug} switcher={localized} />
+{/* The switcher belongs on the single-URL pages too, and especially there:
+    they are the ~9,200 pages where the interface language is inferred rather
+    than chosen, so they were the only pages offering no way to correct it.
+    On those pages a pick applies in place (locale.js) instead of navigating;
+    the href stays as the no-JavaScript fallback. */}
+<Header locale={locale} ui={ui} slug={slug} switcher={localized || Boolean(chromeAll)} />
 
 <main id="main">
 <slot />
@@ -133,6 +193,7 @@ const ogLocale = def.tag.replace('-', '_');
 
 <Footer locale={locale} ui={ui} />
 
+{chromeAll && <script type="application/json" id="obs-chrome" set:html={JSON.stringify({ keys: chromeAll })} />}
 <script is:inline src="/assets/js/nav.js"></script>
 <slot name="scripts" />
 

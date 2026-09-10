@@ -61,8 +61,11 @@ export function isLocalized(slug: PageSlug): boolean {
   return (localizedSlugs as readonly string[]).includes(slug);
 }
 
-/** URL path fragment for each page, relative to the locale root. */
-const slugPaths: Record<PageSlug, string> = {
+/** URL path fragment for each page, relative to the locale root. Exported
+ *  so the client-side locale swap (public/assets/js/locale.js) can rewrite
+ *  nav and footer hrefs into the visitor's preferred locale without a second
+ *  copy of this table. */
+export const slugPaths: Record<PageSlug, string> = {
   home: '',
   'why-obs': 'why-obs/',
   discover: 'discover/',

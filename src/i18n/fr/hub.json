@@ -14,6 +14,7 @@
   "video": "Regarder (vidéo)",
   "app": "Obtenir l'application mobile",
   "extractTitle": "Extrait de l'histoire 1",
+  "extractAlt": "Une illustration d'Open Bible Stories en {language}",
   "storiesTitle": "Histoires ({n} sur {total})",
   "version": "v{version}",
   "teams": "{n} équipes ont publié cette langue.",
@@ -27,5 +28,31 @@
   "about": "À propos de cette traduction",
   "readerTitle": "Lire en ligne",
   "readerLoading": "Chargement…",
-  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements et les pages d'histoires fonctionnent toujours."
+  "readerOffline": "La lecture en ligne n'est pas disponible pour le moment (Door43 est inaccessible). Les téléchargements ci-dessus et le lien vers la source sur Door43 au bas de cette page fonctionnent toujours.",
+  "readerNeedsJs": "Ces récits se lisent dans un lecteur sur cette page, qui a besoin de JavaScript. Sans lui, utilisez les téléchargements ci-dessus ou le lien vers la source Door43 au bas de cette page.",
+  "faqTitle": "Questions sur Open Bible Stories en {language}",
+  "faqMore": "Plus de questions et réponses",
+  "faqStories": {
+    "all": "Les 50 sont traduits en {language}, et chacun peut être lu sur cette page.",
+    "some": "{n} d'entre eux peuvent être lus en {language} sur cette page pour l'instant, et d'autres sont en cours de traduction.",
+    "none": "Ces récits n'ont pas encore leurs propres pages sur ce site en {language} — lisez-les dans le lecteur de cette page, ou utilisez les téléchargements listés ci-dessus."
+  },
+  "faq": [
+    {
+      "q": "Qu'est-ce qu'Open Bible Stories en {language} ?",
+      "a": "Open Bible Stories, ce sont 50 récits clés de la Bible, de la Création à l’Apocalypse, pour l’évangélisation et la formation de disciples. {stories} Là où un fichier audio, une vidéo ou un PDF existe en {language}, vous pouvez aussi l'écouter, le regarder ou le télécharger."
+    },
+    {
+      "q": "S'agit-il d'une traduction de toute la Bible ?",
+      "a": "Non. Ces récits racontent des passages bibliques ; ils ne sont pas une traduction de toute la Bible en {language}. Beaucoup d'équipes traduisent d'abord les récits, puis poursuivent avec la traduction de l'Écriture elle-même."
+    },
+    {
+      "q": "Puis-je copier, imprimer ou adapter ces récits ?",
+      "a": "Oui. Open Bible Stories est libre d'utilisation, d'adaptation et de partage sous la licence Creative Commons Attribution-Partage dans les mêmes conditions 4.0 (CC BY-SA 4.0) : copiez-les, imprimez-les, enregistrez-les ou construisez dessus — y compris à des fins commerciales — à condition de créditer l'œuvre originale et de publier ce que vous produisez sous la même licence."
+    },
+    {
+      "q": "Comment puis-je aider à achever ou à améliorer la traduction en {language} ?",
+      "a": "Les traductions sont faites par des équipes issues de la communauté linguistique elle-même. La page Traduire explique comment une équipe travaille, comment elle vérifie sa traduction avec les Églises locales et comment obtenir l'aide d'unfoldingWord."
+    }
+  ]
 }

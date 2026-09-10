@@ -5,9 +5,16 @@
 //
 //   1. every sitemap <loc> resolves to a built page
 //   2. the retired /discover/read/ route stays gone, and nothing links to it
-//   3. every language with story pages links to them from its hub
+//   3. every language with story pages links to them from its hub, and every
+//      hub that lists titles offers some way to read them (never a self-link)
 //   4. every internal link into /l/ resolves to a built page
 //   5. the output fits Cloudflare Pages' 20,000-file limit
+//   6. /llms.txt lists only URLs that were built, and every markdown mirror
+//   7. every chrome string a single-URL page registers for the browser-side
+//      locale swap resolves in all 16 locale bundles
+//   8. no story page is a "Video only" placeholder published as story text
+//   9. every retired public route redirects rather than 404s, every redirect
+//      target exists, and no redirect chains
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -99,6 +106,61 @@ for (const lang of languages) {
   if (dangling.length) errors.push(`/l/${lang.code}/ links ${dangling.length} story page(s) that were not built: ${dangling.slice(0, 3).join(', ')}`);
 }
 
+// 3a. Every hub that lists story titles must offer a way to reach them.
+//
+// This is the check that was missing when "Read online" on the 18 legacy
+// (translationStudio) hubs pointed at the hub's own URL: the link existed and
+// resolved — to the page it was already on — so it reloaded and did nothing.
+// A link-existence check cannot see that; a *self*-link in a read control is
+// the signal, so this looks for one, and for the presence of at least one
+// reader entry point (a story-page link, `#story-N`, or `#read`).
+for (const lang of languages) {
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) continue;
+  const titles = (lang.stories ?? []).filter((s) => s.title).length;
+  if (!titles) continue;
+  const html = readFileSync(hub, 'utf8');
+  const escaped = lang.code.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+  const actions = html.match(/<ul class="hub-format-list">[\s\S]*?<\/ul>/);
+  if (actions && new RegExp(`href="/l/${escaped}/"`).test(actions[0])) {
+    errors.push(`/l/${lang.code}/ has a read control pointing at the hub itself — clicking it reloads the page and opens nothing`);
+  }
+  const canRead =
+    new RegExp(`href="/l/${escaped}/story-\\d+/"`).test(html) || /href="#story-\d+"/.test(html) || /href="#read"/.test(html);
+  if (!canRead) {
+    errors.push(`/l/${lang.code}/ lists ${titles} story title(s) but offers no way to read them (no story page, no #story-N, no #read)`);
+  }
+}
+
+// 3b. A control must resolve to something that can keep its promise.
+//
+// The generalisation of check 3a, and of two findings that were the same
+// shape as it: "Listen (audio)" appeared on 92 hubs and resolved to a story
+// page with no player on 78 of them (their only "audio" was a YouTube
+// playlist, which is video), and "Read online" appeared on the 14 languages
+// whose repo is a "Video only" placeholder. A link that exists and resolves
+// is not the same as a link that delivers.
+for (const lang of languages) {
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) continue;
+  const html = readFileSync(hub, 'utf8');
+  const actions = html.match(/<ul class="hub-format-list">[\s\S]*?<\/ul>/);
+  if (!actions) continue;
+  for (const [kind, anchor] of [['listen', '#listen'], ['watch', '#watch']]) {
+    const m = actions[0].match(new RegExp(`href="(/l/[^"]*)${anchor}"`));
+    if (!m) continue;
+    const page = join(DIST, m[1], 'index.html');
+    if (!existsSync(page)) {
+      errors.push(`/l/${lang.code}/ has a ${kind} control pointing at ${m[1]}, which was not built`);
+      continue;
+    }
+    // The anchor is on the player itself, so its presence is the proof.
+    if (!readFileSync(page, 'utf8').includes(`id="${kind === 'listen' ? 'listen' : 'watch'}"`)) {
+      errors.push(`/l/${lang.code}/ offers ${kind} but ${m[1]} has no ${kind === 'listen' ? 'audio' : 'video'} player`);
+    }
+  }
+}
+
 // 4. Every link into the content tree must resolve. Check 3 covers the hubs;
 // this covers every other page that links into /l/ — story prev/next above
 // all, which steps through a list that has to be the pages this build made
@@ -123,6 +185,112 @@ for (const file of htmlFiles(DIST)) {
   }
 }
 
+// 6. /llms.txt must list only URLs that 200 (#20). This is the whole point
+// of the file: an index that advertises 214 language pages whose URLs 404 is
+// worse than no index. Checked against the served file, not the source, so a
+// generation bug cannot pass.
+let llms = 0;
+const llmsFile = join(DIST, 'llms.txt');
+if (!existsSync(llmsFile)) {
+  errors.push('llms.txt is missing');
+} else {
+  const text = readFileSync(llmsFile, 'utf8');
+  for (const m of text.matchAll(new RegExp(`${SITE}(/[^\\s)]*)`, 'g'))) {
+    const path = m[1].replace(/[.,]$/, '');
+    llms++;
+    // Directory routes are index.html; the markdown mirrors are plain files.
+    const target = path.endsWith('/') ? join(DIST, path, 'index.html') : join(DIST, path);
+    if (!existsSync(target)) errors.push(`llms.txt lists ${path}, which was not built`);
+  }
+  // Every mirror that exists must be listed, or the index is stale.
+  const mirrors = existsSync(join(DIST, 'content'))
+    ? readdirSync(join(DIST, 'content')).filter((f) => f.endsWith('.md'))
+    : [];
+  for (const f of mirrors) {
+    if (!text.includes(`/content/${f}`)) errors.push(`llms.txt does not list /content/${f}`);
+  }
+}
+
+// 7. The browser-side locale swap must be able to resolve every string.
+//
+// The hubs and story pages are one URL each, so their chrome is baked in one
+// locale and swapped in the browser from /assets/i18n/{locale}.json (see
+// public/assets/js/locale.js). The failure mode is silent and only visible to
+// a visitor who prefers another language: a key that no longer exists leaves
+// that one string in the baked language, and a whole page half-swapped reads
+// as broken. So every key every page registers is checked against every
+// bundle, here, where it costs nothing.
+const bundleDir = join(DIST, 'assets/i18n');
+let swapKeys = 0;
+if (!existsSync(bundleDir)) {
+  errors.push('assets/i18n/ is missing — the locale bundles were not built');
+} else {
+  const bundles = new Map();
+  for (const f of readdirSync(bundleDir).filter((f) => f.endsWith('.json'))) {
+    const b = JSON.parse(readFileSync(join(bundleDir, f), 'utf8'));
+    if (!b.strings || !b.tag || !b.slugs) errors.push(`assets/i18n/${f} is missing strings, tag or slugs`);
+    bundles.set(f.slice(0, -5), b);
+  }
+  if (bundles.size !== 16) errors.push(`${bundles.size} locale bundles built, expected 16`);
+  const seen = new Set();
+  for (const file of htmlFiles(DIST)) {
+    const m = readFileSync(file, 'utf8').match(
+      /<script type="application\/json" id="obs-chrome">([\s\S]*?)<\/script>/
+    );
+    if (!m) continue;
+    let keys;
+    try {
+      keys = JSON.parse(m[1]).keys;
+    } catch {
+      errors.push(`${file.slice(DIST.length)}: the obs-chrome map is not valid JSON`);
+      continue;
+    }
+    for (const entry of Object.values(keys ?? {})) {
+      for (const key of [entry.k, ...Object.values(entry.r ?? {})]) {
+        if (seen.has(key)) continue;
+        seen.add(key);
+        swapKeys++;
+        for (const [locale, b] of bundles) {
+          if (typeof b.strings[key] !== 'string') {
+            errors.push(`chrome key "${key}" (from ${file.slice(DIST.length)}) is missing from assets/i18n/${locale}.json`);
+          }
+        }
+      }
+    }
+  }
+  if (!swapKeys) errors.push('no page registered any chrome strings — the locale swap would do nothing');
+}
+
+// 8. A placeholder is not a story.
+//
+// 14 published languages ship a repo whose story 1 says only "Video only" and
+// links to a player. Those used to become real story pages, mirrors, sitemap
+// URLs and CreativeWork nodes whose `text` was that sentence — see
+// isStubContent() in fetch-catalog.mjs. This is the assertion that keeps them
+// out, checked against the built HTML rather than the snapshot so a
+// regression anywhere in the pipeline shows up.
+const STUB = /video[\s-]*only/i;
+let stubPages = 0;
+for (const lang of languages) {
+  const dir = join(DIST, 'l', lang.code);
+  if (!existsSync(dir)) continue;
+  for (const d of readdirSync(dir, { withFileTypes: true })) {
+    if (!d.isDirectory() || !/^story-\d+$/.test(d.name)) continue;
+    const html = readFileSync(join(dir, d.name, 'index.html'), 'utf8');
+    const h1 = html.match(/<h1[^>]*>([^<]*)<\/h1>/);
+    if (h1 && STUB.test(h1[1])) {
+      stubPages++;
+      errors.push(`/l/${lang.code}/${d.name}/ publishes a placeholder as story text: "${h1[1].trim()}"`);
+    }
+  }
+  // The hub must not quote it either — the extract is the "From story 1" block.
+  const hub = readFileSync(join(dir, 'index.html'), 'utf8');
+  const extract = hub.match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/);
+  if (extract && STUB.test(extract[1].replace(/<[^>]+>/g, ' '))) {
+    errors.push(`/l/${lang.code}/ quotes a placeholder as its story-1 extract`);
+  }
+}
+
 // 2b. Nothing may still reference the retired route.
 function* files(dir) {
   for (const name of readdirSync(dir)) {
@@ -142,6 +310,93 @@ if (all.length > MAX_FILES) {
   errors.push(`${all.length} files — over the Cloudflare Pages limit of ${MAX_FILES}.`);
 }
 
+// 9. A retired route must redirect, not 404.
+//
+// Search Console's "Not found (404)" on openbiblestories.org was this: the
+// standalone reader at /discover/read/ and /{locale}/discover/read/ was live
+// until the previous release and had no redirect rule, so 17 previously
+// indexed URLs started 404ing. A deleted route leaves no trace in the build,
+// so it cannot be discovered from dist/ — the list below is the record, and
+// each entry names where it came from. Add to it whenever a public route is
+// retired.
+//
+// Also checked here, because the same file is the only place they can go
+// wrong: a redirect must land on something that exists, and must not point at
+// another redirect (a chain costs a round trip and Google follows only so
+// many).
+const RETIRED = [
+  // Deleted in d39c5eb (SEO phases 1-3): the standalone reader, replaced by
+  // static story pages plus the in-place reader on each hub.
+  '/discover/read/',
+  '/es/discover/read/',
+  '/ar/discover/read/',
+  // Renamed in 231472c: /features/ became /why-obs/. The locale tree did not
+  // exist yet, so only the unprefixed path was ever live.
+  '/features/',
+  // Deleted in 231472c: folded into the Translate page's Resources tab.
+  '/resources/',
+  // The Library browser, replaced by /discover/.
+  '/library',
+  '/library/',
+  '/create/library/',
+  // @astrojs/sitemap's old single-file sitemap.
+  '/sitemap-0.xml',
+];
+
+const redirectsFile = join(DIST, '_redirects');
+if (!existsSync(redirectsFile)) {
+  errors.push('_redirects is missing from the build — every retired route would 404');
+} else {
+  const rules = [];
+  for (const line of readFileSync(redirectsFile, 'utf8').split('\n')) {
+    const t = line.trim();
+    if (!t || t.startsWith('#')) continue;
+    const [from, to, code] = t.split(/\s+/);
+    if (!from?.startsWith('/')) continue; // host rules use absolute URLs
+    rules.push({ from, to, code });
+  }
+
+  // Cloudflare Pages matches a trailing `*` splat and `:name` placeholders.
+  const matches = (rule, path) => {
+    const re = new RegExp(
+      '^' +
+        rule.from
+          .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+          .replace(/:[a-zA-Z]+/g, '[^/]+')
+          .replace(/\*/g, '.*') +
+        '$'
+    );
+    return re.test(path);
+  };
+  const ruleFor = (path) => rules.find((r) => matches(r, path));
+
+  for (const path of RETIRED) {
+    const rule = ruleFor(path);
+    if (!rule) {
+      errors.push(`retired route ${path} has no redirect rule — it 404s, and it was live once`);
+      continue;
+    }
+    if (rule.code !== '301') errors.push(`retired route ${path} redirects with ${rule.code}, expected 301`);
+  }
+
+  // Every target must exist, and must not itself redirect.
+  for (const rule of rules) {
+    if (!rule.to?.startsWith('/')) continue;
+    // A placeholder in the target is filled from the request; check a real one.
+    const target = rule.to.replace(/:[a-zA-Z]+/g, 'es').split('#')[0];
+    const onDisk = target.endsWith('/')
+      ? join(DIST, target, 'index.html')
+      : join(DIST, target);
+    if (!existsSync(onDisk)) {
+      errors.push(`redirect ${rule.from} points at ${rule.to}, which was not built`);
+    }
+    const next = ruleFor(target);
+    if (next && next.from !== rule.from) {
+      errors.push(`redirect chain: ${rule.from} → ${rule.to} → ${next.to}`);
+    }
+  }
+}
+
 if (errors.length) {
   for (const e of errors.slice(0, 12)) console.error(`✗ ${e}`);
   if (errors.length > 12) console.error(`  …and ${errors.length - 12} more`);
@@ -149,5 +404,7 @@ if (errors.length) {
 }
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
-    `${links} links into /l/ resolve, ${all.length}/${MAX_FILES} files, no /discover/read/`
+    `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
+    `no placeholder story text, ${RETIRED.length} retired routes redirect, ` +
+    `${all.length}/${MAX_FILES} files, no /discover/read/`
 );

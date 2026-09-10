@@ -14,6 +14,7 @@
   "video": "Tazama (video)",
   "app": "Pata programu ya simu",
   "extractTitle": "Kutoka hadithi ya 1",
+  "extractAlt": "Picha kutoka Open Bible Stories katika {language}",
   "storiesTitle": "Hadithi ({n} kati ya {total})",
   "version": "v{version}",
   "teams": "Timu {n} zimechapisha lugha hii.",
@@ -27,5 +28,31 @@
   "about": "Kuhusu tafsiri hii",
   "readerTitle": "Soma mtandaoni",
   "readerLoading": "Inapakia…",
-  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa na kurasa za hadithi hapo juu bado vinafanya kazi."
+  "readerOffline": "Kusoma mtandaoni hakupatikani sasa (Door43 haifikiki). Vipakuliwa vilivyo juu na kiungo cha chanzo cha Door43 chini ya ukurasa huu vinaendelea kufanya kazi.",
+  "readerNeedsJs": "Hadithi hizi zinasomwa katika kisomaji kwenye ukurasa huu, ambacho kinahitaji JavaScript. Bila JavaScript, tumia upakuaji ulio juu, au kiungo cha chanzo cha Door43 chini ya ukurasa huu.",
+  "faqTitle": "Maswali kuhusu Open Bible Stories katika {language}",
+  "faqMore": "Maswali na majibu zaidi",
+  "faqStories": {
+    "all": "Zote 50 zimetafsiriwa katika {language}, na kila moja inaweza kusomwa kwenye ukurasa huu.",
+    "some": "{n} kati yake zinaweza kusomwa katika {language} kwenye ukurasa huu hadi sasa, na nyingine zinaendelea kutafsiriwa.",
+    "none": "Hadithi hizi hazina kurasa zao kwenye tovuti hii katika {language} bado — zisome katika kisomaji kwenye ukurasa huu, au tumia upakuaji uliotajwa juu."
+  },
+  "faq": [
+    {
+      "q": "Open Bible Stories katika {language} ni nini?",
+      "a": "Open Bible Stories ni hadithi 50 muhimu za Biblia, kutoka Uumbaji hadi Ufunuo, kwa uinjilisti na ufuasi. {stories} Pale ambapo sauti, video au PDF inapatikana katika {language}, unaweza pia kusikiliza, kutazama au kupakua."
+    },
+    {
+      "q": "Je, hii ni tafsiri ya Biblia yote?",
+      "a": "Hapana. Hadithi hizi zinasimulia matukio ya Biblia; hazikuwa tafsiri ya Biblia yote katika {language}. Timu nyingi hutafsiri hadithi kwanza, na kutoka hapo huendelea kutafsiri Maandiko yenyewe."
+    },
+    {
+      "q": "Naweza kunakili, kuchapisha au kubadilisha hadithi hizi?",
+      "a": "Ndiyo. Open Bible Stories inaweza kutumiwa, kubadilishwa na kushirikiwa bila malipo chini ya leseni ya Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0): inakili, ichapishe, irekodi au ujenge juu yake — hata kwa biashara — ikiwa unatambua kazi ya awali na unatoa kile unachotengeneza chini ya leseni ile ile."
+    },
+    {
+      "q": "Nawezaje kusaidia kukamilisha au kuboresha tafsiri ya {language}?",
+      "a": "Tafsiri hufanywa na timu kutoka jamii ya lugha yenyewe. Ukurasa wa Tafsiri unaeleza jinsi timu inavyofanya kazi, inavyohakiki tafsiri yake pamoja na makanisa ya mahali, na inavyopata msaada kutoka unfoldingWord."
+    }
+  ]
 }

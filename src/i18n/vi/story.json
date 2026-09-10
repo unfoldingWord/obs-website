@@ -4,9 +4,16 @@
   },
   "storyN": "Câu chuyện {n} / {total}",
   "listen": "Nghe câu chuyện này",
+  "watch": "Xem câu chuyện này",
+  "downloadAudio": "Tải bản âm thanh",
+  "downloadVideo": "Tải video",
+  "transcriptNote": "Lời của bản thu âm này ở bên dưới, bằng tiếng {language}.",
+  "imageAlt": "{story} — tranh {n}",
   "previous": "Trước",
   "next": "Tiếp",
   "allStories": "Tất cả câu chuyện bằng tiếng {language}",
   "license": "Được tự do sử dụng, chuyển thể và chia sẻ theo giấy phép mở (CC BY-SA 4.0).",
-  "openInReader": "Đọc trong trình đọc"
+  "openInReader": "Đọc trong trình đọc",
+  "audioFile": "Tệp âm thanh",
+  "videoFile": "Video"
 }

@@ -3,8 +3,9 @@
 // shape of DCS catalog entries) and an in-memory fake `fetch`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import {
   groupLanguages,
   applyLangnames,
@@ -12,16 +13,24 @@ import {
   makeExtract,
   detectScript,
   storyUrls,
+  isStubContent,
+  treeUrl,
+  tsFramesFromTree,
+  fetchTsFrames,
+  parseTsFrame,
   fetchStories,
   enrichStories,
   compactAssets,
   chooseAutonym,
   scriptFor,
+  scriptSample,
   assetFormats,
   fetchMissingAssets,
   enrichAssets,
   audioByStory,
+  videoByStory,
   writeStoryFiles,
+  mergeStoryMedia,
   clearReleasesCache,
   sortLanguages,
 } from './fetch-catalog.mjs';
@@ -211,6 +220,37 @@ test('detectScript picks the dominant block', () => {
   assert.equal(detectScript(''), 'latin');
 });
 
+// The scripts with no marketing locale. These 38 languages used to detect as
+// `other` and shipped no font pack at all — real text from their hubs, so a
+// regression here means their hubs go back to empty boxes.
+test('detectScript covers the Indic, Lao and Ethiopic scripts the catalog publishes', () => {
+  assert.equal(detectScript('ଏହିପରି ହେଲା । ଛ ଦିନରେ ପରମେଶ୍ୱର'), 'oriya');
+  assert.equal(detectScript('આ રીતે સઘળાંની શરુઆત થઈ'), 'gujarati');
+  assert.equal(detectScript('ਇਸ ਤਰ੍ਹਾਂ ਹਰ ਇੱਕ ਚੀਜ਼ ਦੀ ਸ਼ੁਰੂਆਤ ਹੋਈ'), 'gurmukhi');
+  assert.equal(detectScript('தேவன் ஆதியிலே எல்லாவற்றையும் படைத்தார்'), 'tamil');
+  assert.equal(detectScript('ఆదిలో దేవుడు ఈ విధంగా సమస్త సృష్టిని'), 'telugu');
+  assert.equal(detectScript('ದೇವರು ಆದಿಯಲ್ಲಿ ಎಲ್ಲವನ್ನೂ ಹೀಗೆ ಉಂಟುಮಾಡಿದನು'), 'kannada');
+  assert.equal(detectScript('ആദിയില്‍ ദൈവം ഇപ്രകാരമാണ്'), 'malayalam');
+  assert.equal(detectScript('ນີ້ຄືຈຸດເລີ່ມຕົ້ນຂອງສັບພະສິ່ງທັງໝົດ'), 'lao');
+  assert.equal(detectScript('ከዚህ ቀጥሎ የምንመለከተው እግዚአብሔር'), 'ethiopic');
+});
+
+// Danda (U+0964) sits in the Devanagari block but is shared punctuation
+// across the Indic scripts. Counting it as Devanagari is what made short
+// Odia samples — which use it heavily — detect as the wrong script.
+test('detectScript ignores the shared Indic danda', () => {
+  assert.equal(detectScript('ଛ ଦିନ ।।।।।।।।।।।।।।।।'), 'oriya');
+});
+
+test('scriptSample reads the extract and every story title', () => {
+  const sample = scriptSample({
+    extract: { title: 'ଶୀର୍ଷକ', text: 'ପାଠ୍ୟ', reference: null },
+    stories: [{ num: 1, title: 'ଏକ' }, { num: 2, title: null }],
+  });
+  assert.equal(sample, 'ଶୀର୍ଷକ ପାଠ୍ୟ ଏକ');
+  assert.equal(scriptSample({ extract: null, stories: null }), '');
+});
+
 test('storyUrls mirrors discover.js for RC and ts repos', () => {
   const rc = storyUrls({ owner: 'o', name: 'r', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' }, 7);
   assert.equal(rc.rc, 'https://git.door43.org/o/r/raw/v1/content/07.md');
@@ -258,6 +298,209 @@ test('fetchStories handles ts repos and missing files without throwing', async (
   assert.equal(r.script, 'arabic');
 });
 
+// ---------------------------------------------------------------------------
+// Placeholder ("Video only") repos. 14 published languages ship one: the
+// translation exists as recordings, not text. The old client-side reader
+// skipped them; the build pipeline that replaced it published them as the
+// story until this guard.
+
+test('isStubContent matches the placeholder wording the reader guards against', () => {
+  assert.equal(isStubContent('This version of OBS is video only. [Click here to play](https://x)'), true);
+  assert.equal(isStubContent('Audio/Video only'), true);
+  assert.equal(isStubContent('Video-Only'), true);
+  assert.equal(isStubContent('1. The Creation'), false);
+  assert.equal(isStubContent(''), false);
+  assert.equal(isStubContent(null), false);
+  // Only the first 300 characters, same window as reader.js — a real story
+  // that happens to mention video far down is not a placeholder.
+  assert.equal(isStubContent('a'.repeat(320) + ' video only'), false);
+});
+
+test('a placeholder repo yields no stories, so it gets no story pages', async () => {
+  const lang = { code: 'awa', script: 'devanagari', entries: [{ owner: 'o', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' }] };
+  const f = fakeFetch((url) =>
+    url.endsWith('content/01.md')
+      ? '# Video only\n\nThis version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#awa--OBS)\n'
+      : null
+  );
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories, null, 'no stories at all, not a story titled "Video only"');
+  assert.equal(r.extract, null, 'and no hub extract quoting the placeholder');
+  assert.equal(r.stub, true);
+});
+
+test('a placeholder team falls through to a team with real text', async () => {
+  // What reader.js did: prefer the entry whose content is not a stub.
+  const lang = {
+    code: 'awa',
+    entries: [
+      { owner: 'stub', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' },
+      { owner: 'real', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' },
+    ],
+  };
+  const f = fakeFetch((url) => {
+    if (!/content\/(\d\d)\.md$/.test(url)) return null;
+    if (url.includes('/stub/')) return '# Video only\n\nThis version of OBS is video only.\n';
+    return url.endsWith('01.md') ? STORY_MD : '# 2. Story\n\ntext\n';
+  });
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories[0].title, '1. The Creation');
+  assert.match(r.extract.text, /^This is how/);
+  assert.notEqual(r.stub, true);
+});
+
+// ---------------------------------------------------------------------------
+// Legacy translationStudio ingestion. 18 published languages are tS repos;
+// before this path they had titles and no bodies, so no story pages, no
+// sitemap entries and no markdown mirror.
+
+test('tsFramesFromTree keeps only frame files, sorted, and merges pages', () => {
+  const frames = tsFramesFromTree(
+    {
+      tree: [
+        { path: 'manifest.json', type: 'blob' },
+        { path: '01', type: 'tree' },
+        { path: '01/02.txt', type: 'blob' },
+        { path: '01/01.txt', type: 'blob' },
+        { path: '01/title.txt', type: 'blob' },
+        { path: '01/reference.txt', type: 'blob' },
+        { path: '51/01.txt', type: 'blob' },
+      ],
+    },
+    { tree: [{ path: '02/01.txt', type: 'blob' }] }
+  );
+  assert.deepEqual(frames.get(1), ['01/01.txt', '01/02.txt']);
+  assert.deepEqual(frames.get(2), ['02/01.txt']);
+  assert.equal(frames.has(51), false, 'story 51 does not exist');
+  assert.equal(frames.size, 2);
+});
+
+test('parseTsFrame lifts the illustration out and collapses the text', () => {
+  const f = parseTsFrame('![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)\nخدا  دنیا\nرا آفرید\n');
+  assert.equal(f.image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.equal(f.text, 'خدا دنیا را آفرید');
+  assert.equal(parseTsFrame(null), null);
+  assert.equal(parseTsFrame('  ').text, '');
+});
+
+test('fetchTsFrames returns null when the tree listing cannot be read', async () => {
+  const entry = { owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' };
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => null)), null, '404');
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => 'not json')), null, 'unparseable');
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => '{"tree":[]}')), null, 'no frames');
+});
+
+test('treeUrl asks for the repo at its release ref', () => {
+  const url = treeUrl({ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1.2' }, 2);
+  assert.equal(url, 'https://git.door43.org/api/v1/repos/o/azb_obs/git/trees/v1.2?recursive=true&per_page=1000&page=2');
+});
+
+// The behaviour the 18 legacy languages were missing: real bodies, so
+// writeStoryFiles() gives them storyNums and the build gives them pages.
+function tsRepo({ stories = 2, frames = 3 } = {}) {
+  const tree = [{ path: 'manifest.json', type: 'blob' }];
+  for (let n = 1; n <= stories; n++) {
+    const nn = String(n).padStart(2, '0');
+    tree.push({ path: `${nn}/title.txt`, type: 'blob' }, { path: `${nn}/reference.txt`, type: 'blob' });
+    for (let f = 1; f <= frames; f++) tree.push({ path: `${nn}/${String(f).padStart(2, '0')}.txt`, type: 'blob' });
+  }
+  return fakeFetch((url) => {
+    if (url.includes('/git/trees/')) return url.includes('page=1') ? JSON.stringify({ tree, truncated: false }) : null;
+    const m = url.match(/\/raw\/v1\/(\d\d)\/(title|reference|\d\d)\.txt$/);
+    if (!m) return null;
+    const n = parseInt(m[1], 10);
+    if (n > stories) return null;
+    if (m[2] === 'title') return `${n}. آفرینش`;
+    if (m[2] === 'reference') return 'آفرینش ۱-۲';
+    return `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\nمتن قالب ${m[2]} داستان ${n}`;
+  });
+}
+
+test('fetchStories reads full bodies from a ts repo', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 2, frames: 3 }));
+  assert.equal(r.stories.length, 50);
+  assert.equal(r.stories[0].title, '1. آفرینش');
+  assert.equal(r.stories[0].body.frames.length, 3);
+  assert.equal(r.stories[0].body.reference, 'آفرینش ۱-۲');
+  assert.equal(r.stories[0].body.frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.equal(r.stories[0].body.frames[2].text, 'متن قالب 03 داستان 1');
+  assert.equal(r.stories[1].body.frames.length, 3, 'story 2 too');
+  assert.equal(r.stories[2].title, null, 'story 3 is not in this repo');
+  assert.equal(r.stories[2].body, null);
+  assert.equal(r.script, 'arabic');
+  assert.match(r.extract.text, /^متن قالب 01/);
+});
+
+test('ts languages get story pages once bodies exist', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'obs-ts-'));
+  const lang = {
+    code: 'azb',
+    entries: [],
+    stories: [
+      { num: 1, title: '1. آفرینش', body: { reference: 'آفرینش ۱-۲', frames: [{ image: null, text: 'یک' }] } },
+      { num: 2, title: '2. گناه', body: null },
+    ],
+  };
+  assert.equal(writeStoryFiles([lang], dir), 1);
+  assert.deepEqual(lang.storyNums, [1], 'only the story with a body gets a page');
+  const file = JSON.parse(readFileSync(join(dir, 'azb.json'), 'utf8'));
+  assert.equal(file.stories[0].frames[0].text, 'یک');
+  assert.deepEqual(lang.stories, [{ num: 1, title: '1. آفرینش' }, { num: 2, title: '2. گناه' }]);
+});
+
+test('a ts repo with no tree listing keeps its titles and gains no pages', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const f = fakeFetch((url) => {
+    if (url.includes('/git/trees/')) return null;
+    if (url.endsWith('/01/title.txt')) return '1. آفرینش';
+    if (url.endsWith('/01/01.txt')) return 'خدا دنیا را آفرید';
+    if (url.endsWith('/01/reference.txt')) return 'آفرینش ۱-۲';
+    return null;
+  });
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories[0].title, '1. آفرینش');
+  assert.equal(r.stories[0].body, null, 'two frames is an extract, not a story');
+  assert.equal(r.extract.text, 'خدا دنیا را آفرید');
+});
+
+test('enrichStories reports the per-layout outcome and names titles-only languages', async () => {
+  // The failure this exists for: a tS repo whose tree listing cannot be read
+  // still yields titles, so the build stays green and that language silently
+  // loses its story pages. On a deploy log with no other output, that is
+  // invisible.
+  const languages = [
+    { code: 'azb', script: 'latin', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] },
+    { code: 'tly', script: 'latin', entries: [{ owner: 'o', name: 'tly_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] },
+  ];
+  const lines = [];
+  const log = { log: (m) => lines.push(m), warn: (m) => lines.push(m) };
+  // azb has a readable tree; tly's listing 404s, so it gets titles only.
+  const good = tsRepo({ stories: 1, frames: 2 });
+  const f = async (url) => {
+    if (url.includes('tly_obs')) {
+      if (url.includes('/git/trees/')) return { ok: false, status: 404, text: async () => '' };
+      if (url.endsWith('/01/title.txt')) return { ok: true, status: 200, text: async () => '1. Story' };
+      return { ok: false, status: 404, text: async () => '' };
+    }
+    return good(url);
+  };
+  const out = await enrichStories(languages, null, f, log);
+  const summary = lines.join('\n');
+  // A logger with no .warn must not throw: several callers pass one, and a
+  // crash here would turn a degraded language into a failed catalog fetch.
+  const plain = [];
+  await enrichStories(languages, null, f, { log: (m) => plain.push(m) });
+  assert.match(plain.join('\n'), /yielded titles but NO story bodies/);
+  assert.match(summary, /ts layout — 2 languages fetched, 1 story bodies read/);
+  assert.match(summary, /1 language\(s\) yielded titles but NO story bodies.*tly/);
+  // The reporting fields must not leak into the snapshot.
+  for (const lang of out) {
+    assert.equal('layout' in lang, false);
+    assert.equal('bodies' in lang, false);
+  }
+});
+
 test('fetchStories falls through to the next team when the first repo has no stories', async () => {
   const lang = {
     code: 'awa',
@@ -276,8 +519,8 @@ test('fetchStories falls through to the next team when the first repo has no sto
 });
 
 test('enrichStories reuses the previous snapshot when the release is unchanged', async (t) => {
-  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+  const { writeFileSync, rmSync } = await import('node:fs');
+
   const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
   // Bodies live in src/data/stories/, so reuse requires that file to exist.
@@ -297,6 +540,30 @@ test('enrichStories reuses the previous snapshot when the release is unchanged',
   const fresh = await enrichStories([changed], previous, f, quiet, storiesDir);
   assert.ok(calls > 0);
   assert.equal(fresh[0].stories[0].title, '1. The Creation');
+});
+
+// A cached record keeps its text but not its verdict about the script:
+// widening detectScript() has to reach the ~200 languages that publish
+// nothing new, or their font packs never arrive.
+test('enrichStories re-derives the script of a reused record', async (t) => {
+  const { writeFileSync, rmSync } = await import('node:fs');
+
+  const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
+  writeFileSync(join(storiesDir, 'or.json'), JSON.stringify({ code: 'or', stories: [] }));
+  const lang = { code: 'or', script: 'latin', entries: [{ owner: 'o', name: 'or_obs', branch_or_tag_name: 'v1', released: '2026-01-01', metadata_type: 'rc', contentPath: 'content' }] };
+  const previous = {
+    languages: [{
+      ...lang,
+      stories: [{ num: 1, title: 'ସୃଷ୍ଟି' }],
+      extract: { title: 'ସୃଷ୍ଟି', text: 'ଏହିପରି ହେଲା ଛ ଦିନରେ ପରମେଶ୍ୱର', reference: null },
+      // What the old detector wrote for this language.
+      script: 'other',
+    }],
+  };
+  const [out] = await enrichStories([lang], previous, fakeFetch(() => null), { log() {} }, storiesDir);
+  assert.equal(out.script, 'oriya');
+  assert.equal(out.stories[0].title, 'ସୃଷ୍ଟି');
 });
 
 test('parseStoryMarkdown pairs each illustration with the text that follows it', () => {
@@ -324,21 +591,64 @@ test('audioByStory takes the newest release with per-story mp3s, preferring bitr
     { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.mp3', browser_download_url: 'https://e/old.mp3' }] },
   ];
   const map = audioByStory(releases);
-  assert.equal(map[1], 'https://e/hi.mp3', 'higher bitrate wins');
-  assert.equal(map[2], 'https://e/2.mp3');
+  assert.equal(map[1].url, 'https://e/hi.mp3', 'higher bitrate wins');
+  assert.equal(map[2].url, 'https://e/2.mp3');
+  // The size travels with the URL so the story page can say how big the file
+  // is before someone on a metered connection taps it.
+  assert.equal(map[1].size, null, 'absent when the release does not report one');
+  assert.equal(audioByStory([{ assets: [{ name: 'x_01.mp3', browser_download_url: 'https://e/1.mp3', size: 2400000 }] }])[1].size, 2400000);
   assert.deepEqual(audioByStory([]), {});
   assert.deepEqual(audioByStory([{ assets: [{ name: 'whole_obs.zip', browser_download_url: 'https://e/z.zip' }] }]), {});
 });
 
+// Per-story video (#16): same numbering rule as the audio map, but the
+// SMALLEST rendition wins — a story page is often opened on a phone on a
+// slow connection, and the hub still links the full set.
+test('videoByStory takes the newest release with per-story files, preferring the smallest rendition', () => {
+  const releases = [
+    { tag_name: 'v6', assets: [
+      { name: 'en_obs_v6_01_720p.mp4', browser_download_url: 'https://e/big.mp4' },
+      { name: 'en_obs_v6_01_360p.mp4', browser_download_url: 'https://e/small.mp4' },
+      { name: 'en_obs_v6_02_360p.mp4', browser_download_url: 'https://e/2.mp4' },
+      { name: 'en_obs_v6_all.zip', browser_download_url: 'https://e/all.zip' },
+    ] },
+    { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.3gp', browser_download_url: 'https://e/old.3gp' }] },
+  ];
+  const map = videoByStory(releases);
+  assert.equal(map[1].url, 'https://e/small.mp4', 'smallest rendition wins');
+  assert.equal(map[2].url, 'https://e/2.mp4');
+  assert.equal(Object.keys(map).length, 2, 'the zip is not a per-story file');
+  assert.deepEqual(videoByStory([]), {});
+  // A YouTube playlist is not a per-story file and must not become one.
+  assert.deepEqual(videoByStory([{ assets: [{ name: 'YouTube - Playlist', browser_download_url: 'https://www.youtube.com/playlist?list=X' }] }]), {});
+});
+
+// The video's own release date, not the language's newest release: a video is
+// published once and the text revised repeatedly, and taking the language's
+// `updated` rewrote the apparent upload date of an unchanged video every time.
+test('videoByStory carries the publish date of the release the file came from', () => {
+  const releases = [
+    { tag_name: 'v9', published_at: '2023-03-03T00:00:00Z', assets: [{ name: 'en_obs_v9.pdf', browser_download_url: 'https://e/t.pdf' }] },
+    { tag_name: 'v8', published_at: '2020-04-24T10:11:12Z', assets: [{ name: 'en_obs_v8_01_360p.mp4', browser_download_url: 'https://e/1.mp4' }] },
+  ];
+  const map = videoByStory(releases);
+  assert.equal(map[1].date, '2020-04-24', 'the video release, not the newest text release');
+  // No publish date on the release -> null, and the page omits the
+  // VideoObject rather than inventing an uploadDate.
+  const undated = videoByStory([{ assets: [{ name: 'x_obs_01_360p.mp4', browser_download_url: 'https://e/u.mp4' }] }]);
+  assert.equal(undated[1].date, null);
+});
+
 test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
 
   const withBody = {
     code: 'sw',
-    storyAudio: { 1: 'https://e/1.mp3' },
+    storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
+    storyVideo: { 1: { url: 'https://e/1.mp4', date: '2020-04-24' } },
     stories: [
       { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
       { num: 2, title: 'Dhambi', body: null },
@@ -352,16 +662,81 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   assert.deepEqual(noBody.storyNums, []);
   assert.deepEqual(withBody.stories, [{ num: 1, title: 'Uumbaji' }, { num: 2, title: 'Dhambi' }], 'hub list keeps every title');
   assert.ok(!('storyAudio' in withBody), 'audio map is not left on the snapshot');
+  assert.ok(!('storyVideo' in withBody), 'video map is not left on the snapshot');
 
   const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[0].audioSize, 2400000, 'size travels with the URL, so the page can say how big it is');
+  assert.equal(file.stories[0].video, 'https://e/1.mp4');
+  assert.equal(file.stories[0].videoDate, '2020-04-24');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
   assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
 });
 
+// Reproduces the reported defect: an existing checkout whose story text is
+// reused from the snapshot never gained the video the release history had, so
+// upgrading a built checkout showed no player and no VideoObject until the
+// text release happened to change.
+test('writeStoryFiles merges new media into a cached pre-video story file', async (t) => {
+  const { mkdtempSync, writeFileSync, readFileSync, rmSync } = await import('node:fs');
+
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+
+  // A story file written before #16: no video field at all.
+  writeFileSync(join(dir, 'en.json'), JSON.stringify({
+    code: 'en',
+    stories: [
+      { num: 1, title: 'The Creation', reference: null, frames: [{ image: null, text: 'x' }], audio: null },
+      { num: 2, title: 'Sin', reference: null, frames: [{ image: null, text: 'y' }], audio: null },
+    ],
+  }));
+
+  // Text reused (no bodies on the record), media freshly fetched.
+  const lang = {
+    code: 'en',
+    storyNums: [1, 2],
+    storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
+    storyVideo: { 1: { url: 'https://example.com/01.mp4', date: '2020-04-24' } },
+    stories: [{ num: 1, title: 'The Creation', body: null }, { num: 2, title: 'Sin', body: null }],
+  };
+  const written = writeStoryFiles([lang], dir);
+  assert.equal(written, 0, 'no story file is rewritten from scratch');
+  assert.deepEqual(lang.storyNums, [1, 2], 'the cached numbers survive');
+
+  const file = JSON.parse(readFileSync(join(dir, 'en.json'), 'utf8'));
+  assert.equal(file.stories[0].video, 'https://example.com/01.mp4');
+  assert.equal(file.stories[0].videoDate, '2020-04-24');
+  assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[1].video, undefined, 'a story with no media is untouched');
+  assert.equal(file.stories[0].frames[0].text, 'x', 'the text is never rewritten');
+});
+
+test('mergeStoryMedia is a no-op with no media, no file, or unchanged media', async (t) => {
+  const { mkdtempSync, writeFileSync, rmSync, statSync } = await import('node:fs');
+
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  assert.equal(mergeStoryMedia('nope', { 1: { url: 'https://e/1.mp3' } }, {}, dir), false, 'no story file');
+  writeFileSync(join(dir, 'sw.json'), JSON.stringify({
+    code: 'sw',
+    stories: [{ num: 1, title: 'Uumbaji', frames: [], audio: 'https://e/1.mp3', video: 'https://e/1.mp4', videoDate: '2020-01-01' }],
+  }));
+  assert.equal(mergeStoryMedia('sw', {}, {}, dir), false, 'nothing discovered');
+  assert.equal(
+    mergeStoryMedia('sw', { 1: { url: 'https://e/1.mp3' } }, { 1: { url: 'https://e/1.mp4', date: '2020-01-01' } }, dir),
+    false,
+    'already current'
+  );
+  // A corrupt file keeps whatever it has instead of throwing.
+  writeFileSync(join(dir, 'zz.json'), 'not json');
+  assert.equal(mergeStoryMedia('zz', { 1: { url: 'https://e/1.mp3' } }, {}, dir), false);
+  assert.ok(statSync(join(dir, 'zz.json')).size > 0);
+});
+
 test('writeStoryFiles keeps storyNums for a language reused from the snapshot', async (t) => {
-  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+  const { writeFileSync, rmSync } = await import('node:fs');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   writeFileSync(join(dir, 'sw.json'), JSON.stringify({ code: 'sw', stories: [] }));
@@ -378,7 +753,7 @@ test('writeStoryFiles keeps storyNums for a language reused from the snapshot', 
 
 test('enrichStories refetches when the cached entry has no story file on disk', async (t) => {
   const { mkdtempSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const empty = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(empty, { recursive: true, force: true }));
 

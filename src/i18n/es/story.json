@@ -4,9 +4,16 @@
   },
   "storyN": "Historia {n} de {total}",
   "listen": "Escuchar esta historia",
+  "watch": "Vea esta historia",
+  "downloadAudio": "Descargar el audio",
+  "downloadVideo": "Descargar el video",
+  "transcriptNote": "Las palabras de esta grabación están abajo, en {language}.",
+  "imageAlt": "{story} — ilustración {n}",
   "previous": "Anterior",
   "next": "Siguiente",
   "allStories": "Todas las historias en {language}",
   "license": "Libre para usar, adaptar y compartir bajo una licencia abierta (CC BY-SA 4.0).",
-  "openInReader": "Leer en el lector"
+  "openInReader": "Leer en el lector",
+  "audioFile": "Archivo de audio",
+  "videoFile": "Video"
 }

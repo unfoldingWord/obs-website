@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Câu hỏi về Open Bible Stories",
+    "description": "Open Bible Stories là gì, cách đọc hoặc tải về trong {count} ngôn ngữ, giấy phép mở cho phép làm gì, và cách bắt đầu một bản dịch."
+  },
+  "eyebrow": "Hỏi và đáp",
+  "title": "Câu hỏi về Open Bible Stories",
+  "intro": "Câu trả lời ngắn, vào thẳng vấn đề. Nếu không thấy câu hỏi của bạn ở đây, hãy <a href=\"/contact/\">viết cho chúng tôi</a>.",
+  "questions": [
+    {
+      "q": "Open Bible Stories là gì?",
+      "a": "Open Bible Stories là 50 câu chuyện trọng tâm của Kinh Thánh, từ Sáng thế đến Khải huyền, <strong>dành cho việc truyền giảng và môn đồ hoá</strong>, được cung cấp miễn phí để dịch và chia sẻ trên mọi phương tiện, trong mọi ngôn ngữ."
+    },
+    {
+      "q": "Open Bible Stories có phải là một bản dịch Kinh Thánh không?",
+      "a": "Không. Các câu chuyện là một bản lược khảo ngắn gọn về Kinh Thánh và về phúc âm, từ Sáng thế đến Khải huyền. Ngôn ngữ được đơn giản hoá giúp người mới học đỡ nặng đầu, vì nó giới hạn những vấn đề dịch thuật khó mà họ phải đối mặt. Toàn bộ 50 câu chuyện có dung lượng xấp xỉ sách Công vụ.\n\nChúng tôi huấn luyện người dịch mới dịch Open Bible Stories trước, vì công việc đó ít gây e ngại hơn so với dịch chính Kinh Thánh. Đây là cách lý tưởng để giới thiệu cho một nhóm mới những điều căn bản của việc dịch tốt: nó là phần dẫn nhập rất tốt về các nguyên tắc dịch thuật, gồm đủ các bước soạn bản nháp và kiểm tra theo nhóm, và buộc phải dùng những công cụ trợ giúp then chốt trong quy trình. Các nhóm hoàn tất trong vài tháng, và các câu chuyện dùng được ngay."
+    },
+    {
+      "q": "Bộ này có bao nhiêu ngôn ngữ?",
+      "a": "Hiện có {count} ngôn ngữ đã công bố bản dịch, và nhiều ngôn ngữ khác đang được thực hiện. Mỗi ngôn ngữ có trang riêng, liệt kê các câu chuyện, những định dạng có trong ngôn ngữ đó và nhóm đã công bố. Xem <a href=\"/discover/\">trang Khám phá</a> để có danh sách đầy đủ."
+    },
+    {
+      "q": "Làm sao để đọc, nghe hoặc tải về trong ngôn ngữ của tôi?",
+      "a": "Mở <a href=\"/discover/\">trang Khám phá</a>, tìm ngôn ngữ của bạn rồi mở trang của ngôn ngữ đó. Từ đó bạn có thể đọc mọi câu chuyện, nghe nếu có bản ghi âm, xem nếu có video, và tải về PDF hoặc các tệp âm thanh. Mọi bản kỹ thuật số đều miễn phí trên mạng."
+    },
+    {
+      "q": "Tôi có được sao chép, in, chuyển thể hoặc thu âm các câu chuyện này không?",
+      "a": "Được. Bạn có thể tặng bao nhiêu bản của sách này cũng được, không hạn chế. Mọi bản kỹ thuật số đều miễn phí trên mạng, và nhờ giấy phép mở mà chúng tôi dùng, bạn còn có thể tái xuất bản unfoldingWord&reg; Open Bible Stories vì mục đích thương mại ở bất cứ đâu trên thế giới mà không phải trả tiền bản quyền. Các câu chuyện được phát hành theo giấy phép Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0): bạn có thể sao chép, in, ghi âm, phát sóng hoặc chuyển thể, kể cả vì mục đích thương mại, miễn là bạn ghi công tác phẩm gốc và phát hành sản phẩm của mình theo cùng giấy phép đó. Hãy giữ nhãn hiệu unfoldingWord&reg; trên các bản không sửa đổi, và bỏ nhãn hiệu đó nếu bạn thay đổi hoặc dịch tác phẩm; hãy nói rõ bạn đã thay đổi gì, và ghi công là “Tác phẩm gốc của unfoldingWord có tại https://openbiblestories.org”.\n\nPhần tranh minh hoạ thuộc &copy; Sweet Publishing và được chia sẻ theo CC BY-SA 3.0, nên có phần ghi công riêng. <a href=\"/license/\">Trang giấy phép</a> có toàn văn."
+    },
+    {
+      "q": "Làm sao để bắt đầu một bản dịch trong ngôn ngữ của tôi?",
+      "a": "Hãy bắt đầu với trang <a href=\"/translate/\">Dịch</a>: trang này giải thích quy trình, các công cụ, và cách kiểm tra bản dịch cùng với những hội thánh sẽ sử dụng nó. Việc dịch do các nhóm thuộc chính cộng đồng ngôn ngữ đó thực hiện, và unfoldingWord có thể giúp bạn tìm chương trình huấn luyện cũng như mạng lưới các nhóm khác."
+    },
+    {
+      "q": "Câu chuyện nào kể về phúc âm, về Áp-ra-ham, hay về sự phục sinh?",
+      "a": "Các câu chuyện theo trình tự Kinh Thánh, nên dễ tìm theo số. Sự sáng thế và sự sa ngã là câu chuyện 1 đến 3, giao ước của Đức Chúa Trời với Áp-ra-ham bắt đầu ở câu chuyện 4, Lễ Vượt Qua và cuộc xuất hành là câu chuyện 11 và 12, và Cựu Ước kết thúc với lời hứa về Đấng Mê-si-a ở câu chuyện 21. Cuộc đời Chúa Giê-xu bắt đầu từ sự giáng sinh ở câu chuyện 23 rồi đến chức vụ và các ẩn dụ của Ngài; sự đóng đinh là câu chuyện 40, sự phục sinh là 41, và việc Ngài trở về trời là 42. Hội thánh khởi đầu ở câu chuyện 43, và ba câu chuyện cuối &mdash; 48, 49 và 50 &mdash; giải thích phúc âm và sự trở lại của Đấng Christ."
+    },
+    {
+      "q": "Ai làm ra Open Bible Stories?",
+      "a": "unfoldingWord&reg; phát triển bộ này cùng với <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Mỗi bản dịch là công việc của một nhóm thuộc cộng đồng ngôn ngữ đó, và mỗi trang ngôn ngữ đều nêu tên nhóm đã xuất bản. Các tệp nguồn nằm trên Door43, nơi ai cũng có thể xem tình trạng hiện tại của một bản dịch."
+    }
+  ]
+}

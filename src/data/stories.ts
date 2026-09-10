@@ -28,6 +28,23 @@ export interface Story {
   frames: StoryFrame[];
   /** Per-story mp3 from the newest release that has one, else null. */
   audio: string | null;
+  /** Per-story video file (smallest rendition published), else null. Absent
+   *  in story files written before #16 — read it as optional. */
+  video?: string | null;
+  /** Byte size of the per-story audio/video, when the release reported one —
+   *  shown on the download link so a metered connection knows the cost. */
+  audioSize?: number | null;
+  videoSize?: number | null;
+  /**
+   * Publish date of the release the video came from (ISO date), or null.
+   *
+   * Not the language's newest release: a video is published once and the text
+   * revised several times afterwards, so taking the language's `updated`
+   * silently rewrote the apparent upload date of an unchanged video on every
+   * text release. `uploadDate` is required for a VideoObject, so the node is
+   * omitted when this is missing rather than guessed.
+   */
+  videoDate?: string | null;
 }
 
 interface StoryFile {

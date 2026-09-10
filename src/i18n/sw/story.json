@@ -4,9 +4,16 @@
   },
   "storyN": "Hadithi {n} kati ya {total}",
   "listen": "Sikiliza hadithi hii",
+  "watch": "Tazama hadithi hii",
+  "downloadAudio": "Pakua sauti",
+  "downloadVideo": "Pakua video",
+  "transcriptNote": "Maneno ya rekodi hii yako hapa chini, katika {language}.",
+  "imageAlt": "{story} — picha {n}",
   "previous": "Iliyotangulia",
   "next": "Inayofuata",
   "allStories": "Hadithi zote katika {language}",
   "license": "Bila malipo kutumia, kubadilisha na kushiriki chini ya leseni huria (CC BY-SA 4.0).",
-  "openInReader": "Soma katika kisomaji"
+  "openInReader": "Soma katika kisomaji",
+  "audioFile": "Faili la sauti",
+  "videoFile": "Video"
 }

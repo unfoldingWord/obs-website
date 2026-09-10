@@ -14,6 +14,7 @@
   "video": "观看（视频）",
   "app": "获取移动应用",
   "extractTitle": "故事 1 节选",
+  "extractAlt": "{language} Open Bible Stories 的一幅插图",
   "storiesTitle": "故事（{n} / {total}）",
   "version": "v{version}",
   "teams": "已有 {n} 个团队发布此语言。",
@@ -27,5 +28,31 @@
   "about": "关于此译本",
   "readerTitle": "在线阅读",
   "readerLoading": "加载中…",
-  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。"
+  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上面的下载和本页底部的 Door43 源链接仍然可用。",
+  "readerNeedsJs": "这些故事是在本页的阅读器中阅读的，阅读器需要 JavaScript。若没有 JavaScript，请使用上方的下载文件，或本页底部的 Door43 源文件链接。",
+  "faqTitle": "关于 {language} Open Bible Stories 的问答",
+  "faqMore": "更多问答",
+  "faqStories": {
+    "all": "全部 50 个故事都已译成 {language}，每一个都可以在本页阅读。",
+    "some": "目前有 {n} 个故事可以用 {language} 在本页阅读，其余正在翻译。",
+    "none": "这些故事在本站还没有 {language} 的独立页面——请在本页的阅读器中阅读，或使用上方列出的下载文件。"
+  },
+  "faq": [
+    {
+      "q": "{language} 的 Open Bible Stories 是什么？",
+      "a": "Open Bible Stories 是圣经中 50 个关键故事，从创造到启示录，用于福音传播与门徒训练。 {stories} 若 {language} 有音频、视频或 PDF，你也可以聆听、观看或下载。"
+    },
+    {
+      "q": "这是整本圣经的译本吗？",
+      "a": "不是。这些故事重述圣经中的记载，并不是把整本圣经翻译成 {language}。许多团队先翻译这套故事，再由此继续翻译圣经本身。"
+    },
+    {
+      "q": "我可以复制、印刷或改编这些故事吗？",
+      "a": "可以。Open Bible Stories 以“知识共享 署名-相同方式共享 4.0”许可（CC BY-SA 4.0）自由使用、改编和分享：复制、印刷、录制，或在其基础上继续创作，也包括商业用途，只要注明原作出处，并以同一许可发布你所做的成果。"
+    },
+    {
+      "q": "我怎样帮助完成或改进 {language} 译本？",
+      "a": "翻译由该语言群体自己的团队完成。翻译页面说明了团队如何工作、如何与当地教会一同查验译文，以及如何获得 unfoldingWord 的协助。"
+    }
+  ]
 }

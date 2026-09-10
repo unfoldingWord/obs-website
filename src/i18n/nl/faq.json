@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Vragen over Open Bible Stories",
+    "description": "Wat Open Bible Stories is, hoe je het in {count} talen leest of downloadt, wat de open licentie toestaat en hoe je een vertaling begint."
+  },
+  "eyebrow": "Vragen en antwoorden",
+  "title": "Vragen over Open Bible Stories",
+  "intro": "Korte antwoorden, meteen het belangrijkste. Staat jouw vraag er niet bij? <a href=\"/contact/\">Schrijf ons</a>.",
+  "questions": [
+    {
+      "q": "Wat is Open Bible Stories?",
+      "a": "Open Bible Stories is een set van 50 kernverhalen uit de Bijbel, van de schepping tot Openbaring, <strong>voor evangelisatie en discipelschap</strong>, vrij beschikbaar om te vertalen en in elk medium en elke taal te delen."
+    },
+    {
+      "q": "Is Open Bible Stories een Bijbelvertaling?",
+      "a": "Nee. De verhalen zijn een compact overzicht van de Schrift en van het evangelie, van Genesis tot Openbaring. De vereenvoudigde taal verlicht de last voor wie net begint, doordat ze het aantal moeilijke vertaalvraagstukken beperkt. Alle 50 verhalen samen zijn ongeveer even lang als het boek Handelingen.\n\nWe leiden nieuwe vertalers op om eerst Open Bible Stories te vertalen, omdat dat werk minder ontzagwekkend is dan het vertalen van de Bijbel zelf. Het is een ideale manier om een nieuw team de grondbeginselen van goed vertalen bij te brengen: het is een uitstekende inleiding in de vertaalprincipes, het omvat alle onderdelen van samen ontwerpen en controleren, en het vraagt om het gebruik van de belangrijkste hulpmiddelen in het proces. Teams ronden het in een paar maanden af, en de verhalen zijn direct klaar voor gebruik."
+    },
+    {
+      "q": "In hoeveel talen is het beschikbaar?",
+      "a": "{count} talen hebben vandaag een gepubliceerde vertaling, en er zijn er meer op weg. Elke taal heeft haar eigen pagina met de verhalen, de formaten die in die taal bestaan en het team dat de vertaling publiceerde. Zie de <a href=\"/discover/\">pagina Ontdekken</a> voor de volledige lijst."
+    },
+    {
+      "q": "Hoe lees, beluister of download ik het in mijn taal?",
+      "a": "Open de <a href=\"/discover/\">pagina Ontdekken</a>, zoek je taal en open die pagina. Daar kun je elk verhaal lezen, luisteren waar een opname bestaat, kijken waar video is, en een PDF of de audiobestanden downloaden. Alle digitale versies zijn online gratis."
+    },
+    {
+      "q": "Mag ik deze verhalen kopiëren, afdrukken, aanpassen of opnemen?",
+      "a": "Ja. Geef zoveel exemplaren van dit boek weg als je wilt, zonder beperking. Alle digitale versies zijn online gratis, en door de open licentie die we gebruiken mag je unfoldingWord&reg; Open Bible Stories zelfs commercieel heruitgeven, waar ook ter wereld, zonder royalty’s te betalen. De verhalen staan onder de Creative Commons Naamsvermelding-GelijkDelen 4.0-licentie (CC BY-SA 4.0): je mag ze kopiëren, printen, opnemen, uitzenden of bewerken, ook commercieel, zolang je het originele werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt. Laat het handelsmerk unfoldingWord&reg; staan op ongewijzigde kopieën en haal het weg als je het werk verandert of vertaalt; vermeld wat je hebt gewijzigd en schrijf erbij: „Het originele werk van unfoldingWord is te vinden op https://openbiblestories.org”.\n\nDe illustraties zijn &copy; Sweet Publishing en worden gedeeld onder CC BY-SA 3.0, dus ze hebben hun eigen naamsvermelding. Op de <a href=\"/license/\">licentiepagina</a> staat de volledige tekst."
+    },
+    {
+      "q": "Hoe begin ik een vertaling in mijn taal?",
+      "a": "Begin bij de pagina <a href=\"/translate/\">Vertalen</a>: die legt het proces uit, de hulpmiddelen, en hoe je een vertaling controleert met de kerken die haar gaan gebruiken. Het vertaalwerk wordt gedaan door teams uit de taalgemeenschap zelf, en unfoldingWord kan helpen met training en een netwerk van andere teams."
+    },
+    {
+      "q": "Welke verhalen vertellen het evangelie, het verhaal van Abraham of Pasen?",
+      "a": "De verhalen staan in Bijbelse volgorde, dus je vindt ze eenvoudig op nummer. De schepping en de zondeval zijn verhaal 1 tot 3, Gods verbond met Abraham begint bij verhaal 4, het Pascha en de uittocht zijn verhaal 11 en 12, en het Oude Testament sluit af met de belofte van de Messias in verhaal 21. Het leven van Jezus loopt van zijn geboorte in verhaal 23 door zijn bediening en gelijkenissen heen; de kruisiging is verhaal 40, de opstanding verhaal 41 en zijn terugkeer naar de hemel verhaal 42. De kerk begint in verhaal 43, en de laatste drie &mdash; 48, 49 en 50 &mdash; leggen het evangelie en de terugkeer van Christus uit."
+    },
+    {
+      "q": "Wie maakt Open Bible Stories?",
+      "a": "unfoldingWord&reg; ontwikkelt het samen met de <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Elke vertaling is het werk van een team uit die taalgemeenschap, en op elke taalpagina staat welk team haar heeft gepubliceerd. De bronbestanden staan op Door43, waar iedereen de huidige stand van een vertaling kan zien."
+    }
+  ]
+}

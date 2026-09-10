@@ -14,6 +14,7 @@
   "video": "Watch (video)",
   "app": "Get the mobile app",
   "extractTitle": "From story 1",
+  "extractAlt": "An illustration from Open Bible Stories in {language}",
   "storiesTitle": "Stories ({n} of {total})",
   "version": "v{version}",
   "teams": "{n} teams have published this language.",
@@ -27,5 +28,31 @@
   "about": "About this translation",
   "readerTitle": "Read online",
   "readerLoading": "Loading…",
-  "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads and story pages above still work."
+  "readerOffline": "Reading online isn't available right now (Door43 can't be reached). The downloads above and the Door43 source link at the foot of this page still work.",
+  "readerNeedsJs": "These stories are read in a reader on this page, which needs JavaScript. Without it, use the downloads above, or the Door43 source link at the foot of this page.",
+  "faqTitle": "Questions about Open Bible Stories in {language}",
+  "faqMore": "More questions and answers",
+  "faqStories": {
+    "all": "All 50 are translated into {language}, and every one of them can be read on this page.",
+    "some": "{n} of them can be read in {language} on this page so far, and more are being translated.",
+    "none": "These stories do not have their own pages on this site in {language} yet — read them in the reader on this page, or use any downloads listed above."
+  },
+  "faq": [
+    {
+      "q": "What is Open Bible Stories in {language}?",
+      "a": "Open Bible Stories is 50 key stories of the Bible, from Creation to Revelation, for evangelism and discipleship. {stories} Where audio, video or a PDF exists in {language}, you can listen, watch or download it too."
+    },
+    {
+      "q": "Is this a translation of the whole Bible?",
+      "a": "No. These stories retell biblical accounts; they are not a translation of the whole Bible into {language}. Many teams translate the stories first, and go on from there to translate Scripture itself."
+    },
+    {
+      "q": "Can I copy, print, or adapt these stories?",
+      "a": "Yes. Open Bible Stories is free to use, adapt and share under the Creative Commons Attribution-ShareAlike 4.0 license (CC BY-SA 4.0): copy it, print it, record it or build on it — including commercially — as long as you credit the original work and release what you make under the same license."
+    },
+    {
+      "q": "How can I help finish or improve the {language} translation?",
+      "a": "Translations are made by teams from the language community. The Translate page explains how a team works, checks its translation with local churches, and gets help from unfoldingWord."
+    }
+  ]
 }

@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Perguntas sobre Open Bible Stories",
+    "description": "O que é Open Bible Stories, como ler ou baixar em {count} idiomas, o que a licença aberta permite e como iniciar uma tradução."
+  },
+  "eyebrow": "Perguntas e respostas",
+  "title": "Perguntas sobre Open Bible Stories",
+  "intro": "Respostas curtas, direto ao ponto. Se a sua pergunta não estiver aqui, <a href=\"/contact/\">escreva para nós</a>.",
+  "questions": [
+    {
+      "q": "O que é Open Bible Stories?",
+      "a": "Open Bible Stories são 50 histórias essenciais da Bíblia, da Criação ao Apocalipse, <strong>para evangelismo e discipulado</strong>, oferecidas gratuitamente para tradução e divulgação em qualquer mídia e em qualquer idioma."
+    },
+    {
+      "q": "Open Bible Stories é uma tradução da Bíblia?",
+      "a": "Não. As histórias são um panorama conciso das Escrituras e do evangelho, de Gênesis a Apocalipse. A linguagem simplificada reduz a carga cognitiva de quem está começando, porque limita os problemas difíceis de tradução que ele precisa enfrentar. As 50 histórias juntas têm mais ou menos o volume do livro de Atos.\n\nPreparamos os tradutores novos para traduzir Open Bible Stories primeiro, porque esse trabalho intimida menos do que traduzir a própria Bíblia. É um meio ideal de apresentar a uma equipe nova os fundamentos de uma boa tradução: é uma excelente introdução aos princípios de tradução, inclui todos os elementos do rascunho e da verificação em equipe e exige o uso das ajudas essenciais do processo. As equipes concluem o trabalho em poucos meses, e as histórias ficam prontas para uso imediato."
+    },
+    {
+      "q": "Em quantos idiomas está disponível?",
+      "a": "{count} idiomas já têm uma tradução publicada, e outros estão em andamento. Cada um tem a sua própria página, com as histórias, os formatos que existem naquele idioma e a equipe que o publicou. Veja a <a href=\"/discover/\">página Descubra</a> para a lista completa."
+    },
+    {
+      "q": "Como leio, ouço ou baixo no meu idioma?",
+      "a": "Abra a <a href=\"/discover/\">página Descubra</a>, procure o seu idioma e abra a página dele. De lá você pode ler todas as histórias, ouvir onde houver gravação, assistir onde houver vídeo e baixar um PDF ou os arquivos de áudio. Todas as versões digitais são gratuitas na internet."
+    },
+    {
+      "q": "Posso copiar, imprimir, adaptar ou gravar estas histórias?",
+      "a": "Sim. Distribua quantas cópias deste livro quiser, sem restrição. Todas as versões digitais são gratuitas na internet e, por causa da licença aberta que usamos, você pode até republicar unfoldingWord&reg; Open Bible Stories comercialmente em qualquer lugar do mundo sem pagar royalties. As histórias são publicadas sob a licença Creative Commons Atribuição-CompartilhaIgual 4.0 (CC BY-SA 4.0): você pode copiá-las, imprimi-las, gravá-las, transmiti-las ou adaptá-las, inclusive comercialmente, desde que credite a obra original e publique o que fizer sob a mesma licença. Mantenha a marca unfoldingWord&reg; nas cópias não modificadas e remova-a se alterar ou traduzir a obra; diga o que mudou e atribua assim: “A obra original da unfoldingWord está disponível em https://openbiblestories.org”.\n\nAs ilustrações são &copy; Sweet Publishing e compartilhadas sob CC BY-SA 3.0, portanto têm a sua própria atribuição. A <a href=\"/license/\">página de licença</a> traz o texto completo."
+    },
+    {
+      "q": "Como inicio uma tradução no meu idioma?",
+      "a": "Comece pela página <a href=\"/translate/\">Traduzir</a>: ela explica o processo, as ferramentas e como verificar uma tradução com as igrejas que vão usá-la. A tradução é feita por equipes da própria comunidade linguística, e a unfoldingWord pode ajudar a encontrar treinamento e uma rede de outras equipes."
+    },
+    {
+      "q": "Quais histórias contam o evangelho, a história de Abraão ou a Páscoa?",
+      "a": "As histórias seguem a ordem bíblica, então é fácil encontrá-las pelo número. A Criação e a queda são as histórias 1 a 3, a aliança de Deus com Abraão começa na história 4, a Páscoa e o Êxodo são as histórias 11 e 12, e o Antigo Testamento termina com a promessa do Messias na história 21. A vida de Jesus vai do seu nascimento, na história 23, ao seu ministério e às suas parábolas; a crucificação é a história 40, a ressurreição a 41 e a volta dele ao céu a 42. A igreja começa na história 43, e as três últimas &mdash; 48, 49 e 50 &mdash; explicam o evangelho e a volta de Cristo."
+    },
+    {
+      "q": "Quem faz Open Bible Stories?",
+      "a": "A unfoldingWord&reg; o desenvolve junto com a <a href=\"https://door43.org/\">comunidade missionária mundial Door43</a>. Cada tradução é obra de uma equipe daquela comunidade linguística, e cada página de idioma nomeia a equipe que publicou. Os arquivos-fonte ficam no Door43, onde qualquer pessoa pode ver a situação atual de uma tradução."
+    }
+  ]
+}

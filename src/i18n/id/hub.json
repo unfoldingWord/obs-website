@@ -14,6 +14,7 @@
   "video": "Tonton (video)",
   "app": "Dapatkan aplikasi seluler",
   "extractTitle": "Dari cerita 1",
+  "extractAlt": "Ilustrasi dari Open Bible Stories dalam bahasa {language}",
   "storiesTitle": "Cerita ({n} dari {total})",
   "version": "v{version}",
   "teams": "{n} tim telah menerbitkan bahasa ini.",
@@ -27,5 +28,31 @@
   "about": "Tentang terjemahan ini",
   "readerTitle": "Baca online",
   "readerLoading": "Memuat…",
-  "readerOffline": "Membaca online tidak tersedia saat ini (Door43 tidak dapat dijangkau). Unduhan dan halaman cerita di atas tetap berfungsi."
+  "readerOffline": "Membaca online sedang tidak tersedia (Door43 tidak dapat dihubungi). Unduhan di atas dan tautan sumber Door43 di kaki halaman ini tetap berfungsi.",
+  "readerNeedsJs": "Cerita-cerita ini dibaca dalam pembaca di halaman ini, yang memerlukan JavaScript. Tanpa JavaScript, gunakan unduhan di atas, atau tautan sumber Door43 di bagian bawah halaman ini.",
+  "faqTitle": "Pertanyaan tentang Open Bible Stories dalam bahasa {language}",
+  "faqMore": "Pertanyaan dan jawaban lainnya",
+  "faqStories": {
+    "all": "Ke-50 cerita sudah diterjemahkan ke dalam bahasa {language}, dan semuanya dapat dibaca di halaman ini.",
+    "some": "Sejauh ini {n} di antaranya dapat dibaca dalam bahasa {language} di halaman ini, dan yang lain sedang diterjemahkan.",
+    "none": "Cerita-cerita ini belum memiliki halaman sendiri di situs ini dalam bahasa {language} — bacalah di pembaca pada halaman ini, atau gunakan unduhan yang tercantum di atas."
+  },
+  "faq": [
+    {
+      "q": "Apa itu Open Bible Stories dalam bahasa {language}?",
+      "a": "Open Bible Stories adalah 50 kisah penting Alkitab, dari Penciptaan hingga Wahyu, untuk penginjilan dan pemuridan. {stories} Jika ada audio, video, atau PDF dalam bahasa {language}, Anda juga dapat mendengarkan, menonton, atau mengunduhnya."
+    },
+    {
+      "q": "Apakah ini terjemahan seluruh Alkitab?",
+      "a": "Bukan. Cerita-cerita ini menuturkan kembali kisah Alkitab; semuanya bukan terjemahan seluruh Alkitab ke dalam bahasa {language}. Banyak tim menerjemahkan cerita ini lebih dahulu, lalu melanjutkan dengan menerjemahkan Kitab Suci itu sendiri."
+    },
+    {
+      "q": "Bolehkah saya menyalin, mencetak, atau menyesuaikan cerita ini?",
+      "a": "Boleh. Open Bible Stories bebas dipakai, disesuaikan, dan dibagikan di bawah lisensi Creative Commons Atribusi-BerbagiSerupa 4.0 (CC BY-SA 4.0): salin, cetak, rekam, atau kembangkan lebih lanjut — termasuk untuk tujuan komersial — selama Anda mencantumkan karya aslinya dan menerbitkan hasil karya Anda di bawah lisensi yang sama."
+    },
+    {
+      "q": "Bagaimana saya bisa membantu menyelesaikan atau memperbaiki terjemahan bahasa {language}?",
+      "a": "Penerjemahan dikerjakan oleh tim dari komunitas bahasa itu sendiri. Halaman Terjemahkan menjelaskan cara kerja sebuah tim, cara memeriksa terjemahan bersama gereja setempat, dan cara mendapatkan bantuan dari unfoldingWord."
+    }
+  ]
 }

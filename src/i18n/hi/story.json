@@ -4,9 +4,16 @@
   },
   "storyN": "कहानी {n} / {total}",
   "listen": "यह कहानी सुनें",
+  "watch": "यह कहानी देखें",
+  "downloadAudio": "ऑडियो डाउनलोड करें",
+  "downloadVideo": "वीडियो डाउनलोड करें",
+  "transcriptNote": "इस रिकॉर्डिंग के शब्द नीचे {language} में दिए गए हैं।",
+  "imageAlt": "{story} — चित्र {n}",
   "previous": "पिछली",
   "next": "अगली",
   "allStories": "{language} में सभी कहानियाँ",
   "license": "खुले लाइसेंस (CC BY-SA 4.0) के अंतर्गत उपयोग, अनुकूलन और साझा करने के लिए निःशुल्क।",
-  "openInReader": "रीडर में पढ़ें"
+  "openInReader": "रीडर में पढ़ें",
+  "audioFile": "ऑडियो फ़ाइल",
+  "videoFile": "वीडियो"
 }

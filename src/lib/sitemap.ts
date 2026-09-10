@@ -2,7 +2,7 @@
 // split: marketing pages with their hreflang cluster, and language hubs
 // with lastmod from the catalog). robots.txt points at sitemap-index.xml.
 import { locales, defaultLocale, localizedSlugs, englishOnlySlugs, localePath } from '../i18n/config';
-import { languages, languagePath, storyPath } from '../data/catalog';
+import { languages, languagePath, storyPath, siteLocaleOf } from '../data/catalog';
 import { hasStories, storiesFor } from '../data/stories';
 import { SITE_URL } from './jsonld';
 
@@ -89,18 +89,63 @@ export function languagesSitemap(): string {
 }
 
 /**
- * Story pages, one entry per (language, story) that actually has text.
+ * Story-level hreflang, narrowed to the site's own languages (#13, #9).
  *
- * Deliberately no hreflang alternates. Story N exists in ~214 languages, so a
- * reciprocal cluster would be roughly 214 × 10,700 ≈ 2.3M <xhtml:link>
- * elements — gigabytes, far past the 50MB per-sitemap limit. Issue #9's
- * "story-level hreflang belongs in the story sitemap" does not survive
- * contact with this many languages; the hub and marketing clusters stand.
+ * A full cluster is impossible at this scale: story N exists in ~214
+ * languages, so linking every equivalent of every story would be roughly
+ * 214 × 10,700 ≈ 2.3M <xhtml:link> elements — gigabytes, far past the 50MB
+ * per-sitemap limit. But "none" was not the answer either. The rule here is
+ * the narrower one #9 asked for: cluster story N across the languages the
+ * site itself is published in (the 16 marketing locales, matched exactly —
+ * `siteLocaleOf`), and only where that story exists in at least two of them.
+ * That is at most 16 links per story, on at most ~800 of the ~10,000 story
+ * URLs: a few hundred kilobytes, and it covers the languages a searcher is
+ * most likely to be switching between.
+ *
+ * Every other story URL gets no alternates at all, which is correct rather
+ * than incomplete: an incorrect or one-sided cluster is worse than none, and
+ * a Hausa story has no reciprocal partner to point at.
+ */
+async function storyAlternates(): Promise<Map<number, { code: string; loc: string }[]>> {
+  const byStory = new Map<number, { code: string; loc: string }[]>();
+  for (const l of languages) {
+    if (!siteLocaleOf(l.code) || !hasStories(l.code)) continue;
+    const built = new Set((await storiesFor(l.code)).map((s) => s.num));
+    for (const num of l.storyNums ?? []) {
+      if (!built.has(num)) continue;
+      const group = byStory.get(num) ?? [];
+      group.push({ code: l.code, loc: `${SITE}${storyPath(l.code, num)}` });
+      byStory.set(num, group);
+    }
+  }
+  // A cluster of one is not a cluster.
+  for (const [num, group] of byStory) if (group.length < 2) byStory.delete(num);
+  return byStory;
+}
+
+/**
+ * Story pages, one entry per (language, story) that actually has text, with
+ * the bounded hreflang clusters described above.
  */
 export async function storiesSitemap(): Promise<string> {
+  const clusters = await storyAlternates();
+  // Which story number a URL belongs to, without re-deriving it from the
+  // path: storyUrls() is the one place that decides what exists.
+  const inCluster = new Map<string, number>();
+  for (const [num, group] of clusters) for (const { loc } of group) inCluster.set(loc, num);
+
   const urls = (await storyUrls()).map(({ loc, lastmod }) => {
     const mod = lastmod ? `\n    <lastmod>${esc(lastmod)}</lastmod>` : '';
-    return `  <url>\n    <loc>${loc}</loc>${mod}\n  </url>`;
+    const num = inCluster.get(loc);
+    const group = num === undefined ? [] : clusters.get(num) ?? [];
+    const alternates = group
+      .map((a) => `\n    <xhtml:link rel="alternate" hreflang="${esc(a.code)}" href="${a.loc}"/>`)
+      .join('');
+    // x-default points at the English story when English has it: the site's
+    // own default, the same choice Base.astro makes for marketing pages.
+    const def = group.find((a) => a.code === defaultLocale);
+    const xdefault = def ? `\n    <xhtml:link rel="alternate" hreflang="x-default" href="${def.loc}"/>` : '';
+    return `  <url>\n    <loc>${loc}</loc>${mod}${alternates}${xdefault}\n  </url>`;
   });
-  return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
+  return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9" xmlns:xhtml="http://www.w3.org/1999/xhtml">\n${urls.join('\n')}\n</urlset>\n`;
 }

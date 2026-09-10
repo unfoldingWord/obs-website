@@ -4,9 +4,16 @@
   },
   "storyN": "کہانی {n} از {total}",
   "listen": "یہ کہانی سنیں",
+  "watch": "یہ کہانی دیکھیں",
+  "downloadAudio": "آڈیو ڈاؤن لوڈ کریں",
+  "downloadVideo": "ویڈیو ڈاؤن لوڈ کریں",
+  "transcriptNote": "اِس ریکارڈنگ کے الفاظ نیچے {language} میں دیے گئے ہیں۔",
+  "imageAlt": "{story} — تصویر {n}",
   "previous": "پچھلی",
   "next": "اگلی",
   "allStories": "{language} میں تمام کہانیاں",
   "license": "کھلے لائسنس (CC BY-SA 4.0) کے تحت استعمال، تبدیلی اور اشتراک کے لیے مفت۔",
-  "openInReader": "ریڈر میں پڑھیں"
+  "openInReader": "ریڈر میں پڑھیں",
+  "audioFile": "آڈیو فائل",
+  "videoFile": "ویڈیو"
 }

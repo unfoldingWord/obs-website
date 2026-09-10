@@ -14,6 +14,7 @@
   "video": "Xem (video)",
   "app": "Tải ứng dụng di động",
   "extractTitle": "Trích từ câu chuyện 1",
+  "extractAlt": "Một tranh minh họa của Open Bible Stories bằng tiếng {language}",
   "storiesTitle": "Câu chuyện ({n} / {total})",
   "version": "v{version}",
   "teams": "{n} đội ngũ đã phát hành ngôn ngữ này.",
@@ -27,5 +28,31 @@
   "about": "Về bản dịch này",
   "readerTitle": "Đọc trực tuyến",
   "readerLoading": "Đang tải…",
-  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động."
+  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được với Door43). Các bản tải về ở trên và liên kết nguồn Door43 ở cuối trang này vẫn dùng được.",
+  "readerNeedsJs": "Các câu chuyện này được đọc trong trình đọc trên trang này, và trình đọc cần JavaScript. Nếu không có JavaScript, hãy dùng các tệp tải về ở trên, hoặc liên kết đến nguồn Door43 ở cuối trang này.",
+  "faqTitle": "Câu hỏi về Open Bible Stories bằng tiếng {language}",
+  "faqMore": "Thêm câu hỏi và trả lời",
+  "faqStories": {
+    "all": "Cả 50 câu chuyện đã được dịch sang tiếng {language}, và mỗi câu chuyện đều có thể đọc trên trang này.",
+    "some": "Hiện có {n} câu chuyện có thể đọc bằng tiếng {language} trên trang này, và những câu khác đang được dịch.",
+    "none": "Các câu chuyện này chưa có trang riêng trên trang web này bằng tiếng {language} — hãy đọc trong trình đọc trên trang này, hoặc dùng các tệp tải về được liệt kê ở trên."
+  },
+  "faq": [
+    {
+      "q": "Open Bible Stories bằng tiếng {language} là gì?",
+      "a": "Open Bible Stories là 50 câu chuyện trọng tâm của Kinh Thánh, từ Sáng thế đến Khải huyền, dành cho việc truyền giảng và môn đồ hoá. {stories} Ở đâu có bản âm thanh, video hoặc PDF bằng tiếng {language}, bạn cũng có thể nghe, xem hoặc tải về."
+    },
+    {
+      "q": "Đây có phải bản dịch toàn bộ Kinh Thánh không?",
+      "a": "Không. Những câu chuyện này kể lại các trình thuật Kinh Thánh; đó không phải bản dịch toàn bộ Kinh Thánh sang tiếng {language}. Nhiều nhóm dịch các câu chuyện trước, rồi từ đó tiếp tục dịch chính Kinh Thánh."
+    },
+    {
+      "q": "Tôi có được sao chép, in hoặc chuyển thể các câu chuyện này không?",
+      "a": "Có. Open Bible Stories được tự do sử dụng, chuyển thể và chia sẻ theo giấy phép Creative Commons Ghi công-Chia sẻ tương tự 4.0 (CC BY-SA 4.0): hãy sao chép, in, thu âm hoặc phát triển thêm — kể cả cho mục đích thương mại — miễn là bạn ghi công tác phẩm gốc và phát hành sản phẩm của mình theo cùng giấy phép đó."
+    },
+    {
+      "q": "Tôi có thể giúp hoàn thành hoặc cải thiện bản dịch tiếng {language} bằng cách nào?",
+      "a": "Các bản dịch do những nhóm thuộc chính cộng đồng ngôn ngữ đó thực hiện. Trang Dịch giải thích cách một nhóm làm việc, cách kiểm tra bản dịch với các hội thánh địa phương, và cách nhận sự giúp đỡ từ unfoldingWord."
+    }
+  ]
 }

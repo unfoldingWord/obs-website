@@ -16,6 +16,7 @@ import { content } from '../../../../i18n/content';
 import { byCode } from '../../../../i18n/config';
 import {
   STORY_COUNT,
+  formatSize,
   languages,
   languagePath,
   storyPath,
@@ -56,7 +57,7 @@ interface Props {
 }
 const { lang, story, nums } = Astro.props;
 
-const uiLocale = hubLocaleFor(lang.code);
+const uiLocale = hubLocaleFor(lang);
 const ui = byCode(uiLocale);
 const t = content(uiLocale, 'story');
 
@@ -71,6 +72,45 @@ const next = i >= 0 && i < nums.length - 1 ? nums[i + 1] : null;
 const title = `${story.title} — ${name} | Open Bible Stories`;
 const description = fill(t.meta.description, { story: story.title, n: story.num, language: name });
 const firstImage = story.frames.find((f) => f.image)?.image;
+const mediaLabel = (label: string, size?: number | null) =>
+  formatSize(size ?? null) ? `${label} · ${formatSize(size ?? null)}` : label;
+// Illustrations are numbered among the illustrations, not among the frames: a
+// story whose second frame carries no picture used to produce "illustration
+// 1" then "illustration 3".
+const imageNumber = (frameIndex: number) =>
+  story.frames.slice(0, frameIndex + 1).filter((f) => f.image).length;
+
+// The chrome strings this page rendered, for the browser-side locale swap —
+// same contract as the hub (see the comment there and
+// public/assets/js/locale.js). Story text, titles and references are the
+// translation team's work and are not in here.
+const chrome: Record<string, { k: string; a?: Record<string, string | number>; x?: string }> = {};
+type ChromeEntry = { k: string; a?: Record<string, string | number>; x?: string };
+const chromeAdd = (rendered: string, entry: ChromeEntry) => {
+  if (rendered.trim()) chrome[rendered.trim()] = entry;
+};
+const mark = chromeAdd;
+const label = (key: string, value: string, args?: Record<string, string | number>) =>
+  chromeAdd(args ? fill(value, args) : value, { k: `story.${key}`, a: args });
+
+label('allStories', t.allStories, { language: name });
+label('storyN', t.storyN, { n: story.num, total: STORY_COUNT });
+if (story.audio) {
+  label('listen', t.listen);
+  mark(mediaLabel(t.audioFile, story.audioSize), { k: 'story.audioFile', x: formatSize(story.audioSize ?? null) ? ` · ${formatSize(story.audioSize ?? null)}` : undefined });
+}
+if (story.video) {
+  label('watch', t.watch);
+  mark(mediaLabel(t.videoFile, story.videoSize), { k: 'story.videoFile', x: formatSize(story.videoSize ?? null) ? ` · ${formatSize(story.videoSize ?? null)}` : undefined });
+}
+if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
+story.frames.forEach((f, i) => {
+  if (f.image) label('imageAlt', t.imageAlt, { story: story.title, n: imageNumber(i) });
+});
+label('openInReader', t.openInReader);
+if (prev) label('previous', t.previous);
+if (next) label('next', t.next);
+label('license', t.license);
 ---
 
 <Base
@@ -86,28 +126,71 @@ const firstImage = story.frames.find((f) => f.image)?.image;
   fontHref={fontHrefForScript(lang.script)}
   script={lang.script}
   ogImage={firstImage}
+  chrome={chrome}
 >
 
 <article class="story">
   <div class="wrap">
-    <nav class="story-crumb" lang={ui.tag} dir={ui.dir}>
-      <a href={languagePath(lang.code)}>&larr; {fill(t.allStories, { language: name })}</a>
+    <nav class="story-crumb" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
+      <a href={languagePath(lang.code)}><span aria-hidden="true">&larr;</span> {fill(t.allStories, { language: name })}</a>
       <span class="story-count">{fill(t.storyN, { n: story.num, total: STORY_COUNT })}</span>
     </nav>
 
     <h1 lang={lang.code} dir={lang.direction}>{story.title}</h1>
 
-    {story.audio && (
-      <p class="story-audio" lang={ui.tag} dir={ui.dir}>
-        <span class="story-audio-label">{t.listen}</span>
-        <audio controls preload="none" src={story.audio}></audio>
-      </p>
+    {/* This story's own recording, not a link to a zip of all fifty (#16).
+        The text below is the transcript of it — said in words, and wired to
+        the AudioObject/VideoObject in the JSON-LD via `transcript`, which is
+        what makes the page eligible for audio and video results instead of
+        being a player a crawler cannot hear. */}
+    {(story.audio || story.video) && (
+      <div class="story-media" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
+        {story.audio && (
+          <p class="story-audio" id="listen">
+            <span class="story-audio-label">{t.listen}</span>
+            <audio controls preload="none" src={story.audio}></audio>
+            {/* `download` is a same-origin-only hint and these files are on
+                cdn.door43.org, so every browser ignores it and navigates
+                instead: the mp3 opens in the browser's player, the mp4 starts
+                streaming. Someone on a metered connection who tapped
+                "Download" got a stream they were paying for and no file. So
+                the label says what the link does and how big it is — the hub
+                has always shown sizes, and the story page is where a phone
+                lands from search. The attribute stays: it costs nothing and
+                starts working if these ever move to this origin. */}
+            <a class="story-media-dl" href={story.audio} download target="_blank" rel="noopener">{mediaLabel(t.audioFile, story.audioSize)}</a>
+          </p>
+        )}
+        {story.video && (
+          <p class="story-video" id="watch">
+            <span class="story-audio-label">{t.watch}</span>
+            <video controls preload="none" src={story.video} poster={story.frames.find((f) => f.image)?.image ?? undefined} width="360" height="203"></video>
+            <a class="story-media-dl" href={story.video} download target="_blank" rel="noopener">{mediaLabel(t.videoFile, story.videoSize)}</a>
+          </p>
+        )}
+        <p class="story-transcript-note">{fill(t.transcriptNote, { language: name })}</p>
+      </div>
     )}
 
     <div class="story-frames" lang={lang.code} dir={lang.direction}>
-      {story.frames.map((f) => (
+      {/* Non-empty, language-appropriate alt (#16): the illustrations carry
+          the story, so they are not decorative, and the only description we
+          have in the page's own language is the story's title. Numbering
+          keeps the fifty-odd frames of a language distinguishable in image
+          search and to a screen reader moving through the page. */}
+      {story.frames.map((f, i) => (
         <div class="story-frame">
-          {f.image && <img src={f.image} alt="" width="360" height="203" loading="lazy" decoding="async" />}
+          {f.image && (
+            <img
+              src={f.image}
+              alt={fill(t.imageAlt, { story: story.title, n: imageNumber(i) })}
+              lang={lang.code}
+              width="360"
+              height="203"
+              loading="lazy"
+              decoding="async"
+            />
+          )}
           <p>{f.text}</p>
         </div>
       ))}
@@ -117,18 +200,18 @@ const firstImage = story.frames.find((f) => f.image)?.image;
       <p class="story-reference" lang={lang.code} dir={lang.direction}><em>{story.reference}</em></p>
     )}
 
-    <p class="story-open-reader" lang={ui.tag} dir={ui.dir}>
+    <p class="story-open-reader" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
       <a class="btn btn-outline" href={`${languagePath(lang.code)}#story-${story.num}`}>{t.openInReader}</a>
     </p>
 
-    <nav class="story-nav" lang={ui.tag} dir={ui.dir}>
+    <nav class="story-nav" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
       {prev
-        ? <a class="btn btn-outline" href={storyPath(lang.code, prev)} rel="prev">&larr; {t.previous}</a>
+        ? <a class="btn btn-outline" href={storyPath(lang.code, prev)} rel="prev"><span aria-hidden="true">&larr;</span> {t.previous}</a>
         : <span></span>}
-      {next && <a class="btn btn-outline" href={storyPath(lang.code, next)} rel="next">{t.next} &rarr;</a>}
+      {next && <a class="btn btn-outline" href={storyPath(lang.code, next)} rel="next">{t.next} <span aria-hidden="true">&rarr;</span></a>}
     </nav>
 
-    <p class="story-license" lang={ui.tag} dir={ui.dir}>{t.license}</p>
+    <p class="story-license" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">{t.license}</p>
   </div>
 </article>
 

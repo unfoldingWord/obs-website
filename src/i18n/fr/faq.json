@@ -1,0 +1,43 @@
+{
+  "meta": {
+    "title": "Questions sur Open Bible Stories",
+    "description": "Ce qu'est Open Bible Stories, comment le lire ou le télécharger en {count} langues, ce que sa licence libre permet et comment lancer une traduction."
+  },
+  "eyebrow": "Questions et réponses",
+  "title": "Questions sur Open Bible Stories",
+  "intro": "Des réponses courtes, d'abord l'essentiel. Si votre question n'y figure pas, <a href=\"/contact/\">écrivez-nous</a>.",
+  "questions": [
+    {
+      "q": "Qu'est-ce qu'Open Bible Stories ?",
+      "a": "Open Bible Stories, ce sont 50 récits clés de la Bible, de la Création à l’Apocalypse, <strong>pour l’évangélisation et la formation de disciples</strong>, offerts librement pour être traduits et diffusés sur tout support et dans toutes les langues."
+    },
+    {
+      "q": "Open Bible Stories est-il une traduction de la Bible ?",
+      "a": "Non. Les récits sont un parcours concis des Écritures et de l’Évangile, de la Genèse à l’Apocalypse. Leur langue simplifiée allège la charge cognitive des nouveaux lecteurs, car elle limite les difficultés de traduction auxquelles ils font face. L’ensemble des 50 récits représente à peu près le volume du livre des Actes.\n\nNous formons les nouveaux traducteurs à traduire d’abord Open Bible Stories, parce que ce travail intimide moins que la traduction de la Bible elle-même. C’est un moyen idéal d’initier une nouvelle équipe aux fondements d’une bonne traduction : c’est une excellente introduction aux principes de traduction, cela comprend toutes les étapes de la rédaction et de la vérification en équipe, et cela oblige à se servir des aides essentielles du processus. Une équipe termine en quelques mois, et les récits sont immédiatement prêts à l’usage."
+    },
+    {
+      "q": "En combien de langues est-il disponible ?",
+      "a": "{count} langues ont aujourd’hui une traduction publiée, et d’autres sont en cours. Chacune a sa propre page, avec les récits, les formats qui existent dans cette langue et l’équipe qui l’a publiée. Voir la <a href=\"/discover/\">page Découvrir</a> pour la liste complète."
+    },
+    {
+      "q": "Comment le lire, l'écouter ou le télécharger dans ma langue ?",
+      "a": "Ouvrez la <a href=\"/discover/\">page Découvrir</a>, cherchez votre langue et ouvrez sa page. De là, vous pouvez lire tous les récits, écouter là où un enregistrement existe, regarder là où il y a une vidéo, et télécharger un PDF ou les fichiers audio. Toutes les versions numériques sont gratuites en ligne."
+    },
+    {
+      "q": "Puis-je copier, imprimer, adapter ou enregistrer ces récits ?",
+      "a": "Oui. Donnez autant d’exemplaires de ce livre que vous le souhaitez, sans restriction. Toutes les versions numériques sont gratuites en ligne et, grâce à la licence ouverte que nous utilisons, vous pouvez même rééditer unfoldingWord&reg; Open Bible Stories commercialement partout dans le monde sans payer de redevances. Les récits sont publiés sous licence Creative Commons Attribution-Partage dans les Mêmes Conditions 4.0 (CC BY-SA 4.0) : vous pouvez les copier, les imprimer, les enregistrer, les diffuser ou les adapter, y compris commercialement, à condition de créditer l’œuvre originale et de publier ce que vous en faites sous la même licence. Conservez la marque unfoldingWord&reg; sur les copies non modifiées et retirez-la si vous modifiez ou traduisez l’œuvre ; indiquez ce que vous avez changé et attribuez-la ainsi : « L’œuvre originale d’unfoldingWord est disponible sur https://openbiblestories.org ».\n\nLes illustrations sont &copy; Sweet Publishing et partagées sous CC BY-SA 3.0 ; elles ont donc leur propre attribution. La <a href=\"/license/\">page de licence</a> contient le texte complet."
+    },
+    {
+      "q": "Comment lancer une traduction dans ma langue ?",
+      "a": "Commencez par la page <a href=\"/translate/\">Traduire</a> : elle explique le processus, les outils et la manière de vérifier une traduction avec les Églises qui l'utiliseront. La traduction est faite par des équipes issues de la communauté linguistique elle-même, et unfoldingWord peut vous aider à trouver une formation et un réseau d'autres équipes."
+    },
+    {
+      "q": "Quels récits racontent l'Évangile, l'histoire d'Abraham ou Pâques ?",
+      "a": "Les récits suivent l'ordre biblique : on les trouve facilement par leur numéro. La Création et la chute sont les récits 1 à 3, l'alliance de Dieu avec Abraham commence au récit 4, la Pâque et l'Exode sont les récits 11 et 12, et l'Ancien Testament se termine par la promesse du Messie au récit 21. La vie de Jésus va de sa naissance au récit 23 jusqu'à son ministère et ses paraboles ; la crucifixion est le récit 40, la résurrection le 41 et son retour au ciel le 42. L'Église naît au récit 43, et les trois derniers &mdash; 48, 49 et 50 &mdash; expliquent l'Évangile et le retour du Christ."
+    },
+    {
+      "q": "Qui réalise Open Bible Stories ?",
+      "a": "unfoldingWord&reg; le développe avec la <a href=\"https://door43.org/\">communauté missionnaire mondiale Door43</a>. Chaque traduction est l'œuvre d'une équipe de la communauté linguistique concernée, et chaque page de langue nomme l'équipe qui l'a publiée. Les fichiers sources sont sur Door43, où chacun peut voir l'état actuel d'une traduction."
+    }
+  ]
+}

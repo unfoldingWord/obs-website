@@ -14,6 +14,7 @@
   "video": "Bekijken (video)",
   "app": "Download de mobiele app",
   "extractTitle": "Uit verhaal 1",
+  "extractAlt": "Een illustratie uit Open Bible Stories in het {language}",
   "storiesTitle": "Verhalen ({n} van {total})",
   "version": "v{version}",
   "teams": "{n} teams hebben deze taal gepubliceerd.",
@@ -27,5 +28,31 @@
   "about": "Over deze vertaling",
   "readerTitle": "Online lezen",
   "readerLoading": "Laden…",
-  "readerOffline": "Online lezen is nu niet beschikbaar (Door43 is niet bereikbaar). De downloads en verhaalpagina's hierboven werken nog steeds."
+  "readerOffline": "Online lezen kan nu niet (Door43 is niet bereikbaar). De downloads hierboven en de link naar de bron op Door43 onderaan deze pagina werken nog wel.",
+  "readerNeedsJs": "Deze verhalen worden gelezen in een lezer op deze pagina, waarvoor JavaScript nodig is. Zonder JavaScript kun je de downloads hierboven gebruiken, of de link naar de bron op Door43 onderaan deze pagina.",
+  "faqTitle": "Vragen over Open Bible Stories in het {language}",
+  "faqMore": "Meer vragen en antwoorden",
+  "faqStories": {
+    "all": "Alle 50 zijn in het {language} vertaald, en elk ervan is op deze pagina te lezen.",
+    "some": "{n} ervan zijn tot nu toe in het {language} op deze pagina te lezen, en er worden meer vertaald.",
+    "none": "Deze verhalen hebben op deze site nog geen eigen pagina's in het {language} — lees ze in de lezer op deze pagina, of gebruik de downloads hierboven."
+  },
+  "faq": [
+    {
+      "q": "Wat is Open Bible Stories in het {language}?",
+      "a": "Open Bible Stories is een set van 50 kernverhalen uit de Bijbel, van de schepping tot Openbaring, voor evangelisatie en discipelschap. {stories} Waar audio, video of een pdf in het {language} bestaat, kun je die ook beluisteren, bekijken of downloaden."
+    },
+    {
+      "q": "Is dit een vertaling van de hele Bijbel?",
+      "a": "Nee. Deze verhalen vertellen Bijbelgedeelten na; ze zijn geen vertaling van de hele Bijbel in het {language}. Veel teams vertalen eerst de verhalen en gaan van daaruit verder met het vertalen van de Schrift zelf."
+    },
+    {
+      "q": "Mag ik deze verhalen kopiëren, afdrukken of aanpassen?",
+      "a": "Ja. Open Bible Stories mag vrij gebruikt, aangepast en gedeeld worden onder de licentie Creative Commons Naamsvermelding-GelijkDelen 4.0 (CC BY-SA 4.0): kopiëren, afdrukken, opnemen of erop voortbouwen — ook commercieel — zolang je het oorspronkelijke werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt."
+    },
+    {
+      "q": "Hoe kan ik helpen de vertaling in het {language} af te maken of te verbeteren?",
+      "a": "Vertalingen worden gemaakt door teams uit de taalgemeenschap zelf. De pagina Vertalen legt uit hoe een team werkt, hoe het zijn vertaling controleert met plaatselijke kerken en hoe het hulp krijgt van unfoldingWord."
+    }
+  ]
 }
