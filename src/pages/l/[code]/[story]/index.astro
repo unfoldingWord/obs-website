@@ -74,6 +74,11 @@ const description = fill(t.meta.description, { story: story.title, n: story.num,
 const firstImage = story.frames.find((f) => f.image)?.image;
 const mediaLabel = (label: string, size?: number | null) =>
   formatSize(size ?? null) ? `${label} · ${formatSize(size ?? null)}` : label;
+// Illustrations are numbered among the illustrations, not among the frames: a
+// story whose second frame carries no picture used to produce "illustration
+// 1" then "illustration 3".
+const imageNumber = (frameIndex: number) =>
+  story.frames.slice(0, frameIndex + 1).filter((f) => f.image).length;
 
 // The chrome strings this page rendered, for the browser-side locale swap —
 // same contract as the hub (see the comment there and
@@ -100,7 +105,7 @@ if (story.video) {
 }
 if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
 story.frames.forEach((f, i) => {
-  if (f.image) label('imageAlt', t.imageAlt, { story: story.title, n: i + 1 });
+  if (f.image) label('imageAlt', t.imageAlt, { story: story.title, n: imageNumber(i) });
 });
 label('openInReader', t.openInReader);
 if (prev) label('previous', t.previous);
@@ -178,7 +183,7 @@ label('license', t.license);
           {f.image && (
             <img
               src={f.image}
-              alt={fill(t.imageAlt, { story: story.title, n: i + 1 })}
+              alt={fill(t.imageAlt, { story: story.title, n: imageNumber(i) })}
               lang={lang.code}
               width="360"
               height="203"
