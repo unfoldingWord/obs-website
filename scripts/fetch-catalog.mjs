@@ -833,7 +833,11 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
     if (t.langs) log.log(`[catalog] stories: ${layout} layout — ${t.langs} languages fetched, ${t.bodies} story bodies read`);
   }
   if (titlesOnly.length) {
-    log.warn(
+    // Some callers pass a logger with only .log (the tests do), and a missing
+    // .warn here would throw partway through the catalog fetch — turning a
+    // degraded language into a failed deploy.
+    const warn = log.warn ? log.warn.bind(log) : log.log.bind(log);
+    warn(
       `[catalog] stories: ${titlesOnly.length} language(s) yielded titles but NO story bodies, so they get no story pages: ` +
         `${titlesOnly.slice(0, 20).join(', ')}${titlesOnly.length > 20 ? ', …' : ''}`
     );

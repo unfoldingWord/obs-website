@@ -435,6 +435,11 @@ test('enrichStories reports the per-layout outcome and names titles-only languag
   };
   const out = await enrichStories(languages, null, f, log);
   const summary = lines.join('\n');
+  // A logger with no .warn must not throw: several callers pass one, and a
+  // crash here would turn a degraded language into a failed catalog fetch.
+  const plain = [];
+  await enrichStories(languages, null, f, { log: (m) => plain.push(m) });
+  assert.match(plain.join('\n'), /yielded titles but NO story bodies/);
   assert.match(summary, /ts layout — 2 languages fetched, 1 story bodies read/);
   assert.match(summary, /1 language\(s\) yielded titles but NO story bodies.*tly/);
   // The reporting fields must not leak into the snapshot.
