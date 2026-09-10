@@ -1,21 +1,98 @@
 ---
+// Contact, with the common questions above the contact button.
+//
+// The questions sit BEFORE the button on purpose: most of what people write
+// in to ask — what this is, whether it is the whole Bible, what the licence
+// lets them do, how to start a translation — is answered here, so a reader
+// gets their answer without waiting on a reply, and the messages that do come
+// are the ones that needed a person.
+//
+// This is the only copy of the Q&A. It had its own /faq/ route while this
+// change was in review; folding it in rather than rendering it twice keeps
+// one URL per answer, which is the whole point of the anchors below — two
+// pages carrying the same eight questions would be the duplicate-boilerplate
+// case Google's FAQPage guidance warns about.
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
+import { withCount } from '../../data/catalog';
+import { faqPageNode } from '../../lib/jsonld';
+import { localizeLinks, defaultLocale } from '../../i18n/config';
 
 interface Props {
   locale: string;
 }
 const { locale } = Astro.props;
 const t = content(locale, 'contact');
+const faq = content(locale, 'faq');
+
+// `{count}` is the published-language count; in-copy links stay inside the
+// current locale (localizeLinks leaves /license/ and other English-only
+// pages at the root).
+const prose = (s: string) => localizeLinks(withCount(s), locale);
+const questions: { q: string; a: string }[] = faq.questions.map((item: { q: string; a: string }) => ({
+  q: withCount(item.q),
+  a: prose(item.a),
+}));
+
+// An answer may run to more than one paragraph: a blank line in the string
+// separates them. The first paragraph is always the answer itself, so a
+// reader — or a model quoting the page — gets it without the detail that
+// follows. Schema.org Answer.text is a single string, so faqPageNode keeps
+// the whole answer with the break flattened to a space.
+const paragraphsOf = (a: string) => a.split(/\n\s*\n/).map((para) => para.trim()).filter(Boolean);
+const flat = questions.map(({ q, a }) => ({ q, a: paragraphsOf(a).join(' ') }));
+
+// A stable anchor per question, from the ENGLISH question, so
+// /es/contact/#can-i-copy-print and /contact/#can-i-copy-print are the same
+// anchor and a retranslation cannot break an inbound link. The language hubs
+// link here.
+const english = content(defaultLocale, 'faq');
+const slugs: string[] = english.questions.map((item: { q: string }) =>
+  item.q
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 4)
+    .join('-')
+);
 ---
 
-<Base locale={locale} slug="contact" title={t.meta.title} description={t.meta.description}>
+<Base
+  locale={locale}
+  slug="contact"
+  title={t.meta.title}
+  description={t.meta.description}
+  jsonLd={[faqPageNode(locale, flat)]}
+>
 
 <section class="page-header">
   <div class="wrap">
     <p class="eyebrow">{t.hero.eyebrow}</p>
     <h1>{t.hero.title}</h1>
     <p>{t.hero.sub}</p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap faq-list">
+    <h2 class="contact-faq-title">{faq.title}</h2>
+    {/* A jump list: at phone width the two long answers otherwise push the
+        contact button a long way down. */}
+    <nav class="faq-jump" aria-labelledby="faq-jump-label">
+      <p id="faq-jump-label" class="sr-only">{faq.title}</p>
+      <ul>
+        {questions.map(({ q }, i) => (
+          <li><a href={`#${slugs[i]}`}>{q}</a></li>
+        ))}
+      </ul>
+    </nav>
+    {questions.map(({ q, a }, i) => (
+      <div class="faq-item">
+        <h3 id={slugs[i]}>{q}</h3>
+        {paragraphsOf(a).map((para) => <p set:html={para} />)}
+      </div>
+    ))}
   </div>
 </section>
 

@@ -116,7 +116,7 @@ export async function llmsTxt(): Promise<string> {
   const ui = content('en', 'ui');
   const navLabel = (slug: string) =>
     ui.nav.find((n: { slug: string; label: string }) => n.slug === slug)?.label ??
-    (slug === 'home' ? ui.siteTitle : ui.strings?.faqLabel ?? slug);
+    (slug === 'home' ? ui.siteTitle : slug);
   for (const slug of localizedSlugs) {
     out.push(`- [${navLabel(slug)}](${SITE_URL}${localePath('en', slug)})`);
   }

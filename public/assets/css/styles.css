@@ -826,13 +826,14 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
    keyboard, from Reader mode, and from a crawler's first pass. Shared by the
    /faq/ pages (.faq-item, H2 + P) and the hubs' short FAQ (a DL). */
 .faq-list{max-width:760px; margin:0 auto;}
+.contact-faq-title{margin:0 0 18px;}
 .faq-jump{margin:0 0 34px;}
 .faq-jump ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px 18px;}
 .faq-jump a{font-size:0.95rem;}
 .faq-item + .faq-item{margin-top:32px;}
 /* An anchored heading must not land under the sticky header. */
-.faq-item h2{scroll-margin-top:88px;}
-.faq-item h2{font-size:clamp(1.15rem, 2.4vw, 1.45rem); color:var(--ocean); margin:0 0 10px;}
+.faq-item h2,.faq-item h3{scroll-margin-top:88px;}
+.faq-item h2,.faq-item h3{font-size:clamp(1.15rem, 2.4vw, 1.45rem); color:var(--ocean); margin:0 0 10px;}
 .faq-item p{color:var(--tech); max-width:none;}
 /* An answer can run to more than one paragraph (a blank line in the i18n
    string). The global reset zeroes p margins, so without this the break was a

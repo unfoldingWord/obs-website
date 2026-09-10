@@ -100,7 +100,7 @@ export function mobileAppNode() {
 }
 
 /**
- * FAQPage for one locale's /faq/ page (#17).
+ * FAQPage for one locale's contact page, which carries the questions (#17).
  *
  * Emitted only on the marketing FAQ pages, where the visible H2/answer text
  * and the structured data are the same words — the requirement Google states
@@ -113,7 +113,7 @@ export function mobileAppNode() {
 export function faqPageNode(locale: string, questions: { q: string; a: string }[]) {
   return {
     '@type': 'FAQPage',
-    '@id': `${SITE_URL}${localePath(locale, 'faq')}#faq`,
+    '@id': `${SITE_URL}${localePath(locale, 'contact')}#faq`,
     inLanguage: locale,
     isPartOf: { '@id': WEBSITE_ID },
     publisher: { '@id': PUBLISHER_ID },

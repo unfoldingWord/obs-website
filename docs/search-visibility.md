@@ -13,8 +13,10 @@ What the repo owns is the *generator* (`npm run baseline`) and this file.
 
 ## What must be true before measuring
 
-- The canonical host serves the site and `www` 301s to it (#11 — verify in
-  production, `curl -sI https://www.openbiblestories.org/library`).
+- The canonical host is the bare domain, and `www` 301s to it. Both
+  hostnames are attached to the Pages project, so the rule fires; spot-check
+  after a deploy with `curl -sI https://www.openbiblestories.org/library`
+  (expect `301` to the apex `/discover/`).
 - The served `robots.txt` matches `public/robots.txt`, i.e. the Cloudflare
   managed AI blocklist does not `Disallow: /` the retrieval agents (#15).
   Measuring ChatGPT or Perplexity citation while their fetchers are blocked
