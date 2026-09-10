@@ -21,6 +21,23 @@ https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
 /features/*   /why-obs/              301
 /resources/*  /translate/#resources  301
 
+# The standalone reader at /discover/read/ (and /{locale}/discover/read/ in
+# all 16 locales) was retired in the previous release: stories are static
+# pages now, and the reader is mounted in place on each language hub. Those
+# URLs were live until then, so Google has them — and without these rules
+# they 404 rather than redirecting, which is what Search Console's
+# "Not found (404)" is reporting.
+#
+# Both go to the locale's own Discover page: it is the page that now leads to
+# every story, and it keeps the visitor in the language they arrived in. A 301
+# preserves the fragment, and discover.js already forwards a legacy language
+# hash to that language's hub, so an old deep link still lands on the right
+# language.
+/discover/read/          /discover/           301
+/discover/read           /discover/           301
+/:locale/discover/read/  /:locale/discover/   301
+/:locale/discover/read   /:locale/discover/   301
+
 # @astrojs/sitemap used to emit sitemap-0.xml; the sitemap is now an index
 # (sitemap-index.xml → sitemap-pages.xml + sitemap-languages.xml). Keep the
 # old URL alive for crawlers that still hold it. Safe to remove in 2027.

@@ -55,6 +55,46 @@ Track queries **per language, not only English brand terms**. `Open Bible
 Stories` ranking first is not the goal; `hadithi za biblia`, `historias
 bíblicas PDF`, `قصص الكتاب المقدس` and `बाइबल की कहानियाँ` are.
 
+## Reading a coverage export
+
+The Page-indexing export (Search Console → Pages → Export) has four tabs and
+gives **counts per reason, not URLs**. To act on anything you almost always
+need the per-issue export instead: click the reason row, then Export — that
+sheet has the `examples` list. Ask for that one.
+
+What each reason means for this site, and whether it is ours to fix:
+
+| Reason | Actionable? | What it means here |
+| --- | --- | --- |
+| **Not found (404)** | **Yes, always** | A URL Google knows about serves 404. On a site whose routes change, this is nearly always a retired route with no redirect. `npm run check:routes` now fails on one (see below), so a fresh 404 means a route was retired outside that list, or an external link points somewhere that never existed. |
+| **Page with redirect** | **Usually no** | Informational. The URL is excluded from the index *because it redirects*, which is the correct outcome for a retired URL. `/library`, `/features/`, `/resources/`, `/sitemap-0.xml` and the trailing-slash normalisations all land here by design. Only worth investigating if the count jumps, or if a URL you expect to be indexed appears — that would mean a canonical or trailing-slash mistake. |
+| **Crawled – currently not indexed** | Rarely | Google crawled it and chose not to index it. No code change forces indexing. Watch *which* URLs: see the section above on story pages vs hubs. |
+| **Alternate page with proper canonical tag** | No | Working as intended: the locale variants pointing at their canonical. |
+| **Discovered – currently not indexed** | Sometimes | Usually crawl budget. The lever is the sitemap index being submitted and internal links to the page, not markup. |
+
+**The 2026-09-10 reading, for reference.** 27 indexed, 16 not indexed, ~230
+impressions/day: 11 "Page with redirect" (by design, no action), 2
+"Not found (404)", 3 "Crawled – currently not indexed", 0 "Alternate page".
+
+The two 404s traced to a real defect. `git log --diff-filter=D -- 'src/pages/**'`
+showed `discover/read/index.astro` and `[lang]/discover/read.astro` deleted in
+`d39c5eb` — the release then in production — so `/discover/read/` and
+`/{locale}/discover/read/`, 17 URLs that had been live, started serving 404
+with no redirect rule. Fixed with 301s to the locale's own Discover page.
+
+Note the shape of that mistake, because it is the one to watch for: **retiring
+a route is a two-part change**, and the second part leaves no trace in the
+build. `dist/` cannot tell you that a URL used to exist, so nothing failed.
+`check:routes` now carries an explicit `RETIRED` list with the commit each
+entry came from, and asserts every one of them matches a `_redirects` rule
+with a 301, that every redirect target was actually built, and that no
+redirect points at another redirect. **Add to that list whenever a public
+route is retired** — that is the whole guard.
+
+Only 43 URLs were known to Google at all on that date, against a site that
+serves ~9,400. That is a discovery problem, not an indexing one, and the lever
+is the one-time setup above: the sitemap index has to be submitted.
+
 ## The baseline sheet
 
 ```

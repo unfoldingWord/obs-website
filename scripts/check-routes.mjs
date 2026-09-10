@@ -13,6 +13,8 @@
 //   7. every chrome string a single-URL page registers for the browser-side
 //      locale swap resolves in all 16 locale bundles
 //   8. no story page is a "Video only" placeholder published as story text
+//   9. every retired public route redirects rather than 404s, every redirect
+//      target exists, and no redirect chains
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -308,6 +310,93 @@ if (all.length > MAX_FILES) {
   errors.push(`${all.length} files — over the Cloudflare Pages limit of ${MAX_FILES}.`);
 }
 
+// 9. A retired route must redirect, not 404.
+//
+// Search Console's "Not found (404)" on openbiblestories.org was this: the
+// standalone reader at /discover/read/ and /{locale}/discover/read/ was live
+// until the previous release and had no redirect rule, so 17 previously
+// indexed URLs started 404ing. A deleted route leaves no trace in the build,
+// so it cannot be discovered from dist/ — the list below is the record, and
+// each entry names where it came from. Add to it whenever a public route is
+// retired.
+//
+// Also checked here, because the same file is the only place they can go
+// wrong: a redirect must land on something that exists, and must not point at
+// another redirect (a chain costs a round trip and Google follows only so
+// many).
+const RETIRED = [
+  // Deleted in d39c5eb (SEO phases 1-3): the standalone reader, replaced by
+  // static story pages plus the in-place reader on each hub.
+  '/discover/read/',
+  '/es/discover/read/',
+  '/ar/discover/read/',
+  // Renamed in 231472c: /features/ became /why-obs/. The locale tree did not
+  // exist yet, so only the unprefixed path was ever live.
+  '/features/',
+  // Deleted in 231472c: folded into the Translate page's Resources tab.
+  '/resources/',
+  // The Library browser, replaced by /discover/.
+  '/library',
+  '/library/',
+  '/create/library/',
+  // @astrojs/sitemap's old single-file sitemap.
+  '/sitemap-0.xml',
+];
+
+const redirectsFile = join(DIST, '_redirects');
+if (!existsSync(redirectsFile)) {
+  errors.push('_redirects is missing from the build — every retired route would 404');
+} else {
+  const rules = [];
+  for (const line of readFileSync(redirectsFile, 'utf8').split('\n')) {
+    const t = line.trim();
+    if (!t || t.startsWith('#')) continue;
+    const [from, to, code] = t.split(/\s+/);
+    if (!from?.startsWith('/')) continue; // host rules use absolute URLs
+    rules.push({ from, to, code });
+  }
+
+  // Cloudflare Pages matches a trailing `*` splat and `:name` placeholders.
+  const matches = (rule, path) => {
+    const re = new RegExp(
+      '^' +
+        rule.from
+          .replace(/[.+^${}()|[\]\\]/g, '\\$&')
+          .replace(/:[a-zA-Z]+/g, '[^/]+')
+          .replace(/\*/g, '.*') +
+        '$'
+    );
+    return re.test(path);
+  };
+  const ruleFor = (path) => rules.find((r) => matches(r, path));
+
+  for (const path of RETIRED) {
+    const rule = ruleFor(path);
+    if (!rule) {
+      errors.push(`retired route ${path} has no redirect rule — it 404s, and it was live once`);
+      continue;
+    }
+    if (rule.code !== '301') errors.push(`retired route ${path} redirects with ${rule.code}, expected 301`);
+  }
+
+  // Every target must exist, and must not itself redirect.
+  for (const rule of rules) {
+    if (!rule.to?.startsWith('/')) continue;
+    // A placeholder in the target is filled from the request; check a real one.
+    const target = rule.to.replace(/:[a-zA-Z]+/g, 'es').split('#')[0];
+    const onDisk = target.endsWith('/')
+      ? join(DIST, target, 'index.html')
+      : join(DIST, target);
+    if (!existsSync(onDisk)) {
+      errors.push(`redirect ${rule.from} points at ${rule.to}, which was not built`);
+    }
+    const next = ruleFor(target);
+    if (next && next.from !== rule.from) {
+      errors.push(`redirect chain: ${rule.from} → ${rule.to} → ${next.to}`);
+    }
+  }
+}
+
 if (errors.length) {
   for (const e of errors.slice(0, 12)) console.error(`✗ ${e}`);
   if (errors.length > 12) console.error(`  …and ${errors.length - 12} more`);
@@ -316,6 +405,6 @@ if (errors.length) {
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
     `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
-    `no placeholder story text, ` +
+    `no placeholder story text, ${RETIRED.length} retired routes redirect, ` +
     `${all.length}/${MAX_FILES} files, no /discover/read/`
 );
