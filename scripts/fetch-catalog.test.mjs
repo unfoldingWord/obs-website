@@ -412,6 +412,38 @@ test('a ts repo with no tree listing keeps its titles and gains no pages', async
   assert.equal(r.extract.text, 'خدا دنیا را آفرید');
 });
 
+test('enrichStories reports the per-layout outcome and names titles-only languages', async () => {
+  // The failure this exists for: a tS repo whose tree listing cannot be read
+  // still yields titles, so the build stays green and that language silently
+  // loses its story pages. On a deploy log with no other output, that is
+  // invisible.
+  const languages = [
+    { code: 'azb', script: 'latin', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] },
+    { code: 'tly', script: 'latin', entries: [{ owner: 'o', name: 'tly_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] },
+  ];
+  const lines = [];
+  const log = { log: (m) => lines.push(m), warn: (m) => lines.push(m) };
+  // azb has a readable tree; tly's listing 404s, so it gets titles only.
+  const good = tsRepo({ stories: 1, frames: 2 });
+  const f = async (url) => {
+    if (url.includes('tly_obs')) {
+      if (url.includes('/git/trees/')) return { ok: false, status: 404, text: async () => '' };
+      if (url.endsWith('/01/title.txt')) return { ok: true, status: 200, text: async () => '1. Story' };
+      return { ok: false, status: 404, text: async () => '' };
+    }
+    return good(url);
+  };
+  const out = await enrichStories(languages, null, f, log);
+  const summary = lines.join('\n');
+  assert.match(summary, /ts layout — 2 languages fetched, 1 story bodies read/);
+  assert.match(summary, /1 language\(s\) yielded titles but NO story bodies.*tly/);
+  // The reporting fields must not leak into the snapshot.
+  for (const lang of out) {
+    assert.equal('layout' in lang, false);
+    assert.equal('bodies' in lang, false);
+  }
+});
+
 test('fetchStories falls through to the next team when the first repo has no stories', async () => {
   const lang = {
     code: 'awa',

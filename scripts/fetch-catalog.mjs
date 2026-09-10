@@ -683,7 +683,7 @@ export async function fetchCatalog(fetchImpl = fetch) {
  * title, and `stories` is null when no entry has any. Never throws.
  */
 export async function fetchStories(language, fetchImpl = fetch) {
-  let result = { stories: null, extract: null, script: 'latin' };
+  let result = { stories: null, extract: null, script: 'latin', layout: null, bodies: 0 };
   for (const entry of language.entries) {
     if (!entry?.owner || !entry?.name || !entry?.branch_or_tag_name) continue;
     result = await fetchStoriesFrom(language.code, entry, fetchImpl);
@@ -693,12 +693,20 @@ export async function fetchStories(language, fetchImpl = fetch) {
 }
 
 async function fetchStoriesFrom(code, entry, fetchImpl) {
+  const layout = entry.metadata_type === 'ts' ? 'ts' : 'rc';
   const { stories, extract } =
-    entry.metadata_type === 'ts'
-      ? await fetchTsStories(entry, fetchImpl)
-      : await fetchRcStories(entry, fetchImpl);
+    layout === 'ts' ? await fetchTsStories(entry, fetchImpl) : await fetchRcStories(entry, fetchImpl);
   const anyTitle = stories.some((s) => s.title);
-  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, scriptSample({ extract, stories })) };
+  return {
+    stories: anyTitle ? stories : null,
+    extract,
+    script: scriptFor(code, scriptSample({ extract, stories })),
+    // Reported by enrichStories, so the build log says whether a layout
+    // actually produced readable stories. `layout` and `bodies` are stripped
+    // before the snapshot is written (buildSnapshot keeps only public facts).
+    layout,
+    bodies: stories.filter((s) => s.body && s.body.frames.length).length,
+  };
 }
 
 const storyNums = () => Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
@@ -807,6 +815,33 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
     return { ...lang, ...result };
   });
   log.log(`[catalog] stories: fetched ${fetched} languages, reused ${reused} from the previous snapshot`);
+
+  // Per-layout outcome. A legacy translationStudio repo whose tree listing
+  // cannot be read still yields titles, so the build stays green and those
+  // languages silently lose their story pages — exactly the failure that is
+  // invisible in a deploy log otherwise. Name it.
+  const titlesOnly = [];
+  const tally = { rc: { langs: 0, bodies: 0 }, ts: { langs: 0, bodies: 0 } };
+  for (const lang of out) {
+    const t = tally[lang.layout];
+    if (!t) continue;
+    t.langs++;
+    t.bodies += lang.bodies ?? 0;
+    if (lang.stories && !lang.bodies) titlesOnly.push(lang.code);
+  }
+  for (const [layout, t] of Object.entries(tally)) {
+    if (t.langs) log.log(`[catalog] stories: ${layout} layout — ${t.langs} languages fetched, ${t.bodies} story bodies read`);
+  }
+  if (titlesOnly.length) {
+    log.warn(
+      `[catalog] stories: ${titlesOnly.length} language(s) yielded titles but NO story bodies, so they get no story pages: ` +
+        `${titlesOnly.slice(0, 20).join(', ')}${titlesOnly.length > 20 ? ', …' : ''}`
+    );
+  }
+  for (const lang of out) {
+    delete lang.layout;
+    delete lang.bodies;
+  }
   return out;
 }
 
