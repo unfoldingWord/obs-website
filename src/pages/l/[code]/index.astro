@@ -98,8 +98,19 @@ const partial = stories.length > 0 && stories.length < STORY_COUNT;
 //
 // So each button is gated on the thing it opens. `check:routes` asserts the
 // same invariant against the built HTML.
-const hasAudio = storyRecords.some((s) => s.audio) || Boolean(audioZip);
-const hasVideo = Boolean(youtube) || Boolean(videoFile) || storyRecords.some((s) => s.video);
+// A media button must point at a story that HAS that medium, not merely at
+// the first readable story. A team often records progressively, and
+// audioByStory()/videoByStory() key on the two-digit group in a filename, so
+// a language can easily have audio on stories 5-50 and none on story 1 —
+// which sent "Listen" to a story page with no player. `check:routes` catches
+// it, so with the post-build checks in CI this would fail the deploy rather
+// than ship, but the page is what has to be right.
+const firstStoryWith = (has: (s: (typeof storyRecords)[number]) => unknown) =>
+  storyRecords.find((s) => has(s))?.num ?? null;
+const audioStory = firstStoryWith((s) => s.audio);
+const videoStory = firstStoryWith((s) => s.video);
+const hasAudio = audioStory !== null || Boolean(audioZip);
+const hasVideo = Boolean(youtube) || Boolean(videoFile) || videoStory !== null;
 // How many stories a visitor can actually READ here — the ones the story list
 // links, not the titles that were read from the repo. The hub FAQ's first
 // answer is built from this, so it cannot promise stories that have no page
@@ -273,9 +284,11 @@ label('source', t.source);
       {stories.length > 0 && <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>}
       {/* Anchored at the player rather than the top of the story page, so
           "Listen" does not land on a page identical to "Read online". */}
-      {hasAudio && <li><a class="btn btn-outline" href={audioZip && !storyRecords.some((s) => s.audio) ? audioZip.url : `${read()}#listen`}>{t.audio}</a></li>}
+      {hasAudio && (
+        <li><a class="btn btn-outline" href={audioStory !== null ? `${storyPath(lang.code, audioStory)}#listen` : audioZip!.url}>{t.audio}</a></li>
+      )}
       {hasVideo && (
-        <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? `${read()}#watch`} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
+        <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? `${storyPath(lang.code, videoStory!)}#watch`} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
       )}
       {pdf && (
         <li><a class="btn btn-outline" href={pdf.url} rel="noopener" title={pdf.name}>{withSize(t.pdf, pdf.size)}</a></li>
