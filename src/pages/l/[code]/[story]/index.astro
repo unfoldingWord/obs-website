@@ -71,6 +71,35 @@ const next = i >= 0 && i < nums.length - 1 ? nums[i + 1] : null;
 const title = `${story.title} — ${name} | Open Bible Stories`;
 const description = fill(t.meta.description, { story: story.title, n: story.num, language: name });
 const firstImage = story.frames.find((f) => f.image)?.image;
+
+// The chrome strings this page rendered, for the browser-side locale swap —
+// same contract as the hub (see the comment there and
+// public/assets/js/locale.js). Story text, titles and references are the
+// translation team's work and are not in here.
+const chrome: Record<string, { k: string; a?: Record<string, string | number> }> = {};
+const label = (key: string, value: string, args?: Record<string, string | number>) => {
+  const rendered = (args ? fill(value, args) : value).trim();
+  if (rendered) chrome[rendered] = { k: `story.${key}`, a: args };
+};
+
+label('allStories', t.allStories, { language: name });
+label('storyN', t.storyN, { n: story.num, total: STORY_COUNT });
+if (story.audio) {
+  label('listen', t.listen);
+  label('downloadAudio', t.downloadAudio);
+}
+if (story.video) {
+  label('watch', t.watch);
+  label('downloadVideo', t.downloadVideo);
+}
+if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
+story.frames.forEach((f, i) => {
+  if (f.image) label('imageAlt', t.imageAlt, { story: story.title, n: i + 1 });
+});
+label('openInReader', t.openInReader);
+if (prev) label('previous', t.previous);
+if (next) label('next', t.next);
+label('license', t.license);
 ---
 
 <Base
@@ -86,12 +115,13 @@ const firstImage = story.frames.find((f) => f.image)?.image;
   fontHref={fontHrefForScript(lang.script)}
   script={lang.script}
   ogImage={firstImage}
+  chrome={chrome}
 >
 
 <article class="story">
   <div class="wrap">
-    <nav class="story-crumb" lang={ui.tag} dir={ui.dir}>
-      <a href={languagePath(lang.code)}>&larr; {fill(t.allStories, { language: name })}</a>
+    <nav class="story-crumb" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
+      <a href={languagePath(lang.code)}><span aria-hidden="true">&larr;</span> {fill(t.allStories, { language: name })}</a>
       <span class="story-count">{fill(t.storyN, { n: story.num, total: STORY_COUNT })}</span>
     </nav>
 
@@ -103,7 +133,7 @@ const firstImage = story.frames.find((f) => f.image)?.image;
         what makes the page eligible for audio and video results instead of
         being a player a crawler cannot hear. */}
     {(story.audio || story.video) && (
-      <div class="story-media" lang={ui.tag} dir={ui.dir}>
+      <div class="story-media" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
         {story.audio && (
           <p class="story-audio">
             <span class="story-audio-label">{t.listen}</span>
@@ -150,18 +180,18 @@ const firstImage = story.frames.find((f) => f.image)?.image;
       <p class="story-reference" lang={lang.code} dir={lang.direction}><em>{story.reference}</em></p>
     )}
 
-    <p class="story-open-reader" lang={ui.tag} dir={ui.dir}>
+    <p class="story-open-reader" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
       <a class="btn btn-outline" href={`${languagePath(lang.code)}#story-${story.num}`}>{t.openInReader}</a>
     </p>
 
-    <nav class="story-nav" lang={ui.tag} dir={ui.dir}>
+    <nav class="story-nav" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
       {prev
-        ? <a class="btn btn-outline" href={storyPath(lang.code, prev)} rel="prev">&larr; {t.previous}</a>
+        ? <a class="btn btn-outline" href={storyPath(lang.code, prev)} rel="prev"><span aria-hidden="true">&larr;</span> {t.previous}</a>
         : <span></span>}
-      {next && <a class="btn btn-outline" href={storyPath(lang.code, next)} rel="next">{t.next} &rarr;</a>}
+      {next && <a class="btn btn-outline" href={storyPath(lang.code, next)} rel="next">{t.next} <span aria-hidden="true">&rarr;</span></a>}
     </nav>
 
-    <p class="story-license" lang={ui.tag} dir={ui.dir}>{t.license}</p>
+    <p class="story-license" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">{t.license}</p>
   </div>
 </article>
 

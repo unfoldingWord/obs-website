@@ -9,23 +9,23 @@
   "questions": [
     {
       "q": "Wat is Open Bible Stories?",
-      "a": "Open Bible Stories is een reeks van 50 geïllustreerde Bijbelverhalen, van de schepping tot Openbaring. Elk verhaal vertelt een Bijbelgedeelte in een paar pagina's na, met platen erbij, zodat het gelezen, beluisterd of hardop verteld kan worden. unfoldingWord geeft het uit, plaatselijke kerken en vertaalteams vertalen het, en iedereen mag het vrij gebruiken."
+      "a": "Open Bible Stories is een set van 50 kernverhalen uit de Bijbel, van de schepping tot Openbaring, <strong>voor evangelisatie en discipelschap</strong>, vrij beschikbaar om te vertalen en in elk medium en elke taal te delen."
     },
     {
       "q": "Is Open Bible Stories een Bijbelvertaling?",
-      "a": "Nee. De 50 verhalen vertellen Bijbelgedeelten na; ze zijn geen vertaling van de hele Bijbeltekst. Veel teams vertalen ze eerst, omdat dat maanden kost en geen jaren: hun kerk heeft dan meteen Bijbelse inhoud om te gebruiken, en het team doet de ervaring en de controlegewoonten op die het nodig heeft voordat het de Bijbel zelf vertaalt."
+      "a": "Nee. De verhalen zijn een compact overzicht van de Schrift en van het evangelie, van Genesis tot Openbaring. De vereenvoudigde taal verlicht de last voor wie net begint, doordat ze het aantal moeilijke vertaalvraagstukken beperkt. Alle 50 verhalen samen zijn ongeveer even lang als het boek Handelingen.\n\nWe leiden nieuwe vertalers op om eerst Open Bible Stories te vertalen, omdat dat werk minder ontzagwekkend is dan het vertalen van de Bijbel zelf. Het is een ideale manier om een nieuw team de grondbeginselen van goed vertalen bij te brengen: het is een uitstekende inleiding in de vertaalprincipes, het omvat alle onderdelen van samen ontwerpen en controleren, en het vraagt om het gebruik van de belangrijkste hulpmiddelen in het proces. Teams ronden het in een paar maanden af, en de verhalen zijn direct klaar voor gebruik."
     },
     {
       "q": "In hoeveel talen is het beschikbaar?",
-      "a": "Er zijn nu {count} talen met een gepubliceerde vertaling, en er komen er meer bij. Elke taal heeft een eigen pagina met de verhalen, de formaten die in die taal bestaan en het team dat ze heeft gepubliceerd. <a href=\"/discover/\">Bekijk alle talen</a>."
+      "a": "{count} talen hebben vandaag een gepubliceerde vertaling, en er zijn er meer op weg. Elke taal heeft haar eigen pagina met de verhalen, de formaten die in die taal bestaan en het team dat de vertaling publiceerde. Zie de <a href=\"/discover/\">pagina Ontdekken</a> voor de volledige lijst."
     },
     {
       "q": "Hoe lees, beluister of download ik het in mijn taal?",
-      "a": "Open <a href=\"/discover/\">Ontdek</a>, zoek je taal en open die pagina. Daar kun je alle verhalen lezen, beluisteren waar een opname bestaat, bekijken waar er video is, en een pdf of de audiobestanden downloaden. Je hebt geen account nodig en niets kost geld."
+      "a": "Open de <a href=\"/discover/\">pagina Ontdekken</a>, zoek je taal en open die pagina. Daar kun je elk verhaal lezen, luisteren waar een opname bestaat, kijken waar video is, en een PDF of de audiobestanden downloaden. Alle digitale versies zijn online gratis."
     },
     {
       "q": "Mag ik deze verhalen kopiëren, afdrukken, aanpassen of opnemen?",
-      "a": "Ja. De verhalen staan onder de licentie Creative Commons Naamsvermelding-GelijkDelen 4.0 (CC BY-SA 4.0). Je mag ze kopiëren, afdrukken, opnemen, uitzenden of aanpassen &mdash; ook commercieel &mdash; zolang je het oorspronkelijke werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt. Laat het handelsmerk unfoldingWord&reg; staan op onveranderde kopieën en haal het weg als je het werk wijzigt of vertaalt; vermeld wat je hebt veranderd en schrijf erbij: &ldquo;Het oorspronkelijke werk van unfoldingWord is beschikbaar via https://openbiblestories.org&rdquo;. De illustraties zijn &copy; Sweet Publishing en worden gedeeld onder CC BY-SA 3.0. Op de <a href=\"/license/\">licentiepagina</a> staat de volledige tekst."
+      "a": "Ja. Geef zoveel exemplaren van dit boek weg als je wilt, zonder beperking. Alle digitale versies zijn online gratis, en door de open licentie die we gebruiken mag je unfoldingWord&reg; Open Bible Stories zelfs commercieel heruitgeven, waar ook ter wereld, zonder royalty’s te betalen. De verhalen staan onder de Creative Commons Naamsvermelding-GelijkDelen 4.0-licentie (CC BY-SA 4.0): je mag ze kopiëren, printen, opnemen, uitzenden of bewerken, ook commercieel, zolang je het originele werk vermeldt en wat je maakt onder dezelfde licentie uitbrengt. Laat het handelsmerk unfoldingWord&reg; staan op ongewijzigde kopieën en haal het weg als je het werk verandert of vertaalt; vermeld wat je hebt gewijzigd en schrijf erbij: „Het originele werk van unfoldingWord is te vinden op https://openbiblestories.org”.\n\nDe illustraties zijn &copy; Sweet Publishing en worden gedeeld onder CC BY-SA 3.0, dus ze hebben hun eigen naamsvermelding. Op de <a href=\"/license/\">licentiepagina</a> staat de volledige tekst."
     },
     {
       "q": "Hoe begin ik een vertaling in mijn taal?",

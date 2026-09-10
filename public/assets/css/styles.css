@@ -690,6 +690,36 @@ html[data-script="han"]{
   --heading-font:'Noto Sans SC', 'Montserrat', sans-serif;
   --body-font:'Noto Sans SC', 'Nunito Sans', sans-serif;
 }
+/* The same six faces, for a chrome region whose language was swapped in the
+   browser (public/assets/js/locale.js). <html data-script> stays on the
+   CONTENT language — the story text on a hub is still written in it — so the
+   swapped nav, buttons and FAQ carry [data-i18n-script] instead. These are
+   custom properties, so they inherit into the region and nothing else. Only
+   the six scripts the 16 marketing locales use can appear here. */
+[data-i18n-script="arabic"]{
+  --heading-font:'Noto Sans Arabic', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Arabic', 'Nunito Sans', sans-serif;
+}
+[data-i18n-script="nastaliq"]{
+  --heading-font:'Noto Nastaliq Urdu', 'Montserrat', serif;
+  --body-font:'Noto Nastaliq Urdu', 'Nunito Sans', serif;
+}
+[data-i18n-script="devanagari"]{
+  --heading-font:'Noto Sans Devanagari', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Devanagari', 'Nunito Sans', sans-serif;
+}
+[data-i18n-script="bengali"]{
+  --heading-font:'Noto Sans Bengali', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Bengali', 'Nunito Sans', sans-serif;
+}
+[data-i18n-script="myanmar"]{
+  --heading-font:'Noto Sans Myanmar', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Myanmar', 'Nunito Sans', sans-serif;
+}
+[data-i18n-script="han"]{
+  --heading-font:'Noto Sans SC', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans SC', 'Nunito Sans', sans-serif;
+}
 /* Scripts with no marketing locale — these exist only because published
    translations do (/l/or/, /l/gu/, /l/ta/, /l/te/, /l/kn/, /l/ml/, /l/pa/,
    /l/lo/, /l/am/ and the 30-odd smaller languages that share their

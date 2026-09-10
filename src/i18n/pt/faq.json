@@ -9,23 +9,23 @@
   "questions": [
     {
       "q": "O que é Open Bible Stories?",
-      "a": "Open Bible Stories é um conjunto de 50 histórias bíblicas ilustradas, da Criação ao Apocalipse. Cada história reconta uma passagem das Escrituras em poucas páginas e vem acompanhada de imagens, então pode ser lida, ouvida ou contada em voz alta. A unfoldingWord publica o material, igrejas locais e equipes de tradução o traduzem, e qualquer pessoa pode usá-lo livremente."
+      "a": "Open Bible Stories são 50 histórias essenciais da Bíblia, da Criação ao Apocalipse, <strong>para evangelismo e discipulado</strong>, oferecidas gratuitamente para tradução e divulgação em qualquer mídia e em qualquer idioma."
     },
     {
       "q": "Open Bible Stories é uma tradução da Bíblia?",
-      "a": "Não. As 50 histórias recontam relatos bíblicos; não são uma tradução de todo o texto bíblico. Muitas equipes as traduzem primeiro porque isso leva meses, e não anos: a igreja passa a ter conteúdo bíblico para usar agora, e a equipe ganha a prática e os hábitos de verificação de que precisa antes de traduzir a própria Bíblia."
+      "a": "Não. As histórias são um panorama conciso das Escrituras e do evangelho, de Gênesis a Apocalipse. A linguagem simplificada reduz a carga cognitiva de quem está começando, porque limita os problemas difíceis de tradução que ele precisa enfrentar. As 50 histórias juntas têm mais ou menos o volume do livro de Atos.\n\nPreparamos os tradutores novos para traduzir Open Bible Stories primeiro, porque esse trabalho intimida menos do que traduzir a própria Bíblia. É um meio ideal de apresentar a uma equipe nova os fundamentos de uma boa tradução: é uma excelente introdução aos princípios de tradução, inclui todos os elementos do rascunho e da verificação em equipe e exige o uso das ajudas essenciais do processo. As equipes concluem o trabalho em poucos meses, e as histórias ficam prontas para uso imediato."
     },
     {
       "q": "Em quantos idiomas está disponível?",
-      "a": "Hoje {count} idiomas têm uma tradução publicada, e outros estão em andamento. Cada um tem a sua própria página, com as histórias, os formatos que existem naquele idioma e a equipe que publicou. <a href=\"/discover/\">Veja todos os idiomas</a>."
+      "a": "{count} idiomas já têm uma tradução publicada, e outros estão em andamento. Cada um tem a sua própria página, com as histórias, os formatos que existem naquele idioma e a equipe que o publicou. Veja a <a href=\"/discover/\">página Descubra</a> para a lista completa."
     },
     {
       "q": "Como leio, ouço ou baixo no meu idioma?",
-      "a": "Abra <a href=\"/discover/\">Descobrir</a>, procure o seu idioma e abra a página dele. Ali você pode ler todas as histórias, ouvir onde existe gravação, assistir onde há vídeo e baixar um PDF ou os arquivos de áudio. Não é preciso criar conta e nada é pago."
+      "a": "Abra a <a href=\"/discover/\">página Descubra</a>, procure o seu idioma e abra a página dele. De lá você pode ler todas as histórias, ouvir onde houver gravação, assistir onde houver vídeo e baixar um PDF ou os arquivos de áudio. Todas as versões digitais são gratuitas na internet."
     },
     {
       "q": "Posso copiar, imprimir, adaptar ou gravar estas histórias?",
-      "a": "Sim. As histórias são publicadas sob a licença Creative Commons Atribuição-CompartilhaIgual 4.0 (CC BY-SA 4.0). Você pode copiar, imprimir, gravar, transmitir ou adaptar &mdash; inclusive comercialmente &mdash; desde que dê crédito à obra original e publique o que produzir sob a mesma licença. Mantenha a marca unfoldingWord&reg; em cópias não modificadas e remova-a se alterar ou traduzir a obra; diga o que mudou e atribua assim: &ldquo;A obra original da unfoldingWord está disponível em https://openbiblestories.org&rdquo;. As ilustrações são &copy; Sweet Publishing e compartilhadas sob CC BY-SA 3.0. A <a href=\"/license/\">página da licença</a> tem o texto completo."
+      "a": "Sim. Distribua quantas cópias deste livro quiser, sem restrição. Todas as versões digitais são gratuitas na internet e, por causa da licença aberta que usamos, você pode até republicar unfoldingWord&reg; Open Bible Stories comercialmente em qualquer lugar do mundo sem pagar royalties. As histórias são publicadas sob a licença Creative Commons Atribuição-CompartilhaIgual 4.0 (CC BY-SA 4.0): você pode copiá-las, imprimi-las, gravá-las, transmiti-las ou adaptá-las, inclusive comercialmente, desde que credite a obra original e publique o que fizer sob a mesma licença. Mantenha a marca unfoldingWord&reg; nas cópias não modificadas e remova-a se alterar ou traduzir a obra; diga o que mudou e atribua assim: “A obra original da unfoldingWord está disponível em https://openbiblestories.org”.\n\nAs ilustrações são &copy; Sweet Publishing e compartilhadas sob CC BY-SA 3.0, portanto têm a sua própria atribuição. A <a href=\"/license/\">página de licença</a> traz o texto completo."
     },
     {
       "q": "Como inicio uma tradução no meu idioma?",

@@ -494,14 +494,105 @@ export function scriptFor(code, sample) {
   return script;
 }
 
-/** Story file URLs for one entry, mirroring public/assets/js/discover.js. */
+/** Raw-file base URL for one entry's repo at its release ref. */
+export function rawBase(entry) {
+  return `https://git.door43.org/${entry.owner}/${entry.name}/raw/${entry.branch_or_tag_name}`;
+}
+
+/** Story file URLs for one entry, mirroring public/assets/js/discover.js.
+ *  The two `frames` are the legacy translationStudio fallback used only when
+ *  the repo's tree listing is unavailable — see fetchTsFrames(). */
 export function storyUrls(entry, num) {
-  const base = `https://git.door43.org/${entry.owner}/${entry.name}/raw/${entry.branch_or_tag_name}`;
+  const base = rawBase(entry);
   const nn = pad(num);
   if (entry.metadata_type === 'ts') {
     return { title: `${base}/${nn}/title.txt`, frames: [`${base}/${nn}/01.txt`, `${base}/${nn}/02.txt`], reference: `${base}/${nn}/reference.txt`, rc: null };
   }
   return { rc: `${base}/${entry.contentPath || 'content'}/${nn}.md` };
+}
+
+/** Gitea recursive tree listing for one entry's repo at its release ref. */
+export function treeUrl(entry, page = 1) {
+  const ref = encodeURIComponent(entry.branch_or_tag_name);
+  return `https://git.door43.org/api/v1/repos/${entry.owner}/${entry.name}/git/trees/${ref}?recursive=true&per_page=1000&page=${page}`;
+}
+
+/**
+ * Frame files per story in a legacy translationStudio repo, keyed by story
+ * number, from one or more tree listings.
+ *
+ * A tS repo stores one directory per story and one file per frame
+ * (`07/01.txt`, `07/02.txt`, …), so the frame count varies by story and is
+ * not knowable without a listing. `title.txt` and `reference.txt` live in the
+ * same directory and are not frames.
+ */
+export function tsFramesFromTree(...trees) {
+  const out = new Map();
+  for (const tree of trees) {
+    for (const node of tree?.tree || []) {
+      if (node.type && node.type !== 'blob') continue;
+      const m = String(node.path || '').match(/^(\d{2})\/(\d{2})\.txt$/);
+      if (!m) continue;
+      const num = parseInt(m[1], 10);
+      if (!num || num > STORY_COUNT) continue;
+      if (!out.has(num)) out.set(num, []);
+      out.get(num).push(node.path);
+    }
+  }
+  for (const paths of out.values()) paths.sort();
+  return out;
+}
+
+/**
+ * Read a tS repo's frame layout. Returns null when the listing cannot be
+ * read, which is the signal to fall back to the titles-only behaviour rather
+ * than to probe several hundred frame URLs per language.
+ */
+export async function fetchTsFrames(entry, fetchImpl = fetch, maxPages = 6) {
+  const trees = [];
+  try {
+    for (let page = 1; page <= maxPages; page++) {
+      const body = await fetchText(treeUrl(entry, page), fetchImpl);
+      if (body == null) break;
+      let tree;
+      try {
+        tree = JSON.parse(body);
+      } catch {
+        return null;
+      }
+      trees.push(tree);
+      // Gitea pages the tree and flags a listing it had to cut short. Stop as
+      // soon as a page is short or the listing says it is complete.
+      if (!tree?.truncated || !Array.isArray(tree.tree) || tree.tree.length === 0) break;
+    }
+  } catch {
+    return null;
+  }
+  if (!trees.length) return null;
+  const frames = tsFramesFromTree(...trees);
+  return frames.size ? frames : null;
+}
+
+/**
+ * One frame of a tS story. The frame files are plain text, but many carry the
+ * illustration as a markdown image on its own line, exactly as the RC
+ * markdown does — so a frame yields the same {image, text} shape the RC path
+ * produces and the story pages already render.
+ */
+export function parseTsFrame(raw) {
+  if (raw == null) return null;
+  let image = null;
+  const kept = [];
+  for (const line of String(raw).split('\n')) {
+    const m = line.trim().match(/^!\[[^\]]*\]\(([^)\s]+)[^)]*\)$/);
+    if (m) {
+      if (!image) image = m[1];
+      continue;
+    }
+    kept.push(line);
+  }
+  const text = kept.join(' ').replace(/\s+/g, ' ').trim();
+  return { image, text };
 }
 
 /** Identity of the release the cached stories were fetched from. */
@@ -602,44 +693,77 @@ export async function fetchStories(language, fetchImpl = fetch) {
 }
 
 async function fetchStoriesFrom(code, entry, fetchImpl) {
-  const nums = Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
+  const { stories, extract } =
+    entry.metadata_type === 'ts'
+      ? await fetchTsStories(entry, fetchImpl)
+      : await fetchRcStories(entry, fetchImpl);
+  const anyTitle = stories.some((s) => s.title);
+  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, scriptSample({ extract, stories })) };
+}
+
+const storyNums = () => Array.from({ length: STORY_COUNT }, (_, i) => i + 1);
+
+/** Resource Container repos: one markdown file per story. */
+async function fetchRcStories(entry, fetchImpl) {
   let extract = null;
-  const stories = await mapLimit(nums, 8, async (num) => {
-    const urls = storyUrls(entry, num);
+  const stories = await mapLimit(storyNums(), 8, async (num) => {
     try {
-      if (urls.rc) {
-        const md = await fetchText(urls.rc, fetchImpl);
-        if (md == null) return { num, title: null };
-        const parsed = parseStoryMarkdown(md);
-        if (num === 1) extract = makeExtract(parsed);
-        return {
-          num,
-          title: parsed.title || null,
-          body: parsed.frames.length
-            ? { reference: parsed.reference || null, frames: parsed.frames }
-            : null,
-        };
-      }
-      const title = (await fetchText(urls.title, fetchImpl))?.trim() || null;
-      // Legacy translationStudio repos store each frame in its own file and
-      // only the first two are fetched here, so a ts story yields a title and
-      // an extract but no full body — it gets no story page.
-      if (num === 1) {
-        const frames = [];
-        for (const u of urls.frames) {
-          const t = await fetchText(u, fetchImpl);
-          if (t && t.trim()) frames.push(t.trim());
-        }
-        const reference = (await fetchText(urls.reference, fetchImpl))?.trim() || '';
-        extract = makeExtract({ title: title || '', paragraphs: frames, reference });
-      }
-      return { num, title, body: null };
-    } catch (err) {
+      const md = await fetchText(storyUrls(entry, num).rc, fetchImpl);
+      if (md == null) return { num, title: null };
+      const parsed = parseStoryMarkdown(md);
+      if (num === 1) extract = makeExtract(parsed);
+      return {
+        num,
+        title: parsed.title || null,
+        body: parsed.frames.length ? { reference: parsed.reference || null, frames: parsed.frames } : null,
+      };
+    } catch {
       return { num, title: null };
     }
   });
-  const anyTitle = stories.some((s) => s.title);
-  return { stories: anyTitle ? stories : null, extract, script: scriptFor(code, scriptSample({ extract, stories })) };
+  return { stories, extract };
+}
+
+/**
+ * Legacy translationStudio repos: one directory per story, one file per
+ * frame, plus title.txt and reference.txt. The frame count varies per story,
+ * so the repo's tree listing decides which files to read — one request per
+ * repo rather than a probe per frame.
+ *
+ * When that listing cannot be read the language degrades to what it produced
+ * before this path existed: titles, and an extract from the first two frames
+ * of story 1, with no story bodies and so no story pages. That is a worse
+ * page, not a broken build, and it is what an outage of the tree API should
+ * cost.
+ */
+async function fetchTsStories(entry, fetchImpl) {
+  const framesByStory = await fetchTsFrames(entry, fetchImpl);
+  const base = rawBase(entry);
+  let extract = null;
+  const stories = await mapLimit(storyNums(), 8, async (num) => {
+    const nn = pad(num);
+    try {
+      const title = (await fetchText(`${base}/${nn}/title.txt`, fetchImpl))?.trim() || null;
+      const paths = framesByStory?.get(num) ?? [];
+      const raw = paths.length
+        ? await mapLimit(paths, 4, (path) => fetchText(`${base}/${path}`, fetchImpl))
+        : await mapLimit(storyUrls(entry, num).frames, 2, (url) => (num === 1 ? fetchText(url, fetchImpl) : null));
+      const frames = raw.map(parseTsFrame).filter((f) => f && f.text);
+      const reference = (await fetchText(`${base}/${nn}/reference.txt`, fetchImpl))?.trim() || '';
+      if (num === 1) extract = makeExtract({ title: title || '', paragraphs: frames.map((f) => f.text), reference });
+      return {
+        num,
+        title,
+        // Only a listed repo yields a body: the two-frame fallback is an
+        // extract's worth of text, not the story, and must not be published
+        // as one.
+        body: paths.length && frames.length ? { reference: reference || null, frames } : null,
+      };
+    } catch {
+      return { num, title: null };
+    }
+  });
+  return { stories, extract };
 }
 
 /**

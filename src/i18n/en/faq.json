@@ -9,31 +9,31 @@
   "questions": [
     {
       "q": "What is Open Bible Stories?",
-      "a": "Open Bible Stories is a set of 50 illustrated Bible stories, from Creation to Revelation. Each story retells a passage of Scripture in a few pages and pairs it with pictures, so it can be read, listened to, or told aloud. unfoldingWord publishes it, local churches and translation teams translate it, and anyone may use it freely."
+      "a": "Open Bible Stories is 50 key stories of the Bible, from Creation to Revelation, <strong>for evangelism and discipleship</strong>, provided freely for translation and multi-media sharing in any language."
     },
     {
       "q": "Is Open Bible Stories a Bible translation?",
-      "a": "No. The 50 stories retell biblical accounts; they are not a translation of the whole biblical text. Many teams translate the stories first because that can be done in months rather than years &mdash; it gives their church Scripture content to use now, and gives the team the practice and the checking habits they need before translating the Bible itself."
+      "a": "No, the stories are a concise Scripture survey of the gospel, from Genesis to Revelation. Simplified language reduces the cognitive load on new learners by limiting the types of difficult translation issues they face. The content volume of all 50 stories is about the same as the book of Acts.\n\nWe train new translators to translate Open Bible Stories first because that work is less intimidating than translating the Bible itself. Open Bible Stories provides an ideal mechanism for introducing new teams to the fundamentals of good translation. Starting Bible translation with OBS gives a new translation team a great introduction to translation principles; it includes all the elements of team scripture drafting and checking, and it involves the use of key helps in the translation process. Translation teams complete the process in a matter of months, and the stories are immediately ready for use."
     },
     {
       "q": "How many languages is it available in?",
-      "a": "{count} languages have a published translation today, and more are in progress. Each one has its own page listing the stories, the formats that exist in that language, and the team that published it. <a href=\"/discover/\">Browse every language</a>."
+      "a": "{count} languages have a published translation today, and more are in progress. Each one has its own page listing the stories, the formats that exist in that language, and the team that published it. See the <a href=\"/discover/\">Discover page</a> for the full list."
     },
     {
       "q": "How do I read, listen to, or download it in my language?",
-      "a": "Open <a href=\"/discover/\">Discover</a>, search for your language, and open its page. From there you can read every story, listen where a recording exists, watch where there is video, and download a PDF or the audio files. Nothing needs an account, and nothing costs money."
+      "a": "Open the <a href=\"/discover/\">Discover page</a>, search for your language, and open its page. From there you can read every story, listen where a recording exists, watch where there is video, and download a PDF or the audio files. All digital versions are free online."
     },
     {
       "q": "Can I copy, print, adapt, or record these stories?",
-      "a": "Yes. The stories are released under the Creative Commons Attribution-ShareAlike 4.0 license (CC BY-SA 4.0). You may copy, print, record, broadcast, or adapt them &mdash; including commercially &mdash; provided you credit the original work and release what you make under the same license. Keep the unfoldingWord&reg; trademark on unmodified copies, and remove it if you change or translate the work; say what you changed, and attribute it as &ldquo;The original work by unfoldingWord is available from https://openbiblestories.org&rdquo;. The illustrations are &copy; Sweet Publishing and shared under CC BY-SA 3.0. The <a href=\"/license/\">license page</a> has the full text."
+      "a": "Yes. Give as many copies of this book away as you want, without restriction. All digital versions are free online, and because of the open license we are using, you can even republish unfoldingWord&reg; Open Bible Stories commercially anywhere in the world without paying royalties! The stories are released under the Creative Commons Attribution-ShareAlike 4.0 license (CC BY-SA 4.0). You may copy, print, record, broadcast, or adapt them, including commercially, provided you credit the original work and release what you make under the same license. Keep the unfoldingWord&reg; trademark on unmodified copies, and remove it if you change or translate the work; say what you changed, and attribute it as &ldquo;The original work by unfoldingWord is available from https://openbiblestories.org&rdquo;.\n\nThe illustrations are &copy; Sweet Publishing and shared under CC BY-SA 3.0, so they carry their own attribution. The <a href=\"/license/\">license page</a> has the full text."
     },
     {
       "q": "How do I start a translation in my language?",
-      "a": "Start with the <a href=\"/translate/\">Translate</a> page: it explains the process, the tools, and how to check a translation with the churches that will use it. Translation is done by teams from the language community, not for them, and unfoldingWord can help you find training and a network of other teams."
+      "a": "Start with the <a href=\"/translate/\">Translate page</a>: it explains the process, the tools, and how to check a translation with the churches that will use it. Translation is done by teams from the language community, not for them, and unfoldingWord can help you find training and a network of other teams."
     },
     {
       "q": "Which stories tell the gospel, or the story of Abraham, or Easter?",
-      "a": "The stories run in biblical order, so they are easy to find by number. Creation and the fall are stories 1&ndash;3, God's covenant with Abraham begins at story 4, the Passover and the Exodus are stories 11&ndash;12, and the Old Testament closes with the promise of the Messiah in story 21. The life of Jesus runs from his birth in story 23 through his ministry and parables; the crucifixion is story 40, the resurrection story 41, and his return to heaven story 42. The church begins in story 43, and the last three stories &mdash; 48, 49 and 50 &mdash; explain the gospel and Christ's return."
+      "a": "The stories run in biblical order, so they are easy to find by number. Creation and the fall are stories 1&ndash;3, God's covenant with Abraham begins at story 4, the Passover and the Exodus are stories 11&ndash;12, and the Old Testament closes with the promise of the Messiah in story 21. The life of Jesus runs from his birth in story 23 through his ministry and parables; the crucifixion is story 40, the resurrection story 41, and his return to heaven story 42. The church begins in story 43, and the last three stories, 48, 49 and 50, explain the gospel and Christ's return."
     },
     {
       "q": "Who makes Open Bible Stories?",

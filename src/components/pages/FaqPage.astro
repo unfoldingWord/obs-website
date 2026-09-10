@@ -35,6 +35,14 @@ const questions: { q: string; a: string }[] = t.questions.map((item: { q: string
   q: withCount(item.q),
   a: prose(item.a),
 }));
+
+// An answer may run to more than one paragraph: a blank line in the string
+// separates them. The first paragraph is always the answer itself, so a
+// reader — or a model quoting the page — gets it without the detail that
+// follows. Schema.org Answer.text is a single string, so faqPageNode keeps
+// the whole answer with the break flattened to a space.
+const paragraphsOf = (a: string) => a.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
+const flat = questions.map(({ q, a }) => ({ q, a: paragraphsOf(a).join(' ') }));
 ---
 
 <Base
@@ -42,7 +50,7 @@ const questions: { q: string; a: string }[] = t.questions.map((item: { q: string
   slug="faq"
   title={t.meta.title}
   description={withCount(t.meta.description)}
-  jsonLd={[faqPageNode(locale, questions)]}
+  jsonLd={[faqPageNode(locale, flat)]}
 >
 
 <section class="page-header">
@@ -58,7 +66,7 @@ const questions: { q: string; a: string }[] = t.questions.map((item: { q: string
     {questions.map(({ q, a }) => (
       <div class="faq-item">
         <h2>{q}</h2>
-        <p set:html={a} />
+        {paragraphsOf(a).map((para) => <p set:html={para} />)}
       </div>
     ))}
   </div>

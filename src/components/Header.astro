@@ -13,14 +13,15 @@ const { locale, ui, slug, switcher } = Astro.props;
 const showSwitcher = switcher ?? isLocalized(slug);
 ---
 
-<header class="site-nav">
+<header class="site-nav" data-i18n-scope="header">
   <div class="nav-inner">
-    <a class="brand" href={localePath(locale, 'home')}>{ui.siteTitle}</a>
+    <a class="brand" href={localePath(locale, 'home')} data-slug="home">{ui.siteTitle}</a>
     <nav class="links" id="nav-links">
       {
         ui.nav.map((item: { label: string; slug: PageSlug }) => (
           <a
             href={localePath(locale, item.slug)}
+            data-slug={item.slug}
             aria-current={item.slug === slug ? 'page' : undefined}
           >
             {item.label}

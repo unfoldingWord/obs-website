@@ -10,6 +10,8 @@
 //   4. every internal link into /l/ resolves to a built page
 //   5. the output fits Cloudflare Pages' 20,000-file limit
 //   6. /llms.txt lists only URLs that were built, and every markdown mirror
+//   7. every chrome string a single-URL page registers for the browser-side
+//      locale swap resolves in all 16 locale bundles
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -177,6 +179,56 @@ if (!existsSync(llmsFile)) {
   }
 }
 
+// 7. The browser-side locale swap must be able to resolve every string.
+//
+// The hubs and story pages are one URL each, so their chrome is baked in one
+// locale and swapped in the browser from /assets/i18n/{locale}.json (see
+// public/assets/js/locale.js). The failure mode is silent and only visible to
+// a visitor who prefers another language: a key that no longer exists leaves
+// that one string in the baked language, and a whole page half-swapped reads
+// as broken. So every key every page registers is checked against every
+// bundle, here, where it costs nothing.
+const bundleDir = join(DIST, 'assets/i18n');
+let swapKeys = 0;
+if (!existsSync(bundleDir)) {
+  errors.push('assets/i18n/ is missing — the locale bundles were not built');
+} else {
+  const bundles = new Map();
+  for (const f of readdirSync(bundleDir).filter((f) => f.endsWith('.json'))) {
+    const b = JSON.parse(readFileSync(join(bundleDir, f), 'utf8'));
+    if (!b.strings || !b.tag || !b.slugs) errors.push(`assets/i18n/${f} is missing strings, tag or slugs`);
+    bundles.set(f.slice(0, -5), b);
+  }
+  if (bundles.size !== 16) errors.push(`${bundles.size} locale bundles built, expected 16`);
+  const seen = new Set();
+  for (const file of htmlFiles(DIST)) {
+    const m = readFileSync(file, 'utf8').match(
+      /<script type="application\/json" id="obs-chrome">([\s\S]*?)<\/script>/
+    );
+    if (!m) continue;
+    let keys;
+    try {
+      keys = JSON.parse(m[1]).keys;
+    } catch {
+      errors.push(`${file.slice(DIST.length)}: the obs-chrome map is not valid JSON`);
+      continue;
+    }
+    for (const entry of Object.values(keys ?? {})) {
+      for (const key of [entry.k, ...Object.values(entry.r ?? {})]) {
+        if (seen.has(key)) continue;
+        seen.add(key);
+        swapKeys++;
+        for (const [locale, b] of bundles) {
+          if (typeof b.strings[key] !== 'string') {
+            errors.push(`chrome key "${key}" (from ${file.slice(DIST.length)}) is missing from assets/i18n/${locale}.json`);
+          }
+        }
+      }
+    }
+  }
+  if (!swapKeys) errors.push('no page registered any chrome strings — the locale swap would do nothing');
+}
+
 // 2b. Nothing may still reference the retired route.
 function* files(dir) {
   for (const name of readdirSync(dir)) {
@@ -203,5 +255,6 @@ if (errors.length) {
 }
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
-    `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${all.length}/${MAX_FILES} files, no /discover/read/`
+    `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
+    `${all.length}/${MAX_FILES} files, no /discover/read/`
 );

@@ -77,7 +77,7 @@ export interface CatalogLanguage {
    * and therefore a page at /l/{code}/story-{n}/. The hub's links, the
    * story routes and sitemap-stories.xml all read this one field, so they
    * cannot disagree about which pages exist. Empty when the language has
-   * titles but no readable bodies (legacy translationStudio repos).
+   * titles but no readable bodies (a repo that could not be read).
    */
   storyNums?: number[];
   /** Opening of story 1 in the language, for the hub's indexable text sample. */

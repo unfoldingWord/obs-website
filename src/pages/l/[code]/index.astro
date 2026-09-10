@@ -89,10 +89,10 @@ const partial = stories.length > 0 && stories.length < STORY_COUNT;
 // answer is built from this, so it cannot promise stories that have no page
 // (see the comment on the FAQ section below).
 const readable = stories.filter((s) => paged.has(s.num)).length;
-// `none` is not "there is nothing here": on the 18 legacy hubs, and the one
-// language whose text could not be read at all, the reader still opens (it
-// falls back to the live catalog) and the downloads still exist. So the
-// sentence says there are no story PAGES and points at what does work.
+// `none` is not "there is nothing here": on a hub whose text could not be
+// read at all, the reader still opens (it falls back to the live catalog) and
+// the downloads still exist. So the sentence says there are no story PAGES
+// and points at what does work.
 const storiesSentence = fill(
   readable === 0 ? t.faqStories.none : readable >= STORY_COUNT ? t.faqStories.all : t.faqStories.some,
   { language: name, n: readable, total: STORY_COUNT }
@@ -107,14 +107,15 @@ const fontHref = fontHrefForScript(lang.script);
  * follows and what a visitor without JavaScript lands on, and which
  * hub-reader.js intercepts to open the reader in place.
  *
- * 18 languages have no built page for any story — the build reads their
- * titles but deliberately not their bodies, because they are legacy
- * translationStudio repos (`metadata_type: "ts"`). This used to fall back to
- * the hub's own URL, so on those hubs "Read online" reloaded the page and did
- * nothing: the one control that should work was the one that could not. The
- * reader itself works there (it falls back to reading the live catalog), it
- * just had no reachable entry point. So those hubs point at the reader
- * fragments hub-reader.js already handles, `#story-{n}` and `#read`.
+ * A hub can still have no built page for any story: its repo was
+ * unreachable, or the fetch step was skipped. Until the legacy
+ * translationStudio layout was read in full this was also the permanent state
+ * of 18 published languages, and their "Read online" control fell back to the
+ * hub's own URL — it reloaded the page and opened nothing, so the one control
+ * that should work was the one that could not. The reader itself works there
+ * (it falls back to reading the live catalog); it just had no reachable entry
+ * point. So a hub with no story pages points at the reader fragments
+ * hub-reader.js already handles, `#story-{n}` and `#read`.
  *
  * Deliberately only when NO story has a page. Where some do, a story whose
  * body was not fetched keeps its unlinked title: the reader would be reading
@@ -137,6 +138,92 @@ const pdfsOf = (owner: string) => assets.pdf.filter((a) => a.owner === owner && 
 // as a per-language format.
 const appUrl = 'https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp';
 const image = storyImage(1);
+
+/**
+ * The chrome strings this page rendered, keyed by the text as it came out.
+ *
+ * The hub is one URL — there is no /es/l/bho/, because 16 variants of ~9,000
+ * story pages would be six figures of files against Cloudflare Pages' 20,000
+ * limit — so its chrome is baked in one locale and swapped in the browser for
+ * a visitor who prefers another (public/assets/js/locale.js). The swap needs
+ * the KEY each rendered string came from and the ARGUMENTS it was filled
+ * with, because the preferred locale puts them somewhere else in the
+ * sentence: "{n} of {total}" is not word-for-word "{total} में से {n}".
+ *
+ * Content is deliberately absent: the autonym, the story titles, the story-1
+ * extract and its reference are the translation team's work in the content
+ * language and stay exactly as built.
+ */
+type ChromeEntry = {
+  k: string;
+  /** Arguments the string was filled with. */
+  a?: Record<string, string | number>;
+  /** Arguments that are themselves chrome strings, by key — the hub FAQ's
+   *  first answer embeds one of three `faqStories` sentences. */
+  r?: Record<string, string>;
+  /** A part that was never translatable and is re-appended: a file size. */
+  x?: string;
+  /** Drop the optional "(…{size}…)" clause, as the page did. */
+  z?: 1;
+};
+const chrome: Record<string, ChromeEntry> = {};
+const mark = (rendered: string, entry: ChromeEntry) => {
+  if (rendered) chrome[rendered.trim()] = entry;
+};
+const label = (key: string, value: string, args?: Record<string, string | number>) =>
+  mark(args ? fill(value, args) : value, { k: `hub.${key}`, a: args });
+
+label('allLanguages', t.allLanguages);
+label('eyebrow', t.eyebrow, { language: name });
+label('read', t.read);
+if (lang.formats.audio) label('audio', t.audio);
+if (lang.formats.video) mark(videoFile ? withSize(t.video, videoFile.size) : t.video, { k: 'hub.video', x: videoFile && formatSize(videoFile.size) ? ` · ${formatSize(videoFile.size)}` : undefined });
+if (pdf) mark(withSize(t.pdf, pdf.size), { k: 'hub.pdf', x: formatSize(pdf.size) ? ` · ${formatSize(pdf.size)}` : undefined });
+if (audioZip) {
+  const size = formatSize(audioZip.size);
+  // Without a known size the "(…)" clause is dropped from the label, so the
+  // swapped wording has to drop it too — that is what `z` says.
+  mark(size ? fill(t.audioZip, { size }) : t.audioZip.replace(/\s*[（(]\{size\}[)）]/, ''), size ? { k: 'hub.audioZip', a: { size } } : { k: 'hub.audioZip', z: 1 });
+}
+if (!hasPages) label('readerNeedsJs', t.readerNeedsJs);
+label('app', t.app);
+if (lang.extract) {
+  label('extractAlt', t.extractAlt, { language: name, story: lang.extract.title ?? '' });
+  label('extractTitle', t.extractTitle);
+  label('readStory', t.readStory);
+}
+label('readerTitle', t.readerTitle);
+label('readerLoading', t.readerLoading);
+label('readerOffline', t.readerOffline);
+if (stories.length > 0) {
+  label('storiesTitle', t.storiesTitle, { n: stories.length, total: STORY_COUNT });
+  if (partial) {
+    label('partial', t.partial, { n: stories.length, total: STORY_COUNT });
+    label('partialLink', t.partialLink);
+  }
+}
+label('faqTitle', t.faqTitle, { language: name });
+t.faq.forEach((item: { q: string; a: string }, i: number) => {
+  mark(fill(item.q, { language: name }), { k: `hub.faq.${i}.q`, a: { language: name } });
+  // The story sentence is itself one of three chrome strings, chosen from
+  // what this build can render; it goes in by reference so the swap picks the
+  // same one in the preferred locale.
+  const which = readable === 0 ? 'none' : readable >= STORY_COUNT ? 'all' : 'some';
+  mark(fill(item.a, { language: name, stories: storiesSentence }), {
+    k: `hub.faq.${i}.a`,
+    a: { language: name, n: readable, total: STORY_COUNT },
+    r: { stories: `hub.faqStories.${which}` },
+  });
+});
+label('faqMore', t.faqMore);
+label('about', t.about);
+label('codes', t.codes);
+if (lang.altNames.length > 0) label('alsoKnownAs', t.alsoKnownAs);
+if (lang.region) label('region', t.region);
+label('publisherLabel', t.publisherLabel);
+label('license', t.license);
+if (publishers.length > 1) label('teams', t.teams, { n: publishers.length });
+label('source', t.source);
 ---
 
 <Base
@@ -152,11 +239,12 @@ const image = storyImage(1);
   fontHref={fontHref}
   script={lang.script}
   ogImage={image}
+  chrome={chrome}
 >
 
-<section class="page-header hub-header" lang={ui.tag} dir={ui.dir}>
+<section class="page-header hub-header" lang={ui.tag} dir={ui.dir} data-i18n-scope="hub">
   <div class="wrap">
-    <a class="btn btn-outline hub-back" href={localePath(uiLocale, 'discover')}>&larr; {t.allLanguages}</a>
+    <a class="btn btn-outline hub-back" href={localePath(uiLocale, 'discover')} data-slug="discover"><span aria-hidden="true">&larr;</span> {t.allLanguages}</a>
     <p class="eyebrow">{fill(t.eyebrow, { language: name })}</p>
     <h1 lang={lang.code} dir={lang.direction}>{name}</h1>
     {showEnglish && <p class="hub-english-name">{lang.englishName}</p>}
@@ -184,9 +272,9 @@ const image = storyImage(1);
         <li><a class="btn btn-outline" href={a.url} rel="noopener" title={a.name}>{withSize('DOCX', a.size)}</a></li>
       ))}
     </ul>
-    {/* On the legacy hubs the read controls above are reader fragments, which
-        do nothing without JavaScript. Say so, to whoever it applies to, and
-        point at what does work — rather than leaving them clicking. */}
+    {/* With no story pages the read controls above are reader fragments,
+        which do nothing without JavaScript. Say so, to whoever it applies to,
+        and point at what does work — rather than leaving them clicking. */}
     {!hasPages && (
       <noscript>
         <p class="hub-js-note">{t.readerNeedsJs}</p>
@@ -197,21 +285,21 @@ const image = storyImage(1);
 </section>
 
 {lang.extract && (
-  <section class="hub-extract">
+  <section class="hub-extract" data-i18n-scope="hub">
     <div class="wrap hub-extract-grid">
       {/* Language-appropriate alt (#16): the story-1 illustration, described
           in the hub's own language and naming the language, rather than the
           bare story title (or nothing) that every one of the 214 hubs used
           to share. */}
-      <img src={image} alt={fill(t.extractAlt, { language: name, story: lang.extract.title ?? '' })} lang={ui.tag} width="360" height="203" loading="lazy" decoding="async" />
+      <img src={image} alt={fill(t.extractAlt, { language: name, story: lang.extract.title ?? '' })} lang={ui.tag} data-i18n-lang width="360" height="203" loading="lazy" decoding="async" />
       <div>
-        <h2 lang={ui.tag} dir={ui.dir}>{t.extractTitle}</h2>
+        <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{t.extractTitle}</h2>
         <blockquote lang={lang.code} dir={lang.direction}>
           {lang.extract.title && <p class="hub-extract-title">{lang.extract.title}</p>}
           <p>{lang.extract.text}</p>
           {lang.extract.reference && <footer>{lang.extract.reference}</footer>}
         </blockquote>
-        <p lang={ui.tag} dir={ui.dir}><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
+        <p lang={ui.tag} dir={ui.dir} data-i18n-lang><a href={read()} class="btn btn-outline">{t.readStory}</a></p>
       </div>
     </div>
   </section>
@@ -222,9 +310,9 @@ const image = storyImage(1);
      without a rebuild. Everything around it — downloads, the story list, the
      story pages — is static and works without JavaScript, so this section
      simply stays collapsed if the script or Door43 is unavailable. -->
-<section class="hub-reader" id="read" hidden>
+<section class="hub-reader" id="read" hidden data-i18n-scope="hub">
   <div class="wrap">
-    <h2 lang={ui.tag} dir={ui.dir}>{t.readerTitle}</h2>
+    <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{t.readerTitle}</h2>
     <div
       id="hub-reader"
       data-lang={lang.code}
@@ -235,22 +323,22 @@ const image = storyImage(1);
 </section>
 
 {stories.length > 0 && (
-  <section class="hub-stories">
+  <section class="hub-stories" data-i18n-scope="hub">
     <div class="wrap">
-      <h2 lang={ui.tag} dir={ui.dir}>{fill(t.storiesTitle, { n: stories.length, total: STORY_COUNT })}</h2>
+      <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{fill(t.storiesTitle, { n: stories.length, total: STORY_COUNT })}</h2>
       {partial && (
-        <p class="hub-partial" lang={ui.tag} dir={ui.dir}>
+        <p class="hub-partial" lang={ui.tag} dir={ui.dir} data-i18n-lang>
           {fill(t.partial, { n: stories.length, total: STORY_COUNT })}
-          <a href={localePath(uiLocale, 'translate')}>{t.partialLink}</a>
+          <a href={localePath(uiLocale, 'translate')} data-slug="translate">{t.partialLink}</a>
         </p>
       )}
       <ol class="hub-story-list" lang={lang.code} dir={lang.direction}>
         {stories.map((s) => (
           <li>
             {paged.has(s.num) || !hasPages ? (
-              /* A story page where one was built; on the legacy hubs, which
-                 have no pages at all, the reader fragment instead — see
-                 read() above. Both are opened by hub-reader.js. */
+              /* A story page where one was built; on a hub with no pages at
+                 all, the reader fragment instead — see read() above. Both are
+                 opened by hub-reader.js. */
               <a href={read(s.num)}>
                 <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
                 <span class="hub-story-title">{s.title}</span>
@@ -294,7 +382,7 @@ const image = storyImage(1);
      no readable bodies) told readers and crawlers that missing content was
      there. Note the two are different things: azb IS translated, the text
      just is not readable here, so the "none" wording says exactly that. -->
-<section class="hub-faq" lang={ui.tag} dir={ui.dir}>
+<section class="hub-faq" lang={ui.tag} dir={ui.dir} data-i18n-scope="hub">
   <div class="wrap">
     <h2>{fill(t.faqTitle, { language: name })}</h2>
     <dl class="faq-list">
@@ -305,11 +393,11 @@ const image = storyImage(1);
         </>
       ))}
     </dl>
-    <p><a href={localePath(uiLocale, 'faq')}>{t.faqMore}</a></p>
+    <p><a href={localePath(uiLocale, 'faq')} data-slug="faq">{t.faqMore}</a></p>
   </div>
 </section>
 
-<section class="hub-about" lang={ui.tag} dir={ui.dir}>
+<section class="hub-about" lang={ui.tag} dir={ui.dir} data-i18n-scope="hub">
   <div class="wrap">
     <h2>{t.about}</h2>
     <dl class="hub-facts">

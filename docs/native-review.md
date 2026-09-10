@@ -132,3 +132,24 @@ quickest way to see whether a review pass actually landed.
   Resources browser (`resources.js`) are still English-only strings in
   JavaScript, outside the i18n files. That is a separate piece of work and
   worth its own issue.
+
+## One thing a reviewer should know about the hubs
+
+A hub is built in one interface language and swapped in the browser for a
+visitor who prefers another (`public/assets/js/locale.js`, and the
+`/assets/i18n/{locale}.json` bundles). So a reviewer opening `/l/bho/` sees
+the chrome in **their own** preferred language, not necessarily the Hindi the
+page was built with — and if they want to see the built version, they should
+clear `obs.locale` from the site's local storage, or open the hub in a browser
+set to Hindi. `npm run check:locale-swap` drives that behaviour in a real
+browser after a build.
+
+Two consequences for a review:
+
+- Placeholders matter more than they look. A swapped string is re-filled with
+  the same arguments in the reviewer's locale, so `{language}` and `{n}` have
+  to sit where the sentence needs them in **every** locale, not just read
+  well in one.
+- The hub FAQ's first answer embeds one of the three `faqStories` sentences by
+  reference, so those three have to work as a clause inside that answer, in
+  each locale, and not only as standalone sentences.

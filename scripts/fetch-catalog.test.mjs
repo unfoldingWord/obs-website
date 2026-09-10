@@ -3,8 +3,9 @@
 // shape of DCS catalog entries) and an in-memory fake `fetch`.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { readFileSync } from 'node:fs';
+import { readFileSync, mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
+import { tmpdir } from 'node:os';
 import {
   groupLanguages,
   applyLangnames,
@@ -12,6 +13,10 @@ import {
   makeExtract,
   detectScript,
   storyUrls,
+  treeUrl,
+  tsFramesFromTree,
+  fetchTsFrames,
+  parseTsFrame,
   fetchStories,
   enrichStories,
   compactAssets,
@@ -292,6 +297,121 @@ test('fetchStories handles ts repos and missing files without throwing', async (
   assert.equal(r.script, 'arabic');
 });
 
+// ---------------------------------------------------------------------------
+// Legacy translationStudio ingestion. 18 published languages are tS repos;
+// before this path they had titles and no bodies, so no story pages, no
+// sitemap entries and no markdown mirror.
+
+test('tsFramesFromTree keeps only frame files, sorted, and merges pages', () => {
+  const frames = tsFramesFromTree(
+    {
+      tree: [
+        { path: 'manifest.json', type: 'blob' },
+        { path: '01', type: 'tree' },
+        { path: '01/02.txt', type: 'blob' },
+        { path: '01/01.txt', type: 'blob' },
+        { path: '01/title.txt', type: 'blob' },
+        { path: '01/reference.txt', type: 'blob' },
+        { path: '51/01.txt', type: 'blob' },
+      ],
+    },
+    { tree: [{ path: '02/01.txt', type: 'blob' }] }
+  );
+  assert.deepEqual(frames.get(1), ['01/01.txt', '01/02.txt']);
+  assert.deepEqual(frames.get(2), ['02/01.txt']);
+  assert.equal(frames.has(51), false, 'story 51 does not exist');
+  assert.equal(frames.size, 2);
+});
+
+test('parseTsFrame lifts the illustration out and collapses the text', () => {
+  const f = parseTsFrame('![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)\nخدا  دنیا\nرا آفرید\n');
+  assert.equal(f.image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.equal(f.text, 'خدا دنیا را آفرید');
+  assert.equal(parseTsFrame(null), null);
+  assert.equal(parseTsFrame('  ').text, '');
+});
+
+test('fetchTsFrames returns null when the tree listing cannot be read', async () => {
+  const entry = { owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' };
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => null)), null, '404');
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => 'not json')), null, 'unparseable');
+  assert.equal(await fetchTsFrames(entry, fakeFetch(() => '{"tree":[]}')), null, 'no frames');
+});
+
+test('treeUrl asks for the repo at its release ref', () => {
+  const url = treeUrl({ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1.2' }, 2);
+  assert.equal(url, 'https://git.door43.org/api/v1/repos/o/azb_obs/git/trees/v1.2?recursive=true&per_page=1000&page=2');
+});
+
+// The behaviour the 18 legacy languages were missing: real bodies, so
+// writeStoryFiles() gives them storyNums and the build gives them pages.
+function tsRepo({ stories = 2, frames = 3 } = {}) {
+  const tree = [{ path: 'manifest.json', type: 'blob' }];
+  for (let n = 1; n <= stories; n++) {
+    const nn = String(n).padStart(2, '0');
+    tree.push({ path: `${nn}/title.txt`, type: 'blob' }, { path: `${nn}/reference.txt`, type: 'blob' });
+    for (let f = 1; f <= frames; f++) tree.push({ path: `${nn}/${String(f).padStart(2, '0')}.txt`, type: 'blob' });
+  }
+  return fakeFetch((url) => {
+    if (url.includes('/git/trees/')) return url.includes('page=1') ? JSON.stringify({ tree, truncated: false }) : null;
+    const m = url.match(/\/raw\/v1\/(\d\d)\/(title|reference|\d\d)\.txt$/);
+    if (!m) return null;
+    const n = parseInt(m[1], 10);
+    if (n > stories) return null;
+    if (m[2] === 'title') return `${n}. آفرینش`;
+    if (m[2] === 'reference') return 'آفرینش ۱-۲';
+    return `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\nمتن قالب ${m[2]} داستان ${n}`;
+  });
+}
+
+test('fetchStories reads full bodies from a ts repo', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 2, frames: 3 }));
+  assert.equal(r.stories.length, 50);
+  assert.equal(r.stories[0].title, '1. آفرینش');
+  assert.equal(r.stories[0].body.frames.length, 3);
+  assert.equal(r.stories[0].body.reference, 'آفرینش ۱-۲');
+  assert.equal(r.stories[0].body.frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.equal(r.stories[0].body.frames[2].text, 'متن قالب 03 داستان 1');
+  assert.equal(r.stories[1].body.frames.length, 3, 'story 2 too');
+  assert.equal(r.stories[2].title, null, 'story 3 is not in this repo');
+  assert.equal(r.stories[2].body, null);
+  assert.equal(r.script, 'arabic');
+  assert.match(r.extract.text, /^متن قالب 01/);
+});
+
+test('ts languages get story pages once bodies exist', () => {
+  const dir = mkdtempSync(join(tmpdir(), 'obs-ts-'));
+  const lang = {
+    code: 'azb',
+    entries: [],
+    stories: [
+      { num: 1, title: '1. آفرینش', body: { reference: 'آفرینش ۱-۲', frames: [{ image: null, text: 'یک' }] } },
+      { num: 2, title: '2. گناه', body: null },
+    ],
+  };
+  assert.equal(writeStoryFiles([lang], dir), 1);
+  assert.deepEqual(lang.storyNums, [1], 'only the story with a body gets a page');
+  const file = JSON.parse(readFileSync(join(dir, 'azb.json'), 'utf8'));
+  assert.equal(file.stories[0].frames[0].text, 'یک');
+  assert.deepEqual(lang.stories, [{ num: 1, title: '1. آفرینش' }, { num: 2, title: '2. گناه' }]);
+});
+
+test('a ts repo with no tree listing keeps its titles and gains no pages', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const f = fakeFetch((url) => {
+    if (url.includes('/git/trees/')) return null;
+    if (url.endsWith('/01/title.txt')) return '1. آفرینش';
+    if (url.endsWith('/01/01.txt')) return 'خدا دنیا را آفرید';
+    if (url.endsWith('/01/reference.txt')) return 'آفرینش ۱-۲';
+    return null;
+  });
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories[0].title, '1. آفرینش');
+  assert.equal(r.stories[0].body, null, 'two frames is an extract, not a story');
+  assert.equal(r.extract.text, 'خدا دنیا را آفرید');
+});
+
 test('fetchStories falls through to the next team when the first repo has no stories', async () => {
   const lang = {
     code: 'awa',
@@ -310,8 +430,8 @@ test('fetchStories falls through to the next team when the first repo has no sto
 });
 
 test('enrichStories reuses the previous snapshot when the release is unchanged', async (t) => {
-  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+  const { writeFileSync, rmSync } = await import('node:fs');
+
   const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
   // Bodies live in src/data/stories/, so reuse requires that file to exist.
@@ -337,8 +457,8 @@ test('enrichStories reuses the previous snapshot when the release is unchanged',
 // widening detectScript() has to reach the ~200 languages that publish
 // nothing new, or their font packs never arrive.
 test('enrichStories re-derives the script of a reused record', async (t) => {
-  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+  const { writeFileSync, rmSync } = await import('node:fs');
+
   const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
   writeFileSync(join(storiesDir, 'or.json'), JSON.stringify({ code: 'or', stories: [] }));
@@ -428,7 +548,7 @@ test('videoByStory carries the publish date of the release the file came from', 
 
 test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const { mkdtempSync, readFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
 
@@ -465,7 +585,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
 // text release happened to change.
 test('writeStoryFiles merges new media into a cached pre-video story file', async (t) => {
   const { mkdtempSync, writeFileSync, readFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
 
@@ -500,7 +620,7 @@ test('writeStoryFiles merges new media into a cached pre-video story file', asyn
 
 test('mergeStoryMedia is a no-op with no media, no file, or unchanged media', async (t) => {
   const { mkdtempSync, writeFileSync, rmSync, statSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   assert.equal(mergeStoryMedia('nope', { 1: 'https://e/1.mp3' }, {}, dir), false, 'no story file');
@@ -521,8 +641,8 @@ test('mergeStoryMedia is a no-op with no media, no file, or unchanged media', as
 });
 
 test('writeStoryFiles keeps storyNums for a language reused from the snapshot', async (t) => {
-  const { mkdtempSync, writeFileSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+  const { writeFileSync, rmSync } = await import('node:fs');
+
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   writeFileSync(join(dir, 'sw.json'), JSON.stringify({ code: 'sw', stories: [] }));
@@ -539,7 +659,7 @@ test('writeStoryFiles keeps storyNums for a language reused from the snapshot', 
 
 test('enrichStories refetches when the cached entry has no story file on disk', async (t) => {
   const { mkdtempSync, rmSync } = await import('node:fs');
-  const { tmpdir } = await import('node:os');
+
   const empty = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(empty, { recursive: true, force: true }));
 

@@ -30,6 +30,7 @@ const current = byCode(locale);
         <li>
           <a
             href={localePath(l.code, slug)}
+            data-locale={l.code}
             lang={l.tag}
             dir={l.dir}
             aria-current={l.code === locale ? 'true' : undefined}
