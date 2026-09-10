@@ -12,6 +12,7 @@
 //   6. /llms.txt lists only URLs that were built, and every markdown mirror
 //   7. every chrome string a single-URL page registers for the browser-side
 //      locale swap resolves in all 16 locale bundles
+//   8. no story page is a "Video only" placeholder published as story text
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -129,6 +130,35 @@ for (const lang of languages) {
   }
 }
 
+// 3b. A control must resolve to something that can keep its promise.
+//
+// The generalisation of check 3a, and of two findings that were the same
+// shape as it: "Listen (audio)" appeared on 92 hubs and resolved to a story
+// page with no player on 78 of them (their only "audio" was a YouTube
+// playlist, which is video), and "Read online" appeared on the 14 languages
+// whose repo is a "Video only" placeholder. A link that exists and resolves
+// is not the same as a link that delivers.
+for (const lang of languages) {
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) continue;
+  const html = readFileSync(hub, 'utf8');
+  const actions = html.match(/<ul class="hub-format-list">[\s\S]*?<\/ul>/);
+  if (!actions) continue;
+  for (const [kind, anchor] of [['listen', '#listen'], ['watch', '#watch']]) {
+    const m = actions[0].match(new RegExp(`href="(/l/[^"]*)${anchor}"`));
+    if (!m) continue;
+    const page = join(DIST, m[1], 'index.html');
+    if (!existsSync(page)) {
+      errors.push(`/l/${lang.code}/ has a ${kind} control pointing at ${m[1]}, which was not built`);
+      continue;
+    }
+    // The anchor is on the player itself, so its presence is the proof.
+    if (!readFileSync(page, 'utf8').includes(`id="${kind === 'listen' ? 'listen' : 'watch'}"`)) {
+      errors.push(`/l/${lang.code}/ offers ${kind} but ${m[1]} has no ${kind === 'listen' ? 'audio' : 'video'} player`);
+    }
+  }
+}
+
 // 4. Every link into the content tree must resolve. Check 3 covers the hubs;
 // this covers every other page that links into /l/ — story prev/next above
 // all, which steps through a list that has to be the pages this build made
@@ -229,6 +259,36 @@ if (!existsSync(bundleDir)) {
   if (!swapKeys) errors.push('no page registered any chrome strings — the locale swap would do nothing');
 }
 
+// 8. A placeholder is not a story.
+//
+// 14 published languages ship a repo whose story 1 says only "Video only" and
+// links to a player. Those used to become real story pages, mirrors, sitemap
+// URLs and CreativeWork nodes whose `text` was that sentence — see
+// isStubContent() in fetch-catalog.mjs. This is the assertion that keeps them
+// out, checked against the built HTML rather than the snapshot so a
+// regression anywhere in the pipeline shows up.
+const STUB = /video[\s-]*only/i;
+let stubPages = 0;
+for (const lang of languages) {
+  const dir = join(DIST, 'l', lang.code);
+  if (!existsSync(dir)) continue;
+  for (const d of readdirSync(dir, { withFileTypes: true })) {
+    if (!d.isDirectory() || !/^story-\d+$/.test(d.name)) continue;
+    const html = readFileSync(join(dir, d.name, 'index.html'), 'utf8');
+    const h1 = html.match(/<h1[^>]*>([^<]*)<\/h1>/);
+    if (h1 && STUB.test(h1[1])) {
+      stubPages++;
+      errors.push(`/l/${lang.code}/${d.name}/ publishes a placeholder as story text: "${h1[1].trim()}"`);
+    }
+  }
+  // The hub must not quote it either — the extract is the "From story 1" block.
+  const hub = readFileSync(join(dir, 'index.html'), 'utf8');
+  const extract = hub.match(/<blockquote[^>]*>([\s\S]*?)<\/blockquote>/);
+  if (extract && STUB.test(extract[1].replace(/<[^>]+>/g, ' '))) {
+    errors.push(`/l/${lang.code}/ quotes a placeholder as its story-1 extract`);
+  }
+}
+
 // 2b. Nothing may still reference the retired route.
 function* files(dir) {
   for (const name of readdirSync(dir)) {
@@ -256,5 +316,6 @@ if (errors.length) {
 console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
     `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
+    `no placeholder story text, ` +
     `${all.length}/${MAX_FILES} files, no /discover/read/`
 );

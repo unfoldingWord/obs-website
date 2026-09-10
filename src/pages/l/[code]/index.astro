@@ -81,9 +81,25 @@ const stories = readableStories(lang);
 // previous fetch found and the story files are gitignored, so a build can
 // hold a file with fewer stories in it than storyNums claims; asking the
 // file itself is what keeps hub links, story routes and the sitemap in step.
-const paged = new Set((await storiesFor(lang.code)).map((s) => s.num));
+const storyRecords = await storiesFor(lang.code);
+const paged = new Set(storyRecords.map((s) => s.num));
 const firstStory = pagedStories(lang).find((s) => paged.has(s.num))?.num ?? null;
 const partial = stories.length > 0 && stories.length < STORY_COUNT;
+// What each action can actually deliver.
+//
+// `lang.formats` comes from the catalog's language-level `attachment_types`,
+// which says a format exists SOMEWHERE for this language — not that this site
+// can open it. Gating the buttons on it produced two controls that could not
+// keep their promise: "Listen (audio)" on 78 of the 92 hubs that showed it
+// (69 of them have nothing but a YouTube playlist, which is video), and
+// "Read online" on the 14 languages whose repo is a "Video only" placeholder.
+// Both resolved to a story page with nothing on it, which is the same defect
+// as the legacy "Read online" that pointed at the hub itself.
+//
+// So each button is gated on the thing it opens. `check:routes` asserts the
+// same invariant against the built HTML.
+const hasAudio = storyRecords.some((s) => s.audio) || Boolean(audioZip);
+const hasVideo = Boolean(youtube) || Boolean(videoFile) || storyRecords.some((s) => s.video);
 // How many stories a visitor can actually READ here — the ones the story list
 // links, not the titles that were read from the repo. The hub FAQ's first
 // answer is built from this, so it cannot promise stories that have no page
@@ -175,9 +191,9 @@ const label = (key: string, value: string, args?: Record<string, string | number
 
 label('allLanguages', t.allLanguages);
 label('eyebrow', t.eyebrow, { language: name });
-label('read', t.read);
-if (lang.formats.audio) label('audio', t.audio);
-if (lang.formats.video) mark(videoFile ? withSize(t.video, videoFile.size) : t.video, { k: 'hub.video', x: videoFile && formatSize(videoFile.size) ? ` · ${formatSize(videoFile.size)}` : undefined });
+if (stories.length > 0) label('read', t.read);
+if (hasAudio) label('audio', t.audio);
+if (hasVideo) mark(videoFile ? withSize(t.video, videoFile.size) : t.video, { k: 'hub.video', x: videoFile && formatSize(videoFile.size) ? ` · ${formatSize(videoFile.size)}` : undefined });
 if (pdf) mark(withSize(t.pdf, pdf.size), { k: 'hub.pdf', x: formatSize(pdf.size) ? ` · ${formatSize(pdf.size)}` : undefined });
 if (audioZip) {
   const size = formatSize(audioZip.size);
@@ -254,10 +270,12 @@ label('source', t.source);
           without JavaScript and that crawlers follow — or, on a hub with no
           story pages at all, at the reader fragment (see read() above).
           hub-reader.js intercepts the click and opens the reader in place. */}
-      <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>
-      {lang.formats.audio && <li><a class="btn btn-outline" href={read()}>{t.audio}</a></li>}
-      {lang.formats.video && (
-        <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? read()} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
+      {stories.length > 0 && <li><a class="btn btn-primary" href={read()}>{t.read}</a></li>}
+      {/* Anchored at the player rather than the top of the story page, so
+          "Listen" does not land on a page identical to "Read online". */}
+      {hasAudio && <li><a class="btn btn-outline" href={audioZip && !storyRecords.some((s) => s.audio) ? audioZip.url : `${read()}#listen`}>{t.audio}</a></li>}
+      {hasVideo && (
+        <li><a class="btn btn-outline" href={youtube?.url ?? videoFile?.url ?? `${read()}#watch`} rel="noopener">{videoFile ? withSize(t.video, videoFile.size) : t.video}</a></li>
       )}
       {pdf && (
         <li><a class="btn btn-outline" href={pdf.url} rel="noopener" title={pdf.name}>{withSize(t.pdf, pdf.size)}</a></li>
@@ -310,6 +328,7 @@ label('source', t.source);
      without a rebuild. Everything around it — downloads, the story list, the
      story pages — is static and works without JavaScript, so this section
      simply stays collapsed if the script or Door43 is unavailable. -->
+{stories.length > 0 && (
 <section class="hub-reader" id="read" hidden data-i18n-scope="hub">
   <div class="wrap">
     <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{t.readerTitle}</h2>
@@ -321,6 +340,7 @@ label('source', t.source);
     ></div>
   </div>
 </section>
+)}
 
 {stories.length > 0 && (
   <section class="hub-stories" data-i18n-scope="hub">

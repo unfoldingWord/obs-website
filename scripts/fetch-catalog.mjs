@@ -303,6 +303,27 @@ export function sortLanguages(languages) {
  * page renders. Story images are language-independent: every translation
  * references the same cdn.door43.org/obs/jpg/.../obs-en-{NN}-{FF}.jpg files.
  */
+/**
+ * True when a repo's story text is a placeholder rather than a translation.
+ *
+ * 14 published languages ship an OBS repo whose story 1 says only "Video
+ * only" (or "Audio/Video only") and links to a player — the translation
+ * exists as recordings, not as text. The old client-side reader guarded
+ * against this (`isStubContent` in public/assets/js/reader.js, same pattern,
+ * same 300-character window) and preferred a team whose text was real; the
+ * build-time pipeline that replaced the reader had no equivalent, so the
+ * placeholder became the story: a story page titled "Video only", a
+ * CreativeWork whose `text` was that sentence, a markdown mirror, a sitemap
+ * URL, and a hub FAQ counting it as one readable story.
+ *
+ * Keep this in step with reader.js — the reader still reads the live catalog
+ * when it falls back, so both paths have to agree about what is not a story.
+ */
+export function isStubContent(text) {
+  if (!text) return false;
+  return /video[\s-]*only/i.test(String(text).slice(0, 300));
+}
+
 export function parseStoryMarkdown(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n/, '');
   const blocks = body.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
@@ -336,7 +357,7 @@ export function parseStoryMarkdown(md) {
 }
 
 /**
- * Map story number -> mp3 URL from a repo's release assets, newest release
+ * Map story number -> `{ url, size }` from a repo's release assets, newest release
  * first. Mirrors the reader's old latestReleaseWithAllExt('.mp3'): a text
  * release and an audio release are often different tags. Prefers the higher
  * bitrate when a story ships several (…_01_128kbps.mp3 over …_01_32kbps.mp3).
@@ -355,12 +376,12 @@ export function audioByStory(releases) {
       const n = parseInt(m[1], 10);
       if (n < 1 || n > STORY_COUNT) continue;
       const prev = out[n];
-      if (!prev || bitrate(a.name) > bitrate(prev.name)) out[n] = { name: a.name, url: a.browser_download_url };
+      if (!prev || bitrate(a.name) > bitrate(prev.name)) out[n] = { name: a.name, url: a.browser_download_url, size: a.size ?? null };
     }
     const nums = Object.keys(out);
     if (nums.length) {
       const urls = {};
-      for (const n of nums) urls[n] = out[n].url;
+      for (const n of nums) urls[n] = { url: out[n].url, size: out[n].size ?? null };
       return urls;
     }
   }
@@ -375,7 +396,7 @@ export function audioByStory(releases) {
  * for someone on a phone in a place where OBS is most used; the hub still
  * links the whole set.
  *
- * Returns `{ [num]: { url, date } }`. `date` is the publish date of the
+ * Returns `{ [num]: { url, date, size } }`. `date` is the publish date of the
  * release the file came from, NOT the language's newest release: a video is
  * usually published once and the text revised several times afterwards, so
  * using the language's `updated` made every later text release silently
@@ -397,13 +418,13 @@ export function videoByStory(releases) {
       const n = parseInt(m[1], 10);
       if (n < 1 || n > STORY_COUNT) continue;
       const prev = out[n];
-      if (!prev || height(a.name) < height(prev.name)) out[n] = { name: a.name, url: a.browser_download_url };
+      if (!prev || height(a.name) < height(prev.name)) out[n] = { name: a.name, url: a.browser_download_url, size: a.size ?? null };
     }
     const nums = Object.keys(out);
     if (nums.length) {
       const date = release.published_at ? String(release.published_at).slice(0, 10) : null;
       const videos = {};
-      for (const n of nums) videos[n] = { url: out[n].url, date };
+      for (const n of nums) videos[n] = { url: out[n].url, date, size: out[n].size ?? null };
       return videos;
     }
   }
@@ -696,6 +717,17 @@ async function fetchStoriesFrom(code, entry, fetchImpl) {
   const layout = entry.metadata_type === 'ts' ? 'ts' : 'rc';
   const { stories, extract } =
     layout === 'ts' ? await fetchTsStories(entry, fetchImpl) : await fetchRcStories(entry, fetchImpl);
+  // A placeholder repo is not a translation of the stories (see
+  // isStubContent). Returning no stories lets fetchStories fall through to
+  // the next publishing team, exactly as the reader used to: another team may
+  // have real text for this language. When every team is a placeholder the
+  // language keeps its video and download buttons — which is what actually
+  // exists for it — and gets no story pages, no mirror and no sitemap URLs.
+  const first = stories.find((st) => st.num === 1) ?? stories[0];
+  const sample = [first?.title, ...(first?.body?.frames ?? []).map((f) => f.text)].filter(Boolean).join(' ');
+  if (isStubContent(sample)) {
+    return { stories: null, extract: null, script: scriptFor(code, '') || 'latin', layout, bodies: 0, stub: true };
+  }
   const anyTitle = stories.some((s) => s.title);
   return {
     stories: anyTitle ? stories : null,
@@ -821,13 +853,21 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
   // languages silently lose their story pages — exactly the failure that is
   // invisible in a deploy log otherwise. Name it.
   const titlesOnly = [];
+  const stubs = [];
   const tally = { rc: { langs: 0, bodies: 0 }, ts: { langs: 0, bodies: 0 } };
   for (const lang of out) {
+    if (lang.stub) stubs.push(lang.code);
     const t = tally[lang.layout];
     if (!t) continue;
     t.langs++;
     t.bodies += lang.bodies ?? 0;
     if (lang.stories && !lang.bodies) titlesOnly.push(lang.code);
+  }
+  if (stubs.length) {
+    log.log(
+      `[catalog] stories: ${stubs.length} language(s) publish a placeholder ("Video only") instead of story text, ` +
+        `so they get no story pages: ${stubs.join(', ')}`
+    );
   }
   for (const [layout, t] of Object.entries(tally)) {
     if (t.langs) log.log(`[catalog] stories: ${layout} layout — ${t.langs} languages fetched, ${t.bodies} story bodies read`);
@@ -845,6 +885,7 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
   for (const lang of out) {
     delete lang.layout;
     delete lang.bodies;
+    delete lang.stub;
   }
   return out;
 }
@@ -943,9 +984,11 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
         title: s.title || `Story ${s.num}`,
         reference: s.body.reference,
         frames: s.body.frames,
-        audio: audio[s.num] || null,
+        audio: audio[s.num]?.url ?? null,
+        audioSize: audio[s.num]?.size ?? null,
         video: video[s.num]?.url ?? null,
         videoDate: video[s.num]?.date ?? null,
+        videoSize: video[s.num]?.size ?? null,
       }));
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
@@ -994,13 +1037,15 @@ export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR)
   for (const story of data.stories) {
     const a = audio[story.num] ?? null;
     const v = video[story.num] ?? null;
-    if (a && story.audio !== a) {
-      story.audio = a;
+    if (a && (story.audio !== a.url || (story.audioSize ?? null) !== (a.size ?? null))) {
+      story.audio = a.url;
+      story.audioSize = a.size ?? null;
       changed = true;
     }
-    if (v && (story.video !== v.url || (story.videoDate ?? null) !== (v.date ?? null))) {
+    if (v && (story.video !== v.url || (story.videoDate ?? null) !== (v.date ?? null) || (story.videoSize ?? null) !== (v.size ?? null))) {
       story.video = v.url;
       story.videoDate = v.date ?? null;
+      story.videoSize = v.size ?? null;
       changed = true;
     }
   }

@@ -72,11 +72,51 @@
   // ---------------------------------------------------------------------
   document.addEventListener('click', function (e) {
     var a = e.target && e.target.closest && e.target.closest('a[data-locale]');
-    if (a) remember(a.getAttribute('data-locale'));
+    if (!a) return;
+    var code = a.getAttribute('data-locale');
+    remember(code);
+    // On a locale-scoped page the link navigates to that page's own variant,
+    // which is the right thing. On a single-URL page (a hub, a story) there
+    // is nowhere to navigate TO, so the pick is applied in place instead —
+    // and the href, which points at Discover in that language, stays as the
+    // no-JavaScript fallback: a real destination in the language asked for,
+    // rather than a dead self-link.
+    if (!document.getElementById('obs-chrome')) return;
+    e.preventDefault();
+    swapTo(code);
+    var menu = a.closest('.lang-switcher');
+    if (menu) {
+      var links = menu.querySelectorAll('a[data-locale]');
+      for (var i = 0; i < links.length; i++) {
+        if (links[i] === a) links[i].setAttribute('aria-current', 'true');
+        else links[i].removeAttribute('aria-current');
+      }
+      var toggle = menu.querySelector('button[aria-haspopup]');
+      if (toggle) {
+        toggle.setAttribute('aria-expanded', 'false');
+        toggle.focus();
+      }
+    }
   });
 
   var preferred = stored() || fromBrowser();
-  if (!preferred || preferred === page.locale) return;
+  if (!preferred) return;
+
+  // Warm the bundle the hubs will need. A locale-scoped page never swaps —
+  // it has its own copy in every locale — so it is the free place to fetch
+  // the strings before the visitor reaches a hub or story page, where the
+  // swap is on the critical path. Without this the first hub of a session
+  // pays the full round trip.
+  if (page.alternates) {
+    var warm = document.createElement('link');
+    warm.rel = 'prefetch';
+    warm.as = 'fetch';
+    warm.href = '/assets/i18n/' + preferred + '.json';
+    warm.crossOrigin = 'anonymous';
+    document.head.appendChild(warm);
+  }
+
+  if (preferred === page.locale) return;
 
   // ---------------------------------------------------------------------
   // 1. Locale-scoped pages: go to the same page in the preferred locale.
@@ -110,6 +150,17 @@
   // DOM, so it — and only it — waits. The bundle fetch does not: it can be in
   // flight while the document is still parsing.
   // ---------------------------------------------------------------------
+  // Past this point a swap would land on a page the visitor is already
+  // reading. Changing the language under someone mid-sentence — and, between
+  // an LTR and an RTL locale, reflowing the layout — is worse than leaving
+  // them in the language they started reading, which is a real language
+  // chosen by hubLocaleFor() and not a broken state. So a bundle that arrives
+  // late is dropped, and the preference applies from the next page instead
+  // (by then it is cached, and the prefetch above usually means it already
+  // is). Measured: on a fast connection the swap lands before first paint, so
+  // this threshold is never reached.
+  var LATE_MS = 1500;
+  var started = Date.now();
   var fetching = fetch('/assets/i18n/' + preferred + '.json')
     .then(function (r) {
       return r.ok ? r.json() : null;
@@ -119,18 +170,110 @@
       return null;
     });
 
-  function start() {
-    var baked = document.getElementById('obs-chrome');
-    if (!baked) return;
-    var chrome;
+  function chromeMap() {
+    var el = document.getElementById('obs-chrome');
+    if (!el) return null;
     try {
-      chrome = JSON.parse(baked.textContent);
+      var parsed = JSON.parse(el.textContent);
+      return parsed && parsed.keys ? parsed : null;
     } catch (e) {
+      return null;
+    }
+  }
+
+  // The page as built: every chrome text node and attribute, with the value
+  // the build put there. Collected once, before anything is swapped, because
+  // the swap has to be repeatable — a visitor can pick a third language from
+  // the switcher, and after one swap the DOM no longer holds the baked text to
+  // match on. Everything maps from here, never from the current DOM.
+  var ATTRS = ['alt', 'title', 'aria-label', 'data-loading', 'data-offline', 'placeholder'];
+  var bakedSlots = null;
+  function collect() {
+    if (bakedSlots) return bakedSlots;
+    bakedSlots = { text: [], attrs: [], scopes: [] };
+    var scopes = document.querySelectorAll('[data-i18n-scope]');
+    for (var i = 0; i < scopes.length; i++) {
+      var walker = document.createTreeWalker(scopes[i], NodeFilter.SHOW_TEXT, null);
+      var node;
+      while ((node = walker.nextNode())) {
+        if (node.nodeValue.trim()) bakedSlots.text.push({ node: node, baked: node.nodeValue });
+      }
+      bakedSlots.scopes.push({
+        el: scopes[i],
+        lang: scopes[i].getAttribute('lang'),
+        dir: scopes[i].getAttribute('dir'),
+        inner: scopes[i].querySelectorAll('[data-i18n-lang]'),
+      });
+    }
+    var all = document.querySelectorAll('[' + ATTRS.join('],[') + ']');
+    for (var n = 0; n < all.length; n++) {
+      for (var a = 0; a < ATTRS.length; a++) {
+        var v = all[n].getAttribute(ATTRS[a]);
+        if (v && v.trim()) bakedSlots.attrs.push({ el: all[n], attr: ATTRS[a], baked: v });
+      }
+    }
+    return bakedSlots;
+  }
+
+  var bundles = {};
+  function bundleFor(code) {
+    if (bundles[code]) return bundles[code];
+    bundles[code] = fetch('/assets/i18n/' + code + '.json')
+      .then(function (r) {
+        return r.ok ? r.json() : null;
+      })
+      .catch(function () {
+        return null;
+      });
+    return bundles[code];
+  }
+  bundles[preferred] = fetching;
+
+  /** Render the chrome in `code`, from the baked page. */
+  function swapTo(code) {
+    var chrome = chromeMap();
+    if (!chrome) return;
+    collect();
+    if (code === page.locale) {
+      restore();
       return;
     }
-    if (!chrome || !chrome.keys) return;
-    fetching.then(function (bundle) {
+    bundleFor(code).then(function (bundle) {
       if (bundle) apply(bundle, chrome);
+    });
+  }
+
+  /** Back to exactly what the build produced. */
+  function restore() {
+    var slots = collect();
+    for (var i = 0; i < slots.text.length; i++) slots.text[i].node.nodeValue = slots.text[i].baked;
+    for (var a = 0; a < slots.attrs.length; a++) slots.attrs[a].el.setAttribute(slots.attrs[a].attr, slots.attrs[a].baked);
+    for (var s = 0; s < slots.scopes.length; s++) {
+      var sc = slots.scopes[s];
+      if (sc.lang !== null) {
+        sc.el.setAttribute('lang', sc.lang);
+        sc.el.setAttribute('dir', sc.dir || 'ltr');
+      }
+
+      for (var j = 0; j < sc.inner.length; j++) {
+        sc.inner[j].setAttribute('lang', sc.lang || page.tags[page.locale]);
+        sc.inner[j].setAttribute('dir', sc.dir || 'ltr');
+      }
+    }
+    var tagged = document.querySelectorAll('[data-i18n-script]');
+    for (var c = 0; c < tagged.length; c++) tagged[c].removeAttribute('data-i18n-script');
+    relocalizeLinks({ root: page.locale === page.defaultLocale ? '/' : '/' + page.locale + '/', slugs: page.slugs || {} });
+  }
+
+  function start() {
+    if (!chromeMap()) return;
+    fetching.then(function (bundle) {
+      if (!bundle) return;
+      // See LATE_MS: a swap that would land on a page the visitor is already
+      // reading is dropped. A pick from the switcher is exempt — that one is
+      // asked for, so it applies whenever it arrives.
+      if (Date.now() - started > LATE_MS) return;
+      swapTo(preferred);
     });
   }
 
@@ -176,39 +319,41 @@
       if (filled && filled !== rendered) swap[rendered] = filled;
     }
 
-    // Only inside the regions the page marked as chrome. Content text — the
-    // autonym, the story titles, the extract — is outside them and cannot be
+    // Applied to the page AS BUILT, never to the current DOM: the visitor can
+    // pick a third language from the switcher, and by then the DOM no longer
+    // holds the baked text to match on. Content text — the autonym, the story
+    // titles, the extract — is outside the marked regions and cannot be
     // reached from here even if it happened to read the same.
-    var scopes = document.querySelectorAll('[data-i18n-scope]');
-    for (var i = 0; i < scopes.length; i++) swapText(scopes[i], swap);
-
-    // Attributes carry chrome too: an image's alt text, a button's accessible
-    // name, the reader's loading and offline messages.
-    var attrs = ['alt', 'title', 'aria-label', 'data-loading', 'data-offline', 'placeholder'];
-    var all = document.querySelectorAll('[' + attrs.join('],[') + ']');
-    for (var n = 0; n < all.length; n++) {
-      for (var a = 0; a < attrs.length; a++) {
-        var v = all[n].getAttribute(attrs[a]);
-        if (v && swap[v.trim()]) all[n].setAttribute(attrs[a], swap[v.trim()]);
+    var slots = collect();
+    for (var i = 0; i < slots.text.length; i++) {
+      var trimmed = slots.text[i].baked.trim();
+      var to = swap[trimmed];
+      slots.text[i].node.nodeValue = to ? slots.text[i].baked.replace(trimmed, to) : slots.text[i].baked;
+      // The swapped script's face goes on the elements whose text actually
+      // changed, and nowhere else. Putting it on the whole scope was wrong
+      // twice over: a scope also wraps content-language text (the autonym
+      // H1, the story titles), and the nav links inherit a font-family
+      // computed on <body>, so a scope-level custom property never reached
+      // them at all — swapped Arabic chrome rendered in whatever face the
+      // content language uses, which for a Devanagari page has no Arabic
+      // glyphs.
+      var host = slots.text[i].node.parentElement;
+      if (host) {
+        if (to) host.setAttribute('data-i18n-script', bundle.script);
+        else host.removeAttribute('data-i18n-script');
       }
     }
 
-    relocalizeLinks(bundle);
-    retag(bundle, scopes);
-  }
-
-  function swapText(root, swap) {
-    var walker = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, null);
-    var nodes = [];
-    var node;
-    while ((node = walker.nextNode())) nodes.push(node);
-    for (var i = 0; i < nodes.length; i++) {
-      var text = nodes[i].nodeValue;
-      var trimmed = text.trim();
-      if (!trimmed) continue;
-      var to = swap[trimmed];
-      if (to) nodes[i].nodeValue = text.replace(trimmed, to);
+    // Attributes carry chrome too: an image's alt text, a button's accessible
+    // name, the reader's loading and offline messages.
+    for (var n = 0; n < slots.attrs.length; n++) {
+      var slot = slots.attrs[n];
+      var next = swap[slot.baked.trim()];
+      slot.el.setAttribute(slot.attr, next || slot.baked);
     }
+
+    relocalizeLinks(bundle);
+    retag(bundle, slots.scopes);
   }
 
   // Nav and footer links must land in the new locale too, or the next click
@@ -233,14 +378,13 @@
       // with no lang of its own wraps content that carries its own, and
       // stamping the chrome language over it would be a lie about the story
       // text inside.
-      if (scopes[i].hasAttribute('lang')) {
-        scopes[i].setAttribute('lang', bundle.tag);
-        scopes[i].setAttribute('dir', bundle.dir);
+      if (scopes[i].lang !== null) {
+        scopes[i].el.setAttribute('lang', bundle.tag);
+        scopes[i].el.setAttribute('dir', bundle.dir);
       }
-      var inner = scopes[i].querySelectorAll('[data-i18n-lang]');
-      for (var j = 0; j < inner.length; j++) {
-        inner[j].setAttribute('lang', bundle.tag);
-        inner[j].setAttribute('dir', bundle.dir);
+      for (var j = 0; j < scopes[i].inner.length; j++) {
+        scopes[i].inner[j].setAttribute('lang', bundle.tag);
+        scopes[i].inner[j].setAttribute('dir', bundle.dir);
       }
     }
     if (bundle.fontHref && !document.querySelector('link[href="' + bundle.fontHref + '"]')) {
@@ -254,6 +398,6 @@
     // get [data-i18n-script] instead, which styles.css keys the same
     // --heading-font/--body-font custom properties on, so swapped Hindi or
     // Urdu chrome renders in a face that has its glyphs.
-    for (var s = 0; s < scopes.length; s++) scopes[s].setAttribute('data-i18n-script', bundle.script);
+
   }
 })();

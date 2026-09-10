@@ -28,7 +28,7 @@
   "about": "Về bản dịch này",
   "readerTitle": "Đọc trực tuyến",
   "readerLoading": "Đang tải…",
-  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được Door43). Các bản tải xuống và trang câu chuyện ở trên vẫn hoạt động.",
+  "readerOffline": "Hiện không thể đọc trực tuyến (không kết nối được với Door43). Các bản tải về ở trên và liên kết nguồn Door43 ở cuối trang này vẫn dùng được.",
   "readerNeedsJs": "Các câu chuyện này được đọc trong trình đọc trên trang này, và trình đọc cần JavaScript. Nếu không có JavaScript, hãy dùng các tệp tải về ở trên, hoặc liên kết đến nguồn Door43 ở cuối trang này.",
   "faqTitle": "Câu hỏi về Open Bible Stories bằng tiếng {language}",
   "faqMore": "Thêm câu hỏi và trả lời",

@@ -182,6 +182,75 @@ const hub = hubs.includes('bho') ? 'bho' : hubs[0];
   }
 }
 
+// 6. The autonym must keep the CONTENT language's face when the chrome is
+//    swapped. Headings resolve --heading-font on themselves, so a swapped
+//    scope used to hand an Odia H1 a Devanagari font — which has no Oriya
+//    glyphs, so tofu on any device without an Oriya system font, the exact
+//    case the nine font packs exist to fix.
+{
+  const nonLatin = hubs.find((c) => {
+    const html = existsSync(join(DIST, 'l', c, 'index.html')) ? readFileSync(join(DIST, 'l', c, 'index.html'), 'utf8') : '';
+    return /<html[^>]+data-script="(oriya|gujarati|tamil|telugu|kannada|malayalam|gurmukhi|bengali|devanagari)"/.test(html);
+  });
+  if (!nonLatin) {
+    console.log('  - no non-Latin hub in this build — font check skipped');
+  } else {
+    const script = readFileSync(join(DIST, 'l', nonLatin, 'index.html'), 'utf8').match(/data-script="([^"]+)"/)[1];
+    const ctx = await visitor({ languages: ['ar-EG'], preference: 'ar' });
+    const page = await ctx.newPage();
+    await page.goto(`${BASE}/l/${nonLatin}/`, { waitUntil: 'networkidle' });
+    await page
+      .waitForFunction(() => document.querySelector('.site-nav')?.getAttribute('lang') === 'ar', null, { timeout: 5000 })
+      .catch(() => {});
+    const fonts = await page.evaluate(() => ({
+      h1: getComputedStyle(document.querySelector('.hub-header h1')).fontFamily,
+      nav: getComputedStyle(document.querySelector('.site-nav .links a')).fontFamily,
+    }));
+    const expected = { oriya: 'Oriya', gujarati: 'Gujarati', tamil: 'Tamil', telugu: 'Telugu', kannada: 'Kannada', malayalam: 'Malayalam', gurmukhi: 'Gurmukhi', bengali: 'Bengali', devanagari: 'Devanagari' }[script];
+    check(
+      `the ${script} autonym keeps its own face after an Arabic swap`,
+      fonts.h1.includes(expected),
+      `${nonLatin}: ${fonts.h1}`
+    );
+    check('and the swapped nav gets the Arabic face', fonts.nav.includes('Arabic'), fonts.nav);
+    await ctx.close();
+  }
+}
+
+// 7. The switcher is on the single-URL pages, and a pick applies in place —
+//    these are the pages where the interface language is inferred, so they
+//    were the only ones with no way to correct it.
+{
+  const ctx = await visitor({ languages: ['en-US'] });
+  const page = await ctx.newPage();
+  await page.goto(`${BASE}/l/${hub}/`, { waitUntil: 'networkidle' });
+  const before = new URL(page.url()).pathname;
+  const hasSwitcher = await page.$('.lang-switcher a[data-locale="sw"]');
+  check('a hub has a language switcher', Boolean(hasSwitcher), before);
+  if (hasSwitcher) {
+    await page.click('.lang-switcher-btn');
+    await page.click('.lang-switcher-menu a[data-locale="sw"]');
+    await page.waitForFunction(() => /Vumbua|Tafsiri/.test(document.querySelector('.site-nav .links')?.textContent || ''), null, { timeout: 5000 }).catch(() => {});
+    const after = await page.evaluate(() => ({
+      url: location.pathname,
+      nav: document.querySelector('.site-nav .links').textContent,
+      stored: localStorage.getItem('obs.locale'),
+    }));
+    check('the pick applies in place without leaving the hub', after.url === before, after.url);
+    check('the chrome is now Swahili', /Vumbua/.test(after.nav), after.nav.trim().slice(0, 60));
+    check('and the pick is remembered', after.stored === 'sw', String(after.stored));
+
+    // A second pick must work too: the swap maps from the baked page, not
+    // from whatever the last swap left behind.
+    await page.click('.lang-switcher-btn');
+    await page.click('.lang-switcher-menu a[data-locale="fr"]');
+    await page.waitForFunction(() => /Découvrir/.test(document.querySelector('.site-nav .links')?.textContent || ''), null, { timeout: 5000 }).catch(() => {});
+    const third = await page.$eval('.site-nav .links', (e) => e.textContent);
+    check('a second pick swaps again (not stuck on the first)', /Découvrir/.test(third), third.trim().slice(0, 60));
+  }
+  await ctx.close();
+}
+
 await browser.close();
 server.close();
 

@@ -13,5 +13,7 @@
   "next": "التالية",
   "allStories": "كل القصص بلغة {language}",
   "license": "مجاني للاستخدام والتعديل والمشاركة بترخيص مفتوح (CC BY-SA 4.0).",
-  "openInReader": "اقرأ في القارئ"
+  "openInReader": "اقرأ في القارئ",
+  "audioFile": "ملف صوتي",
+  "videoFile": "فيديو"
 }

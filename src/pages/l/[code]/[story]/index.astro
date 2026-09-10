@@ -16,6 +16,7 @@ import { content } from '../../../../i18n/content';
 import { byCode } from '../../../../i18n/config';
 import {
   STORY_COUNT,
+  formatSize,
   languages,
   languagePath,
   storyPath,
@@ -71,26 +72,31 @@ const next = i >= 0 && i < nums.length - 1 ? nums[i + 1] : null;
 const title = `${story.title} — ${name} | Open Bible Stories`;
 const description = fill(t.meta.description, { story: story.title, n: story.num, language: name });
 const firstImage = story.frames.find((f) => f.image)?.image;
+const mediaLabel = (label: string, size?: number | null) =>
+  formatSize(size ?? null) ? `${label} · ${formatSize(size ?? null)}` : label;
 
 // The chrome strings this page rendered, for the browser-side locale swap —
 // same contract as the hub (see the comment there and
 // public/assets/js/locale.js). Story text, titles and references are the
 // translation team's work and are not in here.
-const chrome: Record<string, { k: string; a?: Record<string, string | number> }> = {};
-const label = (key: string, value: string, args?: Record<string, string | number>) => {
-  const rendered = (args ? fill(value, args) : value).trim();
-  if (rendered) chrome[rendered] = { k: `story.${key}`, a: args };
+const chrome: Record<string, { k: string; a?: Record<string, string | number>; x?: string }> = {};
+type ChromeEntry = { k: string; a?: Record<string, string | number>; x?: string };
+const chromeAdd = (rendered: string, entry: ChromeEntry) => {
+  if (rendered.trim()) chrome[rendered.trim()] = entry;
 };
+const mark = chromeAdd;
+const label = (key: string, value: string, args?: Record<string, string | number>) =>
+  chromeAdd(args ? fill(value, args) : value, { k: `story.${key}`, a: args });
 
 label('allStories', t.allStories, { language: name });
 label('storyN', t.storyN, { n: story.num, total: STORY_COUNT });
 if (story.audio) {
   label('listen', t.listen);
-  label('downloadAudio', t.downloadAudio);
+  mark(mediaLabel(t.audioFile, story.audioSize), { k: 'story.audioFile', x: formatSize(story.audioSize ?? null) ? ` · ${formatSize(story.audioSize ?? null)}` : undefined });
 }
 if (story.video) {
   label('watch', t.watch);
-  label('downloadVideo', t.downloadVideo);
+  mark(mediaLabel(t.videoFile, story.videoSize), { k: 'story.videoFile', x: formatSize(story.videoSize ?? null) ? ` · ${formatSize(story.videoSize ?? null)}` : undefined });
 }
 if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
 story.frames.forEach((f, i) => {
@@ -135,17 +141,26 @@ label('license', t.license);
     {(story.audio || story.video) && (
       <div class="story-media" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
         {story.audio && (
-          <p class="story-audio">
+          <p class="story-audio" id="listen">
             <span class="story-audio-label">{t.listen}</span>
             <audio controls preload="none" src={story.audio}></audio>
-            <a class="story-media-dl" href={story.audio} download>{t.downloadAudio}</a>
+            {/* `download` is a same-origin-only hint and these files are on
+                cdn.door43.org, so every browser ignores it and navigates
+                instead: the mp3 opens in the browser's player, the mp4 starts
+                streaming. Someone on a metered connection who tapped
+                "Download" got a stream they were paying for and no file. So
+                the label says what the link does and how big it is — the hub
+                has always shown sizes, and the story page is where a phone
+                lands from search. The attribute stays: it costs nothing and
+                starts working if these ever move to this origin. */}
+            <a class="story-media-dl" href={story.audio} download target="_blank" rel="noopener">{mediaLabel(t.audioFile, story.audioSize)}</a>
           </p>
         )}
         {story.video && (
-          <p class="story-video">
+          <p class="story-video" id="watch">
             <span class="story-audio-label">{t.watch}</span>
             <video controls preload="none" src={story.video} poster={story.frames.find((f) => f.image)?.image ?? undefined} width="360" height="203"></video>
-            <a class="story-media-dl" href={story.video} download>{t.downloadVideo}</a>
+            <a class="story-media-dl" href={story.video} download target="_blank" rel="noopener">{mediaLabel(t.videoFile, story.videoSize)}</a>
           </p>
         )}
         <p class="story-transcript-note">{fill(t.transcriptNote, { language: name })}</p>

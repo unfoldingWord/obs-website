@@ -28,7 +28,7 @@
   "about": "关于此译本",
   "readerTitle": "在线阅读",
   "readerLoading": "加载中…",
-  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上方的下载和故事页面仍可使用。",
+  "readerOffline": "目前无法在线阅读（无法连接 Door43）。上面的下载和本页底部的 Door43 源链接仍然可用。",
   "readerNeedsJs": "这些故事是在本页的阅读器中阅读的，阅读器需要 JavaScript。若没有 JavaScript，请使用上方的下载文件，或本页底部的 Door43 源文件链接。",
   "faqTitle": "关于 {language} Open Bible Stories 的问答",
   "faqMore": "更多问答",

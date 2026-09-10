@@ -36,7 +36,7 @@
 // Create/Translate and added a sixth item — a WCAG 3.2.3 Consistent
 // Navigation failure; /resources/ was folded into the Translate page's
 // Resources tab).
-import { locales, byCode, defaultLocale, localePath, fontHrefFor, isLocalized, type PageSlug } from '../i18n/config';
+import { locales, byCode, defaultLocale, localePath, fontHrefFor, isLocalized, localizedSlugs, slugPaths, type PageSlug } from '../i18n/config';
 import { content } from '../i18n/content';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
@@ -117,6 +117,9 @@ const localeMeta = JSON.stringify({
   alternates: localized,
   locales: locales.map((l) => l.code),
   tags: Object.fromEntries(locales.map((l) => [l.code, l.tag])),
+  // Needed to put nav and footer hrefs back when a visitor picks the locale
+  // the page was built in.
+  slugs: Object.fromEntries(localizedSlugs.map((sl) => [sl, slugPaths[sl]])),
 });
 ---
 
@@ -177,7 +180,12 @@ const localeMeta = JSON.stringify({
 
 <a class="skip-link" href="#main">{ui.strings?.skipToContent ?? 'Skip to content'}</a>
 
-<Header locale={locale} ui={ui} slug={slug} switcher={localized} />
+{/* The switcher belongs on the single-URL pages too, and especially there:
+    they are the ~9,200 pages where the interface language is inferred rather
+    than chosen, so they were the only pages offering no way to correct it.
+    On those pages a pick applies in place (locale.js) instead of navigating;
+    the href stays as the no-JavaScript fallback. */}
+<Header locale={locale} ui={ui} slug={slug} switcher={localized || Boolean(chromeAll)} />
 
 <main id="main">
 <slot />

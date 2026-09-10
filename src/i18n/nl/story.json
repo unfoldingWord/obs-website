@@ -13,5 +13,7 @@
   "next": "Volgende",
   "allStories": "Alle verhalen in het {language}",
   "license": "Vrij te gebruiken, aan te passen en te delen onder een open licentie (CC BY-SA 4.0).",
-  "openInReader": "Lezen in de lezer"
+  "openInReader": "Lezen in de lezer",
+  "audioFile": "Audiobestand",
+  "videoFile": "Video"
 }

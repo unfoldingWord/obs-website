@@ -13,5 +13,7 @@
   "next": "Inayofuata",
   "allStories": "Hadithi zote katika {language}",
   "license": "Bila malipo kutumia, kubadilisha na kushiriki chini ya leseni huria (CC BY-SA 4.0).",
-  "openInReader": "Soma katika kisomaji"
+  "openInReader": "Soma katika kisomaji",
+  "audioFile": "Faili la sauti",
+  "videoFile": "Video"
 }

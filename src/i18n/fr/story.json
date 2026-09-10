@@ -13,5 +13,7 @@
   "next": "Suivant",
   "allStories": "Toutes les histoires en {language}",
   "license": "Libre d'utilisation, d'adaptation et de partage sous licence ouverte (CC BY-SA 4.0).",
-  "openInReader": "Lire dans le lecteur"
+  "openInReader": "Lire dans le lecteur",
+  "audioFile": "Fichier audio",
+  "videoFile": "Vidéo"
 }

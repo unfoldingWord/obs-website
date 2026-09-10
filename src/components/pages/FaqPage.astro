@@ -19,7 +19,7 @@ import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
 import { withCount } from '../../data/catalog';
 import { faqPageNode } from '../../lib/jsonld';
-import { localizeLinks } from '../../i18n/config';
+import { localizeLinks, defaultLocale } from '../../i18n/config';
 
 interface Props {
   locale: string;
@@ -43,6 +43,23 @@ const questions: { q: string; a: string }[] = t.questions.map((item: { q: string
 // the whole answer with the break flattened to a space.
 const paragraphsOf = (a: string) => a.split(/\n\s*\n/).map((p) => p.trim()).filter(Boolean);
 const flat = questions.map(({ q, a }) => ({ q, a: paragraphsOf(a).join(' ') }));
+
+// A stable anchor per question, so a single answer can be linked, shared or
+// cited — which is most of what people do with an FAQ, and what a generative
+// engine cites when it quotes a passage. The slug comes from the ENGLISH
+// question, not the translated text, so `/es/faq/#can-i-copy` and
+// `/faq/#can-i-copy` are the same anchor and a retranslation cannot break an
+// inbound link.
+const english = content(defaultLocale, 'faq');
+const slugs: string[] = english.questions.map((item: { q: string }) =>
+  item.q
+    .toLowerCase()
+    .replace(/[^a-z0-9\s-]/g, '')
+    .trim()
+    .split(/\s+/)
+    .slice(0, 4)
+    .join('-')
+);
 ---
 
 <Base
@@ -63,9 +80,19 @@ const flat = questions.map(({ q, a }) => ({ q, a: paragraphsOf(a).join(' ') }));
 
 <section>
   <div class="wrap faq-list">
-    {questions.map(({ q, a }) => (
+    {/* A jump list: at phone width the two long answers otherwise push the
+        later questions a long way down. */}
+    <nav class="faq-jump" aria-labelledby="faq-jump-label">
+      <p id="faq-jump-label" class="sr-only">{t.title}</p>
+      <ul>
+        {questions.map(({ q }, i) => (
+          <li><a href={`#${slugs[i]}`}>{q}</a></li>
+        ))}
+      </ul>
+    </nav>
+    {questions.map(({ q, a }, i) => (
       <div class="faq-item">
-        <h2>{q}</h2>
+        <h2 id={slugs[i]}>{q}</h2>
         {paragraphsOf(a).map((para) => <p set:html={para} />)}
       </div>
     ))}

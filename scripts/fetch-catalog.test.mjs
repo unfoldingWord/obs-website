@@ -13,6 +13,7 @@ import {
   makeExtract,
   detectScript,
   storyUrls,
+  isStubContent,
   treeUrl,
   tsFramesFromTree,
   fetchTsFrames,
@@ -298,6 +299,57 @@ test('fetchStories handles ts repos and missing files without throwing', async (
 });
 
 // ---------------------------------------------------------------------------
+// Placeholder ("Video only") repos. 14 published languages ship one: the
+// translation exists as recordings, not text. The old client-side reader
+// skipped them; the build pipeline that replaced it published them as the
+// story until this guard.
+
+test('isStubContent matches the placeholder wording the reader guards against', () => {
+  assert.equal(isStubContent('This version of OBS is video only. [Click here to play](https://x)'), true);
+  assert.equal(isStubContent('Audio/Video only'), true);
+  assert.equal(isStubContent('Video-Only'), true);
+  assert.equal(isStubContent('1. The Creation'), false);
+  assert.equal(isStubContent(''), false);
+  assert.equal(isStubContent(null), false);
+  // Only the first 300 characters, same window as reader.js — a real story
+  // that happens to mention video far down is not a placeholder.
+  assert.equal(isStubContent('a'.repeat(320) + ' video only'), false);
+});
+
+test('a placeholder repo yields no stories, so it gets no story pages', async () => {
+  const lang = { code: 'awa', script: 'devanagari', entries: [{ owner: 'o', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' }] };
+  const f = fakeFetch((url) =>
+    url.endsWith('content/01.md')
+      ? '# Video only\n\nThis version of OBS is video only. [Click here to play](https://www.openbiblestories.org/library#awa--OBS)\n'
+      : null
+  );
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories, null, 'no stories at all, not a story titled "Video only"');
+  assert.equal(r.extract, null, 'and no hub extract quoting the placeholder');
+  assert.equal(r.stub, true);
+});
+
+test('a placeholder team falls through to a team with real text', async () => {
+  // What reader.js did: prefer the entry whose content is not a stub.
+  const lang = {
+    code: 'awa',
+    entries: [
+      { owner: 'stub', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' },
+      { owner: 'real', name: 'awa_obs', branch_or_tag_name: 'v1', metadata_type: 'rc', contentPath: 'content' },
+    ],
+  };
+  const f = fakeFetch((url) => {
+    if (!/content\/(\d\d)\.md$/.test(url)) return null;
+    if (url.includes('/stub/')) return '# Video only\n\nThis version of OBS is video only.\n';
+    return url.endsWith('01.md') ? STORY_MD : '# 2. Story\n\ntext\n';
+  });
+  const r = await fetchStories(lang, f);
+  assert.equal(r.stories[0].title, '1. The Creation');
+  assert.match(r.extract.text, /^This is how/);
+  assert.notEqual(r.stub, true);
+});
+
+// ---------------------------------------------------------------------------
 // Legacy translationStudio ingestion. 18 published languages are tS repos;
 // before this path they had titles and no bodies, so no story pages, no
 // sitemap entries and no markdown mirror.
@@ -539,8 +591,12 @@ test('audioByStory takes the newest release with per-story mp3s, preferring bitr
     { tag_name: 'v1', assets: [{ name: 'en_obs_v1_01.mp3', browser_download_url: 'https://e/old.mp3' }] },
   ];
   const map = audioByStory(releases);
-  assert.equal(map[1], 'https://e/hi.mp3', 'higher bitrate wins');
-  assert.equal(map[2], 'https://e/2.mp3');
+  assert.equal(map[1].url, 'https://e/hi.mp3', 'higher bitrate wins');
+  assert.equal(map[2].url, 'https://e/2.mp3');
+  // The size travels with the URL so the story page can say how big the file
+  // is before someone on a metered connection taps it.
+  assert.equal(map[1].size, null, 'absent when the release does not report one');
+  assert.equal(audioByStory([{ assets: [{ name: 'x_01.mp3', browser_download_url: 'https://e/1.mp3', size: 2400000 }] }])[1].size, 2400000);
   assert.deepEqual(audioByStory([]), {});
   assert.deepEqual(audioByStory([{ assets: [{ name: 'whole_obs.zip', browser_download_url: 'https://e/z.zip' }] }]), {});
 });
@@ -591,7 +647,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
 
   const withBody = {
     code: 'sw',
-    storyAudio: { 1: 'https://e/1.mp3' },
+    storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
     storyVideo: { 1: { url: 'https://e/1.mp4', date: '2020-04-24' } },
     stories: [
       { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
@@ -610,6 +666,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
 
   const file = JSON.parse(readFileSync(join(dir, 'sw.json'), 'utf8'));
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
+  assert.equal(file.stories[0].audioSize, 2400000, 'size travels with the URL, so the page can say how big it is');
   assert.equal(file.stories[0].video, 'https://e/1.mp4');
   assert.equal(file.stories[0].videoDate, '2020-04-24');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
@@ -639,7 +696,7 @@ test('writeStoryFiles merges new media into a cached pre-video story file', asyn
   const lang = {
     code: 'en',
     storyNums: [1, 2],
-    storyAudio: { 1: 'https://e/1.mp3' },
+    storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
     storyVideo: { 1: { url: 'https://example.com/01.mp4', date: '2020-04-24' } },
     stories: [{ num: 1, title: 'The Creation', body: null }, { num: 2, title: 'Sin', body: null }],
   };
@@ -660,20 +717,20 @@ test('mergeStoryMedia is a no-op with no media, no file, or unchanged media', as
 
   const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
   t.after(() => rmSync(dir, { recursive: true, force: true }));
-  assert.equal(mergeStoryMedia('nope', { 1: 'https://e/1.mp3' }, {}, dir), false, 'no story file');
+  assert.equal(mergeStoryMedia('nope', { 1: { url: 'https://e/1.mp3' } }, {}, dir), false, 'no story file');
   writeFileSync(join(dir, 'sw.json'), JSON.stringify({
     code: 'sw',
     stories: [{ num: 1, title: 'Uumbaji', frames: [], audio: 'https://e/1.mp3', video: 'https://e/1.mp4', videoDate: '2020-01-01' }],
   }));
   assert.equal(mergeStoryMedia('sw', {}, {}, dir), false, 'nothing discovered');
   assert.equal(
-    mergeStoryMedia('sw', { 1: 'https://e/1.mp3' }, { 1: { url: 'https://e/1.mp4', date: '2020-01-01' } }, dir),
+    mergeStoryMedia('sw', { 1: { url: 'https://e/1.mp3' } }, { 1: { url: 'https://e/1.mp4', date: '2020-01-01' } }, dir),
     false,
     'already current'
   );
   // A corrupt file keeps whatever it has instead of throwing.
   writeFileSync(join(dir, 'zz.json'), 'not json');
-  assert.equal(mergeStoryMedia('zz', { 1: 'https://e/1.mp3' }, {}, dir), false);
+  assert.equal(mergeStoryMedia('zz', { 1: { url: 'https://e/1.mp3' } }, {}, dir), false);
   assert.ok(statSync(join(dir, 'zz.json')).size > 0);
 });
 

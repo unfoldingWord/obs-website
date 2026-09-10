@@ -13,5 +13,7 @@
   "next": "下一个",
   "allStories": "{language}的所有故事",
   "license": "可在开放许可（CC BY-SA 4.0）下自由使用、改编和分享。",
-  "openInReader": "在阅读器中打开"
+  "openInReader": "在阅读器中打开",
+  "audioFile": "音频文件",
+  "videoFile": "视频"
 }

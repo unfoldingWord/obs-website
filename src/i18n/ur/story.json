@@ -13,5 +13,7 @@
   "next": "اگلی",
   "allStories": "{language} میں تمام کہانیاں",
   "license": "کھلے لائسنس (CC BY-SA 4.0) کے تحت استعمال، تبدیلی اور اشتراک کے لیے مفت۔",
-  "openInReader": "ریڈر میں پڑھیں"
+  "openInReader": "ریڈر میں پڑھیں",
+  "audioFile": "آڈیو فائل",
+  "videoFile": "ویڈیو"
 }

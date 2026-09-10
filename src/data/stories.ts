@@ -31,6 +31,10 @@ export interface Story {
   /** Per-story video file (smallest rendition published), else null. Absent
    *  in story files written before #16 — read it as optional. */
   video?: string | null;
+  /** Byte size of the per-story audio/video, when the release reported one —
+   *  shown on the download link so a metered connection knows the cost. */
+  audioSize?: number | null;
+  videoSize?: number | null;
   /**
    * Publish date of the release the video came from (ISO date), or null.
    *

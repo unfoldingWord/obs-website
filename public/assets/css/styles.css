@@ -690,12 +690,22 @@ html[data-script="han"]{
   --heading-font:'Noto Sans SC', 'Montserrat', sans-serif;
   --body-font:'Noto Sans SC', 'Nunito Sans', sans-serif;
 }
-/* The same six faces, for a chrome region whose language was swapped in the
-   browser (public/assets/js/locale.js). <html data-script> stays on the
-   CONTENT language — the story text on a hub is still written in it — so the
-   swapped nav, buttons and FAQ carry [data-i18n-script] instead. These are
-   custom properties, so they inherit into the region and nothing else. Only
-   the six scripts the 16 marketing locales use can appear here. */
+/* The same six faces, for the elements whose text was swapped in the browser
+   (public/assets/js/locale.js). <html data-script> stays on the CONTENT
+   language — the story text on a hub is still written in it — so a swapped
+   element carries [data-i18n-script] instead.
+
+   The attribute lands on exactly the elements whose text changed, never on a
+   whole region: a region also wraps content-language text (the autonym H1,
+   the story titles), and body text inherits a font-family computed on <body>,
+   so a region-level custom property never reached the nav links at all.
+   font-family is therefore set here too, not just the variables — with the
+   heading rule after it, so a swapped h2 keeps the heading face rather than
+   taking the body one from the attribute selector's higher specificity.
+   Only the six scripts the 16 marketing locales use can appear. */
+[data-i18n-script]{font-family:var(--body-font);}
+h1[data-i18n-script],h2[data-i18n-script],h3[data-i18n-script],h4[data-i18n-script],
+[data-i18n-script].eyebrow,[data-i18n-script].brand{font-family:var(--heading-font);}
 [data-i18n-script="arabic"]{
   --heading-font:'Noto Sans Arabic', 'Montserrat', sans-serif;
   --body-font:'Noto Sans Arabic', 'Nunito Sans', sans-serif;
@@ -816,9 +826,22 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
    keyboard, from Reader mode, and from a crawler's first pass. Shared by the
    /faq/ pages (.faq-item, H2 + P) and the hubs' short FAQ (a DL). */
 .faq-list{max-width:760px; margin:0 auto;}
+.faq-jump{margin:0 0 34px;}
+.faq-jump ul{list-style:none; margin:0; padding:0; display:flex; flex-wrap:wrap; gap:8px 18px;}
+.faq-jump a{font-size:0.95rem;}
 .faq-item + .faq-item{margin-top:32px;}
+/* An anchored heading must not land under the sticky header. */
+.faq-item h2{scroll-margin-top:88px;}
 .faq-item h2{font-size:clamp(1.15rem, 2.4vw, 1.45rem); color:var(--ocean); margin:0 0 10px;}
 .faq-item p{color:var(--tech); max-width:none;}
+/* An answer can run to more than one paragraph (a blank line in the i18n
+   string). The global reset zeroes p margins, so without this the break was a
+   0px gap against a 25.6px line-height — it read as a line wrap, and in the
+   licence answer it ran CC BY-SA 4.0 and the illustrations' CC BY-SA 3.0
+   together as one sentence about one licence. The whole page depends on the
+   first paragraph reading as the answer and the rest as detail. */
+.faq-item p + p{margin-top:14px;}
+.hub-faq dd + dd{margin-top:10px;}
 .faq-list a{color:var(--inspire-text); text-decoration:underline;}
 .hub-faq{padding:8px 0 0;}
 .hub-faq .faq-list{margin:0;}
