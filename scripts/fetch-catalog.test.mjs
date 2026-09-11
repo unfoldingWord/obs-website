@@ -18,6 +18,9 @@ import {
   tsFramesFromTree,
   fetchTsFrames,
   parseTsFrame,
+  tsStoryImageUrl,
+  hasIllustration,
+  FRAMES_PER_STORY,
   fetchStories,
   enrichStories,
   compactAssets,
@@ -397,12 +400,18 @@ test('treeUrl asks for the repo at its release ref', () => {
 
 // The behaviour the 18 legacy languages were missing: real bodies, so
 // writeStoryFiles() gives them storyNums and the build gives them pages.
-function tsRepo({ stories = 2, frames = 3 } = {}) {
+function tsRepo({ stories = 2, frames = 3, bare = false, empty = [], skip = [] } = {}) {
   const tree = [{ path: 'manifest.json', type: 'blob' }];
   for (let n = 1; n <= stories; n++) {
     const nn = String(n).padStart(2, '0');
     tree.push({ path: `${nn}/title.txt`, type: 'blob' }, { path: `${nn}/reference.txt`, type: 'blob' });
-    for (let f = 1; f <= frames; f++) tree.push({ path: `${nn}/${String(f).padStart(2, '0')}.txt`, type: 'blob' });
+    for (let f = 1; f <= frames; f++) {
+      // `skip` omits the frame from the listing altogether, as a repo that
+      // simply has no such chunk would. This — not an empty file — is what
+      // pushes a frame's number away from its position in the listing.
+      if (skip.includes(f)) continue;
+      tree.push({ path: `${nn}/${String(f).padStart(2, '0')}.txt`, type: 'blob' });
+    }
   }
   return fakeFetch((url) => {
     if (url.includes('/git/trees/')) return url.includes('page=1') ? JSON.stringify({ tree, truncated: false }) : null;
@@ -412,7 +421,15 @@ function tsRepo({ stories = 2, frames = 3 } = {}) {
     if (n > stories) return null;
     if (m[2] === 'title') return `${n}. آفرینش`;
     if (m[2] === 'reference') return 'آفرینش ۱-۲';
-    return `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\nمتن قالب ${m[2]} داستان ${n}`;
+    // `empty` lists frame numbers whose file is whitespace-only: the tree
+    // still lists them, so they are fetched and then dropped for having no
+    // text — which is what makes position and frame number diverge.
+    if (skip.includes(parseInt(m[2], 10))) return null;
+    if (empty.includes(parseInt(m[2], 10))) return '   \n  ';
+    const text = `متن قالب ${m[2]} داستان ${n}`;
+    // `bare: true` is what the real fa_gl/azb_obs ships: chunk files that are
+    // plain text with no image line at all.
+    return bare ? text : `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\n${text}`;
   });
 }
 
@@ -430,6 +447,107 @@ test('fetchStories reads full bodies from a ts repo', async () => {
   assert.equal(r.stories[2].body, null);
   assert.equal(r.script, 'arabic');
   assert.match(r.extract.text, /^متن قالب 01/);
+});
+
+// Regression: every fixture above embeds the illustration as markdown, so
+// nothing caught that fa_gl/azb_obs — and the other tS repos like it — store
+// bare text. The build wrote `image: null` for all fifty stories and both the
+// reader and the story pages rendered text with no pictures at all.
+
+test('tsStoryImageUrl mirrors the reader, zero-padding both numbers', () => {
+  assert.equal(tsStoryImageUrl(3, 1), 'https://cdn.door43.org/obs/jpg/360px/obs-en-03-01.jpg');
+  assert.equal(tsStoryImageUrl(50, 16), 'https://cdn.door43.org/obs/jpg/360px/obs-en-50-16.jpg');
+});
+
+test('a ts repo storing bare text still gets the shared OBS illustrations', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 2, frames: 3, bare: true }));
+  const frames = r.stories[0].body.frames;
+  assert.equal(frames.length, 3);
+  assert.deepEqual(
+    frames.map((f) => f.image),
+    [
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg',
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg',
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-03.jpg',
+    ]
+  );
+  assert.equal(frames[0].text, 'متن قالب 01 داستان 1', 'text is untouched');
+  assert.equal(
+    r.stories[1].body.frames[2].image,
+    'https://cdn.door43.org/obs/jpg/360px/obs-en-02-03.jpg',
+    'story number tracks the story, not the position'
+  );
+});
+
+test('an embedded illustration still wins over the derived one', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 1, frames: 1 }));
+  assert.equal(r.stories[0].body.frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+});
+
+test('a gap in the frame listing does not shift the illustrations after it', async () => {
+  // Frame 02 is absent from the listing and frame 03 is whitespace-only, so
+  // the surviving frames are 01 and 04 — and 04 must keep its OWN number.
+  //
+  // The absent frame is the load-bearing half: an empty-but-listed file is
+  // dropped only AFTER the map, so its position still lines up with its
+  // number and numbering by position would pass anyway. Only a frame missing
+  // from the tree pushes the two apart, which is the regression the comment
+  // in fetchTsStories describes.
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 1, frames: 4, bare: true, skip: [2], empty: [3] }));
+  const frames = r.stories[0].body.frames;
+  assert.equal(frames.length, 2, 'the absent and the empty frame both fall out');
+  assert.deepEqual(
+    frames.map((f) => f.image),
+    [
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg',
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-04.jpg',
+    ],
+    'numbering by position would give -01 and -03 here'
+  );
+  assert.equal(frames[1].text, 'متن قالب 04 داستان 1', 'and the text is the fourth frame');
+});
+
+test('hasIllustration bounds the derivation to artwork that exists', () => {
+  assert.equal(hasIllustration(1, 16), true, 'story 1 has 16');
+  assert.equal(hasIllustration(1, 17), false, 'and no 17th');
+  assert.equal(hasIllustration(22, 7), true, 'story 22 has 7');
+  assert.equal(hasIllustration(22, 8), false);
+  assert.equal(hasIllustration(1, 0), false, 'frames are 1-based');
+  assert.equal(hasIllustration(51, 1), false, 'no story 51');
+  assert.equal(hasIllustration(1, null), false, 'an unreadable frame number derives nothing');
+  assert.equal(
+    Object.values(FRAMES_PER_STORY).reduce((a, b) => a + b, 0),
+    598,
+    'the published OBS artwork set'
+  );
+});
+
+test('a frame past the artwork set gets no image rather than a broken one', async () => {
+  // Story 22 has 7 illustrations; this repo chunks it into 9. Before the
+  // range check those two frames derived URLs that 404, which renders a
+  // broken image where the original bug rendered nothing at all.
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const warnings = [];
+  const warn = console.warn;
+  console.warn = (m) => warnings.push(m);
+  let r;
+  try {
+    r = await fetchStories(lang, tsRepo({ stories: 22, frames: 9, bare: true }));
+  } finally {
+    console.warn = warn;
+  }
+  const frames = r.stories[21].body.frames;
+  assert.equal(frames.length, 9, 'the text is still published');
+  assert.equal(frames[6].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-22-07.jpg', 'the last real one');
+  assert.equal(frames[7].image, null, 'frame 8 has no artwork');
+  assert.equal(frames[8].image, null, 'nor frame 9');
+  assert.ok(
+    warnings.some((m) => /story 22: frame\(s\) 8, 9 exceed/.test(m)),
+    `the overrun is named in the build log, got: ${JSON.stringify(warnings)}`
+  );
 });
 
 test('ts languages get story pages once bodies exist', () => {
