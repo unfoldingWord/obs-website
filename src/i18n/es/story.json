@@ -1,10 +1,10 @@
 {
   "meta": {
-    "description": "{story}: historia {n} de Historias Bíblicas Abiertas en {language}. Lee el texto completo, mira las ilustraciones y escucha el audio. Gratis bajo una licencia abierta."
+    "description": "{story}: historia {n} de Open Bible Stories en {language}. Lee el texto completo, mira las ilustraciones y escucha el audio. Gratis bajo una licencia abierta."
   },
   "storyN": "Historia {n} de {total}",
   "listen": "Escuchar esta historia",
-  "watch": "Vea esta historia",
+  "watch": "Ver esta historia",
   "downloadAudio": "Descargar el audio",
   "downloadVideo": "Descargar el video",
   "transcriptNote": "Las palabras de esta grabación están abajo, en {language}.",

@@ -20,6 +20,10 @@ const ASSET_KEYS = new Set(['slug', 'id']);
  * copy, faq.json) may keep entities.
  */
 const PLAIN_TEXT = new Set(['hub', 'story']);
+const PRODUCT = 'Open Bible Stories';
+// Link text of the Door43 community link, wherever it appears in a string.
+const DOOR43_RE = /<a href=\\?"https:\/\/door43\.org\/\\?"[^>]*>([^<]*)<\/a>/;
+const door43Name = (s) => String(s).match(DOOR43_RE)?.[1];
 const ENTITY_RE = /&(?:[a-zA-Z][a-zA-Z0-9]{1,30}|#\d{1,6}|#x[0-9a-fA-F]{1,6});/;
 
 let errors = 0;
@@ -90,6 +94,22 @@ for (const locale of LOCALES) {
     compare(locale, page, base, data, '');
     const all = JSON.stringify(data);
     if (/unfolding\s[Ww]ord/.test(all)) err(`${locale}/${page}: unfoldingWord split or miscased`);
+    // The product name is never translated: wherever English says
+    // "Open Bible Stories", the locale must carry it verbatim (#21 review).
+    (function productName(b, l, path) {
+      if (typeof b === 'string') {
+        if (b.includes(PRODUCT) && typeof l === 'string' && !l.includes(PRODUCT))
+          err(`${locale}/${page} ${path}: product name "${PRODUCT}" translated or missing`);
+      } else if (Array.isArray(b)) b.forEach((v, i) => productName(v, l?.[i], `${path}[${i}]`));
+      else if (b && typeof b === 'object') for (const k of Object.keys(b)) productName(b[k], l?.[k], `${path}.${k}`);
+    })(base, data, '');
+    // The Door43 community is named once in the footer (ui.json) and once in
+    // the FAQ; the two must agree, or the site calls one body by two names.
+    if (page === 'faq') {
+      const footer = door43Name(JSON.parse(readFileSync(join(ROOT, 'src/i18n', locale, 'ui.json'), 'utf8')).footerCredit);
+      const inFaq = JSON.stringify(data).match(DOOR43_RE)?.[1];
+      if (footer && inFaq && footer !== inFaq) err(`${locale}/faq: Door43 community named "${inFaq}" but footer says "${footer}"`);
+    }
     if (locale === 'bn' && /[ऀ-ॣ०-ॿ]/.test(all)) err(`bn/${page}: Devanagari characters in Bengali file`);
   }
 }

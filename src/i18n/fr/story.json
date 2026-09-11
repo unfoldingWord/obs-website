@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "{story} — histoire {n} des Histoires Bibliques Ouvertes en {language}. Lisez le texte intégral, voyez les illustrations et écoutez l'audio. Gratuit sous licence ouverte."
+    "description": "{story} — histoire {n} d'Open Bible Stories en {language}. Lisez le texte intégral, voyez les illustrations et écoutez l'audio. Gratuit sous licence ouverte."
   },
   "storyN": "Histoire {n} sur {total}",
   "listen": "Écouter cette histoire",

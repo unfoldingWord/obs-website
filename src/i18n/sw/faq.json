@@ -5,15 +5,15 @@
   },
   "eyebrow": "Maswali na majibu",
   "title": "Maswali kuhusu Open Bible Stories",
-  "intro": "Majibu mafupi, jibu kwanza. Kama swali lako halipo hapa, <a href=\"/contact/\">tuandikie</a>.",
+  "intro": "Majibu mafupi na ya moja kwa moja. Kama swali lako halipo hapa, <a href=\"/contact/\">tuandikie</a>.",
   "questions": [
     {
       "q": "Open Bible Stories ni nini?",
-      "a": "Open Bible Stories ni hadithi 50 muhimu za Biblia, kutoka Uumbaji hadi Ufunuo, <strong>kwa uinjilisti na ufuasi</strong>, zinazotolewa bila malipo ili kutafsiriwa na kushirikiwa kwa njia yoyote ya mawasiliano na katika lugha yoyote."
+      "a": "Open Bible Stories ni hadithi 50 muhimu za Biblia, kutoka Uumbaji hadi Ufunuo, <strong>kwa uinjilisti na uanafunzi</strong>, zinazotolewa bila malipo ili kutafsiriwa na kushirikiwa kwa njia yoyote ya mawasiliano na katika lugha yoyote."
     },
     {
       "q": "Je, Open Bible Stories ni tafsiri ya Biblia?",
-      "a": "Hapana. Hadithi hizi ni muhtasari mfupi wa Maandiko na wa injili, kutoka Mwanzo hadi Ufunuo. Lugha nyepesi hupunguza mzigo kwa wanaoanza, kwa sababu inapunguza aina za matatizo magumu ya tafsiri wanayokutana nayo. Hadithi zote 50 kwa pamoja ni kama urefu wa kitabu cha Matendo.\n\nTunafundisha watafsiri wapya kutafsiri Open Bible Stories kwanza, kwa sababu kazi hiyo haitishi kama kutafsiri Biblia yenyewe. Ni njia bora ya kuwatambulisha timu mpya kwa misingi ya tafsiri nzuri: ni utangulizi mzuri wa kanuni za tafsiri, inajumuisha hatua zote za kuandika na kupima tafsiri kama timu, na inahitaji kutumia nyenzo muhimu za mchakato. Timu hukamilisha kazi hii kwa miezi michache, na hadithi huwa tayari kutumika mara moja."
+      "a": "Hapana. Hadithi hizi ni muhtasari mfupi wa Biblia na wa injili, kutoka Mwanzo hadi Ufunuo. Lugha yake nyepesi hurahisisha kazi kwa watafsiri wapya, kwa sababu hawakutani na matatizo mengi magumu ya tafsiri kwa wakati mmoja. Hadithi zote 50 kwa pamoja ni kama urefu wa kitabu cha Matendo ya Mitume.\n\nTunafundisha watafsiri wapya kutafsiri Open Bible Stories kwanza, kwa sababu kazi hiyo haiogopeshi kama kutafsiri Biblia yenyewe. Ni njia nzuri ya kuwatambulisha timu mpya kwa misingi ya tafsiri nzuri: inajumuisha kuandika rasimu na kuhakiki tafsiri kama timu, na inatumia nyenzo muhimu za tafsiri. Timu hukamilisha kazi hii kwa miezi michache, na hadithi huwa tayari kutumika mara moja."
     },
     {
       "q": "Inapatikana katika lugha ngapi?",
@@ -25,7 +25,7 @@
     },
     {
       "q": "Naweza kunakili, kuchapisha, kubadilisha au kurekodi hadithi hizi?",
-      "a": "Ndiyo. Toa nakala nyingi za kitabu hiki kadri unavyotaka, bila kizuizi. Matoleo yote ya kidijitali ni bure mtandaoni, na kwa sababu ya leseni huria tunayotumia, unaweza hata kuchapisha tena unfoldingWord&reg; Open Bible Stories kibiashara mahali popote duniani bila kulipa mrabaha. Hadithi zinatolewa chini ya leseni ya Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0): unaweza kunakili, kuchapisha, kurekodi, kutangaza au kuzibadilisha, ikiwa ni pamoja na kwa biashara, ukitaja kazi ya awali na ukitoa unachotengeneza chini ya leseni ile ile. Acha chapa ya unfoldingWord&reg; kwenye nakala zisizobadilishwa, na uiondoe ikiwa unabadilisha au kutafsiri kazi hii; sema ulichobadilisha, na utaje hivi: “Kazi ya awali ya unfoldingWord inapatikana katika https://openbiblestories.org”.\n\nMichoro ni &copy; Sweet Publishing na inashirikiwa chini ya CC BY-SA 3.0, hivyo ina utajo wake wa haki. <a href=\"/license/\">Ukurasa wa leseni</a> una maandishi kamili."
+      "a": "Ndiyo. Toa nakala nyingi za kitabu hiki kadri unavyotaka, bila kizuizi. Matoleo yote ya kidijitali ni bure mtandaoni, na kwa sababu ya leseni huria tunayotumia, unaweza hata kuchapisha tena unfoldingWord&reg; Open Bible Stories kibiashara mahali popote duniani bila kulipa mrabaha. Hadithi zinatolewa chini ya leseni ya Creative Commons Attribution-ShareAlike 4.0 (CC BY-SA 4.0): unaweza kunakili, kuchapisha, kurekodi, kutangaza au kuzibadilisha, ikiwa ni pamoja na kwa biashara, ukitaja kazi ya awali na ukitoa unachotengeneza chini ya leseni ile ile. Acha chapa ya unfoldingWord&reg; kwenye nakala zisizobadilishwa, na uiondoe ikiwa unabadilisha au kutafsiri kazi hii; sema ulichobadilisha, na utaje hivi: “Kazi ya awali ya unfoldingWord inapatikana katika https://openbiblestories.org”.\n\nMichoro ni &copy; Sweet Publishing na inashirikiwa chini ya CC BY-SA 3.0, hivyo inatajwa kwa jina la mchoraji wake. <a href=\"/license/\">Ukurasa wa leseni</a> una maandishi kamili."
     },
     {
       "q": "Nawezaje kuanza tafsiri katika lugha yangu?",
@@ -37,7 +37,7 @@
     },
     {
       "q": "Nani anaandaa Open Bible Stories?",
-      "a": "unfoldingWord&reg; inaiandaa pamoja na <a href=\"https://door43.org/\">Door43 World Missions Community</a>. Kila tafsiri ni kazi ya timu kutoka jamii ya lugha hiyo, na kila ukurasa wa lugha unataja timu iliyoichapisha. Faili za asili zipo kwenye Door43, ambapo mtu yeyote anaweza kuona hali ya tafsiri kwa sasa."
+      "a": "unfoldingWord&reg; inaiandaa pamoja na <a href=\"https://door43.org/\">Jumuiya ya Door43 ya Misheni Duniani</a>. Kila tafsiri ni kazi ya timu kutoka jamii ya lugha hiyo, na kila ukurasa wa lugha unataja timu iliyoichapisha. Faili za asili zipo kwenye Door43, ambapo mtu yeyote anaweza kuona hali ya tafsiri kwa sasa."
     }
   ]
 }

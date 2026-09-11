@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "{story}——{language}《开放圣经故事》第 {n} 个故事。阅读全文、观看插图并收听音频。以开放许可免费提供。"
+    "description": "{story}——{language}《Open Bible Stories》第 {n} 个故事。阅读全文、观看插图并收听音频。以开放许可免费提供。"
   },
   "storyN": "故事 {n} / {total}",
   "listen": "收听此故事",
