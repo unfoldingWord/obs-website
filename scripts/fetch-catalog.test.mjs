@@ -18,6 +18,7 @@ import {
   tsFramesFromTree,
   fetchTsFrames,
   parseTsFrame,
+  tsStoryImageUrl,
   fetchStories,
   enrichStories,
   compactAssets,
@@ -397,7 +398,7 @@ test('treeUrl asks for the repo at its release ref', () => {
 
 // The behaviour the 18 legacy languages were missing: real bodies, so
 // writeStoryFiles() gives them storyNums and the build gives them pages.
-function tsRepo({ stories = 2, frames = 3 } = {}) {
+function tsRepo({ stories = 2, frames = 3, bare = false } = {}) {
   const tree = [{ path: 'manifest.json', type: 'blob' }];
   for (let n = 1; n <= stories; n++) {
     const nn = String(n).padStart(2, '0');
@@ -412,7 +413,10 @@ function tsRepo({ stories = 2, frames = 3 } = {}) {
     if (n > stories) return null;
     if (m[2] === 'title') return `${n}. آفرینش`;
     if (m[2] === 'reference') return 'آفرینش ۱-۲';
-    return `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\nمتن قالب ${m[2]} داستان ${n}`;
+    const text = `متن قالب ${m[2]} داستان ${n}`;
+    // `bare: true` is what the real fa_gl/azb_obs ships: chunk files that are
+    // plain text with no image line at all.
+    return bare ? text : `![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-${m[1]}-${m[2]}.jpg)\n${text}`;
   });
 }
 
@@ -430,6 +434,43 @@ test('fetchStories reads full bodies from a ts repo', async () => {
   assert.equal(r.stories[2].body, null);
   assert.equal(r.script, 'arabic');
   assert.match(r.extract.text, /^متن قالب 01/);
+});
+
+// Regression: every fixture above embeds the illustration as markdown, so
+// nothing caught that fa_gl/azb_obs — and the other tS repos like it — store
+// bare text. The build wrote `image: null` for all fifty stories and both the
+// reader and the story pages rendered text with no pictures at all.
+
+test('tsStoryImageUrl mirrors the reader, zero-padding both numbers', () => {
+  assert.equal(tsStoryImageUrl(3, 1), 'https://cdn.door43.org/obs/jpg/360px/obs-en-03-01.jpg');
+  assert.equal(tsStoryImageUrl(50, 16), 'https://cdn.door43.org/obs/jpg/360px/obs-en-50-16.jpg');
+});
+
+test('a ts repo storing bare text still gets the shared OBS illustrations', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 2, frames: 3, bare: true }));
+  const frames = r.stories[0].body.frames;
+  assert.equal(frames.length, 3);
+  assert.deepEqual(
+    frames.map((f) => f.image),
+    [
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg',
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg',
+      'https://cdn.door43.org/obs/jpg/360px/obs-en-01-03.jpg',
+    ]
+  );
+  assert.equal(frames[0].text, 'متن قالب 01 داستان 1', 'text is untouched');
+  assert.equal(
+    r.stories[1].body.frames[2].image,
+    'https://cdn.door43.org/obs/jpg/360px/obs-en-02-03.jpg',
+    'story number tracks the story, not the position'
+  );
+});
+
+test('an embedded illustration still wins over the derived one', async () => {
+  const lang = { code: 'azb', entries: [{ owner: 'o', name: 'azb_obs', branch_or_tag_name: 'v1', metadata_type: 'ts' }] };
+  const r = await fetchStories(lang, tsRepo({ stories: 1, frames: 1 }));
+  assert.equal(r.stories[0].body.frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
 });
 
 test('ts languages get story pages once bodies exist', () => {

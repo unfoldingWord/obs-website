@@ -595,10 +595,29 @@ export async function fetchTsFrames(entry, fetchImpl = fetch, maxPages = 6) {
 }
 
 /**
- * One frame of a tS story. The frame files are plain text, but many carry the
+ * The shared OBS illustration for one frame.
+ *
+ * The artwork is language-independent: every translation shows the same
+ * pictures, and they resolve from a fixed CDN path keyed only by story and
+ * frame number. RC markdown embeds these exact URLs, which is why the RC path
+ * can simply lift them out of the text — but a tS repo has no such guarantee,
+ * so for tS the URL is derived instead.
+ *
+ * Mirrors tsStoryImageUrl() in public/assets/js/reader.js, which derives the
+ * same URL when the reader falls back to fetching a tS repo live. Keep the
+ * two in step.
+ */
+export function tsStoryImageUrl(storyNum, frameNum) {
+  return `https://cdn.door43.org/obs/jpg/360px/obs-en-${pad(storyNum)}-${pad(frameNum)}.jpg`;
+}
+
+/**
+ * One frame of a tS story. The frame files are plain text. Some carry the
  * illustration as a markdown image on its own line, exactly as the RC
  * markdown does — so a frame yields the same {image, text} shape the RC path
- * produces and the story pages already render.
+ * produces and the story pages already render. Many carry no image line at
+ * all, in which case `image` is null here and the caller derives it: see
+ * fetchTsStories().
  */
 export function parseTsFrame(raw) {
   if (raw == null) return null;
@@ -788,7 +807,24 @@ async function fetchTsStories(entry, fetchImpl) {
       const raw = paths.length
         ? await mapLimit(paths, 4, (path) => fetchText(`${base}/${path}`, fetchImpl))
         : await mapLimit(storyUrls(entry, num).frames, 2, (url) => (num === 1 ? fetchText(url, fetchImpl) : null));
-      const frames = raw.map(parseTsFrame).filter((f) => f && f.text);
+      // The frame number comes from the file name, not the array position:
+      // frames with no text are dropped just below, and a repo is free to
+      // skip a number, so the two diverge. Getting this wrong would shift
+      // every illustration after the gap onto the wrong paragraph.
+      const frameNums = paths.length
+        ? paths.map((path, i) => parseInt(String(path).match(/\/(\d{2})\.txt$/)?.[1] ?? '', 10) || i + 1)
+        : raw.map((_, i) => i + 1);
+      // A tS repo that stores bare text (fa_gl/azb_obs, and the other legacy
+      // repos like it) has no image line to lift, but the illustration for
+      // this story and frame exists all the same — derive it, or the language
+      // renders as text with no pictures.
+      const frames = raw
+        .map((body, i) => {
+          const frame = parseTsFrame(body);
+          if (!frame || !frame.text) return null;
+          return { ...frame, image: frame.image || tsStoryImageUrl(num, frameNums[i]) };
+        })
+        .filter(Boolean);
       const reference = (await fetchText(`${base}/${nn}/reference.txt`, fetchImpl))?.trim() || '';
       if (num === 1) extract = makeExtract({ title: title || '', paragraphs: frames.map((f) => f.text), reference });
       return {
