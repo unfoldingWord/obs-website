@@ -37,6 +37,40 @@ amending the criterion to "in the hub's chrome language, with the extract in
 the content language". Either way it is a decision for #17, and until it is
 made, these hubs should not be counted as localized-FAQ coverage.
 
+## Review pass, September 2026
+
+The `en`, `sw`, `es`, `hi` and `ar` strings in `hub.json`, `story.json`,
+`faq.json` and `ui.json` were read through once for register and plain
+language (not by a native speaker — a second reading by one is still
+welcome, and the sheet below is how to hand it over). What changed:
+
+- **Christian register.** Swahili "discipleship" is now *uanafunzi* (the
+  word Swahili churches use), not the coined *ufuasi*. Spanish uses
+  *historias* throughout, as churches do, instead of switching to *relatos*
+  in the answers. Bible book names, *susamachar*, *kalisiya*, *al-kiraza wa
+  al-talmadha* and the like were already in the register the churches use
+  and were left alone.
+- **Plain language.** The "Is this a Bible translation?" answer dropped
+  *cognitive load* and *ideal mechanism* in English and in the four locales.
+  Hindi uses *लाइसेंस* everywhere instead of the Sanskritic *अनुज्ञप्ति*,
+  *प्रतियाँ बनाना* instead of *नकल* (which reads as cheating), and one level
+  of politeness (*करें*) rather than mixing *कीजिए* and *करें*. Arabic
+  *مسح* ("survey") became *لمحة*.
+- **Consistency.** Spanish is *tú* throughout the hub, story and FAQ
+  strings, matching the rest of the site; the Translate page is called
+  *Traduce*, as in the nav. Arabic uses *باللغة {language}* everywhere and
+  treats Open Bible Stories as one work (*هو*). The Door43 community name
+  in each FAQ now matches the footer.
+- **Fixes.** Swahili *hazikuwa* → *si* (wrong tense); the product name is
+  **Open Bible Stories** in every story-page description, where three
+  locales had translated it; Arabic *teams* no longer depends on a number
+  agreeing with *فرق*; the Hindi license line now reads correctly with the
+  CC link the template appends after it.
+
+Left for a native reader: whether Swahili *Vumbua* (used site-wide for
+Discover) should be the more common *Gundua*; Hindi still uses both *टीम*
+and *दल* in the marketing pages outside these four files.
+
 ## Getting a sheet
 
 ```
