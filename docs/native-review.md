@@ -67,6 +67,37 @@ welcome, and the sheet below is how to hand it over). What changed:
   agreeing with *فرق*; the Hindi license line now reads correctly with the
   CC link the template appends after it.
 
+**Covered:** `en`, `sw`, `es`, `hi`, `ar` — `hub.json`, `story.json`,
+`faq.json`, `ui.json` only.
+**Not reviewed:** `bn`, `fa`, `fr`, `id`, `my`, `nl`, `pt`, `ru`, `ur`,
+`vi`, `zh` (all files), and the six marketing files of the five covered
+locales. Two mechanical fixes did reach every locale in the same pass: the
+product name is now **Open Bible Stories** in every `story.json`
+description, and the Door43 community name in each `faq.json` matches that
+locale's footer.
+
+**Stale against English.** The pass rewrote one English source string,
+`faq.json` → `questions[1].a` ("Is Open Bible Stories a Bible
+translation?"). The eleven unreviewed locales above still translate the
+older wording ("reduces the cognitive load on new learners"), which is a
+different claim about who benefits than the current English ("makes the
+work easier for new translators"). `check:locales` cannot see this: a stale
+translation is still a translation. Whoever next touches those locales
+should retranslate that string from the current English; nothing else in
+English changed.
+
+**Now enforced by `npm run check:locales`**, so the next English rewrite
+cannot quietly undo them: wherever English says *Open Bible Stories* the
+locale carries it verbatim; `unfoldingWord` keeps its camelCase; and the
+Door43 community link text in `faq.json` equals the one in the footer.
+
+**One string depends on the template.** `hub.license` is always rendered
+with the CC BY-SA 4.0 link appended after it (`src/pages/l/[code]/index.astro`,
+the `hub-license` paragraph). Most locales end in "under" or its equivalent;
+Hindi ends in "लाइसेंस:" because the license name has to come before
+"के अंतर्गत" and cannot. Reusing `hub.license` anywhere without that link
+would leave a dangling colon in Hindi.
+
 Left for a native reader: whether Swahili *Vumbua* (used site-wide for
 Discover) should be the more common *Gundua*; Hindi still uses both *टीम*
 and *दल* in the marketing pages outside these four files.

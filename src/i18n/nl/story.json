@@ -1,6 +1,6 @@
 {
   "meta": {
-    "description": "{story} — verhaal {n} uit Open Bijbelverhalen in het {language}. Lees de volledige tekst, bekijk de illustraties en luister naar de audio. Gratis onder een open licentie."
+    "description": "{story} — verhaal {n} uit Open Bible Stories in het {language}. Lees de volledige tekst, bekijk de illustraties en luister naar de audio. Gratis onder een open licentie."
   },
   "storyN": "Verhaal {n} van {total}",
   "listen": "Luister naar dit verhaal",
