@@ -65,6 +65,26 @@ const fetchStoriesEnabled = process.env.OBS_CATALOG_STORIES !== '0';
 
 export const STORY_COUNT = 50;
 
+/**
+ * Illustrations the OBS artwork set has for each story.
+ *
+ * The pictures are a fixed, published set — 598 of them — and a frame number
+ * past the end of a story has no artwork behind it, so deriving a URL for it
+ * would point at a file that does not exist.
+ *
+ * Counted from the image lines of unfoldingWord/en_obs's own RC markdown
+ * (`content/NN.md`), which is the set every translation shares. Re-measure
+ * with, for each NN:
+ *   curl -s .../en_obs/raw/branch/master/content/NN.md | grep -c '^!\['
+ */
+export const FRAMES_PER_STORY = {
+  1: 16, 2: 12, 3: 16, 4: 9, 5: 10, 6: 7, 7: 10, 8: 15, 9: 15, 10: 12,
+  11: 8, 12: 14, 13: 15, 14: 15, 15: 13, 16: 18, 17: 14, 18: 13, 19: 18, 20: 13,
+  21: 15, 22: 7, 23: 10, 24: 9, 25: 8, 26: 10, 27: 11, 28: 10, 29: 9, 30: 9,
+  31: 8, 32: 16, 33: 9, 34: 10, 35: 13, 36: 7, 37: 11, 38: 15, 39: 12, 40: 9,
+  41: 8, 42: 11, 43: 13, 44: 9, 45: 13, 46: 10, 47: 14, 48: 14, 49: 18, 50: 17,
+};
+
 
 const PAGE_SIZE = 1000;
 const CONCURRENCY = 24;
@@ -595,10 +615,53 @@ export async function fetchTsFrames(entry, fetchImpl = fetch, maxPages = 6) {
 }
 
 /**
- * One frame of a tS story. The frame files are plain text, but many carry the
+ * The shared OBS illustration for one frame.
+ *
+ * The artwork is language-independent: every translation shows the same
+ * pictures, and they resolve from a fixed CDN path keyed only by story and
+ * frame number. RC markdown embeds these exact URLs, which is why the RC path
+ * can simply lift them out of the text — but a tS repo has no such guarantee,
+ * so for tS the URL is derived instead.
+ *
+ * Builds the same URL as tsStoryImageUrl() in public/assets/js/reader.js,
+ * which derives it when the reader falls back to fetching a tS repo live.
+ *
+ * The two do NOT agree on precedence, deliberately: reader.js derives
+ * unconditionally and ignores an embedded illustration, while this path
+ * prefers the embedded one (`frame.image || …`) and derives only to fill a
+ * gap. Nothing renders differently today — every tS repo that embeds an
+ * illustration embeds this exact canonical URL — but a repo embedding a
+ * different host or resolution would show its own image on the story page
+ * and the derived one in the reader. Preferring what the repo actually
+ * published is the better default for the build, which is why the
+ * divergence stands rather than being papered over.
+ */
+export function tsStoryImageUrl(storyNum, frameNum) {
+  return `https://cdn.door43.org/obs/jpg/360px/obs-en-${pad(storyNum)}-${pad(frameNum)}.jpg`;
+}
+
+/**
+ * Whether the artwork set actually has this story's frame.
+ *
+ * Deriving past the end of a story would be worse than the bug this fixes: a
+ * null image renders no <img> at all, while a URL that 404s renders a broken
+ * image — and on frame 1 it would become a broken OG image and video poster
+ * too. No published tS repo overruns today (measured: all 21, none exceeds
+ * FRAMES_PER_STORY for any story), but nothing stops a future one, and the
+ * build cannot see the difference without this check.
+ */
+export function hasIllustration(storyNum, frameNum) {
+  const max = FRAMES_PER_STORY[storyNum];
+  return max != null && Number.isInteger(frameNum) && frameNum >= 1 && frameNum <= max;
+}
+
+/**
+ * One frame of a tS story. The frame files are plain text. Some carry the
  * illustration as a markdown image on its own line, exactly as the RC
  * markdown does — so a frame yields the same {image, text} shape the RC path
- * produces and the story pages already render.
+ * produces and the story pages already render. Many carry no image line at
+ * all, in which case `image` is null here and the caller derives it: see
+ * fetchTsStories().
  */
 export function parseTsFrame(raw) {
   if (raw == null) return null;
@@ -788,7 +851,46 @@ async function fetchTsStories(entry, fetchImpl) {
       const raw = paths.length
         ? await mapLimit(paths, 4, (path) => fetchText(`${base}/${path}`, fetchImpl))
         : await mapLimit(storyUrls(entry, num).frames, 2, (url) => (num === 1 ? fetchText(url, fetchImpl) : null));
-      const frames = raw.map(parseTsFrame).filter((f) => f && f.text);
+      // The frame number comes from the file name, not the array position:
+      // frames with no text are dropped just below, and a repo is free to
+      // skip a number, so the two diverge. Getting this wrong would shift
+      // every illustration after the gap onto the wrong paragraph.
+      //
+      // Empty only on the unlisted branch, which produces no body at all (see
+      // below) — deriving there would compute illustrations and throw them
+      // away.
+      const frameNums = paths.length
+        ? paths.map((path) => {
+            // Always matches by construction: tsFramesFromTree emits only
+            // NN/NN.txt. Explicit about a non-match rather than `|| i + 1`,
+            // which would have swallowed frame 00 (parseInt('00') is falsy)
+            // and silently renumbered it by position.
+            const n = parseInt(String(path).match(/\/(\d{2})\.txt$/)?.[1] ?? '', 10);
+            return Number.isInteger(n) ? n : null;
+          })
+        : [];
+      // A tS repo that stores bare text (fa_gl/azb_obs, and the other legacy
+      // repos like it) has no image line to lift, but the illustration for
+      // this story and frame exists all the same — derive it, or the language
+      // renders as text with no pictures.
+      const frames = raw
+        .map((body, i) => {
+          const frame = parseTsFrame(body);
+          if (!frame || !frame.text) return null;
+          const derived = hasIllustration(num, frameNums[i]) ? tsStoryImageUrl(num, frameNums[i]) : null;
+          return { ...frame, image: frame.image || derived };
+        })
+        .filter(Boolean);
+      // A repo chunking a story finer than the artwork set is the one case
+      // that would put a broken image on the page, so say it in the build log
+      // rather than letting it reach a reader.
+      const overrun = frameNums.filter((n) => n != null && !hasIllustration(num, n));
+      if (overrun.length) {
+        console.warn(
+          `[catalog] ${entry.owner}/${entry.name} story ${num}: frame(s) ${overrun.join(', ')} exceed the ` +
+            `${FRAMES_PER_STORY[num] ?? 0} illustration(s) OBS has for it — those frames get no image`
+        );
+      }
       const reference = (await fetchText(`${base}/${nn}/reference.txt`, fetchImpl))?.trim() || '';
       if (num === 1) extract = makeExtract({ title: title || '', paragraphs: frames.map((f) => f.text), reference });
       return {
