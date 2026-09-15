@@ -484,7 +484,9 @@ label('source', t.source);
       <strong>unfoldingWord® Open Bible Stories</strong> — {t.license}
       <a href={LICENSE_URL} rel="license noopener">CC BY-SA 4.0</a>.
       {publishers.length > 1 ? fill(t.teams, { n: publishers.length }) : ''}
-      {primary && <span> <a href={`https://git.door43.org/${primary.owner}/${primary.name}`} rel="noopener">{t.source}</a></span>}
+      {/* The release, not the repo: master may already hold unreleased work,
+          and this page describes the release the downloads above came from. */}
+      {sourceUrl && <span> <a href={sourceUrl} rel="noopener" title={sourceTitle}>{t.source}</a></span>}
     </p>
   </div>
 </section>
