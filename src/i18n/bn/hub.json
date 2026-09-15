@@ -13,6 +13,7 @@
   "audio": "শুনুন (অডিও)",
   "video": "দেখুন (ভিডিও)",
   "app": "মোবাইল অ্যাপ নিন",
+  "sourceFiles": "উৎস ফাইল দেখুন",
   "extractTitle": "গল্প ১ থেকে",
   "extractAlt": "{language} ভাষায় Open Bible Stories-এর একটি ছবি",
   "storiesTitle": "গল্প ({total}টির মধ্যে {n}টি)",

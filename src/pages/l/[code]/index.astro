@@ -164,6 +164,17 @@ const pdfsOf = (owner: string) => assets.pdf.filter((a) => a.owner === owner && 
 // the app does not ship every language), so it is offered as a note, not
 // as a per-language format.
 const appUrl = 'https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp';
+// The release this hub was built from, on DCS — the source files behind every
+// download above. DCS tags carry their leading "v" (v4.1.3), so the tag goes
+// into the URL as-is; version() strips it for display only. The catalog has
+// never reported an entry without a tag, but the type allows it, so such an
+// entry would fall back to the repo itself rather than a 404.
+const sourceUrl = primary
+  ? primary.branch_or_tag_name
+    ? `https://git.door43.org/${primary.owner}/${primary.name}/releases/tag/${primary.branch_or_tag_name}`
+    : `https://git.door43.org/${primary.owner}/${primary.name}`
+  : null;
+const sourceTitle = primary ? [`${primary.owner}/${primary.name}`, primary.branch_or_tag_name].filter(Boolean).join(' ') : undefined;
 const image = storyImage(1);
 
 /**
@@ -214,6 +225,7 @@ if (audioZip) {
 }
 if (!hasPages) label('readerNeedsJs', t.readerNeedsJs);
 label('app', t.app);
+if (sourceUrl) label('sourceFiles', t.sourceFiles);
 if (lang.extract) {
   label('extractAlt', t.extractAlt, { language: name, story: lang.extract.title ?? '' });
   label('extractTitle', t.extractTitle);
@@ -311,7 +323,12 @@ label('source', t.source);
         <p class="hub-js-note">{t.readerNeedsJs}</p>
       </noscript>
     )}
-    <p class="hub-app-note"><a href={appUrl} target="_blank" rel="noopener">{t.app}</a></p>
+    <p class="hub-app-note">
+      <a href={appUrl} target="_blank" rel="noopener">{t.app}</a>
+      {sourceUrl && (
+        <span> · <a href={sourceUrl} target="_blank" rel="noopener" title={sourceTitle}>{t.sourceFiles}</a></span>
+      )}
+    </p>
   </div>
 </section>
 

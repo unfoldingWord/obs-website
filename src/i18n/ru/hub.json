@@ -13,6 +13,7 @@
   "audio": "Слушать (аудио)",
   "video": "Смотреть (видео)",
   "app": "Мобильное приложение",
+  "sourceFiles": "Посмотреть исходные файлы",
   "extractTitle": "Из истории 1",
   "extractAlt": "Иллюстрация из Open Bible Stories на языке {language}",
   "storiesTitle": "Истории ({n} из {total})",

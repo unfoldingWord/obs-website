@@ -13,6 +13,7 @@
   "audio": "Luisteren (audio)",
   "video": "Bekijken (video)",
   "app": "Download de mobiele app",
+  "sourceFiles": "Bronbestanden bekijken",
   "extractTitle": "Uit verhaal 1",
   "extractAlt": "Een illustratie uit Open Bible Stories in het {language}",
   "storiesTitle": "Verhalen ({n} van {total})",

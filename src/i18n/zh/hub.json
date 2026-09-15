@@ -13,6 +13,7 @@
   "audio": "聆听（音频）",
   "video": "观看（视频）",
   "app": "获取移动应用",
+  "sourceFiles": "查看源文件",
   "extractTitle": "故事 1 节选",
   "extractAlt": "{language} Open Bible Stories 的一幅插图",
   "storiesTitle": "故事（{n} / {total}）",

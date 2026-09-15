@@ -13,6 +13,7 @@
   "audio": "استمع (صوت)",
   "video": "شاهد (فيديو)",
   "app": "احصل على تطبيق الجوال",
+  "sourceFiles": "عرض الملفات المصدرية",
   "extractTitle": "من القصة 1",
   "extractAlt": "صورة من Open Bible Stories باللغة {language}",
   "storiesTitle": "القصص ({n} من {total})",
