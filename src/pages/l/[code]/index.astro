@@ -225,7 +225,6 @@ if (audioZip) {
 }
 if (!hasPages) label('readerNeedsJs', t.readerNeedsJs);
 label('app', t.app);
-if (sourceUrl) label('sourceFiles', t.sourceFiles);
 if (lang.extract) {
   label('extractAlt', t.extractAlt, { language: name, story: lang.extract.title ?? '' });
   label('extractTitle', t.extractTitle);
@@ -326,7 +325,7 @@ label('source', t.source);
     <p class="hub-app-note">
       <a href={appUrl} target="_blank" rel="noopener">{t.app}</a>
       {sourceUrl && (
-        <span> · <a href={sourceUrl} target="_blank" rel="noopener" title={sourceTitle}>{t.sourceFiles}</a></span>
+        <span> · <a href={sourceUrl} target="_blank" rel="noopener" title={sourceTitle}>{t.source}</a></span>
       )}
     </p>
   </div>
