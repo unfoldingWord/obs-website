@@ -13,6 +13,7 @@
   "audio": "Listen (audio)",
   "video": "Watch (video)",
   "app": "Get the mobile app",
+  "source": "View source files",
   "extractTitle": "From story 1",
   "extractAlt": "An illustration from Open Bible Stories in {language}",
   "storiesTitle": "Stories ({n} of {total})",
