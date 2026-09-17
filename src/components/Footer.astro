@@ -24,7 +24,8 @@ const { locale, ui } = Astro.props;
     <p class="footer-legal">
       <a href="/license/">{ui.legal?.license ?? 'License'}</a> &middot;
       <a href="/privacy/">{ui.legal?.privacy ?? 'Privacy Policy'}</a> &middot;
-      <a href="/terms-of-use/">{ui.legal?.terms ?? 'Terms of Use'}</a>
+      <a href="/terms-of-use/">{ui.legal?.terms ?? 'Terms of Use'}</a> &middot;
+      <a href="/changelog/">{ui.legal?.changelog ?? 'What’s new'}</a>
     </p>
   </div>
 </footer>

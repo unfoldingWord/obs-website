@@ -188,10 +188,27 @@ already give this for free and should not be dropped:
 - The catalog is re-fetched on every build, so a newly published language
   appears on the site — and in `/llms.txt` — without anyone editing a file.
 
-What is still missing is a **public changelog of newly published languages**.
-A short dated list, one line per language, is the cheapest freshness signal
-this site can emit and the most useful one for a partner deciding whether to
-link. Not yet built; tracked in #19.
+The **public changelog of newly published languages** is `/changelog/`, with
+the same events as an Atom feed at `/changelog.xml` (linked from every
+page's footer as "What's new"). One line per language, generated from the
+same catalog snapshot as Discover and the hubs (`src/lib/changelog.ts`):
+
+- **Newly published** — dated by the earliest release of any of the
+  language's publishing teams. `scripts/fetch-catalog.mjs` reads that from
+  each repo's Door43 release history (`firstReleased` on the entry), since a
+  catalog entry only carries the *current* release and cannot tell a first
+  publication from a tenth revision.
+- **Updated in the last 12 months** — a later release of a language that was
+  already published, dated by its most recent release.
+- A language whose release history could not be read is named in a note as
+  undated, never given its latest release date as if it were new; the next
+  build retries. `npm run check:routes` asserts this against the served
+  HTML, and that every hub the feed links to was built.
+
+Submit `/changelog.xml` to Bing Webmaster Tools as a feed alongside the
+sitemap index, and re-run the generative prompt set when a new language
+appears in it. A date on this page is the day a release was published on
+Door43 by the team named — not when translation began or finished.
 
 ## Where the tracker lives
 

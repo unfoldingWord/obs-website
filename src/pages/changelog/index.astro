@@ -1,0 +1,116 @@
+---
+// /changelog/ — the public, dated list of newly published and updated
+// languages (#19). English-only at the root like the legal pages: the lines
+// are autonyms, codes, dates and versions, which read the same in any
+// locale, and one URL keeps it a single thing for partners and search
+// engines to watch. The Atom feed at /changelog.xml carries the same events.
+//
+// Everything here comes from src/data/catalog.json, the snapshot every other
+// public fact is read from — see src/lib/changelog.ts for what counts as
+// "new" versus "updated" and why an unknown first-release date is shown as
+// unknown rather than guessed.
+import Base from '../../layouts/Base.astro';
+import { buildChangelog, byMonth, monthLabel, CHANGELOG_FEED_PATH, UPDATED_WINDOW_DAYS, type ChangelogEvent } from '../../lib/changelog';
+import { displayName, languagePath } from '../../data/catalog';
+
+const log = buildChangelog();
+const title = 'What’s new — newly published and updated languages — Open Bible Stories';
+const description = `${log.languageCount} languages have a published translation of Open Bible Stories. A dated list of the languages published most recently and the translations updated in the last year, generated from the Door43 catalog on every build.`;
+const asOf = log.asOf ?? 'the last successful catalog fetch';
+const months = Math.round(UPDATED_WINDOW_DAYS / 30);
+
+const who = (ev: ChangelogEvent) => (ev.englishName ? `${ev.name} (${ev.englishName})` : ev.name);
+---
+
+<Base locale="en" slug="changelog" title={title} description={description}>
+  <link slot="head" rel="alternate" type="application/atom+xml" title="Open Bible Stories — newly published and updated languages" href={CHANGELOG_FEED_PATH} />
+
+<section class="page-header">
+  <div class="wrap">
+    <p class="eyebrow">What’s new</p>
+    <h1>Newly published and updated languages</h1>
+    <p>
+      {log.languageCount} languages have a published translation of Open Bible Stories.
+      This page lists them by the date each translation was first released on Door43, newest first,
+      and then the translations that have had a new release in the last {months} months.
+      It is generated from the Door43 catalog on every build, as of {asOf}.
+      <a href="/discover/">Discover</a> has the full list with search and format filters;
+      the same events are in an <a href={CHANGELOG_FEED_PATH}>Atom feed</a>.
+    </p>
+  </div>
+</section>
+
+<section>
+  <div class="wrap changelog">
+    <h2 id="new">Newly published languages</h2>
+    {log.added.length === 0 ? (
+      <p class="changelog-note">
+        No first-release dates are in this build: the release history on Door43 could not be read when the
+        catalog was fetched. Every published language is still listed on <a href="/discover/">Discover</a>,
+        and each language page shows its most recent release.
+      </p>
+    ) : (
+      byMonth(log.added).map(({ month, events }) => (
+        <>
+          <h3>{monthLabel(`${month}-01`)}</h3>
+          <ul class="changelog-list">
+            {events.map((ev) => (
+              <li>
+                <time datetime={ev.date}>{ev.date}</time>
+                <span class="changelog-what">
+                  <a href={ev.path}>{who(ev)}</a>
+                  <span class="changelog-meta"> · <code>{ev.code}</code>{ev.publishers.length > 0 && <> · published by {ev.publishers.join(', ')}</>}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))
+    )}
+    {log.undated.length > 0 && log.added.length > 0 && (
+      <p class="changelog-note">
+        The first-release date of {log.undated.length === 1 ? 'one language' : `${log.undated.length} languages`} could not be
+        read from Door43 in this build, so {log.undated.length === 1 ? 'it is' : 'they are'} not dated above:
+        {' '}
+        {log.undated.map((l, i) => (
+          <>{i > 0 && ', '}<a href={languagePath(l.code)}>{displayName(l)}</a></>
+        ))}.
+        {' '}The next build retries.
+      </p>
+    )}
+
+    <h2 id="updated">Updated in the last {months} months</h2>
+    {log.updated.length === 0 ? (
+      <p class="changelog-note">
+        {log.added.length === 0
+          ? 'Updates cannot be told apart from first publications without the release history; see above.'
+          : `No translation that was already published has had a new release in the last ${months} months.`}
+      </p>
+    ) : (
+      byMonth(log.updated).map(({ month, events }) => (
+        <>
+          <h3>{monthLabel(`${month}-01`)}</h3>
+          <ul class="changelog-list">
+            {events.map((ev) => (
+              <li>
+                <time datetime={ev.date}>{ev.date}</time>
+                <span class="changelog-what">
+                  <a href={ev.path}>{who(ev)}</a>
+                  <span class="changelog-meta"> · <code>{ev.code}</code>{ev.version && <> · v{ev.version}</>}{ev.publishers.length > 0 && <> · {ev.publishers.join(', ')}</>}</span>
+                </span>
+              </li>
+            ))}
+          </ul>
+        </>
+      ))
+    )}
+
+    <p class="changelog-note">
+      A date here is the day a release was published on Door43 by the team named, not the day the
+      translation was begun or finished. Older revisions of a language are listed on its own page under
+      “About this translation”.
+    </p>
+  </div>
+</section>
+
+</Base>

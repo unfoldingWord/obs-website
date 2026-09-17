@@ -170,6 +170,30 @@ export async function fetchStoryAudio(entry, fetchImpl = fetch) {
   return audioByStory(await fetchReleases(entry, fetchImpl));
 }
 
+/**
+ * The date a repo's translation was first released: the earliest non-draft
+ * release, as an ISO date, or null when the list is empty or undated. The
+ * catalog entry only carries the CURRENT release (`released`), so without
+ * this the site cannot tell a language published last month from one whose
+ * tenth revision shipped last month — which is the distinction the public
+ * changelog (/changelog/, #19) exists to make.
+ */
+export function firstReleaseDate(releases) {
+  const dates = (releases || [])
+    .filter((r) => r && !r.draft && r.published_at)
+    .map((r) => String(r.published_at).slice(0, 10))
+    .filter((d) => /^\d{4}-\d{2}-\d{2}$/.test(d))
+    .sort();
+  return dates[0] ?? null;
+}
+
+/** First release date of an entry's repo, or null (never throws). Shares
+ *  the per-run releases cache with the asset and per-story media lookups. */
+export async function fetchFirstRelease(entry, fetchImpl = fetch) {
+  if (!entry?.owner || !entry?.name) return null;
+  return firstReleaseDate(await fetchReleases(entry, fetchImpl));
+}
+
 export async function fetchMissingAssets(entry, wanted, fetchImpl = fetch) {
   const own = entry.assets || [];
   const have = assetFormats(own);
@@ -1002,19 +1026,29 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
   for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
   let fetched = 0;
   let reused = 0;
+  let firstLookups = 0;
   const out = await mapLimit(languages, 6, async (lang) => {
     const wanted = lang.formats;
     const entries = [];
     for (const entry of lang.entries) {
       const prev = prevEntries.get(entryKey(entry));
+      // When the translation was first released (see firstReleaseDate). A
+      // date is a fact about the repo's history and never changes, so a
+      // cached one is reused for good; a null (the list could not be read)
+      // is retried on the next build rather than cached as "unknown".
+      let firstReleased = typeof prev?.firstReleased === 'string' ? prev.firstReleased : null;
+      if (!firstReleased) {
+        firstLookups++;
+        firstReleased = await fetchFirstRelease(entry, fetchImpl);
+      }
       if (prev && Array.isArray(prev.assets)) {
         reused++;
-        entries.push({ ...entry, assets: prev.assets });
+        entries.push({ ...entry, assets: prev.assets, firstReleased });
         continue;
       }
       const assets = await fetchMissingAssets(entry, wanted, fetchImpl);
       if (assets !== entry.assets) fetched++;
-      entries.push({ ...entry, assets });
+      entries.push({ ...entry, assets, firstReleased });
     }
     // Per-story mp3s for the story pages. Only for languages that advertise
     // audio, and the releases list is cached, so this adds no fetches for
@@ -1040,6 +1074,8 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
     return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}), ...(storyVideo ? { storyVideo } : {}) };
   });
   log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
+  const undated = out.reduce((n, l) => n + l.entries.filter((e) => !e.firstReleased).length, 0);
+  log.log(`[catalog] first releases: ${firstLookups} looked up, ${undated} entr${undated === 1 ? 'y' : 'ies'} still undated`);
   return out;
 }
 

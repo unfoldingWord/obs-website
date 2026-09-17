@@ -36,6 +36,8 @@ import {
   mergeStoryMedia,
   clearReleasesCache,
   sortLanguages,
+  firstReleaseDate,
+  fetchFirstRelease,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -184,13 +186,50 @@ test('enrichAssets reuses cached assets for unchanged entries', async () => {
   let calls = 0;
   const f = fakeFetch(() => { calls++; return '[]'; });
   const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [{ owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2026-01-01', assets: [] }] };
-  const previous = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }] }] }] };
+  const previous = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }], firstReleased: '2025-06-01' }] }] };
   const quiet = { log() {} };
   const reused = await enrichAssets([lang], previous, f, quiet);
   assert.equal(calls, 0);
   assert.equal(reused[0].entries[0].assets[0].name, 'c.pdf');
+  assert.equal(reused[0].entries[0].firstReleased, '2025-06-01', 'a cached first-release date is reused');
   await enrichAssets([lang], null, f, quiet);
+  assert.equal(calls, 1, 'assets and first release share the one releases request per repo');
+});
+
+test('firstReleaseDate is the earliest dated non-draft release', () => {
+  assert.equal(firstReleaseDate([
+    { tag_name: 'v3', published_at: '2026-03-01T00:00:00Z' },
+    { tag_name: 'v0', draft: true, published_at: '2019-01-01T00:00:00Z' },
+    { tag_name: 'v1', published_at: '2024-11-30T23:59:59Z' },
+    { tag_name: 'v2', published_at: null },
+  ]), '2024-11-30');
+  assert.equal(firstReleaseDate([]), null);
+  assert.equal(firstReleaseDate([{ tag_name: 'v1' }]), null, 'an undated release is not a date');
+});
+
+test('enrichAssets records each entry\'s first release and retries an unknown one', async () => {
+  clearReleasesCache();
+  const releases = JSON.stringify([
+    { tag_name: 'v2', draft: false, published_at: '2026-02-01T00:00:00Z', assets: [] },
+    { tag_name: 'v1', draft: false, published_at: '2025-07-15T00:00:00Z', assets: [] },
+  ]);
+  let calls = 0;
+  const f = fakeFetch((url) => (url.endsWith('/releases') ? (calls++, releases) : null));
+  const entry = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v2', released: '2026-02-01', assets: [{ name: 'sw_obs.pdf', url: 'https://e/sw_obs.pdf', size: 1 }] };
+  const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [entry] };
+  const quiet = { log() {} };
+  // Assets are complete, so only the first-release date needs the history.
+  const fresh = await enrichAssets([lang], null, f, quiet);
+  assert.equal(fresh[0].entries[0].firstReleased, '2025-07-15');
   assert.equal(calls, 1);
+  // A cached entry whose date was never read (a null from an outage, or a
+  // snapshot written before the field existed) is looked up, not kept null.
+  clearReleasesCache();
+  const previous = { languages: [{ ...lang, entries: [{ ...entry, firstReleased: null }] }] };
+  const retried = await enrichAssets([lang], previous, f, quiet);
+  assert.equal(retried[0].entries[0].firstReleased, '2025-07-15');
+  assert.equal(calls, 2);
+  assert.equal(await fetchFirstRelease({ owner: null, name: null }, f), null);
 });
 
 const STORY_MD = `---\ntitle: x\n---\n# 1. The Creation\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)\n\nThis is how the beginning of everything happened. God created the universe and everything in it in six days.\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg)\n\nGod spoke, and light appeared. He called the light day.\n\n_A Bible story from: Genesis 1-2_\n`;

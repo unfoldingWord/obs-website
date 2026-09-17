@@ -29,6 +29,11 @@ export interface CatalogEntry {
   metadata_type: string | null;
   /** ISO date of the release, when the catalog reports one. */
   released: string | null;
+  /** ISO date of the repo's EARLIEST release — when this team first
+   *  published the translation — read from the release history by
+   *  scripts/fetch-catalog.mjs. Absent or null when the history could not
+   *  be read (the fetch retries it on the next build). */
+  firstReleased?: string | null;
   contentPath: string;
   assets: CatalogAsset[];
 }
@@ -271,6 +276,18 @@ export function storyImage(num: number): string {
  *  and its JSON-LD list exactly these — never a padded list of 50. */
 export function readableStories(lang: CatalogLanguage): CatalogStory[] {
   return (lang.stories ?? []).filter((s) => s.title);
+}
+
+/**
+ * When a language was first published: the earliest first-release date
+ * across its publishing teams, or null when no team's history could be
+ * read. Distinct from `updated`, the most recent release, which is what
+ * lastmod and the hub show. The changelog (/changelog/) lists new languages
+ * by this date and updated ones by `updated`.
+ */
+export function firstPublished(lang: CatalogLanguage): string | null {
+  const dates = lang.entries.map((e) => e.firstReleased).filter((d): d is string => typeof d === 'string').sort();
+  return dates[0] ?? null;
 }
 
 /** Distinct publishing teams, in catalog order. */
