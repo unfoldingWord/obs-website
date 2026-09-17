@@ -154,8 +154,12 @@ curl -s  https://openbiblestories.org/robots.txt    # must contain no Disallow a
 The file in this repo is not the whole story. Cloudflare's **managed robots.txt** for the zone can prepend a `Content-Signal` line and `Disallow: /` groups for AI crawlers ahead of this file, and that is what production served before this decision (`Content-Signal: search=yes, ai-train=no, use=reference`). For the served file to match the policy, the Cloudflare dashboard must have the managed robots.txt / "block AI bots" features turned off for this zone (Security → Bots, and Content Signals). Verify after changing it:
 
 ```
-curl -s https://openbiblestories.org/robots.txt | grep -i "disallow\|content-signal"   # expect no output
+curl -fsS https://openbiblestories.org/robots.txt > /tmp/robots.txt \
+  && ! grep -Ei '^[[:space:]]*(Disallow|Content-Signal)[[:space:]]*:' /tmp/robots.txt \
+  && echo "OK: served robots.txt has no Disallow or Content-Signal directive"
 ```
+
+It prints `OK` only when the download succeeded **and** no directive matched. It looks at directives, not comments, because the policy note in the file itself mentions `Disallow: /` and `ai-train=no` and a naive `grep -i` would flag them.
 
 ## Structure
 
