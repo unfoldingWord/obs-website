@@ -98,6 +98,7 @@ const chromeAll = chrome
           ['ui.legal.license', ui.legal?.license],
           ['ui.legal.privacy', ui.legal?.privacy],
           ['ui.legal.terms', ui.legal?.terms],
+          ['ui.legal.changelog', ui.legal?.changelog],
           ...ui.nav.map((item: { label: string }, i: number) => [`ui.nav.${i}.label`, item.label]),
         ]
           .filter(([, v]) => typeof v === 'string' && v)

@@ -597,6 +597,24 @@ body > footer{background:var(--panel); color:#3d4b52; padding:40px 0 28px; borde
 .legal ul, .legal ol{margin:0 0 14px; padding-left:24px; line-height:1.7;}
 .legal li{margin-bottom:8px;}
 .legal a{color:var(--inspire-text); text-decoration:underline;}
+
+/* ---------- CHANGELOG (/changelog/) ----------
+   One line per language: date, name, then the code and team in the
+   same muted style as the hub's publisher list. */
+.changelog{max-width:760px;}
+.changelog h2{font-size:1.35rem; color:var(--ocean); margin:36px 0 14px;}
+.changelog h2:first-child{margin-top:0;}
+.changelog h3{font-size:1rem; color:#4a5960; margin:24px 0 8px; font-weight:700;}
+.changelog-list{list-style:none; padding:0; margin:0;}
+.changelog-list li{display:flex; gap:14px; padding:8px 0; border-bottom:1px solid rgba(1,66,99,0.08); line-height:1.5;}
+.changelog-list time{flex:0 0 7em; color:#64747d; font-variant-numeric:tabular-nums; font-size:0.92rem;}
+.changelog-what a{color:var(--ocean); font-weight:700; text-decoration:none;}
+.changelog-what a:hover{text-decoration:underline;}
+.changelog-meta{color:#64747d; font-size:0.85em;}
+.changelog-meta code{font-family:inherit;}
+.changelog-note{font-size:0.92rem; color:#4a5960; margin:16px 0 0; line-height:1.6;}
+.changelog-note a{color:var(--inspire-text); text-decoration:underline;}
+@media (max-width:600px){ .changelog-list li{flex-direction:column; gap:2px;} }
 .footer-credit a{color:var(--ocean); font-weight:700;}
 
 @media (max-width:600px){
