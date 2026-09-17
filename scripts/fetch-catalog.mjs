@@ -187,6 +187,23 @@ export function firstReleaseDate(releases) {
   return dates[0] ?? null;
 }
 
+/**
+ * When a LANGUAGE was first published: the earliest `firstReleased` across
+ * its publishing teams — but only when every team's history is known. With
+ * one team undated, the earliest known date may belong to a later team, and
+ * the page would announce as new a language the catalog itself shows was
+ * published years earlier (a team with `released: 2020-01-01` and no
+ * readable history). Partial history is therefore "not established", null,
+ * and the changelog names the language as undated rather than dating it.
+ * Mirrored by nothing: the snapshot carries the result as `firstPublished`
+ * and src/data/catalog.ts / scripts/check-routes.mjs read that field.
+ */
+export function firstPublishedDate(entries) {
+  if (!entries?.length) return null;
+  if (entries.some((e) => typeof e.firstReleased !== 'string')) return null;
+  return [...entries.map((e) => e.firstReleased)].sort()[0];
+}
+
 /** First release date of an entry's repo, or null (never throws). Shares
  *  the per-run releases cache with the asset and per-story media lookups. */
 export async function fetchFirstRelease(entry, fetchImpl = fetch) {
@@ -1024,6 +1041,16 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
 export async function enrichAssets(languages, previous, fetchImpl = fetch, log = console) {
   const prevEntries = new Map();
   for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
+  // First-release dates are cached by REPO, not by entryKey: the key above
+  // includes the tag and release date, so a new version of the same repo
+  // would miss its own cached history and, on a failed lookup, lose a date
+  // that was already known. When a repo was first released never changes.
+  const prevFirst = new Map();
+  for (const l of previous?.languages || []) {
+    for (const e of l.entries || []) {
+      if (typeof e.firstReleased === 'string') prevFirst.set(`${e.owner}/${e.name}`, e.firstReleased);
+    }
+  }
   let fetched = 0;
   let reused = 0;
   let firstLookups = 0;
@@ -1034,9 +1061,10 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
       const prev = prevEntries.get(entryKey(entry));
       // When the translation was first released (see firstReleaseDate). A
       // date is a fact about the repo's history and never changes, so a
-      // cached one is reused for good; a null (the list could not be read)
-      // is retried on the next build rather than cached as "unknown".
-      let firstReleased = typeof prev?.firstReleased === 'string' ? prev.firstReleased : null;
+      // cached one is reused for good, across releases (prevFirst); a null
+      // (the list could not be read) is retried on the next build rather
+      // than cached as "unknown".
+      let firstReleased = prevFirst.get(`${entry.owner}/${entry.name}`) ?? null;
       if (!firstReleased) {
         firstLookups++;
         firstReleased = await fetchFirstRelease(entry, fetchImpl);
@@ -1071,11 +1099,18 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
         if (Object.keys(map).length) { storyVideo = map; break; }
       }
     }
-    return { ...lang, entries, ...(storyAudio ? { storyAudio } : {}), ...(storyVideo ? { storyVideo } : {}) };
+    return {
+      ...lang,
+      entries,
+      firstPublished: firstPublishedDate(entries),
+      ...(storyAudio ? { storyAudio } : {}),
+      ...(storyVideo ? { storyVideo } : {}),
+    };
   });
   log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
   const undated = out.reduce((n, l) => n + l.entries.filter((e) => !e.firstReleased).length, 0);
-  log.log(`[catalog] first releases: ${firstLookups} looked up, ${undated} entr${undated === 1 ? 'y' : 'ies'} still undated`);
+  const unestablished = out.filter((l) => !l.firstPublished).length;
+  log.log(`[catalog] first releases: ${firstLookups} looked up, ${undated} entr${undated === 1 ? 'y' : 'ies'} still undated, ${unestablished} language(s) without an established first publication`);
   return out;
 }
 

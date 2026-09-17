@@ -423,8 +423,10 @@ let feedLinks = 0;
     const newSection = html.split('id="updated"')[0];
     const dated = new Set([...newSection.matchAll(/<time datetime="[^"]+">[^<]*<\/time>\s*<span class="changelog-what">\s*<a href="\/l\/([^/"]+)\/"/g)].map((m) => decodeURIComponent(m[1])));
     for (const lang of languages) {
-      const known = (lang.entries || []).some((e) => typeof e.firstReleased === 'string');
-      if (!known && dated.has(lang.code)) errors.push(`/changelog/ dates /l/${lang.code}/ as newly published, but no entry has a first-release date`);
+      // The snapshot's own verdict (firstPublishedDate in fetch-catalog.mjs):
+      // established only when every publishing team's history was read.
+      const known = typeof lang.firstPublished === 'string';
+      if (!known && dated.has(lang.code)) errors.push(`/changelog/ dates /l/${lang.code}/ as newly published, but its first publication is not established`);
       if (known && !dated.has(lang.code)) errors.push(`/changelog/ does not list /l/${lang.code}/ although its first release is known`);
     }
   }

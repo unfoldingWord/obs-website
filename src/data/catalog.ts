@@ -87,6 +87,10 @@ export interface CatalogLanguage {
   storyNums?: number[];
   /** Opening of story 1 in the language, for the hub's indexable text sample. */
   extract: CatalogExtract | null;
+  /** ISO date the language was first published, or null when not
+   *  established — see firstPublishedDate(). Absent in snapshots written
+   *  before the field existed. */
+  firstPublished?: string | null;
 }
 
 export interface CatalogSnapshot {
@@ -279,15 +283,18 @@ export function readableStories(lang: CatalogLanguage): CatalogStory[] {
 }
 
 /**
- * When a language was first published: the earliest first-release date
- * across its publishing teams, or null when no team's history could be
- * read. Distinct from `updated`, the most recent release, which is what
+ * When a language was first published, or null when it could not be
+ * established. Computed by `firstPublishedDate()` in scripts/fetch-catalog.mjs
+ * and carried in the snapshot: the earliest first release across the
+ * language's publishing teams, and only when EVERY team's history was read —
+ * with one team undated, the earliest known date may belong to a later team,
+ * and the changelog would announce as new a language that was already
+ * published. Distinct from `updated`, the most recent release, which is what
  * lastmod and the hub show. The changelog (/changelog/) lists new languages
- * by this date and updated ones by `updated`.
+ * by this date, updated ones by `updated`, and names the rest as undated.
  */
-export function firstPublished(lang: CatalogLanguage): string | null {
-  const dates = lang.entries.map((e) => e.firstReleased).filter((d): d is string => typeof d === 'string').sort();
-  return dates[0] ?? null;
+export function firstPublishedDate(lang: CatalogLanguage): string | null {
+  return typeof lang.firstPublished === 'string' ? lang.firstPublished : null;
 }
 
 /** Distinct publishing teams, in catalog order. */

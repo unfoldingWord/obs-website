@@ -38,6 +38,7 @@ import {
   sortLanguages,
   firstReleaseDate,
   fetchFirstRelease,
+  firstPublishedDate,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -192,6 +193,7 @@ test('enrichAssets reuses cached assets for unchanged entries', async () => {
   assert.equal(calls, 0);
   assert.equal(reused[0].entries[0].assets[0].name, 'c.pdf');
   assert.equal(reused[0].entries[0].firstReleased, '2025-06-01', 'a cached first-release date is reused');
+  assert.equal(reused[0].firstPublished, '2025-06-01');
   await enrichAssets([lang], null, f, quiet);
   assert.equal(calls, 1, 'assets and first release share the one releases request per repo');
 });
@@ -230,6 +232,51 @@ test('enrichAssets records each entry\'s first release and retries an unknown on
   assert.equal(retried[0].entries[0].firstReleased, '2025-07-15');
   assert.equal(calls, 2);
   assert.equal(await fetchFirstRelease({ owner: null, name: null }, f), null);
+});
+
+test('a known first-release date survives a new version and a failed history request', async () => {
+  clearReleasesCache();
+  let calls = 0;
+  const f = fakeFetch((url) => { if (url.endsWith('/releases')) calls++; return null; }); // every history request fails
+  const v1 = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2020-01-01', assets: [], firstReleased: '2020-01-01' };
+  const previous = { languages: [{ code: 'sw', formats: { pdf: false, audio: false, video: false }, entries: [v1] }] };
+  // The catalog now carries v2 of the same repo: a different entryKey.
+  const v2 = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v2', released: '2026-09-01', assets: [] };
+  const lang = { code: 'sw', formats: { pdf: false, audio: false, video: false }, entries: [v2] };
+  const out = await enrichAssets([lang], previous, f, { log() {} });
+  assert.equal(out[0].entries[0].firstReleased, '2020-01-01', 'the repo\'s first release is history and is kept across versions');
+  assert.equal(out[0].firstPublished, '2020-01-01');
+  assert.equal(calls, 0, 'a known date is not looked up again');
+});
+
+test('firstPublishedDate is established only when every team\'s history is known', () => {
+  // Team A published in 2020 but its history could not be read; team B
+  // first released in 2026. The language is NOT new in 2026.
+  const a = { owner: 'a', name: 'x_obs', released: '2020-01-01', firstReleased: null };
+  const b = { owner: 'b', name: 'x_obs', released: '2026-09-01', firstReleased: '2026-09-01' };
+  assert.equal(firstPublishedDate([a, b]), null);
+  assert.equal(firstPublishedDate([{ ...a, firstReleased: '2019-06-30' }, b]), '2019-06-30');
+  assert.equal(firstPublishedDate([b]), '2026-09-01');
+  assert.equal(firstPublishedDate([]), null);
+  assert.equal(firstPublishedDate([{ ...b, firstReleased: undefined }]), null, 'a snapshot written before the field existed');
+});
+
+test('enrichAssets leaves a language unestablished when one team\'s history fails', async () => {
+  clearReleasesCache();
+  const history = JSON.stringify([{ tag_name: 'v1', draft: false, published_at: '2026-09-01T00:00:00Z', assets: [] }]);
+  const f = fakeFetch((url) => (url.includes('/repos/b/') && url.endsWith('/releases') ? history : null));
+  const lang = {
+    code: 'x',
+    formats: { pdf: false, audio: false, video: false },
+    entries: [
+      { owner: 'a', name: 'x_obs', branch_or_tag_name: 'v3', released: '2020-01-01', assets: [] },
+      { owner: 'b', name: 'x_obs', branch_or_tag_name: 'v1', released: '2026-09-01', assets: [] },
+    ],
+  };
+  const out = await enrichAssets([lang], null, f, { log() {} });
+  assert.equal(out[0].entries[0].firstReleased, null);
+  assert.equal(out[0].entries[1].firstReleased, '2026-09-01');
+  assert.equal(out[0].firstPublished, null, 'team A\'s 2020 release means 2026 is not the first publication');
 });
 
 const STORY_MD = `---\ntitle: x\n---\n# 1. The Creation\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)\n\nThis is how the beginning of everything happened. God created the universe and everything in it in six days.\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg)\n\nGod spoke, and light appeared. He called the light day.\n\n_A Bible story from: Genesis 1-2_\n`;

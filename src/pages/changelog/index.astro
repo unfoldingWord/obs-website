@@ -69,8 +69,9 @@ const who = (ev: ChangelogEvent) => (ev.englishName ? `${ev.name} (${ev.englishN
     )}
     {log.undated.length > 0 && log.added.length > 0 && (
       <p class="changelog-note">
-        The first-release date of {log.undated.length === 1 ? 'one language' : `${log.undated.length} languages`} could not be
-        read from Door43 in this build, so {log.undated.length === 1 ? 'it is' : 'they are'} not dated above:
+        The first release of {log.undated.length === 1 ? 'one language' : `${log.undated.length} languages`} could not be
+        established in this build, because the release history of at least one of its publishing teams could not be read
+        from Door43, so {log.undated.length === 1 ? 'it is' : 'they are'} not dated above:
         {' '}
         {log.undated.map((l, i) => (
           <>{i > 0 && ', '}<a href={languagePath(l.code)}>{displayName(l)}</a></>

@@ -193,16 +193,19 @@ the same events as an Atom feed at `/changelog.xml` (linked from every
 page's footer as "What's new"). One line per language, generated from the
 same catalog snapshot as Discover and the hubs (`src/lib/changelog.ts`):
 
-- **Newly published** — dated by the earliest release of any of the
-  language's publishing teams. `scripts/fetch-catalog.mjs` reads that from
-  each repo's Door43 release history (`firstReleased` on the entry), since a
-  catalog entry only carries the *current* release and cannot tell a first
-  publication from a tenth revision.
+- **Newly published** — dated by the earliest release across the
+  language's publishing teams. `scripts/fetch-catalog.mjs` reads each repo's
+  Door43 release history (`firstReleased` on the entry, cached by repo so a
+  new version keeps it), since a catalog entry only carries the *current*
+  release and cannot tell a first publication from a tenth revision. The
+  language is dated (`firstPublished`) only when every team's history was
+  read; otherwise it is undated, because the earliest *known* date may be a
+  later team's.
 - **Updated in the last 12 months** — a later release of a language that was
   already published, dated by its most recent release.
-- A language whose release history could not be read is named in a note as
-  undated, never given its latest release date as if it were new; the next
-  build retries. `npm run check:routes` asserts this against the served
+- A language whose first publication could not be established is named in
+  a note as undated, never given its latest release date (or a later team's
+  first date) as if it were new; the next build retries the missing history. `npm run check:routes` asserts this against the served
   HTML, and that every hub the feed links to was built.
 
 Submit `/changelog.xml` to Bing Webmaster Tools as a feed alongside the

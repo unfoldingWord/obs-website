@@ -12,12 +12,14 @@
 //     teams (`firstReleased`, read from the Door43 release history);
 //   - an UPDATED translation: a later release of a language that was already
 //     published, dated by `updated` (the most recent release).
-// Where the release history could not be read, the first-release date is
-// unknown, and the language is listed as "date not known" rather than being
-// given its latest release date as if it were new. The page says how many
-// are in that state, so the list can never quietly present a tenth revision
-// as a first publication.
-import { catalog, languages, languagePath, displayName, firstPublished, type CatalogLanguage } from '../data/catalog';
+// Where the release history of ANY of a language's publishing teams could
+// not be read, its first publication is not established (see
+// firstPublishedDate in scripts/fetch-catalog.mjs), and the language is
+// listed as undated rather than being given its latest release date, or a
+// later team's first date, as if it were new. The page says how many are in
+// that state, so the list can never quietly present a tenth revision as a
+// first publication.
+import { catalog, languages, languagePath, displayName, firstPublishedDate, type CatalogLanguage } from '../data/catalog';
 import { SITE_URL } from './jsonld';
 
 export const CHANGELOG_PATH = '/changelog/';
@@ -49,7 +51,7 @@ export interface Changelog {
   added: ChangelogEvent[];
   /** Translations updated within the window, newest first. */
   updated: ChangelogEvent[];
-  /** Languages whose first-release date could not be read from Door43. */
+  /** Languages whose first publication could not be established from Door43. */
   undated: CatalogLanguage[];
 }
 
@@ -95,7 +97,7 @@ export function buildChangelog(langs: CatalogLanguage[] = languages, asOf: strin
   const updated: ChangelogEvent[] = [];
   const undated: CatalogLanguage[] = [];
   for (const lang of langs) {
-    const first = firstPublished(lang);
+    const first = firstPublishedDate(lang);
     if (first) added.push(eventFor(lang, 'new', first));
     else undated.push(lang);
     // An update is a release after the first one. With no first date there
