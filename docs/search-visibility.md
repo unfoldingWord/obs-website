@@ -17,10 +17,11 @@ What the repo owns is the *generator* (`npm run baseline`) and this file.
   hostnames are attached to the Pages project, so the rule fires; spot-check
   after a deploy with `curl -sI https://www.openbiblestories.org/library`
   (expect `301` to the apex `/discover/`).
-- The served `robots.txt` matches `public/robots.txt`, i.e. the Cloudflare
-  managed AI blocklist does not `Disallow: /` the retrieval agents (#15).
-  Measuring ChatGPT or Perplexity citation while their fetchers are blocked
-  measures the block, not the site.
+- The served `robots.txt` matches `public/robots.txt`: no `Disallow: /`
+  and no `ai-train=no` from Cloudflare's managed robots.txt (#15 — the
+  policy is allow all, including training). Measuring ChatGPT or
+  Perplexity citation while their fetchers are blocked measures the block,
+  not the site.
 - `npm run build && npm run check:routes` is green, so every URL in the
   sitemap index and in `/llms.txt` resolves.
 
@@ -29,7 +30,7 @@ What the repo owns is the *generator* (`npm run baseline`) and this file.
 | Step | Where | Done when |
 | --- | --- | --- |
 | Google Search Console property on `https://openbiblestories.org` (domain property, DNS-verified) | search.google.com/search-console | Property exists, no host mismatch warning |
-| Submit `https://openbiblestories.org/sitemap-index.xml` | Search Console → Sitemaps | Fetch succeeds; the four child sitemaps are discovered |
+| Submit `https://openbiblestories.org/sitemap-index.xml` | Search Console → Sitemaps | Fetch succeeds; the three child sitemaps are discovered |
 | Bing Webmaster Tools, same host, same sitemap index | bing.com/webmasters | Fetch succeeds |
 | Record the account and the owner of each property | the internal tracker below | A second person can get in |
 

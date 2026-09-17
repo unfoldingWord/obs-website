@@ -1,20 +1,20 @@
 # Open Bible Stories — crawl policy
 #
 # Everything on this site is public and licensed CC BY-SA 4.0, and the point
-# of the site is to be found in the language of the query. Search engines
-# and live-retrieval agents (the crawlers behind ChatGPT search, Perplexity,
-# Claude search, Copilot, Gemini grounding) are therefore explicitly
-# allowed, each in its own group so a broader per-agent rule elsewhere
-# cannot override them.
+# of the site is to be found in the language of the query. Every crawler is
+# allowed: search engines, live-retrieval agents (the fetchers behind ChatGPT
+# search, Perplexity, Claude search, Copilot, Gemini grounding) AND bulk
+# training crawlers. Each is named in its own group so a broader per-agent
+# rule elsewhere cannot override it.
 #
-# TRAINING POLICY (intentional): Cloudflare's managed robots.txt for this
-# zone prepends `Content-Signal: search=yes, ai-train=no, use=reference` and
-# `Disallow: /` for bulk training crawlers (GPTBot, Google-Extended,
-# ClaudeBot, CCBot, Bytespider, Applebot-Extended, Amazonbot,
-# meta-externalagent). That is a rights decision made in the Cloudflare
-# dashboard, not in this file; see README → "Crawlers and AI policy". The
-# retrieval agents below are NOT training crawlers and must not be in that
-# managed block list.
+# TRAINING POLICY (intentional, decided 2026-09-11 in #15): allow all,
+# including training. OBS is CC BY-SA 4.0; a model that learned the stories
+# in a language spreads them further, which is what the licence is for.
+# Cloudflare's managed robots.txt for this zone must therefore NOT prepend
+# `ai-train=no` or `Disallow: /` for GPTBot, Google-Extended, ClaudeBot,
+# CCBot and the rest — that setting lives in the Cloudflare dashboard, not
+# in this file, and the served file must match this one. See README →
+# "Crawlers and AI policy".
 
 User-agent: *
 Allow: /
@@ -46,6 +46,37 @@ User-agent: Claude-User
 Allow: /
 
 User-agent: DuckAssistBot
+Allow: /
+
+# Training crawlers (allowed on purpose — see the policy note above)
+User-agent: GPTBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: Bytespider
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: meta-externalagent
+Allow: /
+
+User-agent: Meta-ExternalFetcher
 Allow: /
 
 # An /llms.txt index of the language hubs and per-language markdown mirrors

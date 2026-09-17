@@ -144,12 +144,18 @@ and cannot be proven from a preview deployment (#15):
 ```
 curl -sI https://www.openbiblestories.org/library   # expect 301 -> apex /discover/
 curl -sI https://openbiblestories.org/              # expect public, max-age=300, s-maxage=86400
-curl -s  https://openbiblestories.org/robots.txt    # must not Disallow the retrieval agents
+curl -s  https://openbiblestories.org/robots.txt    # must contain no Disallow and no ai-train=no
 ```
 
 ## Crawlers and AI policy
 
-`public/robots.txt` allows all crawlers and additionally names the live-retrieval agents (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-SearchBot, Claude-User, DuckAssistBot) in their own `Allow` groups. The **training** policy is set in the Cloudflare dashboard (managed robots.txt: `Content-Signal: search=yes, ai-train=no, use=reference` and `Disallow: /` for bulk training crawlers such as GPTBot, Google-Extended, ClaudeBot, CCBot); that is an intentional rights decision and lives there, not in this repo. The managed block list must not include the retrieval agents above, or the site drops out of live AI answers while `use=reference` says the opposite.
+`public/robots.txt` allows **every** crawler: `User-agent: *` / `Allow: /`, plus a named `Allow` group for each live-retrieval agent (OAI-SearchBot, ChatGPT-User, PerplexityBot, Perplexity-User, Claude-SearchBot, Claude-User, DuckAssistBot) and each bulk training crawler (GPTBot, Google-Extended, ClaudeBot, anthropic-ai, CCBot, Bytespider, Applebot-Extended, Amazonbot, meta-externalagent, Meta-ExternalFetcher), so a broader per-agent rule cannot override them. **Training is allowed on purpose** — the decision recorded in [#15](https://github.com/unfoldingWord/obs-website/issues/15) (2026-09-11) is "allow all, including training": the content is CC BY-SA 4.0 and the site exists to be found, quoted and learned from in the language of the query.
+
+The file in this repo is not the whole story. Cloudflare's **managed robots.txt** for the zone can prepend a `Content-Signal` line and `Disallow: /` groups for AI crawlers ahead of this file, and that is what production served before this decision (`Content-Signal: search=yes, ai-train=no, use=reference`). For the served file to match the policy, the Cloudflare dashboard must have the managed robots.txt / "block AI bots" features turned off for this zone (Security → Bots, and Content Signals). Verify after changing it:
+
+```
+curl -s https://openbiblestories.org/robots.txt | grep -i "disallow\|content-signal"   # expect no output
+```
 
 ## Structure
 
