@@ -15,6 +15,8 @@
 //   8. no story page is a "Video only" placeholder published as story text
 //   9. every retired public route redirects rather than 404s, every redirect
 //      target exists, and no redirect chains
+//  10. /changelog/ and its Atom feed were built, the feed links only hubs that
+//      exist, and the page never dates a language it has no first-release for
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -397,6 +399,39 @@ if (!existsSync(redirectsFile)) {
   }
 }
 
+// 10. The changelog (#19). The page's hub links are covered by check 4; the
+// feed is not HTML, so its links are checked here. A language with no
+// first-release date must appear in the page's "could not be read" note (or
+// the empty-state note), never as a dated "new" line — that is the one way
+// this page could lie, so it is asserted against the served HTML.
+let feedLinks = 0;
+{
+  const page = join(DIST, 'changelog/index.html');
+  const feed = join(DIST, 'changelog.xml');
+  if (!existsSync(page)) errors.push('/changelog/ was not built');
+  if (!existsSync(feed)) errors.push('/changelog.xml was not built');
+  if (existsSync(feed)) {
+    const xml = readFileSync(feed, 'utf8');
+    if (!xml.includes('<feed xmlns="http://www.w3.org/2005/Atom">')) errors.push('changelog.xml is not an Atom feed');
+    for (const m of xml.matchAll(/href="https:\/\/openbiblestories\.org(\/l\/[^"#?]*)"/g)) {
+      feedLinks++;
+      if (!existsSync(join(DIST, m[1], 'index.html'))) errors.push(`changelog.xml links ${m[1]}, which was not built`);
+    }
+  }
+  if (existsSync(page)) {
+    const html = readFileSync(page, 'utf8');
+    const newSection = html.split('id="updated"')[0];
+    const dated = new Set([...newSection.matchAll(/<time datetime="[^"]+">[^<]*<\/time>\s*<span class="changelog-what">\s*<a href="\/l\/([^/"]+)\/"/g)].map((m) => decodeURIComponent(m[1])));
+    for (const lang of languages) {
+      // The snapshot's own verdict (firstPublishedDate in fetch-catalog.mjs):
+      // established only when every publishing team's history was read.
+      const known = typeof lang.firstPublished === 'string';
+      if (!known && dated.has(lang.code)) errors.push(`/changelog/ dates /l/${lang.code}/ as newly published, but its first publication is not established`);
+      if (known && !dated.has(lang.code)) errors.push(`/changelog/ does not list /l/${lang.code}/ although its first release is known`);
+    }
+  }
+}
+
 if (errors.length) {
   for (const e of errors.slice(0, 12)) console.error(`✗ ${e}`);
   if (errors.length > 12) console.error(`  …and ${errors.length - 12} more`);
@@ -406,5 +441,5 @@ console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
     `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
     `no placeholder story text, ${RETIRED.length} retired routes redirect, ` +
-    `${all.length}/${MAX_FILES} files, no /discover/read/`
+    `${all.length}/${MAX_FILES} files, ${feedLinks} changelog feed links resolve, no /discover/read/`
 );

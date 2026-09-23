@@ -32,6 +32,7 @@
  "legal": {
   "license": "许可协议",
   "privacy": "隐私政策",
-  "terms": "使用条款"
+  "terms": "使用条款",
+  "changelog": "最新动态"
  }
 }

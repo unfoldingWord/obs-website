@@ -36,6 +36,9 @@ import {
   mergeStoryMedia,
   clearReleasesCache,
   sortLanguages,
+  firstReleaseDate,
+  fetchFirstRelease,
+  firstPublishedDate,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -184,13 +187,96 @@ test('enrichAssets reuses cached assets for unchanged entries', async () => {
   let calls = 0;
   const f = fakeFetch(() => { calls++; return '[]'; });
   const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [{ owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2026-01-01', assets: [] }] };
-  const previous = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }] }] }] };
+  const previous = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }], firstReleased: '2025-06-01' }] }] };
   const quiet = { log() {} };
   const reused = await enrichAssets([lang], previous, f, quiet);
   assert.equal(calls, 0);
   assert.equal(reused[0].entries[0].assets[0].name, 'c.pdf');
+  assert.equal(reused[0].entries[0].firstReleased, '2025-06-01', 'a cached first-release date is reused');
+  assert.equal(reused[0].firstPublished, '2025-06-01');
   await enrichAssets([lang], null, f, quiet);
+  assert.equal(calls, 1, 'assets and first release share the one releases request per repo');
+});
+
+test('firstReleaseDate is the earliest dated non-draft release', () => {
+  assert.equal(firstReleaseDate([
+    { tag_name: 'v3', published_at: '2026-03-01T00:00:00Z' },
+    { tag_name: 'v0', draft: true, published_at: '2019-01-01T00:00:00Z' },
+    { tag_name: 'v1', published_at: '2024-11-30T23:59:59Z' },
+    { tag_name: 'v2', published_at: null },
+  ]), '2024-11-30');
+  assert.equal(firstReleaseDate([]), null);
+  assert.equal(firstReleaseDate([{ tag_name: 'v1' }]), null, 'an undated release is not a date');
+});
+
+test('enrichAssets records each entry\'s first release and retries an unknown one', async () => {
+  clearReleasesCache();
+  const releases = JSON.stringify([
+    { tag_name: 'v2', draft: false, published_at: '2026-02-01T00:00:00Z', assets: [] },
+    { tag_name: 'v1', draft: false, published_at: '2025-07-15T00:00:00Z', assets: [] },
+  ]);
+  let calls = 0;
+  const f = fakeFetch((url) => (url.endsWith('/releases') ? (calls++, releases) : null));
+  const entry = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v2', released: '2026-02-01', assets: [{ name: 'sw_obs.pdf', url: 'https://e/sw_obs.pdf', size: 1 }] };
+  const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [entry] };
+  const quiet = { log() {} };
+  // Assets are complete, so only the first-release date needs the history.
+  const fresh = await enrichAssets([lang], null, f, quiet);
+  assert.equal(fresh[0].entries[0].firstReleased, '2025-07-15');
   assert.equal(calls, 1);
+  // A cached entry whose date was never read (a null from an outage, or a
+  // snapshot written before the field existed) is looked up, not kept null.
+  clearReleasesCache();
+  const previous = { languages: [{ ...lang, entries: [{ ...entry, firstReleased: null }] }] };
+  const retried = await enrichAssets([lang], previous, f, quiet);
+  assert.equal(retried[0].entries[0].firstReleased, '2025-07-15');
+  assert.equal(calls, 2);
+  assert.equal(await fetchFirstRelease({ owner: null, name: null }, f), null);
+});
+
+test('a known first-release date survives a new version and a failed history request', async () => {
+  clearReleasesCache();
+  let calls = 0;
+  const f = fakeFetch((url) => { if (url.endsWith('/releases')) calls++; return null; }); // every history request fails
+  const v1 = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2020-01-01', assets: [], firstReleased: '2020-01-01' };
+  const previous = { languages: [{ code: 'sw', formats: { pdf: false, audio: false, video: false }, entries: [v1] }] };
+  // The catalog now carries v2 of the same repo: a different entryKey.
+  const v2 = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v2', released: '2026-09-01', assets: [] };
+  const lang = { code: 'sw', formats: { pdf: false, audio: false, video: false }, entries: [v2] };
+  const out = await enrichAssets([lang], previous, f, { log() {} });
+  assert.equal(out[0].entries[0].firstReleased, '2020-01-01', 'the repo\'s first release is history and is kept across versions');
+  assert.equal(out[0].firstPublished, '2020-01-01');
+  assert.equal(calls, 0, 'a known date is not looked up again');
+});
+
+test('firstPublishedDate is established only when every team\'s history is known', () => {
+  // Team A published in 2020 but its history could not be read; team B
+  // first released in 2026. The language is NOT new in 2026.
+  const a = { owner: 'a', name: 'x_obs', released: '2020-01-01', firstReleased: null };
+  const b = { owner: 'b', name: 'x_obs', released: '2026-09-01', firstReleased: '2026-09-01' };
+  assert.equal(firstPublishedDate([a, b]), null);
+  assert.equal(firstPublishedDate([{ ...a, firstReleased: '2019-06-30' }, b]), '2019-06-30');
+  assert.equal(firstPublishedDate([b]), '2026-09-01');
+  assert.equal(firstPublishedDate([]), null);
+  assert.equal(firstPublishedDate([{ ...b, firstReleased: undefined }]), null, 'a snapshot written before the field existed');
+});
+
+test('enrichAssets leaves a language unestablished when one team\'s history fails', async () => {
+  clearReleasesCache();
+  const history = JSON.stringify([{ tag_name: 'v1', draft: false, published_at: '2026-09-01T00:00:00Z', assets: [] }]);
+  const f = fakeFetch((url) => (url.includes('/repos/b/') && url.endsWith('/releases') ? history : null));
+  const lang = {
+    code: 'x',
+    formats: { pdf: false, audio: false, video: false },
+    entries: [
+      { owner: 'a', name: 'x_obs', branch_or_tag_name: 'v3', released: '2020-01-01', assets: [] },
+      { owner: 'b', name: 'x_obs', branch_or_tag_name: 'v1', released: '2026-09-01', assets: [] },
+    ],
+  };
+  const out = await enrichAssets([lang], null, f, { log() {} });
+  assert.equal(out[0].entries[0].firstReleased, null);
+  assert.equal(out[0].entries[1].firstReleased, '2026-09-01');
+  assert.equal(out[0].firstPublished, null, 'team A\'s 2020 release means 2026 is not the first publication');
 });
 
 const STORY_MD = `---\ntitle: x\n---\n# 1. The Creation\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg)\n\nThis is how the beginning of everything happened. God created the universe and everything in it in six days.\n\n![OBS Image](https://cdn.door43.org/obs/jpg/360px/obs-en-01-02.jpg)\n\nGod spoke, and light appeared. He called the light day.\n\n_A Bible story from: Genesis 1-2_\n`;

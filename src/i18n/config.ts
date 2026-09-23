@@ -52,8 +52,11 @@ export const localizedSlugs = [
   'home', 'why-obs', 'discover',
   'translate', 'create', 'contact',
 ] as const;
-/** Legal pages and the 404 stay English-only at the site root. */
-export const englishOnlySlugs = ['license', 'privacy', 'terms-of-use', '404'] as const;
+/** Legal pages, the 404 and the changelog stay English-only at the site
+ *  root. The changelog (/changelog/) is a dated list of language names, codes
+ *  and versions — readable in any locale's chrome — and one URL keeps it a
+ *  single feed for partners and search engines to watch. */
+export const englishOnlySlugs = ['license', 'privacy', 'terms-of-use', 'changelog', '404'] as const;
 export const pageSlugs = [...localizedSlugs, ...englishOnlySlugs];
 export type PageSlug = (typeof pageSlugs)[number];
 
@@ -75,6 +78,7 @@ export const slugPaths: Record<PageSlug, string> = {
   license: 'license/',
   privacy: 'privacy/',
   'terms-of-use': 'terms-of-use/',
+  changelog: 'changelog/',
   '404': '404/',
 };
 

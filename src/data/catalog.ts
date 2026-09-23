@@ -29,6 +29,11 @@ export interface CatalogEntry {
   metadata_type: string | null;
   /** ISO date of the release, when the catalog reports one. */
   released: string | null;
+  /** ISO date of the repo's EARLIEST release — when this team first
+   *  published the translation — read from the release history by
+   *  scripts/fetch-catalog.mjs. Absent or null when the history could not
+   *  be read (the fetch retries it on the next build). */
+  firstReleased?: string | null;
   contentPath: string;
   assets: CatalogAsset[];
 }
@@ -82,6 +87,10 @@ export interface CatalogLanguage {
   storyNums?: number[];
   /** Opening of story 1 in the language, for the hub's indexable text sample. */
   extract: CatalogExtract | null;
+  /** ISO date the language was first published, or null when not
+   *  established — see firstPublishedDate(). Absent in snapshots written
+   *  before the field existed. */
+  firstPublished?: string | null;
 }
 
 export interface CatalogSnapshot {
@@ -271,6 +280,21 @@ export function storyImage(num: number): string {
  *  and its JSON-LD list exactly these — never a padded list of 50. */
 export function readableStories(lang: CatalogLanguage): CatalogStory[] {
   return (lang.stories ?? []).filter((s) => s.title);
+}
+
+/**
+ * When a language was first published, or null when it could not be
+ * established. Computed by `firstPublishedDate()` in scripts/fetch-catalog.mjs
+ * and carried in the snapshot: the earliest first release across the
+ * language's publishing teams, and only when EVERY team's history was read —
+ * with one team undated, the earliest known date may belong to a later team,
+ * and the changelog would announce as new a language that was already
+ * published. Distinct from `updated`, the most recent release, which is what
+ * lastmod and the hub show. The changelog (/changelog/) lists new languages
+ * by this date, updated ones by `updated`, and names the rest as undated.
+ */
+export function firstPublishedDate(lang: CatalogLanguage): string | null {
+  return typeof lang.firstPublished === 'string' ? lang.firstPublished : null;
 }
 
 /** Distinct publishing teams, in catalog order. */
