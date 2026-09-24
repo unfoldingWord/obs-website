@@ -62,23 +62,24 @@ another repository, open an issue there and link it back to #18.
       astroturf: a link belongs in an article only where it is genuinely a
       source or an external resource.
 
-## `sameAs` candidates that are NOT yet in the JSON-LD
+## `sameAs` on the work node
 
-`src/lib/jsonld.ts` deliberately lists only URLs whose identity is
-confirmed — a wrong `sameAs` merges two entities in a knowledge graph and is
-worse than an absent one. These look right but were not verifiable from the
-build environment (no outbound access to them), so they are parked here
-rather than shipped:
+`src/lib/jsonld.ts` lists only URLs whose identity is confirmed — a wrong
+`sameAs` merges two entities in a knowledge graph and is worse than an absent
+one. The maintainers confirmed these in #18, and the work node (homepage and
+Discover) now carries them:
 
-| Candidate | Add once verified |
+| URL | Where |
 | --- | --- |
 | `https://unfoldingword.org/open-bible-stories/` | the work node's `sameAs` |
-| `https://en.wikisource.org/wiki/Open_Bible_Stories` | confirm it is this work and is current, then the work node |
-| The English YouTube playlist | the work node's `sameAs` (per-language playlists are already on each hub) |
-| A Wikidata item, once created | `ORGANIZATION_SAME_AS` and the work node |
+| `https://en.wikisource.org/wiki/Open_Bible_Stories` | the work node's `sameAs` |
+| The English YouTube playlist | the work node's `sameAs`, read from the `en` catalog entry at build time; omitted while the English release does not list one (per-language playlists are already on each hub) |
 
-Verifying one is a two-minute job: open it, confirm it is this work and names
-unfoldingWord, then add the line and note it here.
+Still to add:
+
+| Candidate | Add once it exists |
+| --- | --- |
+| A Wikidata item | `ORGANIZATION_SAME_AS` and the work node |
 
 ## How to tell whether this worked
 
