@@ -58,7 +58,7 @@ import { fileURLToPath } from 'node:url';
 
 export const CATALOG_URL =
   'https://git.door43.org/api/v1/catalog/search?subject=Open%20Bible%20Stories&stage=prod';
-export const LANGNAMES_URL = 'https://td.unfoldingword.org/exports/langnames.json';
+export const LANGNAMES_URL = 'https://git.door43.org/api/v1/languages/langnames.json';
 const OUT = fileURLToPath(new URL('../src/data/catalog.json', import.meta.url));
 const required = process.argv.includes('--required') && !process.env.OBS_CATALOG_ALLOW_EMPTY;
 const fetchStoriesEnabled = process.env.OBS_CATALOG_STORIES !== '0';
