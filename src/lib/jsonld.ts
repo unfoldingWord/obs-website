@@ -5,7 +5,7 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import { languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, type CatalogLanguage } from '../data/catalog';
+import { languages, languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, youtubeOf, type CatalogLanguage } from '../data/catalog';
 import { type Story } from '../data/stories';
 import { localePath } from '../i18n/config';
 
@@ -20,10 +20,18 @@ export const WORK_ID = `${SITE_URL}/#work`;
 export const DEFINITION =
   'unfoldingWord Open Bible Stories is a collection of 50 illustrated Bible stories, from Creation to Revelation, that churches and translation teams read, listen to, translate and share freely under the Creative Commons Attribution-ShareAlike 4.0 license.';
 
-// Only links that appear on the site today. Add YouTube / Wikidata / app
-// store pages here once the canonical URLs are confirmed — a wrong sameAs
-// is worse than none.
+// Only links whose identity is confirmed — a wrong sameAs merges two
+// entities in a knowledge graph and is worse than none. Add a Wikidata item
+// here once one exists (docs/canonical-links.md).
 const ORGANIZATION_SAME_AS = ['https://door43.org/'];
+
+// Other canonical homes of the work itself, confirmed by the maintainers in
+// #18. The English YouTube playlist is added from the catalog in workNode(),
+// so it is never a typed URL that can drift from the release.
+const WORK_SAME_AS = [
+  'https://unfoldingword.org/open-bible-stories/',
+  'https://en.wikisource.org/wiki/Open_Bible_Stories',
+];
 const PLAY_STORE_URL = 'https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp';
 
 export function organizationNode() {
@@ -67,6 +75,8 @@ export function websiteNode(inLanguage: string) {
  *  an ItemList of stories (hubs carry one), and the translations list is
  *  its own ItemList on Discover — neither is stubbed here. */
 export function workNode() {
+  const en = languages.find((l) => l.code === 'en');
+  const playlist = en ? youtubeOf(en)?.url : undefined;
   return {
     '@type': 'CreativeWork',
     '@id': WORK_ID,
@@ -82,6 +92,7 @@ export function workNode() {
     publisher: { '@id': PUBLISHER_ID },
     copyrightHolder: { '@id': PUBLISHER_ID },
     image: `${SITE_URL}/assets/img/story-boat.jpg`,
+    sameAs: playlist ? [...WORK_SAME_AS, playlist] : WORK_SAME_AS,
     // Media objects are emitted only on story pages where a file exists
     // (Phase 3) — never as empty placeholders here.
   };
