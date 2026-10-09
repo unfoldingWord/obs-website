@@ -7,6 +7,7 @@ import { readFileSync, mkdtempSync } from 'node:fs';
 import { join } from 'node:path';
 import { tmpdir } from 'node:os';
 import {
+  contentPathFor,
   groupLanguages,
   applyLangnames,
   parseStoryMarkdown,
@@ -969,3 +970,21 @@ test('enrichStories refetches when the cached entry has no story file on disk', 
   assert.ok(calls > 0, 'a gitignored story file that is gone must force a refetch');
 });
 
+test('contentPathFor finds the stories folder whether or not DCS lists it', () => {
+  const entry = (metadata_type, ...ingredients) => ({
+    metadata_type,
+    ingredients: ingredients.map(([identifier, path]) => ({ identifier, path })),
+  });
+  // the obs folder DCS lists, alone or before the stories
+  assert.equal(contentPathFor(entry('rc', ['obs', './content'])), 'content');
+  assert.equal(contentPathFor(entry('rc', ['obs', './content'], ['01', './content/01.md'])), 'content');
+  assert.equal(contentPathFor(entry('sb', ['obs', './ingredients'])), 'ingredients');
+  // a burrito listing only its files: rc2sb keeps stories in ingredients/content, Scribe in ingredients
+  assert.equal(contentPathFor(entry('sb', ['front', './ingredients/content/front'], ['01', './ingredients/content/01.md'])), 'ingredients/content');
+  assert.equal(contentPathFor(entry('sb', ['01', './ingredients/content/01.md'])), 'ingredients/content');
+  assert.equal(contentPathFor(entry('sb', ['front', './ingredients/front.md'], ['01', './ingredients/01.md'])), 'ingredients');
+  // nothing listed: where the format keeps its stories
+  assert.equal(contentPathFor(entry('sb')), 'ingredients');
+  assert.equal(contentPathFor(entry('rc')), 'content');
+  assert.equal(contentPathFor({ metadata_type: 'rc' }), 'content');
+});
