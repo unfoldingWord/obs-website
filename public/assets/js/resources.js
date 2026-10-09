@@ -115,9 +115,15 @@
   }
 
   function contentPathFor(entry) {
-    const ing = entry.ingredients && entry.ingredients[0];
-    if (!ing || !ing.path) return "content";
-    return ing.path.replace(/^\.\/?/, "").replace(/\/$/, "");
+    // DCS lists the stories' folder as an `obs` ingredient, but a burrito may
+    // list only its story and front/back files: then it is their folder.
+    const ingredients = entry.ingredients || [];
+    const folder = ingredients.find((ing) => ing.identifier === "obs");
+    const unit = ingredients.find((ing) => /^(\d{2}|front|back)$/.test(ing.identifier));
+    let path = entry.metadata_type === "sb" ? "ingredients" : "content";
+    if (folder && folder.path) path = folder.path;
+    else if (unit && unit.path) path = unit.path.replace(/\/[^/]*$/, "");
+    return path.replace(/^\.\/?/, "").replace(/\/$/, "");
   }
 
   function contentsApiUrl(entry, subPath) {

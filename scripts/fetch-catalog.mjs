@@ -283,10 +283,17 @@ export function groupLanguages(entries) {
     .sort((a, b) => a.title.localeCompare(b.title, 'en'));
 }
 
-function contentPathFor(entry) {
-  const ing = entry.ingredients && entry.ingredients[0];
-  if (!ing || !ing.path) return 'content';
-  return String(ing.path).replace(/^\.\/?/, '').replace(/\/$/, '') || 'content';
+/** The folder holding an entry's stories. DCS lists it as an `obs` ingredient, but a burrito
+ *  may list only its story and front/back files, so then it is the folder of the first of
+ *  those, or else where the format keeps its stories. */
+export function contentPathFor(entry) {
+  const ingredients = entry.ingredients || [];
+  const folder = ingredients.find((ing) => ing.identifier === 'obs');
+  const unit = ingredients.find((ing) => /^(\d{2}|front|back)$/.test(ing.identifier));
+  let path = entry.metadata_type === 'sb' ? 'ingredients' : 'content';
+  if (folder && folder.path) path = String(folder.path);
+  else if (unit && unit.path) path = String(unit.path).replace(/\/[^/]*$/, '');
+  return path.replace(/^\.\/?/, '').replace(/\/$/, '') || 'content';
 }
 
 const norm = (s) => String(s ?? '').trim().toLowerCase().replace(/\s+/g, ' ');

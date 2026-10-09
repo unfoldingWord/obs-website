@@ -171,9 +171,15 @@
     // Entries from /l/{code}/stories.json carry the path already resolved;
     // ones from the live catalog carry the raw ingredients list.
     if (entry.contentPath) return entry.contentPath;
-    const ing = entry.ingredients && entry.ingredients[0];
-    if (!ing || !ing.path) return "content";
-    return ing.path.replace(/^\.\/?/, "").replace(/\/$/, "");
+    // DCS lists the stories' folder as an `obs` ingredient, but a burrito may
+    // list only its story and front/back files: then it is their folder.
+    const ingredients = entry.ingredients || [];
+    const folder = ingredients.find((ing) => ing.identifier === "obs");
+    const unit = ingredients.find((ing) => /^(\d{2}|front|back)$/.test(ing.identifier));
+    let path = entry.metadata_type === "sb" ? "ingredients" : "content";
+    if (folder && folder.path) path = folder.path;
+    else if (unit && unit.path) path = unit.path.replace(/\/[^/]*$/, "");
+    return path.replace(/^\.\/?/, "").replace(/\/$/, "");
   }
 
   // ---------- legacy "ts" (translationStudio) format support ----------
