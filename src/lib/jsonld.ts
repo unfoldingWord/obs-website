@@ -309,7 +309,9 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
       contentUrl: story.video,
       encodingFormat: /\.3gp$/i.test(story.video) ? 'video/3gpp' : 'video/mp4',
       thumbnailUrl: image,
-      uploadDate: story.videoDate,
+      // A story file cached before fetch-catalog kept the time holds a bare
+      // date; Google wants a datetime with a timezone, so read it as UTC.
+      uploadDate: /^\d{4}-\d{2}-\d{2}$/.test(story.videoDate) ? `${story.videoDate}T00:00:00Z` : story.videoDate,
       inLanguage: lang.code,
       transcript,
       license: LICENSE_URL,
