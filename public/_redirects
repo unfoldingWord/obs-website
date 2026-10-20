@@ -15,9 +15,14 @@ https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
 /library           /discover/  301
 /library/*         /discover/  301
 
+# The old site's home page lived at /home; send it to the real home page.
+/home    /  301
+/home/*  /  301
+
 # The Why OBS page moved from /features/ to /why-obs/ to match its nav label;
 # the standalone /resources/ page was folded into the Translate page's
 # Resources tab.
+/features     /why-obs/              301
 /features/*   /why-obs/              301
 /resources/*  /translate/#resources  301
 
