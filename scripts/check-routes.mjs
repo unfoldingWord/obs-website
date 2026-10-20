@@ -334,6 +334,7 @@ const RETIRED = [
   '/ar/discover/read/',
   // Renamed in 231472c: /features/ became /why-obs/. The locale tree did not
   // exist yet, so only the unprefixed path was ever live.
+  '/features',
   '/features/',
   // Deleted in 231472c: folded into the Translate page's Resources tab.
   '/resources/',
@@ -341,6 +342,9 @@ const RETIRED = [
   '/library',
   '/library/',
   '/create/library/',
+  // The old site's home page.
+  '/home',
+  '/home/',
   // @astrojs/sitemap's old single-file sitemap.
   '/sitemap-0.xml',
 ];
