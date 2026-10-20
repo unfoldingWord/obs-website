@@ -490,7 +490,10 @@ export function videoByStory(releases) {
     }
     const nums = Object.keys(out);
     if (nums.length) {
-      const date = release.published_at ? String(release.published_at).slice(0, 10) : null;
+      // The full timestamp, in UTC: Google reads `uploadDate` as a datetime
+      // and flags a bare YYYY-MM-DD as invalid and missing a timezone.
+      const published = release.published_at ? new Date(release.published_at) : null;
+      const date = published && !isNaN(published) ? published.toISOString().replace(/\.\d{3}Z$/, 'Z') : null;
       const videos = {};
       for (const n of nums) videos[n] = { url: out[n].url, date, size: out[n].size ?? null };
       return videos;

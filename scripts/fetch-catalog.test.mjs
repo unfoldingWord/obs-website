@@ -837,7 +837,7 @@ test('videoByStory carries the publish date of the release the file came from', 
     { tag_name: 'v8', published_at: '2020-04-24T10:11:12Z', assets: [{ name: 'en_obs_v8_01_360p.mp4', browser_download_url: 'https://e/1.mp4' }] },
   ];
   const map = videoByStory(releases);
-  assert.equal(map[1].date, '2020-04-24', 'the video release, not the newest text release');
+  assert.equal(map[1].date, '2020-04-24T10:11:12Z', 'the video release, not the newest text release');
   // No publish date on the release -> null, and the page omits the
   // VideoObject rather than inventing an uploadDate.
   const undated = videoByStory([{ assets: [{ name: 'x_obs_01_360p.mp4', browser_download_url: 'https://e/u.mp4' }] }]);
@@ -853,7 +853,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   const withBody = {
     code: 'sw',
     storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
-    storyVideo: { 1: { url: 'https://e/1.mp4', date: '2020-04-24' } },
+    storyVideo: { 1: { url: 'https://e/1.mp4', date: '2020-04-24T10:11:12Z' } },
     stories: [
       { num: 1, title: 'Uumbaji', body: { reference: 'Mwanzo 1-2', frames: [{ image: 'https://cdn/1.jpg', text: 'Hivi ndivyo' }] } },
       { num: 2, title: 'Dhambi', body: null },
@@ -873,7 +873,7 @@ test('writeStoryFiles splits bodies out and records storyNums', async (t) => {
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
   assert.equal(file.stories[0].audioSize, 2400000, 'size travels with the URL, so the page can say how big it is');
   assert.equal(file.stories[0].video, 'https://e/1.mp4');
-  assert.equal(file.stories[0].videoDate, '2020-04-24');
+  assert.equal(file.stories[0].videoDate, '2020-04-24T10:11:12Z');
   assert.equal(file.stories[0].reference, 'Mwanzo 1-2');
   assert.equal(file.stories[0].frames[0].image, 'https://cdn/1.jpg');
 });
@@ -902,7 +902,7 @@ test('writeStoryFiles merges new media into a cached pre-video story file', asyn
     code: 'en',
     storyNums: [1, 2],
     storyAudio: { 1: { url: 'https://e/1.mp3', size: 2400000 } },
-    storyVideo: { 1: { url: 'https://example.com/01.mp4', date: '2020-04-24' } },
+    storyVideo: { 1: { url: 'https://example.com/01.mp4', date: '2020-04-24T10:11:12Z' } },
     stories: [{ num: 1, title: 'The Creation', body: null }, { num: 2, title: 'Sin', body: null }],
   };
   const written = writeStoryFiles([lang], dir);
@@ -911,7 +911,7 @@ test('writeStoryFiles merges new media into a cached pre-video story file', asyn
 
   const file = JSON.parse(readFileSync(join(dir, 'en.json'), 'utf8'));
   assert.equal(file.stories[0].video, 'https://example.com/01.mp4');
-  assert.equal(file.stories[0].videoDate, '2020-04-24');
+  assert.equal(file.stories[0].videoDate, '2020-04-24T10:11:12Z');
   assert.equal(file.stories[0].audio, 'https://e/1.mp3');
   assert.equal(file.stories[1].video, undefined, 'a story with no media is untouched');
   assert.equal(file.stories[0].frames[0].text, 'x', 'the text is never rewritten');
