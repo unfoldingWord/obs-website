@@ -9,7 +9,13 @@
     "sub": "Open Bible Stories husaidia makanisa, huduma, na timu za tafsiri kufanya Injili ipatikane katika kila lugha kupitia mkusanyiko rahisi wa hadithi za Biblia zenye michoro.",
     "ctaFind": "Tafuta lugha yako",
     "ctaTranslate": "Anza Kutafsiri",
-    "ctaApp": "Programu ya Simu ya OBS"
+    "ctaApp": "Programu ya Simu ya OBS",
+    "imageAlts": [
+      "Yesu anafundisha umati wa watu akiwa ndani ya mashua karibu na ufukwe",
+      "Miti ya matunda na maua katika bustani",
+      "Umati wa watu wakiinua mikono yao kumsifu Mungu",
+      "Jua likichomoza juu ya milima, na mwezi na nyota usiku"
+    ]
   },
   "stats": {
     "label": "Lugha<br>Zinazopatikana Tayari",

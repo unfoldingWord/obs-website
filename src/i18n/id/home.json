@@ -9,7 +9,13 @@
     "sub": "Open Bible Stories membantu gereja, pelayanan, dan tim penerjemah membuat Injil dapat diakses dalam setiap bahasa melalui kumpulan cerita Alkitab bergambar yang sederhana.",
     "ctaFind": "Temukan bahasa Anda",
     "ctaTranslate": "Mulai Menerjemahkan",
-    "ctaApp": "Aplikasi Seluler OBS"
+    "ctaApp": "Aplikasi Seluler OBS",
+    "imageAlts": [
+      "Yesus mengajar orang banyak dari sebuah perahu di tepi pantai",
+      "Pohon buah-buahan dan bunga di sebuah taman",
+      "Orang banyak mengangkat tangan mereka untuk memuji",
+      "Matahari terbit di atas gunung, serta bulan dan bintang di malam hari"
+    ]
   },
   "stats": {
     "label": "Bahasa<br>Sudah Tersedia",

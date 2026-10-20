@@ -9,7 +9,13 @@
     "sub": "Open Bible Stories ayuda a iglesias, ministerios y equipos de traducción a hacer que el Evangelio sea accesible en cada idioma mediante una colección sencilla de historias bíblicas ilustradas.",
     "ctaFind": "Encuentra tu idioma",
     "ctaTranslate": "Comienza a traducir",
-    "ctaApp": "App móvil de OBS"
+    "ctaApp": "App móvil de OBS",
+    "imageAlts": [
+      "Jesús enseña a una multitud desde una barca junto a la orilla",
+      "Árboles frutales y flores en un jardín",
+      "Una multitud levanta las manos en alabanza",
+      "El sol sale sobre las montañas, y la luna y las estrellas de noche"
+    ]
   },
   "stats": {
     "label": "Idiomas<br>ya disponibles",

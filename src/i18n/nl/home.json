@@ -9,7 +9,13 @@
     "sub": "Open Bible Stories helpt kerken, bedieningen en vertaalteams om het evangelie in elke taal toegankelijk te maken via een eenvoudige verzameling geïllustreerde Bijbelverhalen.",
     "ctaFind": "Vind jouw taal",
     "ctaTranslate": "Begin met vertalen",
-    "ctaApp": "Mobiele OBS-app"
+    "ctaApp": "Mobiele OBS-app",
+    "imageAlts": [
+      "Jezus onderwijst een menigte vanuit een boot bij de oever",
+      "Fruitbomen en bloemen in een tuin",
+      "Een menigte heft de handen op in lofprijzing",
+      "De zon komt op boven de bergen, en de maan en sterren in de nacht"
+    ]
   },
   "stats": {
     "label": "Talen<br>al beschikbaar",

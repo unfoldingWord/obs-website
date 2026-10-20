@@ -42,6 +42,7 @@ import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import GoogleAnalytics from '../components/GoogleAnalytics.astro';
 import { organizationNode, websiteNode, serializeGraph } from '../lib/jsonld';
+import { CHANGELOG_FEED_PATH } from '../lib/changelog';
 
 interface Props {
   locale: string;
@@ -165,6 +166,9 @@ const localeMeta = JSON.stringify({
 <link rel="preload" href="/assets/fonts/nunito-sans-var-latin.woff2" as="font" type="font/woff2" crossorigin />
 {fontHref && <link href={fontHref} rel="stylesheet" />}
 <link rel="icon" href="/assets/img/favicon.ico" sizes="any" />
+<!-- The Atom feed of newly published and updated languages (/changelog/),
+     advertised on every page so feed readers and crawlers can find it. -->
+<link rel="alternate" type="application/atom+xml" title="Open Bible Stories — newly published and updated languages" href={CHANGELOG_FEED_PATH} />
 <link rel="stylesheet" href="/assets/css/styles.css" />
 <script type="application/ld+json" set:html={graph} />
 <!-- The interface-language preference (public/assets/js/locale.js). In <head>

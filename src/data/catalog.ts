@@ -122,6 +122,13 @@ export const hasCatalog = catalog.languageCount > 0;
  *  visibly wrong rather than plausibly stale. */
 export const languageCount: number = catalog.languageCount;
 
+/** Date of the newest release of any translation (each language's
+ *  `updated`), or null with no data. This is when the catalog the homepage
+ *  summarizes — the count, the list behind it — last changed, so it is the
+ *  homepage's dateModified and the date it shows beside "What's new". */
+export const latestRelease: string | null =
+  catalog.languages.reduce<string | null>((max, l) => (l.updated && (!max || l.updated > max) ? l.updated : max), null);
+
 if (!hasCatalog) {
   console.warn('[catalog] src/data/catalog.json is missing or empty — pages will state 0 languages. Run `npm run fetch:catalog`.');
 }
