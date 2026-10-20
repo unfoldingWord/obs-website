@@ -47,3 +47,9 @@ https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
 # (sitemap-index.xml → sitemap-pages.xml + sitemap-languages.xml). Keep the
 # old URL alive for crawlers that still hold it. Safe to remove in 2027.
 /sitemap-0.xml  /sitemap-pages.xml  301
+
+# The old site served the English PDF from its own assets folder. The current
+# PDF is a versioned Door43 release (en_obs_v9.pdf today), so pinning a
+# redirect to it would go stale at the next release; the English hub always
+# links the latest one. Googlebot still requests this URL (Crawl stats).
+/assets/obs-en_1.0.pdf  /l/en/  301

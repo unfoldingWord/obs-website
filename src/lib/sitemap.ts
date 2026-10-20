@@ -88,6 +88,31 @@ export function languagesSitemap(): string {
   return `<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${urls.join('\n')}\n</urlset>\n`;
 }
 
+type StoryAlternate = { code: string; hreflang: string; loc: string };
+
+/**
+ * A catalog code as an hreflang value Google accepts, or null when the code
+ * is not one of the site's own languages (`siteLocaleOf`). The language is
+ * the site locale's ISO 639-1 code ("fas-x-eastfars" → fa); a script subtag
+ * is kept ("zh-hans" → zh-Hans) and so is a two-letter region ("pt-br" →
+ * pt-BR). Everything else is dropped: a numeric region ("es-419"), a
+ * three-letter extension ("ar-xzn") and anything after the private-use "x".
+ */
+export function storyHreflang(code: string): string | null {
+  const language = siteLocaleOf(code);
+  if (!language) return null;
+  const parts = code.split(/[-_]/).slice(1);
+  const x = parts.findIndex((p) => p.toLowerCase() === 'x');
+  const subtags = x === -1 ? parts : parts.slice(0, x);
+  const script = subtags.find((p) => /^[a-z]{4}$/i.test(p));
+  const region = subtags.find((p) => /^[a-z]{2}$/i.test(p));
+  return [
+    language,
+    script && script[0].toUpperCase() + script.slice(1).toLowerCase(),
+    region?.toUpperCase(),
+  ].filter(Boolean).join('-');
+}
+
 /**
  * Story-level hreflang, narrowed to the site's own languages (#13, #9).
  *
@@ -105,16 +130,30 @@ export function languagesSitemap(): string {
  * Every other story URL gets no alternates at all, which is correct rather
  * than incomplete: an incorrect or one-sided cluster is worse than none, and
  * a Hausa story has no reciprocal partner to point at.
+ *
+ * The hreflang value is NOT the catalog code. Door43 codes such as
+ * "ar-xzn", "fas-x-eastfars" and "es-419" are fine as URL segments but are
+ * not values Google accepts (ISO 639-1 language, optional ISO 3166-1 alpha-2
+ * region or ISO 15924 script), so Google drops them — and two codes for one
+ * language ("ar" and "ar-xzn") made a cluster with two competing Arabic
+ * entries. `storyHreflang` reduces each code to a valid tag, and a cluster
+ * keeps one URL per tag: the language whose code IS that tag ("ar" over
+ * "ar-xzn", "es" over "es-419"), else the first found.
  */
-async function storyAlternates(): Promise<Map<number, { code: string; loc: string }[]>> {
-  const byStory = new Map<number, { code: string; loc: string }[]>();
+async function storyAlternates(): Promise<Map<number, StoryAlternate[]>> {
+  const byStory = new Map<number, StoryAlternate[]>();
   for (const l of languages) {
-    if (!siteLocaleOf(l.code) || !hasStories(l.code)) continue;
+    const hreflang = storyHreflang(l.code);
+    if (!hreflang || !hasStories(l.code)) continue;
+    const exact = l.code.toLowerCase() === hreflang.toLowerCase();
     const built = new Set((await storiesFor(l.code)).map((s) => s.num));
     for (const num of l.storyNums ?? []) {
       if (!built.has(num)) continue;
       const group = byStory.get(num) ?? [];
-      group.push({ code: l.code, loc: `${SITE}${storyPath(l.code, num)}` });
+      const entry = { code: l.code, hreflang, loc: `${SITE}${storyPath(l.code, num)}` };
+      const i = group.findIndex((a) => a.hreflang === hreflang);
+      if (i === -1) group.push(entry);
+      else if (exact) group[i] = entry;
       byStory.set(num, group);
     }
   }
@@ -139,7 +178,7 @@ export async function storiesSitemap(): Promise<string> {
     const num = inCluster.get(loc);
     const group = num === undefined ? [] : clusters.get(num) ?? [];
     const alternates = group
-      .map((a) => `\n    <xhtml:link rel="alternate" hreflang="${esc(a.code)}" href="${a.loc}"/>`)
+      .map((a) => `\n    <xhtml:link rel="alternate" hreflang="${esc(a.hreflang)}" href="${a.loc}"/>`)
       .join('');
     // x-default points at the English story when English has it: the site's
     // own default, the same choice Base.astro makes for marketing pages.
