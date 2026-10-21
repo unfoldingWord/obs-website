@@ -1,9 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { localePath, byCode } from '../../i18n/config';
+import { localePath, byCode, localizeLinks } from '../../i18n/config';
 import { content } from '../../i18n/content';
 import { languageCount, latestRelease, withCount } from '../../data/catalog';
-import { workNode, homePageNode, mobileAppNode } from '../../lib/jsonld';
+import { workNode, homePageNode, mobileAppNode, faqPageNode } from '../../lib/jsonld';
 import { CHANGELOG_PATH } from '../../lib/changelog';
 
 interface Props {
@@ -26,9 +26,26 @@ const updatedLabel = latestRelease
   ? new Intl.DateTimeFormat(byCode(locale).tag, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${latestRelease}T00:00:00Z`))
   : null;
 const imageAlts: string[] = t.hero.imageAlts ?? [];
+
+// Quick answers: the first four questions from the contact page's FAQ, each
+// with only its first paragraph — the answer itself, which the FAQ copy
+// always puts first — and a link to the full set. Not a second copy of the
+// FAQ: the detail, and the remaining questions, stay on the contact page.
+const faq = content(locale, 'faq');
+const hub = content(locale, 'hub');
+const QUICK_ANSWERS = 4;
+const quickAnswers: { q: string; a: string }[] = faq.questions.slice(0, QUICK_ANSWERS).map((item: { q: string; a: string }) => ({
+  q: withCount(item.q),
+  a: localizeLinks(withCount(item.a.split(/\n\s*\n/)[0].trim()), locale),
+}));
 ---
 
-<Base locale={locale} slug="home" title={title} description={description} jsonLd={[homePageNode(byCode(locale).tag, localePath(locale, 'home'), latestRelease), workNode(), mobileAppNode()]}>
+<Base locale={locale} slug="home" title={title} description={description} jsonLd={[
+  homePageNode(byCode(locale).tag, localePath(locale, 'home'), title, description, latestRelease),
+  workNode(),
+  mobileAppNode(),
+  faqPageNode(locale, quickAnswers, localePath(locale, 'home')),
+]}>
 
 <section class="hero">
   <div class="hero-inner">
@@ -117,6 +134,19 @@ const imageAlts: string[] = t.hero.imageAlts ?? [];
         <a href={localePath(locale, 'create')} class="btn btn-outline" style="margin-top:14px;">{t.open.cards[2].cta}</a>
       </div>
     </div>
+  </div>
+</section>
+
+<section id="faq">
+  <div class="wrap faq-list">
+    <h2 class="contact-faq-title">{faq.title}</h2>
+    {quickAnswers.map(({ q, a }) => (
+      <div class="faq-item">
+        <h3>{q}</h3>
+        <p set:html={a} />
+      </div>
+    ))}
+    <p style="margin-top:32px;"><a href={localePath(locale, 'contact')}>{hub.faqMore}</a></p>
   </div>
 </section>
 

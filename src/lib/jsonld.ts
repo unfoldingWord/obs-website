@@ -126,11 +126,13 @@ export function workNode() {
 /** The homepage as a page: what it is about (the work), and when what it
  *  reports last changed — the newest translation release, which is the date
  *  the page shows beside its "What's new" link. */
-export function homePageNode(locale: string, path: string, dateModified: string | null) {
+export function homePageNode(locale: string, path: string, name: string, description: string, dateModified: string | null) {
   return {
     '@type': 'WebPage',
     '@id': `${SITE_URL}${path}#webpage`,
     url: `${SITE_URL}${path}`,
+    name,
+    description,
     inLanguage: locale,
     isPartOf: { '@id': WEBSITE_ID },
     about: { '@id': WORK_ID },
@@ -152,9 +154,11 @@ export function mobileAppNode() {
 }
 
 /**
- * FAQPage for one locale's contact page, which carries the questions (#17).
+ * FAQPage for the questions a page shows (#17): the full set on each
+ * locale's contact page, and the short "quick answers" subset on its
+ * homepage (`path`), each with its own @id.
  *
- * Emitted only on the marketing FAQ pages, where the visible H2/answer text
+ * Emitted only on those marketing pages, where the visible question/answer text
  * and the structured data are the same words — the requirement Google states
  * for FAQ rich results. The hubs' own FAQ block is deliberately visible-only:
  * 214 near-identical FAQPage nodes would be boilerplate.
@@ -162,10 +166,10 @@ export function mobileAppNode() {
  * `answers` arrive as HTML (the copy carries links); `acceptedAnswer.text`
  * may contain HTML, so it is passed through as written.
  */
-export function faqPageNode(locale: string, questions: { q: string; a: string }[]) {
+export function faqPageNode(locale: string, questions: { q: string; a: string }[], path = localePath(locale, 'contact')) {
   return {
     '@type': 'FAQPage',
-    '@id': `${SITE_URL}${localePath(locale, 'contact')}#faq`,
+    '@id': `${SITE_URL}${path}#faq`,
     inLanguage: locale,
     isPartOf: { '@id': WEBSITE_ID },
     publisher: { '@id': PUBLISHER_ID },
