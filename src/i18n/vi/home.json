@@ -9,7 +9,13 @@
     "sub": "Open Bible Stories giúp các hội thánh, mục vụ và đội ngũ dịch thuật đưa Phúc Âm đến với mọi ngôn ngữ qua một bộ sưu tập đơn giản gồm các câu chuyện Kinh Thánh có minh họa.",
     "ctaFind": "Tìm ngôn ngữ của bạn",
     "ctaTranslate": "Bắt đầu dịch",
-    "ctaApp": "Ứng dụng di động OBS"
+    "ctaApp": "Ứng dụng di động OBS",
+    "imageAlts": [
+      "Chúa Giê-xu dạy dỗ đoàn dân từ một chiếc thuyền gần bờ",
+      "Cây ăn trái và hoa trong một khu vườn",
+      "Đoàn dân đưa tay lên ngợi khen",
+      "Mặt trời mọc trên núi, cùng mặt trăng và các vì sao ban đêm"
+    ]
   },
   "stats": {
     "label": "Ngôn ngữ<br>đã có sẵn",

@@ -75,11 +75,18 @@ Discover) now carries them:
 | `https://en.wikisource.org/wiki/Open_Bible_Stories` | the work node's `sameAs` |
 | The English YouTube playlist | the work node's `sameAs`, read from the `en` catalog entry at build time; omitted while the English release does not list one (per-language playlists are already on each hub) |
 
+The Organization node (unfoldingWord) carries `door43.org`, the Facebook
+and X profiles that unfoldingword.org declares in its own Organization
+JSON-LD, and `github.com/unfoldingWord`. Checked October 2026: English
+Wikipedia has no article for unfoldingWord, Open Bible Stories or Door43,
+and Wikidata search finds no item for either name.
+
 Still to add:
 
 | Candidate | Add once it exists |
 | --- | --- |
 | A Wikidata item | `ORGANIZATION_SAME_AS` and the work node |
+| unfoldingWord's LinkedIn page | `ORGANIZATION_SAME_AS`, once its URL is confirmed by someone at unfoldingWord |
 
 ## How to tell whether this worked
 

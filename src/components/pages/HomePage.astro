@@ -1,9 +1,10 @@
 ---
 import Base from '../../layouts/Base.astro';
-import { localePath } from '../../i18n/config';
+import { localePath, byCode } from '../../i18n/config';
 import { content } from '../../i18n/content';
-import { languageCount, withCount } from '../../data/catalog';
-import { workNode, mobileAppNode } from '../../lib/jsonld';
+import { languageCount, latestRelease, withCount } from '../../data/catalog';
+import { workNode, homePageNode, mobileAppNode } from '../../lib/jsonld';
+import { CHANGELOG_PATH } from '../../lib/changelog';
 
 interface Props {
   locale: string;
@@ -17,9 +18,17 @@ const ui = content(locale, 'ui');
 // gets the build-time language count substituted for {count}.
 const title = `${ui.siteTitle} — ${t.hero.title}`;
 const description = withCount(t.meta.description);
+
+// When the catalog behind the count last changed, shown beside the link to
+// the changelog and stated as the page's dateModified — the same date in
+// both places. A bare ISO date is a calendar day, so format it in UTC.
+const updatedLabel = latestRelease
+  ? new Intl.DateTimeFormat(byCode(locale).tag, { dateStyle: 'long', timeZone: 'UTC' }).format(new Date(`${latestRelease}T00:00:00Z`))
+  : null;
+const imageAlts: string[] = t.hero.imageAlts ?? [];
 ---
 
-<Base locale={locale} slug="home" title={title} description={description} jsonLd={[workNode(), mobileAppNode()]}>
+<Base locale={locale} slug="home" title={title} description={description} jsonLd={[homePageNode(byCode(locale).tag, localePath(locale, 'home'), latestRelease), workNode(), mobileAppNode()]}>
 
 <section class="hero">
   <div class="hero-inner">
@@ -35,12 +44,12 @@ const description = withCount(t.meta.description);
         <a href="https://play.google.com/store/apps/details?id=com.unfoldingword.obsapp&hl=en_US" target="_blank" rel="noopener" class="btn btn-outline">{t.hero.ctaApp}</a>
       </div>
     </div>
-    <div class="hero-art" aria-hidden="true">
+    <div class="hero-art">
       <div class="hero-stack" id="hero-stack">
-        <img src="/assets/img/story-boat.jpg" alt="" width="1000" height="573" class="stack-pos-0" />
-        <img src="/assets/img/story-garden.jpg" alt="" width="1000" height="565" class="stack-pos-1" />
-        <img src="/assets/img/story-crowd.jpg" alt="" width="1000" height="567" class="stack-pos-2" />
-        <img src="/assets/img/story-mountain.jpg" alt="" width="1000" height="562" class="stack-pos-3" />
+        <img src="/assets/img/story-boat.jpg" alt={imageAlts[0] ?? ''} width="1000" height="573" class="stack-pos-0" />
+        <img src="/assets/img/story-garden.jpg" alt={imageAlts[1] ?? ''} width="1000" height="565" class="stack-pos-1" />
+        <img src="/assets/img/story-crowd.jpg" alt={imageAlts[2] ?? ''} width="1000" height="567" class="stack-pos-2" />
+        <img src="/assets/img/story-mountain.jpg" alt={imageAlts[3] ?? ''} width="1000" height="562" class="stack-pos-3" />
       </div>
     </div>
   </div>
@@ -75,6 +84,11 @@ const description = withCount(t.meta.description);
     </div>
     <p style="color:var(--tech); font-size:1.15rem; max-width:560px; margin:28px auto 10px; font-weight:600;">{t.stats.line1}</p>
     <p style="color:var(--kindle-text); font-size:1.2rem; font-weight:800; margin:0;">{t.stats.line2}</p>
+    {updatedLabel && (
+      <p style="color:var(--tech); font-size:0.95rem; margin:18px 0 0;">
+        <a href={CHANGELOG_PATH}>{ui.legal?.changelog ?? 'What’s new'}</a> &middot; <time datetime={latestRelease}>{updatedLabel}</time>
+      </p>
+    )}
   </div>
 </section>
 

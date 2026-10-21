@@ -5,7 +5,7 @@
 // Facts here are the standardized public entity facts (see README →
 // "Catalog data and public facts"): product name, one-sentence definition,
 // license.
-import { languages, languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, youtubeOf, type CatalogLanguage } from '../data/catalog';
+import { languages, languagePath, storyPath, classifyAssets, hubLocaleFor, readableStories, pagedStories, publishersOf, storyImage, youtubeOf, firstPublishedDate, type CatalogLanguage } from '../data/catalog';
 import { type Story } from '../data/stories';
 import { localePath } from '../i18n/config';
 
@@ -21,9 +21,21 @@ export const DEFINITION =
   'unfoldingWord Open Bible Stories is a collection of 50 illustrated Bible stories, from Creation to Revelation, that churches and translation teams read, listen to, translate and share freely under the Creative Commons Attribution-ShareAlike 4.0 license.';
 
 // Only links whose identity is confirmed — a wrong sameAs merges two
-// entities in a knowledge graph and is worse than none. Add a Wikidata item
-// here once one exists (docs/canonical-links.md).
-const ORGANIZATION_SAME_AS = ['https://door43.org/'];
+// entities in a knowledge graph and is worse than none. Facebook and X are
+// the profiles unfoldingword.org declares in its own Organization JSON-LD;
+// GitHub is the organization this site's repository lives in. There is no
+// Wikipedia article, Wikidata item or confirmed LinkedIn page yet — add one
+// here once it exists (docs/canonical-links.md).
+const ORGANIZATION_SAME_AS = [
+  'https://door43.org/',
+  'https://www.facebook.com/unfoldingWord',
+  'https://x.com/unfoldingword',
+  'https://github.com/unfoldingWord',
+];
+
+// The contact page sends every question to unfoldingWord's contact form;
+// there is no public phone number or address to state instead.
+const CONTACT_URL = 'https://unfoldingword.org/contact/';
 
 // Other canonical homes of the work itself, confirmed by the maintainers in
 // #18. The English YouTube playlist is added from the catalog in workNode(),
@@ -45,6 +57,12 @@ export function organizationNode() {
       url: `${SITE_URL}/assets/img/uw-logo-color.png`,
     },
     sameAs: ORGANIZATION_SAME_AS,
+    contactPoint: {
+      '@type': 'ContactPoint',
+      contactType: 'general inquiries',
+      url: CONTACT_URL,
+      availableLanguage: 'en',
+    },
   };
 }
 
@@ -77,6 +95,10 @@ export function websiteNode(inLanguage: string) {
 export function workNode() {
   const en = languages.find((l) => l.code === 'en');
   const playlist = en ? youtubeOf(en)?.url : undefined;
+  // Dates of the English source edition itself, from its release history —
+  // omitted, not guessed, when the snapshot does not establish them.
+  const datePublished = en ? firstPublishedDate(en) : null;
+  const dateModified = en?.updated ?? null;
   return {
     '@type': 'CreativeWork',
     '@id': WORK_ID,
@@ -89,12 +111,31 @@ export function workNode() {
     isAccessibleForFree: true,
     isFamilyFriendly: true,
     genre: 'Bible stories',
+    author: { '@id': PUBLISHER_ID },
     publisher: { '@id': PUBLISHER_ID },
     copyrightHolder: { '@id': PUBLISHER_ID },
+    ...(datePublished ? { datePublished } : {}),
+    ...(dateModified ? { dateModified } : {}),
     image: `${SITE_URL}/assets/img/story-boat.jpg`,
     sameAs: playlist ? [...WORK_SAME_AS, playlist] : WORK_SAME_AS,
     // Media objects are emitted only on story pages where a file exists
     // (Phase 3) — never as empty placeholders here.
+  };
+}
+
+/** The homepage as a page: what it is about (the work), and when what it
+ *  reports last changed — the newest translation release, which is the date
+ *  the page shows beside its "What's new" link. */
+export function homePageNode(locale: string, path: string, dateModified: string | null) {
+  return {
+    '@type': 'WebPage',
+    '@id': `${SITE_URL}${path}#webpage`,
+    url: `${SITE_URL}${path}`,
+    inLanguage: locale,
+    isPartOf: { '@id': WEBSITE_ID },
+    about: { '@id': WORK_ID },
+    publisher: { '@id': PUBLISHER_ID },
+    ...(dateModified ? { dateModified } : {}),
   };
 }
 
