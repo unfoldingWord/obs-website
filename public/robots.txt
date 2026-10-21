@@ -26,6 +26,9 @@ Allow: /
 User-agent: Bingbot
 Allow: /
 
+User-agent: Applebot
+Allow: /
+
 # Live retrieval / answer engines (not training)
 User-agent: OAI-SearchBot
 Allow: /

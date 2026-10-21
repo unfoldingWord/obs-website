@@ -7,11 +7,13 @@
 // gets their answer without waiting on a reply, and the messages that do come
 // are the ones that needed a person.
 //
-// This is the only copy of the Q&A. It had its own /faq/ route while this
-// change was in review; folding it in rather than rendering it twice keeps
-// one URL per answer, which is the whole point of the anchors below — two
-// pages carrying the same eight questions would be the duplicate-boilerplate
-// case Google's FAQPage guidance warns about.
+// This is the only full copy of the Q&A. It had its own /faq/ route while
+// this change was in review; folding it in rather than rendering it twice
+// keeps one URL per answer, which is the whole point of the anchors below —
+// two pages carrying the same eight questions would be the duplicate-
+// boilerplate case Google's FAQPage guidance warns about. The homepage shows
+// only the first paragraph of the first four, as quick answers that link
+// here.
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
 import { withCount } from '../../data/catalog';

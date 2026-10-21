@@ -108,6 +108,8 @@ export async function llmsTxt(): Promise<string> {
     '',
     'Open Bible Stories is a set of 50 illustrated Bible stories, not a translation of the whole Bible. Each language has a hub page, one page per story, and a markdown mirror of its complete text.',
     '',
+    `The complete English text follows this index in ${SITE_URL}/llms-full.txt.`,
+    '',
     '## About',
     '',
   ];
@@ -143,4 +145,20 @@ export async function llmsTxt(): Promise<string> {
   }
   out.push('');
   return out.join('\n');
+}
+
+/**
+ * /llms-full.txt — the llms.txt index followed by the complete text of the
+ * English source edition, so a fetcher that reads one file gets both the map
+ * and the work itself. English only: every translation already has its own
+ * mirror, listed in the index, and all 200 in one file would be tens of
+ * megabytes. The mirror's headings are demoted one level so the file keeps a
+ * single H1.
+ */
+export async function llmsFullTxt(): Promise<string> {
+  const index = await llmsTxt();
+  const en = mirroredLanguages().find((l) => l.code === 'en');
+  if (!en) return index;
+  const text = (await languageMarkdown(en)).replace(/^(#+) /gm, '#$1 ');
+  return `${index}\n## Full text: the English source edition\n\n${text}`;
 }

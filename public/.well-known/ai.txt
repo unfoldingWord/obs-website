@@ -1,0 +1,18 @@
+# Open Bible Stories — AI policy
+#
+# The same policy as /robots.txt, restated for crawlers that read ai.txt.
+# Everything on this site is public and licensed CC BY-SA 4.0
+# (https://creativecommons.org/licenses/by-sa/4.0/). Search, live retrieval
+# AND training are all allowed on purpose: a model that learned the stories
+# in a language spreads them further, which is what the licence is for
+# (decided 2026-09-11 in unfoldingWord/obs-website#15). Reuse must credit
+# "The original work by unfoldingWord is available from
+# https://openbiblestories.org" and share alike. Illustrations are
+# © Sweet Publishing under CC BY-SA 3.0.
+
+User-Agent: *
+Allow: /
+
+# Index of every language and its full-text markdown mirror:
+# https://openbiblestories.org/llms.txt
+# https://openbiblestories.org/llms-full.txt
