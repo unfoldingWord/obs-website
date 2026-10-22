@@ -1,5 +1,15 @@
 # Open Bible Stories — website
 
+[![GEO Score](https://geoready.dev/badge?url=https%3A%2F%2Fopenbiblestories.org)](https://geoready.dev/report/audit?url=https://openbiblestories.org)
+
+The badge is the live homepage score from the open-source [geo-optimizer](https://github.com/auriti-labs/geo-optimizer-skill) audit (search and AI-answer readiness), refreshed hourly. It was raised from 69 to 92 in #35 and #36; keep it in the 90s. Re-run the full report after changes that touch the homepage, `<head>`, JSON-LD or `robots.txt`:
+
+```
+uvx --from geo-optimizer-skill geo audit --url https://openbiblestories.org
+```
+
+Run it against production, not a pages.dev preview: previews send `X-Robots-Tag: noindex`, which costs about 7 points that production does not lose.
+
 Static site for Open Bible Stories (unfoldingWord), built with [Astro](https://astro.build). Astro is used only for shared layouts — the output is plain HTML/CSS/JS with no client framework.
 
 ## Local development
