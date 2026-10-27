@@ -11,6 +11,7 @@ import {
   groupLanguages,
   applyLangnames,
   parseStoryMarkdown,
+  headingText,
   makeExtract,
   detectScript,
   storyUrls,
@@ -287,6 +288,20 @@ test('parseStoryMarkdown separates title, paragraphs and reference', () => {
   assert.equal(p.title, '1. The Creation');
   assert.equal(p.paragraphs.length, 2);
   assert.equal(p.reference, 'A Bible story from: Genesis 1-2');
+});
+
+test('parseStoryMarkdown drops a closing # sequence from the title, as CommonMark does', () => {
+  // my_obs content/01.md, verbatim heading.
+  assert.equal(parseStoryMarkdown('# ၁။ ဖန်ဆင်းခြင်း #\n\nText.\n').title, '၁။ ဖန်ဆင်းခြင်း');
+  assert.equal(parseStoryMarkdown('# 1. Thilsiam Chanchin ##  \n\nText.\n').title, '1. Thilsiam Chanchin');
+  assert.equal(parseStoryMarkdown('## 1. The Creation\t#\n\nText.\n').title, '1. The Creation');
+});
+
+test('headingText keeps a # that is not set off by a space', () => {
+  assert.equal(headingText('C#'), 'C#');
+  assert.equal(headingText('Story #1'), 'Story #1');
+  assert.equal(headingText('Story #1 #'), 'Story #1');
+  assert.equal(headingText('#'), '', 'a heading of only #s is empty');
 });
 
 test('makeExtract joins paragraphs up to the cap and never returns empty text', () => {

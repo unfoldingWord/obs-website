@@ -68,6 +68,13 @@
       .replace(/>/g, "&gt;");
   }
 
+  // Heading text without CommonMark's optional closing #s ("## Title ##"); a
+  // # only closes when a space sets it off. Same rule as headingText() in
+  // reader.js and scripts/fetch-catalog.mjs.
+  function headingText(text) {
+    return String(text).replace(/(^|[ \t])#+[ \t]*$/, "").trim();
+  }
+
   function renderObsMarkdown(md) {
     const withoutFrontmatter = md.replace(/^---\n[\s\S]*?\n---\n/, "");
     const blocks = withoutFrontmatter
@@ -81,7 +88,7 @@
         if (headingMatch) {
           const level = Math.min(headingMatch[1].length + 3, 6);
           return `<h${level} style="color:var(--ocean); margin:10px 0 6px;">${escapeHtml(
-            headingMatch[2]
+            headingText(headingMatch[2])
           )}</h${level}>`;
         }
         const img = block.match(/^!\[([^\]]*)\]\(([^)]+)\)$/);

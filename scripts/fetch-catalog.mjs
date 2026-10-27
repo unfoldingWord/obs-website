@@ -392,6 +392,17 @@ export function isStubContent(text) {
   return /video[\s-]*only/i.test(String(text).slice(0, 300));
 }
 
+/**
+ * The text of an ATX heading, without CommonMark's optional closing sequence:
+ * "# 1. The Creation #" is titled "1. The Creation", as every other markdown
+ * renderer shows it. The run of #s only closes the heading when a space sets
+ * it off, so "# C#" keeps its #. Several translations (lo, lus, my) close
+ * every story heading this way. Same rule as headingText() in reader.js.
+ */
+export function headingText(text) {
+  return String(text).replace(/(^|[ \t])#+[ \t]*$/, '').trim();
+}
+
 export function parseStoryMarkdown(md) {
   const body = String(md).replace(/^---\n[\s\S]*?\n---\n/, '');
   const blocks = body.split(/\n\s*\n/).map((b) => b.trim()).filter(Boolean);
@@ -403,7 +414,7 @@ export function parseStoryMarkdown(md) {
   blocks.forEach((block, i) => {
     const heading = i === 0 && block.match(/^#{1,6}\s*(.*)$/);
     if (heading) {
-      title = heading[1].trim();
+      title = headingText(heading[1]);
       return;
     }
     const image = block.match(/^!\[[^\]]*\]\(([^)\s]+)[^)]*\)$/);
