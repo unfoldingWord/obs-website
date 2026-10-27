@@ -63,6 +63,14 @@
       .replace(/>/g, "&gt;");
   }
 
+  // An ATX heading's text without CommonMark's optional closing #s ("# 1.
+  // The Creation #" -> "1. The Creation"); a # only closes when a space sets
+  // it off, so "# C#" keeps it. Same rule as headingText() in
+  // scripts/fetch-catalog.mjs, which builds the static story pages.
+  function headingText(text) {
+    return String(text).replace(/(^|[ \t])#+[ \t]*$/, "").trim();
+  }
+
   // Parses a raw OBS story markdown file into a slide deck: one title, N
   // frames (each exactly one image + its paragraph — verified against real
   // story files, e.g. unfoldingWord/en_obs content/01.md: "# 1. The
@@ -83,7 +91,7 @@
     if (blocks.length > 0) {
       const headingMatch = blocks[0].match(/^(#{1,6})\s*(.*)$/);
       if (headingMatch) {
-        title = headingMatch[2];
+        title = headingText(headingMatch[2]);
         cursor = 1;
       }
     }
@@ -310,7 +318,7 @@
         const titleMatch = md
           .replace(/^---\n[\s\S]*?\n---\n/, "")
           .match(/^#+\s*(.*)$/m);
-        return titleMatch ? titleMatch[1] : "";
+        return titleMatch ? headingText(titleMatch[1]) : "";
       });
   }
 
