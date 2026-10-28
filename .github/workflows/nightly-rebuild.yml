@@ -1,0 +1,43 @@
+# Rebuilds openbiblestories.org every evening at 8pm Eastern.
+#
+# The site is built from Door43 (DCS) as well as from this repo:
+# scripts/fetch-catalog.mjs reads the published OBS catalog and every
+# translation's story files at build time. Cloudflare Pages rebuilds when
+# this repo changes, but a translation published or revised on DCS changes
+# nothing here, so it would not appear until some unrelated commit. This
+# asks Cloudflare to rebuild `main` on a schedule.
+#
+# It POSTs to a Cloudflare Pages deploy hook instead of building here and
+# uploading with wrangler: the build stays in Cloudflare's pipeline with the
+# same settings as a push, and the only credential is a URL that can do
+# nothing but start a build of `main` (a token for `wrangler pages deploy`
+# needs account-wide Cloudflare Pages: Edit). Setup is in README.md under
+# "Deployment".
+name: Nightly rebuild
+
+on:
+  schedule:
+    # Local time, so the run stays at 8pm across daylight-saving changes.
+    - cron: '0 20 * * *'
+      timezone: 'America/New_York'
+  # "Run workflow" on the Actions tab, or `gh workflow run nightly-rebuild.yml`.
+  workflow_dispatch:
+
+# The job only calls Cloudflare; it needs no access to this repo.
+permissions: {}
+
+jobs:
+  rebuild:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Trigger a Cloudflare Pages build of main
+        env:
+          DEPLOY_HOOK_URL: ${{ secrets.CLOUDFLARE_DEPLOY_HOOK_URL }}
+        run: |
+          if [ -z "$DEPLOY_HOOK_URL" ]; then
+            echo "::error::The repository secret CLOUDFLARE_DEPLOY_HOOK_URL is not set. See README.md, Deployment."
+            exit 1
+          fi
+          curl --fail-with-body --silent --show-error --retry 3 --request POST "$DEPLOY_HOOK_URL"
+          echo

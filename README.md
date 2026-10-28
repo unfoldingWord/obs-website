@@ -192,6 +192,13 @@ Deployed to **Cloudflare Pages** — project **`obs-website`** (`obs-web-cgw.pag
 
 Build settings: build command `npm run build`, output directory `dist` (also declared in `wrangler.jsonc` as `pages_build_output_dir`).
 
+**Nightly rebuild.** The build reads its content from Door43 (DCS), not only from this repo, so a translation published or revised there needs a build before it appears. `.github/workflows/nightly-rebuild.yml` POSTs to a Cloudflare Pages deploy hook every day at 8pm `America/New_York`, which starts an ordinary production build of `main`; it can also be run by hand from the Actions tab (`gh workflow run nightly-rebuild.yml`). No API token is involved. One-time setup:
+
+1. Cloudflare dashboard → Workers & Pages → `obs-website` → Settings → Builds → Deploy hooks → **Add deploy hook**, name `github-nightly`, branch `main`. Copy the URL it shows.
+2. GitHub → this repo → Settings → Secrets and variables → Actions → **New repository secret**, name `CLOUDFLARE_DEPLOY_HOOK_URL`, value the URL (or `gh secret set CLOUDFLARE_DEPLOY_HOOK_URL --repo unfoldingWord/obs-website`, which prompts for it).
+
+The URL is the credential: anyone who has it can start builds. If it leaks, delete the hook in Cloudflare, add a new one and update the secret. GitHub disables scheduled workflows in a public repository after 60 days without repository activity; if the nightly builds stop, re-enable the workflow on the Actions tab (`gh workflow enable nightly-rebuild.yml`).
+
 Current `_redirects` / `_headers` rules:
 - `https://www.openbiblestories.org/*` 301s to the apex. Host-based rules only fire for hostnames attached to the Pages project, and both are attached — the bare domain is canonical and `www` exists only to redirect to it.
 - `/library`, `/library/*` and `/create/library/*` redirect (301) to `/discover/` — the old Library browser was retired in favor of Discover, which now covers search, format filters, and the inline reader. Legacy `#code--team` fragments survive the redirect, and `discover.js` forwards them to that language's hub (fragments never reach the server, so this has to happen client-side).
