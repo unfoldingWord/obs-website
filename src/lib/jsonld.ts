@@ -331,7 +331,7 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
     node.audio = {
       '@type': 'AudioObject',
       contentUrl: story.audio,
-      encodingFormat: 'audio/mpeg',
+      encodingFormat: /\.m4a$/i.test(story.audio) ? 'audio/mp4' : 'audio/mpeg',
       inLanguage: lang.code,
       name: story.title,
       transcript,
