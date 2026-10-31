@@ -90,11 +90,15 @@ const partial = stories.length > 0 && stories.length < STORY_COUNT;
 // `lang.formats` comes from the catalog's language-level `attachment_types`,
 // which says a format exists SOMEWHERE for this language — not that this site
 // can open it. Gating the buttons on it produced two controls that could not
-// keep their promise: "Listen (audio)" on 78 of the 92 hubs that showed it
-// (69 of them have nothing but a YouTube playlist, which is video), and
-// "Read online" on the 14 languages whose repo is a "Video only" placeholder.
-// Both resolved to a story page with nothing on it, which is the same defect
-// as the legacy "Read online" that pointed at the hub itself.
+// keep their promise: "Listen (audio)" on 78 of the 92 hubs that showed it,
+// and "Read online" on the 14 languages whose repo is a "Video only"
+// placeholder. Both resolved to a story page with nothing on it, which is the
+// same defect as the legacy "Read online" that pointed at the hub itself.
+// (Those 78 were first read as YouTube-only. They were not: every one
+// publishes per-story m4a files, which audioByStory() did not yet match. It
+// does now, and the 66 of them with story pages get Listen back through the
+// gate below. The other 12 are "Video only" placeholders with no story pages,
+// so there is still no page for their audio to play on.)
 //
 // So each button is gated on the thing it opens. `check:routes` asserts the
 // same invariant against the built HTML.
