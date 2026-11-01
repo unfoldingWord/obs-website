@@ -96,6 +96,12 @@ const pad = (n) => String(n).padStart(2, '0');
 // Pure helpers (unit-tested in fetch-catalog.test.mjs)
 // ---------------------------------------------------------------------------
 
+// `.m4a` is deliberately absent. It is only ever published as one file per
+// story, which the hub never lists (the story pages play them, via
+// audioByStory), and a release of 50 m4a files with its YouTube playlist
+// link last would push that link past the 40-asset cap in compactAssetList —
+// 71 such releases on DCS when this was checked, all of which would lose
+// their "Watch" button.
 const ASSET_NAME_RE = /\.(pdf|epub|docx|zip|mp3|mp4|3gp)$/i;
 const YOUTUBE_RE = /youtu\.?be/i;
 
@@ -161,7 +167,7 @@ async function fetchReleases(entry, fetchImpl = fetch) {
 }
 
 /**
- * Per-story mp3 URLs for one entry, or {} when the repo publishes none.
+ * Per-story audio URLs for one entry, or {} when the repo publishes none.
  * The entry's own `assets` list is capped at 40 files and so cannot hold a
  * 50-story audio set — this reads the release history directly.
  */
@@ -437,9 +443,14 @@ export function parseStoryMarkdown(md) {
 
 /**
  * Map story number -> `{ url, size }` from a repo's release assets, newest release
- * first. Mirrors the reader's old latestReleaseWithAllExt('.mp3'): a text
+ * first. Mirrors the reader's latestReleaseWithAllExt(AUDIO_EXTS): a text
  * release and an audio release are often different tags. Prefers the higher
  * bitrate when a story ships several (…_01_128kbps.mp3 over …_01_32kbps.mp3).
+ *
+ * Both mp3 and m4a count. 78 of the 92 languages whose catalog entry says
+ * "audio" publish their recordings only as m4a (AAC in an MP4 container,
+ * which every current browser's <audio> plays); matching mp3 alone left all
+ * 78 with an Audio badge on Discover and no player anywhere on the site.
  */
 export function audioByStory(releases) {
   const bitrate = (name) => {
@@ -449,7 +460,7 @@ export function audioByStory(releases) {
   for (const release of releases || []) {
     const out = {};
     for (const a of release?.assets || []) {
-      if (!a || !a.name || !a.browser_download_url || !/\.mp3$/i.test(a.name)) continue;
+      if (!a || !a.name || !a.browser_download_url || !/\.(mp3|m4a)$/i.test(a.name)) continue;
       const m = a.name.match(/(?:^|[_-])(\d{2})(?:[_-]|\.)/);
       if (!m) continue;
       const n = parseInt(m[1], 10);
@@ -1099,7 +1110,7 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
       if (assets !== entry.assets) fetched++;
       entries.push({ ...entry, assets, firstReleased });
     }
-    // Per-story mp3s for the story pages. Only for languages that advertise
+    // Per-story mp3/m4a files for the story pages. Only for languages that advertise
     // audio, and the releases list is cached, so this adds no fetches for
     // entries whose assets were just looked up.
     let storyAudio;

@@ -461,10 +461,14 @@
     return null;
   }
 
-  function latestReleaseWithAllExt(releases, ext) {
+  // Per-story recordings are published as mp3 or m4a (78 languages ship
+  // m4a only) — the same list as audioByStory() in scripts/fetch-catalog.mjs.
+  const AUDIO_EXTS = [".mp3", ".m4a"];
+
+  function latestReleaseWithAllExt(releases, exts) {
     for (const r of releases) {
       const matches = (r.assets || []).filter((a) =>
-        a.name.toLowerCase().endsWith(ext)
+        exts.some((ext) => a.name.toLowerCase().endsWith(ext))
       );
       if (matches.length > 0) return { release: r, assets: matches };
     }
@@ -780,7 +784,7 @@
     fetchAllReleases(entry).then((releases) => {
       if (releases.length === 0) return;
 
-      const audioFound = latestReleaseWithAllExt(releases, ".mp3");
+      const audioFound = latestReleaseWithAllExt(releases, AUDIO_EXTS);
       if (audioFound) {
         audioTag = audioFound.release.tag_name;
         audioFound.assets.forEach((f) => {

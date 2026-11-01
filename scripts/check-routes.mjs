@@ -138,8 +138,8 @@ for (const lang of languages) {
 //
 // The generalisation of check 3a, and of two findings that were the same
 // shape as it: "Listen (audio)" appeared on 92 hubs and resolved to a story
-// page with no player on 78 of them (their only "audio" was a YouTube
-// playlist, which is video), and "Read online" appeared on the 14 languages
+// page with no player on 78 of them (their audio is per-story m4a, which the
+// build did not yet recognise), and "Read online" appeared on the 14 languages
 // whose repo is a "Video only" placeholder. A link that exists and resolves
 // is not the same as a link that delivers.
 for (const lang of languages) {

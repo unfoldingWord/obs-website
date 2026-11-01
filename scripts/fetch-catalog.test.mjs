@@ -821,6 +821,51 @@ test('audioByStory takes the newest release with per-story mp3s, preferring bitr
   assert.deepEqual(audioByStory([{ assets: [{ name: 'whole_obs.zip', browser_download_url: 'https://e/z.zip' }] }]), {});
 });
 
+// 78 languages publish their recordings only as m4a (hoj_obs v1:
+// hoj_obs_v1_01_128kbps.m4a … _50_), and matching mp3 alone gave every one
+// of them an Audio badge on Discover and no player on any story page.
+test('audioByStory reads per-story m4a the same way as mp3', () => {
+  const m4a = (n, kbps) => ({
+    name: `hoj_obs_v1_${String(n).padStart(2, '0')}_${kbps}kbps.m4a`,
+    browser_download_url: `https://e/${n}_${kbps}.m4a`,
+    size: 4290729,
+  });
+  const map = audioByStory([
+    { tag_name: 'v1', assets: [
+      { name: 'Android App - Open Bible Stories', browser_download_url: 'https://play.google.com/store/apps/details?id=x' },
+      ...Array.from({ length: 50 }, (_, i) => m4a(i + 1, 128)),
+      m4a(1, 32),
+      { name: 'YouTube - Haroti Playlist', browser_download_url: 'https://www.youtube.com/playlist?list=PLx' },
+    ] },
+  ]);
+  assert.equal(Object.keys(map).length, 50, 'all fifty stories, no link assets');
+  assert.deepEqual(map[1], { url: 'https://e/1_128.m4a', size: 4290729 }, 'higher bitrate still wins');
+  assert.equal(map[50].url, 'https://e/50_128.m4a');
+  // A newer mp3 release still wins over an older m4a one — newest release
+  // first, whichever format it is in.
+  const newer = audioByStory([
+    { tag_name: 'v2', assets: [{ name: 'x_obs_v2_01_64kbps.mp3', browser_download_url: 'https://e/v2.mp3' }] },
+    { tag_name: 'v1', assets: [m4a(1, 128)] },
+  ]);
+  assert.equal(newer[1].url, 'https://e/v2.mp3');
+  assert.deepEqual(audioByStory([{ assets: [{ name: 'x_01.M4A', browser_download_url: 'https://e/1.M4A' }] }])[1].url, 'https://e/1.M4A', 'extension is case-insensitive');
+});
+
+// Why `.m4a` is not in ASSET_NAME_RE: a 50-file m4a release lists its
+// YouTube playlist last, and compactAssets keeps only 40 — counting m4a
+// would cut the playlist and the hub's "Watch" button with it.
+test('compactAssets keeps a YouTube link that follows 50 per-story m4a files', () => {
+  const release = {
+    assets: [
+      ...Array.from({ length: 50 }, (_, i) => ({ name: `ahr_obs_v1_${String(i + 1).padStart(2, '0')}_128kbps.m4a`, browser_download_url: `https://e/${i + 1}.m4a`, size: 1 })),
+      { name: 'Android App - Open Bible Stories', browser_download_url: 'https://play.google.com/store/apps/details?id=x' },
+      { name: 'YouTube - Ahirani Playlist', browser_download_url: 'https://www.youtube.com/playlist?list=PLx' },
+    ],
+  };
+  const assets = compactAssets({ release });
+  assert.deepEqual(assets.map((a) => a.url), ['https://www.youtube.com/playlist?list=PLx']);
+});
+
 // Per-story video (#16): same numbering rule as the audio map, but the
 // SMALLEST rendition wins — a story page is often opened on a phone on a
 // slow connection, and the hub still links the full set.

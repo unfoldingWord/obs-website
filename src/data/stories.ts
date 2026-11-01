@@ -26,7 +26,7 @@ export interface Story {
   /** "A Bible story from: Genesis 1-2", in the language, when present. */
   reference: string | null;
   frames: StoryFrame[];
-  /** Per-story mp3 from the newest release that has one, else null. */
+  /** Per-story mp3 or m4a from the newest release that has one, else null. */
   audio: string | null;
   /** Per-story video file (smallest rendition published), else null. Absent
    *  in story files written before #16 — read it as optional. */
