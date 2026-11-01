@@ -23,6 +23,7 @@ import {
   hubLocaleFor,
   fontHrefForScript,
   displayName,
+  audioOnlyTitle,
   type CatalogLanguage,
 } from '../../../../data/catalog';
 import { storiesFor, type Story } from '../../../../data/stories';
@@ -65,12 +66,23 @@ const fill = (s: string, vars: Record<string, string | number>) =>
   Object.entries(vars).reduce((acc, [k, v]) => acc.replaceAll(`{${k}}`, String(v)), s);
 
 const name = displayName(lang);
+// An audio-only story — a "Video only" placeholder language's recording — has
+// no title or text of its own. Its heading is the same story's title in the
+// chrome language's translation (English when that has none), marked with
+// THAT language, since it is not the language of the recording.
+const audioOnly = story.audioOnly === true;
+const borrowed = audioOnly ? audioOnlyTitle(lang, story.num) : null;
+const heading = audioOnly
+  ? borrowed?.title ?? fill(t.storyN, { n: story.num, total: STORY_COUNT })
+  : story.title ?? '';
+const headingLang = audioOnly ? borrowed?.code ?? ui.tag : lang.code;
+const headingDir = audioOnly ? borrowed?.direction ?? ui.dir : lang.direction;
 const i = nums.indexOf(story.num);
 const prev = i > 0 ? nums[i - 1] : null;
 const next = i >= 0 && i < nums.length - 1 ? nums[i + 1] : null;
 
-const title = `${story.title} — ${name} | Open Bible Stories`;
-const description = fill(t.meta.description, { story: story.title, n: story.num, language: name });
+const title = `${heading} — ${name} | Open Bible Stories`;
+const description = fill(audioOnly ? t.meta.audioOnlyDescription : t.meta.description, { story: heading, n: story.num, language: name });
 const firstImage = story.frames.find((f) => f.image)?.image;
 const mediaLabel = (label: string, size?: number | null) =>
   formatSize(size ?? null) ? `${label} · ${formatSize(size ?? null)}` : label;
@@ -103,11 +115,12 @@ if (story.video) {
   label('watch', t.watch);
   mark(mediaLabel(t.videoFile, story.videoSize), { k: 'story.videoFile', x: formatSize(story.videoSize ?? null) ? ` · ${formatSize(story.videoSize ?? null)}` : undefined });
 }
-if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
+if (audioOnly) label('audioOnlyNote', t.audioOnlyNote, { language: name });
+else if (story.audio || story.video) label('transcriptNote', t.transcriptNote, { language: name });
 story.frames.forEach((f, i) => {
-  if (f.image) label('imageAlt', t.imageAlt, { story: story.title, n: imageNumber(i) });
+  if (f.image) label('imageAlt', t.imageAlt, { story: heading, n: imageNumber(i) });
 });
-label('openInReader', t.openInReader);
+if (!audioOnly) label('openInReader', t.openInReader);
 if (prev) label('previous', t.previous);
 if (next) label('next', t.next);
 label('license', t.license);
@@ -118,7 +131,7 @@ label('license', t.license);
   slug="discover"
   title={title}
   description={description}
-  jsonLd={storyNodes(lang, story)}
+  jsonLd={storyNodes(lang, story, heading)}
   canonicalPath={storyPath(lang.code, story.num)}
   htmlLang={lang.code}
   dir={lang.direction}
@@ -136,7 +149,7 @@ label('license', t.license);
       <span class="story-count">{fill(t.storyN, { n: story.num, total: STORY_COUNT })}</span>
     </nav>
 
-    <h1 lang={lang.code} dir={lang.direction}>{story.title}</h1>
+    <h1 lang={headingLang} dir={headingDir}>{heading}</h1>
 
     {/* This story's own recording, not a link to a zip of all fifty (#16).
         The text below is the transcript of it — said in words, and wired to
@@ -168,7 +181,9 @@ label('license', t.license);
             <a class="story-media-dl" href={story.video} download target="_blank" rel="noopener">{mediaLabel(t.videoFile, story.videoSize)}</a>
           </p>
         )}
-        <p class="story-transcript-note">{fill(t.transcriptNote, { language: name })}</p>
+        {/* An audio-only story has no words below to be the transcript, so
+            it says what it is instead: the recording is the translation. */}
+        <p class="story-transcript-note">{fill(audioOnly ? t.audioOnlyNote : t.transcriptNote, { language: name })}</p>
       </div>
     )}
 
@@ -183,15 +198,15 @@ label('license', t.license);
           {f.image && (
             <img
               src={f.image}
-              alt={fill(t.imageAlt, { story: story.title, n: imageNumber(i) })}
-              lang={lang.code}
+              alt={fill(t.imageAlt, { story: heading, n: imageNumber(i) })}
+              lang={audioOnly ? headingLang : lang.code}
               width="360"
               height="203"
               loading="lazy"
               decoding="async"
             />
           )}
-          <p>{f.text}</p>
+          {f.text && <p>{f.text}</p>}
         </div>
       ))}
     </div>
@@ -200,9 +215,12 @@ label('license', t.license);
       <p class="story-reference" lang={lang.code} dir={lang.direction}><em>{story.reference}</em></p>
     )}
 
-    <p class="story-open-reader" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
-      <a class="btn btn-outline" href={`${languagePath(lang.code)}#story-${story.num}`}>{t.openInReader}</a>
-    </p>
+    {/* The reader shows text; an audio-only language's hub has no reader. */}
+    {!audioOnly && (
+      <p class="story-open-reader" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
+        <a class="btn btn-outline" href={`${languagePath(lang.code)}#story-${story.num}`}>{t.openInReader}</a>
+      </p>
+    )}
 
     <nav class="story-nav" lang={ui.tag} dir={ui.dir} data-i18n-scope="story">
       {prev

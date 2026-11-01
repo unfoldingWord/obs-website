@@ -1,6 +1,7 @@
 {
   "meta": {
-    "description": "{story} — {language} ভাষায় Open Bible Stories-এর {n} নম্বর গল্প। সম্পূর্ণ পাঠ পড়ুন, চিত্র দেখুন এবং অডিও শুনুন। উন্মুক্ত লাইসেন্সে বিনামূল্যে।"
+    "description": "{story} — {language} ভাষায় Open Bible Stories-এর {n} নম্বর গল্প। সম্পূর্ণ পাঠ পড়ুন, চিত্র দেখুন এবং অডিও শুনুন। উন্মুক্ত লাইসেন্সে বিনামূল্যে।",
+    "audioOnlyDescription": "{story} — {language} ভাষায় Open Bible Stories-এর {n} নম্বর গল্প, অডিও রেকর্ডিং হিসেবে। শুনুন এবং চিত্রগুলোর সাথে মিলিয়ে নিন। উন্মুক্ত লাইসেন্সে বিনামূল্যে।"
   },
   "storyN": "গল্প {n} / {total}",
   "listen": "এই গল্পটি শুনুন",
@@ -8,6 +9,7 @@
   "downloadAudio": "অডিও ডাউনলোড করুন",
   "downloadVideo": "ভিডিও ডাউনলোড করুন",
   "transcriptNote": "এই রেকর্ডিংয়ের কথাগুলো নিচে {language} ভাষায় দেওয়া আছে।",
+  "audioOnlyNote": "এই গল্পটি {language} ভাষায় লিখিত পাঠ হিসেবে নয়, রেকর্ডিং হিসেবে প্রকাশিত।",
   "imageAlt": "{story} — ছবি {n}",
   "previous": "পূর্ববর্তী",
   "next": "পরবর্তী",

@@ -34,9 +34,10 @@ export function textResponse(body: string, contentType = 'text/plain; charset=ut
 }
 
 /** Languages whose story text is in THIS build — the only ones with a
- *  mirror, and the only ones llms.txt may name one for. */
+ *  mirror, and the only ones llms.txt may name one for. A placeholder
+ *  language's story pages are audio-only: there is no text to mirror. */
 export function mirroredLanguages(): CatalogLanguage[] {
-  return languages.filter((l) => hasStories(l.code) && (l.storyNums ?? []).length > 0);
+  return languages.filter((l) => !l.placeholder && hasStories(l.code) && (l.storyNums ?? []).length > 0);
 }
 
 const ATTRIBUTION = `The original work by unfoldingWord is available from ${SITE_URL}`;

@@ -16,6 +16,7 @@
   "extractTitle": "De la historia 1",
   "extractAlt": "Una ilustración de Open Bible Stories en {language}",
   "storiesTitle": "Historias ({n} de {total})",
+  "audioStoriesTitle": "Historias para escuchar ({n} de {total})",
   "version": "v{version}",
   "teams": "{n} equipos han publicado este idioma.",
   "allLanguages": "Todos los idiomas",
@@ -35,7 +36,8 @@
   "faqStories": {
     "all": "Las 50 están traducidas al {language}, y todas se pueden leer en esta página.",
     "some": "{n} de ellas se pueden leer en {language} en esta página hasta ahora, y se están traduciendo más.",
-    "none": "Estas historias todavía no tienen sus propias páginas en este sitio en {language}; léelas en el lector de esta página o usa las descargas que aparecen más arriba."
+    "none": "Estas historias todavía no tienen sus propias páginas en este sitio en {language}; léelas en el lector de esta página o usa las descargas que aparecen más arriba.",
+    "audio": "En {language} están publicadas como grabaciones y no como texto escrito, y cada una tiene su propia página en este sitio donde puedes escucharla."
   },
   "faq": [
     {

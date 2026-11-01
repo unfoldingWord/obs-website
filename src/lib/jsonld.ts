@@ -307,13 +307,19 @@ export function hubNodes(lang: CatalogLanguage, builtStoryNums: Set<number>) {
  * `thumbnailUrl` — required by Google for a VideoObject — come from the
  * release date and the story's first illustration, so a VideoObject is
  * emitted only when both exist.
+ *
+ * An audio-only story (a placeholder language's recording) has no text, so it
+ * has no `text` and its media no `transcript` — an empty one would claim the
+ * recording says nothing. Its `name` is the title the page shows, which the
+ * caller passes because it is borrowed from another translation.
  */
-export function storyNodes(lang: CatalogLanguage, story: Story) {
+export function storyNodes(lang: CatalogLanguage, story: Story, name: string = story.title ?? '') {
   const url = `${SITE_URL}${storyPath(lang.code, story.num)}`;
+  const text = story.frames.map((f) => f.text).filter(Boolean).join(' ');
   const node: Record<string, unknown> = {
     '@type': 'CreativeWork',
     '@id': `${url}#story`,
-    name: story.title,
+    name,
     url,
     position: story.num,
     inLanguage: lang.code,
@@ -321,20 +327,20 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
     isAccessibleForFree: true,
     isPartOf: { '@id': hubId(lang.code) },
     publisher: { '@id': PUBLISHER_ID },
-    text: story.frames.map((f) => f.text).join(' '),
+    ...(text ? { text } : {}),
   };
   const image = story.frames.find((f) => f.image)?.image;
   if (image) node.image = image;
   if (story.reference) node.citation = story.reference;
-  const transcript = node.text as string;
+  const transcript = text ? { transcript: text } : {};
   if (story.audio) {
     node.audio = {
       '@type': 'AudioObject',
       contentUrl: story.audio,
       encodingFormat: /\.m4a$/i.test(story.audio) ? 'audio/mp4' : 'audio/mpeg',
       inLanguage: lang.code,
-      name: story.title,
-      transcript,
+      name,
+      ...transcript,
       license: LICENSE_URL,
       isAccessibleForFree: true,
     };
@@ -349,8 +355,8 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
   if (story.video && image && story.videoDate) {
     node.video = {
       '@type': 'VideoObject',
-      name: story.title,
-      description: story.title,
+      name,
+      description: name,
       contentUrl: story.video,
       encodingFormat: /\.3gp$/i.test(story.video) ? 'video/3gpp' : 'video/mp4',
       thumbnailUrl: image,
@@ -358,7 +364,7 @@ export function storyNodes(lang: CatalogLanguage, story: Story) {
       // date; Google wants a datetime with a timezone, so read it as UTC.
       uploadDate: /^\d{4}-\d{2}-\d{2}$/.test(story.videoDate) ? `${story.videoDate}T00:00:00Z` : story.videoDate,
       inLanguage: lang.code,
-      transcript,
+      ...transcript,
       license: LICENSE_URL,
       isAccessibleForFree: true,
       publisher: { '@id': PUBLISHER_ID },

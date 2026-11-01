@@ -35,6 +35,7 @@ import {
   formatSize,
   displayName,
   storyImage,
+  audioOnlyTitle,
   type CatalogLanguage,
 } from '../../../data/catalog';
 import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
@@ -97,8 +98,8 @@ const partial = stories.length > 0 && stories.length < STORY_COUNT;
 // (Those 78 were first read as YouTube-only. They were not: every one
 // publishes per-story m4a files, which audioByStory() did not yet match. It
 // does now, and the 66 of them with story pages get Listen back through the
-// gate below. The other 12 are "Video only" placeholders with no story pages,
-// so there is still no page for their audio to play on.)
+// gate below. The other 12 are "Video only" placeholders, whose recordings
+// now get audio-only story pages — see `audioOnly` below.)
 //
 // So each button is gated on the thing it opens. `check:routes` asserts the
 // same invariant against the built HTML.
@@ -115,6 +116,11 @@ const audioStory = firstStoryWith((s) => s.audio);
 const videoStory = firstStoryWith((s) => s.video);
 const hasAudio = audioStory !== null || Boolean(audioZip);
 const hasVideo = Boolean(youtube) || Boolean(videoFile) || videoStory !== null;
+// A "Video only" placeholder language whose recordings are its translation:
+// its story pages are audio-only (no text, so no reader and no "Read online"),
+// and the hub lists them under their own heading, each with a title borrowed
+// from the chrome language's translation (see audioOnlyTitle()).
+const audioOnly = storyRecords.length > 0 && storyRecords.every((s) => s.audioOnly);
 // How many stories a visitor can actually READ here — the ones the story list
 // links, not the titles that were read from the repo. The hub FAQ's first
 // answer is built from this, so it cannot promise stories that have no page
@@ -124,10 +130,11 @@ const readable = stories.filter((s) => paged.has(s.num)).length;
 // read at all, the reader still opens (it falls back to the live catalog) and
 // the downloads still exist. So the sentence says there are no story PAGES
 // and points at what does work.
-const storiesSentence = fill(
-  readable === 0 ? t.faqStories.none : readable >= STORY_COUNT ? t.faqStories.all : t.faqStories.some,
-  { language: name, n: readable, total: STORY_COUNT }
-);
+// Which of the faqStories sentences this build can stand behind. `audio` is
+// for the audio-only languages, where "read them in the reader" would point
+// at a reader this hub does not have.
+const storiesKey = audioOnly ? 'audio' : readable === 0 ? 'none' : readable >= STORY_COUNT ? 'all' : 'some';
+const storiesSentence = fill(t.faqStories[storiesKey], { language: name, n: readable, total: STORY_COUNT });
 const publishers = publishersOf(lang);
 const primary = lang.entries[0];
 const fontHref = fontHrefForScript(lang.script);
@@ -155,6 +162,10 @@ const fontHref = fontHrefForScript(lang.script);
  * on nothing.
  */
 const hasPages = firstStory !== null;
+// The reader fragments are only the way in when there are titles to read;
+// a hub with nothing to read (or only recordings) has no reader to need
+// JavaScript for.
+const readerOnly = !hasPages && stories.length > 0;
 const read = (story?: number) => {
   if (hasPages) return storyPath(lang.code, story ?? firstStory!);
   const num = story ?? stories[0]?.num ?? null;
@@ -227,7 +238,7 @@ if (audioZip) {
   // swapped wording has to drop it too — that is what `z` says.
   mark(size ? fill(t.audioZip, { size }) : t.audioZip.replace(/\s*[（(]\{size\}[)）]/, ''), size ? { k: 'hub.audioZip', a: { size } } : { k: 'hub.audioZip', z: 1 });
 }
-if (!hasPages) label('readerNeedsJs', t.readerNeedsJs);
+if (readerOnly) label('readerNeedsJs', t.readerNeedsJs);
 label('app', t.app);
 if (lang.extract) {
   label('extractAlt', t.extractAlt, { language: name, story: lang.extract.title ?? '' });
@@ -244,17 +255,17 @@ if (stories.length > 0) {
     label('partialLink', t.partialLink);
   }
 }
+if (audioOnly) label('audioStoriesTitle', t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT });
 label('faqTitle', t.faqTitle, { language: name });
 t.faq.forEach((item: { q: string; a: string }, i: number) => {
   mark(fill(item.q, { language: name }), { k: `hub.faq.${i}.q`, a: { language: name } });
-  // The story sentence is itself one of three chrome strings, chosen from
-  // what this build can render; it goes in by reference so the swap picks the
-  // same one in the preferred locale.
-  const which = readable === 0 ? 'none' : readable >= STORY_COUNT ? 'all' : 'some';
+  // The story sentence is itself one of the faqStories chrome strings, chosen
+  // from what this build can render; it goes in by reference so the swap
+  // picks the same one in the preferred locale.
   mark(fill(item.a, { language: name, stories: storiesSentence }), {
     k: `hub.faq.${i}.a`,
     a: { language: name, n: readable, total: STORY_COUNT },
-    r: { stories: `hub.faqStories.${which}` },
+    r: { stories: `hub.faqStories.${storiesKey}` },
   });
 });
 label('faqMore', t.faqMore);
@@ -321,7 +332,7 @@ label('source', t.source);
     {/* With no story pages the read controls above are reader fragments,
         which do nothing without JavaScript. Say so, to whoever it applies to,
         and point at what does work — rather than leaving them clicking. */}
-    {!hasPages && (
+    {readerOnly && (
       <noscript>
         <p class="hub-js-note">{t.readerNeedsJs}</p>
       </noscript>
@@ -408,6 +419,31 @@ label('source', t.source);
             )}
           </li>
         ))}
+      </ol>
+    </div>
+  </section>
+)}
+
+{/* An audio-only language's stories: each links its own page, where the
+    recording plays alongside the story's illustrations. The titles are the
+    chrome language's (see audioOnlyTitle()), so they carry its lang, not the
+    content language's. Plain links — this hub has no reader to intercept them. */}
+{audioOnly && (
+  <section class="hub-stories" data-i18n-scope="hub">
+    <div class="wrap">
+      <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{fill(t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT })}</h2>
+      <ol class="hub-story-list">
+        {storyRecords.map((s) => {
+          const borrowed = audioOnlyTitle(lang, s.num);
+          return (
+            <li>
+              <a href={storyPath(lang.code, s.num)}>
+                <span class="hub-story-num" lang={ui.tag}>{s.num}</span>
+                {borrowed && <span class="hub-story-title" lang={borrowed.code} dir={borrowed.direction}>{borrowed.title}</span>}
+              </a>
+            </li>
+          );
+        })}
       </ol>
     </div>
   </section>

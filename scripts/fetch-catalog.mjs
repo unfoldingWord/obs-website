@@ -1015,6 +1015,10 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
         extract: prev.extract,
         // Re-derived, not copied: see scriptSample().
         script: scriptFor(lang.code, scriptSample(prev)) || prev.script || lang.script,
+        // A placeholder with recordings has a story file (its audio-only
+        // pages), so it is reused like any other language — and has to stay
+        // a placeholder, or writeStoryFiles would stop refreshing those pages.
+        ...(prev.placeholder ? { placeholder: true } : {}),
       };
     }
     const result = await fetchStories(lang, fetchImpl);
@@ -1041,7 +1045,7 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
   if (stubs.length) {
     log.log(
       `[catalog] stories: ${stubs.length} language(s) publish a placeholder ("Video only") instead of story text, ` +
-        `so they get no story pages: ${stubs.join(', ')}`
+        `so they get no text story pages (those with recordings get audio-only ones): ${stubs.join(', ')}`
     );
   }
   for (const [layout, t] of Object.entries(tally)) {
@@ -1060,6 +1064,10 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
   for (const lang of out) {
     delete lang.layout;
     delete lang.bodies;
+    // Unlike the two above, this one is a public fact and is kept, as
+    // `placeholder`: writeStoryFiles gives a placeholder with recordings its
+    // audio-only story pages, and the mirror and reader bundle leave it out.
+    if (lang.stub) lang.placeholder = true;
     delete lang.stub;
   }
   return out;
@@ -1179,6 +1187,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
   mkdirSync(dir, { recursive: true });
   let written = 0;
   let merged = 0;
+  let audioOnly = 0;
   for (const lang of languages) {
     const audio = lang.storyAudio || {};
     const video = lang.storyVideo || {};
@@ -1198,6 +1207,19 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
     delete lang.storyVideo;
+    // A placeholder repo has no text, but its recordings are the translation:
+    // each story with one gets an audio-only page. Rewritten every run from
+    // the fresh media maps, so a story recorded later gains its page. With no
+    // map this run (the releases lookup failed), fall through and keep
+    // whatever file is already on disk, as a text language does.
+    if (!full.length && lang.placeholder && Object.keys(audio).length) {
+      const stories = audioOnlyStories(audio, video);
+      lang.storyNums = stories.map((s) => s.num);
+      writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories }) + '\n');
+      written++;
+      audioOnly++;
+      continue;
+    }
     if (!full.length) {
       // Reused from the previous snapshot: the bodies were never re-fetched,
       // but the file is still on disk, so keep the numbers it already had.
@@ -1215,7 +1237,37 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
     written++;
   }
   if (merged) console.log(`[catalog] stories: merged media into ${merged} cached story file(s)`);
+  if (audioOnly) console.log(`[catalog] stories: ${audioOnly} placeholder language(s) get audio-only story pages`);
   return written;
+}
+
+/**
+ * Story records for a placeholder language that publishes recordings: one per
+ * story with audio, in story order.
+ *
+ * There is no text to put on the page, so `title` is null (the page borrows
+ * one from its chrome language — see audioOnlyTitle() in src/data/catalog.ts)
+ * and every frame's text is empty. The frames still carry the story's
+ * illustrations: they are the same files in every language, and following the
+ * pictures is how a listener keeps their place in a recording.
+ */
+export function audioOnlyStories(audio = {}, video = {}) {
+  return Object.keys(audio)
+    .map(Number)
+    .filter((num) => num >= 1 && num <= STORY_COUNT && audio[num]?.url)
+    .sort((a, b) => a - b)
+    .map((num) => ({
+      num,
+      title: null,
+      audioOnly: true,
+      reference: null,
+      frames: Array.from({ length: FRAMES_PER_STORY[num] ?? 0 }, (_, i) => ({ image: tsStoryImageUrl(num, i + 1), text: '' })),
+      audio: audio[num].url,
+      audioSize: audio[num].size ?? null,
+      video: video[num]?.url ?? null,
+      videoDate: video[num]?.date ?? null,
+      videoSize: video[num]?.size ?? null,
+    }));
 }
 
 /**

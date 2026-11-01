@@ -9,14 +9,16 @@
 //
 // Emitted only for languages whose story text is in this build (hasStories),
 // so a Door43 outage during a build yields no endpoint rather than an empty
-// one, and reader.js falls back to its original live-catalog path.
+// one, and reader.js falls back to its original live-catalog path. A
+// placeholder language's story file is recordings with no text, and its hub
+// has no reader, so it gets no bundle either.
 import type { APIRoute } from 'astro';
 import { languages, type CatalogLanguage } from '../../../data/catalog';
 import { storiesFor, hasStories } from '../../../data/stories';
 
 export function getStaticPaths() {
   return languages
-    .filter((lang) => hasStories(lang.code) && (lang.storyNums ?? []).length)
+    .filter((lang) => !lang.placeholder && hasStories(lang.code) && (lang.storyNums ?? []).length)
     .map((lang) => ({ params: { code: lang.code }, props: { lang } }));
 }
 

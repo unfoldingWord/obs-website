@@ -16,6 +16,7 @@
   "extractTitle": "故事 1 节选",
   "extractAlt": "{language} Open Bible Stories 的一幅插图",
   "storiesTitle": "故事（{n} / {total}）",
+  "audioStoriesTitle": "可收听的故事（{n} / {total}）",
   "version": "v{version}",
   "teams": "已有 {n} 个团队发布此语言。",
   "allLanguages": "所有语言",
@@ -35,7 +36,8 @@
   "faqStories": {
     "all": "全部 50 个故事都已译成 {language}，每一个都可以在本页阅读。",
     "some": "目前有 {n} 个故事可以用 {language} 在本页阅读，其余正在翻译。",
-    "none": "这些故事在本站还没有 {language} 的独立页面——请在本页的阅读器中阅读，或使用上方列出的下载文件。"
+    "none": "这些故事在本站还没有 {language} 的独立页面——请在本页的阅读器中阅读，或使用上方列出的下载文件。",
+    "audio": "这些故事以 {language} 录音而非书面文字的形式发布，每个故事在本站都有自己的页面，可以在那里收听。"
   },
   "faq": [
     {
