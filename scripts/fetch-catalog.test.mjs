@@ -340,6 +340,14 @@ test('detectScript covers the Indic, Lao and Ethiopic scripts the catalog publis
   assert.equal(detectScript('ከዚህ ቀጥሎ የምንመለከተው እግዚአብሔር'), 'ethiopic');
 });
 
+// Khmer (DokuWiki/km_obs v1, first released 2026-10-27) detected as `other`
+// and failed check:scripts until it had a pack. Its story text carries
+// U+200B between clauses, which is not a letter and must not tip the count.
+test('detectScript recognises Khmer', () => {
+  assert.equal(detectScript('ការបង្កើតពិភពលោក'), 'khmer');
+  assert.equal(detectScript('ដើមកំណើតរបស់អ្វីៗទាំងអស់បានកើតឡើងដូច្នេះ' + String.fromCharCode(0x200b) + '។ ព្រះបានបង្កើតសាកលលោក'), 'khmer');
+});
+
 // Danda (U+0964) sits in the Devanagari block but is shared punctuation
 // across the Indic scripts. Counting it as Devanagari is what made short
 // Odia samples — which use it heavily — detect as the wrong script.

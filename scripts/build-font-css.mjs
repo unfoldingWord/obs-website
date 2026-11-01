@@ -37,9 +37,9 @@ const PACKS = {
   han: [{ pkg: '@fontsource/noto-sans-sc', weights: [400, 700] }],
   // The scripts below carry no marketing locale — they exist because the
   // published translations do: 17 languages in Odia script, 14 in Gujarati,
-  // and one each in Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Lao and
-  // Ethiopic. Without a pack their hubs and story pages rendered in
-  // whatever the visitor's OS had, which for most of these is nothing.
+  // and one each in Gurmukhi, Tamil, Telugu, Kannada, Malayalam, Lao,
+  // Khmer and Ethiopic. Without a pack their hubs and story pages rendered
+  // in whatever the visitor's OS had, which for most of these is nothing.
   gurmukhi: [{ pkg: '@fontsource/noto-sans-gurmukhi', weights: [400, 700] }],
   gujarati: [{ pkg: '@fontsource/noto-sans-gujarati', weights: [400, 700] }],
   oriya: [{ pkg: '@fontsource/noto-sans-oriya', weights: [400, 700] }],
@@ -48,6 +48,7 @@ const PACKS = {
   kannada: [{ pkg: '@fontsource/noto-sans-kannada', weights: [400, 700] }],
   malayalam: [{ pkg: '@fontsource/noto-sans-malayalam', weights: [400, 700] }],
   lao: [{ pkg: '@fontsource/noto-sans-lao', weights: [400, 700] }],
+  khmer: [{ pkg: '@fontsource/noto-sans-khmer', weights: [400, 700] }],
   ethiopic: [{ pkg: '@fontsource/noto-sans-ethiopic', weights: [400, 700] }],
   cyrillic: [
     { pkg: '@fontsource/nunito-sans', weights: [400, 600, 700], subsets: ['cyrillic', 'cyrillic-ext'] },

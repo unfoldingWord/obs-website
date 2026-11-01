@@ -565,8 +565,8 @@ export function makeExtract({ title, paragraphs, reference }, maxChars = EXTRACT
 export function detectScript(text) {
   const counts = {
     arabic: 0, devanagari: 0, bengali: 0, gurmukhi: 0, gujarati: 0, oriya: 0,
-    tamil: 0, telugu: 0, kannada: 0, malayalam: 0, lao: 0, ethiopic: 0,
-    myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0,
+    tamil: 0, telugu: 0, kannada: 0, malayalam: 0, lao: 0, khmer: 0,
+    ethiopic: 0, myanmar: 0, han: 0, cyrillic: 0, latin: 0, other: 0,
   };
   for (const ch of String(text || '')) {
     const c = ch.codePointAt(0);
@@ -587,6 +587,7 @@ export function detectScript(text) {
     else if (c >= 0xc80 && c <= 0xcff) counts.kannada++;
     else if (c >= 0xd00 && c <= 0xd7f) counts.malayalam++;
     else if (c >= 0xe80 && c <= 0xeff) counts.lao++;
+    else if ((c >= 0x1780 && c <= 0x17ff) || (c >= 0x19e0 && c <= 0x19ff)) counts.khmer++;
     else if ((c >= 0x1200 && c <= 0x139f) || (c >= 0x2d80 && c <= 0x2ddf)) counts.ethiopic++;
     else if (c >= 0x1000 && c <= 0x109f) counts.myanmar++;
     else if ((c >= 0x4e00 && c <= 0x9fff) || (c >= 0x3400 && c <= 0x4dbf) || (c >= 0x3000 && c <= 0x30ff)) counts.han++;

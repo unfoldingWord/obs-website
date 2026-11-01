@@ -750,7 +750,7 @@ h1[data-i18n-script],h2[data-i18n-script],h3[data-i18n-script],h4[data-i18n-scri
 }
 /* Scripts with no marketing locale — these exist only because published
    translations do (/l/or/, /l/gu/, /l/ta/, /l/te/, /l/kn/, /l/ml/, /l/pa/,
-   /l/lo/, /l/am/ and the 30-odd smaller languages that share their
+   /l/lo/, /l/km/, /l/am/ and the 30-odd smaller languages that share their
    scripts). detectScript() in scripts/fetch-catalog.mjs decides which one a
    language gets. */
 html[data-script="gurmukhi"]{
@@ -784,6 +784,10 @@ html[data-script="malayalam"]{
 html[data-script="lao"]{
   --heading-font:'Noto Sans Lao', 'Montserrat', sans-serif;
   --body-font:'Noto Sans Lao', 'Nunito Sans', sans-serif;
+}
+html[data-script="khmer"]{
+  --heading-font:'Noto Sans Khmer', 'Montserrat', sans-serif;
+  --body-font:'Noto Sans Khmer', 'Nunito Sans', sans-serif;
 }
 html[data-script="ethiopic"]{
   --heading-font:'Noto Sans Ethiopic', 'Montserrat', sans-serif;
