@@ -30,7 +30,8 @@
 //      language has a PDF/audio/video but the entry's own release carries no
 //      such file (Door43-Catalog releases have no assets), the repo's release
 //      history is walked for the newest release that has it, the same way
-//      discover.js resolves formats at runtime.
+//      discover.js resolves formats at runtime. Read fresh on every build:
+//      a release's files can be edited without its catalog entry changing.
 //   4. Story text per language (optional enrichment) — the 50 story titles
 //      and a short extract of story 1, straight from each repo. This is
 //      ~50 small fetches per language; results are cached in the snapshot
@@ -114,14 +115,6 @@ const YOUTUBE_RE = /youtu\.?be/i;
  * English its Watch button and its per-story videos until links were exempt.
  */
 const MAX_LISTED_FILES = 40;
-
-/**
- * The rule compactAssetList trims by, recorded in the snapshot. Bump it when
- * that rule changes: enrichAssets reuses a cached entry's assets only from a
- * snapshot written under the current rule, or an unchanged release would
- * keep its old list for good. 2: YouTube links are exempt from the cap.
- */
-export const ASSET_LIST_VERSION = 2;
 
 /** Downloadable assets worth listing on a hub, from a catalog entry's release. */
 export function compactAssets(entry) {
@@ -1214,20 +1207,19 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
 
 /**
  * Enrich entries whose release lacks an advertised PDF/audio/video with the
- * newest release that has it (see fetchMissingAssets). Cached per entry in
- * the snapshot: an entry with the same entryKey reuses its previous assets,
- * as long as the snapshot was written under the current ASSET_LIST_VERSION.
+ * newest release that has it (see fetchMissingAssets).
+ *
+ * The files are not cached in the snapshot. A release's files can be edited
+ * in place, keeping its tag, and nothing promises its catalog entry changes
+ * with them. When OBS-TLF edited the YouTube links on rkt, dhn, khn and mke
+ * v1 (2026-11), DCS moved each entry's `released` from the publish date to
+ * the creation date, but a second edit would leave that date where it is:
+ * a list cached by tag and date would then keep a removed link for good.
+ * Reading the files fresh adds about 45 release requests to the ~100 a build
+ * already makes for per-story audio and video — under a second (2026-11).
  */
 export async function enrichAssets(languages, previous, fetchImpl = fetch, log = console) {
-  const prevEntries = new Map();
-  const listsCurrent = previous?.assetListVersion === ASSET_LIST_VERSION;
-  if (previous && !listsCurrent) {
-    log.log('[catalog] assets: the previous snapshot trimmed release files by an older rule, so every entry\'s files are re-read');
-  }
-  if (listsCurrent) {
-    for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
-  }
-  // First-release dates are cached by REPO, not by entryKey: the key above
+  // First-release dates are cached by REPO, not by entryKey: that key
   // includes the tag and release date, so a new version of the same repo
   // would miss its own cached history and, on a failed lookup, lose a date
   // that was already known. When a repo was first released never changes.
@@ -1238,13 +1230,11 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
     }
   }
   let fetched = 0;
-  let reused = 0;
   let firstLookups = 0;
   const out = await mapLimit(languages, 6, async (lang) => {
     const wanted = lang.formats;
     const entries = [];
     for (const entry of lang.entries) {
-      const prev = prevEntries.get(entryKey(entry));
       // When the translation was first released (see firstReleaseDate). A
       // date is a fact about the repo's history and never changes, so a
       // cached one is reused for good, across releases (prevFirst); a null
@@ -1254,11 +1244,6 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
       if (!firstReleased) {
         firstLookups++;
         firstReleased = await fetchFirstRelease(entry, fetchImpl);
-      }
-      if (prev && Array.isArray(prev.assets)) {
-        reused++;
-        entries.push({ ...entry, assets: prev.assets, firstReleased });
-        continue;
       }
       const assets = await fetchMissingAssets(entry, wanted, fetchImpl);
       if (assets !== entry.assets) fetched++;
@@ -1293,7 +1278,7 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
       ...(storyVideo ? { storyVideo } : {}),
     };
   });
-  log.log(`[catalog] assets: looked up ${fetched} release histories, reused ${reused} entries from the previous snapshot`);
+  log.log(`[catalog] assets: looked up ${fetched} release histories`);
   const undated = out.reduce((n, l) => n + l.entries.filter((e) => !e.firstReleased).length, 0);
   const unestablished = out.filter((l) => !l.firstPublished).length;
   log.log(`[catalog] first releases: ${firstLookups} looked up, ${undated} entr${undated === 1 ? 'y' : 'ies'} still undated, ${unestablished} language(s) without an established first publication`);
@@ -1359,7 +1344,6 @@ export function buildSnapshot(languages) {
     // Date only, for dateModified in JSON-LD.
     fetchedDate: `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(now.getUTCDate())}`,
     languageCount: languages.length,
-    assetListVersion: ASSET_LIST_VERSION,
     languages,
   };
 }
@@ -1575,7 +1559,7 @@ if (isMain) {
 
   languages = sortLanguages(languages);
 
-  // Optional enrichment 2: PDFs/audio/video from older releases, incrementally.
+  // Optional enrichment 2: PDFs/audio/video from older releases.
   languages = await enrichAssets(languages, previous);
 
   // Optional enrichment 3: each story's video in the language's YouTube playlist.
