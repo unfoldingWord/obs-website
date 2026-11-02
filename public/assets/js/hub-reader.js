@@ -110,6 +110,22 @@
     }
   });
 
+  // The reader announces every story it opens (see announceStory() in
+  // reader.js). A story picked from its menu, or reached by paging past the
+  // end of the one before, gets its fragment too, the same as one picked from
+  // the list. A pick adds a history entry, as a list click does; paging
+  // replaces it, or reading straight through would leave fifty for Back to
+  // step through. When the reader opens, the fragment is only corrected if it
+  // named a different story (one this language does not have); #read stays.
+  el.addEventListener("obs:story", (ev) => {
+    const story = ev.detail && ev.detail.story;
+    if (!story) return;
+    const hash = "#story-" + story;
+    if (location.hash === hash) return;
+    if (ev.detail.via === "pick") history.pushState(null, "", hash);
+    else if (ev.detail.via === "flip" || storyFromHash() !== null) history.replaceState(null, "", hash);
+  });
+
   // Back/forward between stories, and #story-N deep links from elsewhere.
   window.addEventListener("hashchange", () => {
     const s = storyFromHash();

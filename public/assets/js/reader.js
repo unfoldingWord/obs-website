@@ -665,14 +665,14 @@
       if (newIndex < 0) {
         if (current > 1) {
           current -= 1;
-          update("last");
+          update("last", "flip");
         }
         return;
       }
       if (newIndex >= frames.length) {
         if (current < maxStory) {
           current += 1;
-          update(0);
+          update(0, "flip");
         }
         return;
       }
@@ -782,16 +782,28 @@
     }
 
     // startAt forwards through to loadStoryText — see its comment above.
-    function update(startAt) {
+    // `via` says how the story was reached, for announceStory below.
+    function update(startAt, via) {
       selectEl.value = current;
       loadStoryText(current, startAt);
       updateMedia(current);
       updateYoutube(current);
+      announceStory(via || "open");
+    }
+
+    // Tells the page which story is open and how it got there: "open" when
+    // the reader mounts, "pick" from the story picker, "flip" when paging runs
+    // past the end or start of a story. The hub keeps its #story-N fragment in
+    // step from this (hub-reader.js); the reader itself never touches the URL.
+    function announceStory(via) {
+      container.dispatchEvent(
+        new CustomEvent("obs:story", { bubbles: true, detail: { story: current, via: via } })
+      );
     }
 
     selectEl.addEventListener("change", () => {
       current = parseInt(selectEl.value, 10);
-      update(0);
+      update(0, "pick");
     });
     // Arrow-key flipping. Only one reader is ever active at a time on this
     // page (the browse list and its search box are hidden while a reader is
