@@ -70,7 +70,7 @@ export interface CatalogLanguage {
   script:
     | 'latin' | 'cyrillic' | 'arabic' | 'nastaliq' | 'devanagari' | 'bengali'
     | 'gurmukhi' | 'gujarati' | 'oriya' | 'tamil' | 'telugu' | 'kannada'
-    | 'malayalam' | 'lao' | 'ethiopic' | 'myanmar' | 'han' | 'other';
+    | 'malayalam' | 'lao' | 'khmer' | 'ethiopic' | 'myanmar' | 'han' | 'other';
   formats: { pdf: boolean; audio: boolean; video: boolean };
   /** Most recent release date across publishing teams (ISO date). */
   updated: string | null;
@@ -200,7 +200,7 @@ const LOCALE_ALIASES: Record<string, string> = {
  * Cyrillic-script languages of Central Asia.
  *
  * Scripts with no marketing locale (Odia, Gujarati, Tamil, Telugu, Kannada,
- * Malayalam, Gurmukhi, Lao, Ethiopic) are deliberately absent — they stay on
+ * Malayalam, Gurmukhi, Lao, Khmer, Ethiopic) are deliberately absent — they stay on
  * English until those locales exist. The content text itself (the H1, the
  * extract, the story titles and every story page) is always in the content
  * language whatever this returns.
@@ -344,7 +344,7 @@ export function formatSize(n: number | null | undefined): string | null {
 export const FONT_PACKS = [
   'cyrillic', 'arabic', 'nastaliq', 'devanagari', 'bengali', 'gurmukhi',
   'gujarati', 'oriya', 'tamil', 'telugu', 'kannada', 'malayalam', 'lao',
-  'ethiopic', 'myanmar', 'han',
+  'khmer', 'ethiopic', 'myanmar', 'han',
 ] as const;
 
 /** Stylesheet for a detected script, or null when the Latin faces suffice. */
