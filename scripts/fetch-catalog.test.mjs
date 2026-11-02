@@ -42,6 +42,12 @@ import {
   firstReleaseDate,
   fetchFirstRelease,
   firstPublishedDate,
+  youtubeLinkOf,
+  youtubePlaylistId,
+  storyNumberFromTitle,
+  videosByStory,
+  fetchPlaylistVideos,
+  enrichYouTube,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -1131,4 +1137,159 @@ test('contentPathFor finds the stories folder whether or not DCS lists it', () =
   assert.equal(contentPathFor(entry('sb')), 'ingredients');
   assert.equal(contentPathFor(entry('rc')), 'content');
   assert.equal(contentPathFor({ metadata_type: 'rc' }), 'content');
+});
+
+// The reader used to embed a language's whole YouTube playlist and never move
+// it, so every story showed the playlist's first video. Each video's title
+// starts with its story number; these are real titles from the playlists.
+test('storyNumberFromTitle reads the number a playlist video title starts with', () => {
+  const cases = [
+    ['01. सृष्टि', 1],
+    ['02 पापा रौ दुनिया दी आशणौ', 2], // no full stop
+    ['01.परमेश्वरै दवारा संसारा बणाणा', 1], // no space
+    ['50 . यीशु रा भीआ का बापिस ईहणा', 50],
+    ['50۔ جناب یسوع المسیح کی واپسی وے', 50], // Urdu full stop
+    ['۔23 جناب یسوع المسیح کی پیدائش', 23], // ...typed before the number
+    ['૫૦.\u2060 \u2060ઈસુ પાછા આવી રહ્યા છે', 50], // Gujarati digits, word joiners
+    ['১.\u2060 \u2060સર્જન', 1], // a Bengali one in a Gujarati title
+    ['୦୧.ଶିର୍ଜାଅ', 1], // Odia
+    ['\u200b01. सृष्टी', 1], // zero-width space first
+    ['1. The Creation | Open Bible Stories - Indian Sign Language', 1],
+  ];
+  for (const [title, n] of cases) assert.equal(storyNumberFromTitle(title), n, title);
+  for (const title of ['Private video', 'Deleted video', '0. Intro', '51. Extra', '2023 recap', 'OBS 01', '', null]) {
+    assert.equal(storyNumberFromTitle(title), null, String(title));
+  }
+});
+
+test('videosByStory maps by title, whatever the playlist order', () => {
+  const id = (n) => `vid${String(n).padStart(2, '0')}`.padEnd(11, 'x');
+  // A reversed playlist (12 run 50 → 1), with a private video, a video
+  // listed twice, and two different videos both titled 41 (as in unx).
+  const items = [
+    { videoId: id(50), title: '50. यीशु वापिस आवे' },
+    { videoId: 'privatexxxx', title: 'Private video' },
+    { videoId: id(49), title: '49. परमेश्वरोओ नवली वाचा' },
+    { videoId: id(49), title: '49. परमेश्वरोओ नवली वाचा' },
+    { videoId: id(42), title: '୪୧. ପାର୍ମେଶ୍ଵାର୍' },
+    { videoId: id(41), title: '୪୧. ପାର୍ମେଶ୍ଵାର୍' },
+    { videoId: 'bad id', title: '2. not an ID' },
+    { videoId: id(1), title: '1.\u2060 \u2060सृष्टि' },
+  ];
+  assert.deepEqual(videosByStory(items), { 1: id(1), 49: id(49), 50: id(50) }, 'a story two videos claim gets neither');
+  assert.deepEqual(videosByStory([]), {});
+  assert.deepEqual(videosByStory(undefined), {});
+});
+
+test('youtubePlaylistId and youtubeLinkOf find the playlist the hub links', () => {
+  assert.equal(youtubePlaylistId('https://www.youtube.com/playlist?list=PLcaGjtXr4D9kU6tSriQku_b1NuQC7Po1g'), 'PLcaGjtXr4D9kU6tSriQku_b1NuQC7Po1g');
+  assert.equal(youtubePlaylistId('https://youtube.com/watch?v=abcdefghijk&list=PL-x_1'), 'PL-x_1');
+  assert.equal(youtubePlaylistId('https://www.youtube.com/watch?v=abcdefghijk'), null, 'a single video');
+  assert.equal(youtubePlaylistId('https://youtu.be/abcdefghijk'), null);
+  assert.equal(youtubePlaylistId('https://example.com/playlist?list=PL1'), null);
+  assert.equal(youtubePlaylistId(null), null);
+  const lang = {
+    entries: [
+      { assets: [{ name: 'a.pdf', url: 'https://e/a.pdf' }] },
+      { assets: [{ name: 'YouTube', url: 'https://www.youtube.com/playlist?list=PL1' }, { name: 'YouTube', url: 'https://www.youtube.com/playlist?list=PL2' }] },
+    ],
+  };
+  assert.equal(youtubeLinkOf(lang), 'https://www.youtube.com/playlist?list=PL1');
+  assert.equal(youtubeLinkOf({ entries: [] }), null);
+});
+
+function fakeYouTube(pages, calls = []) {
+  return async (url) => {
+    const u = new URL(url);
+    calls.push(u);
+    const page = pages[u.searchParams.get('playlistId')]?.[u.searchParams.get('pageToken') || ''];
+    if (!page) {
+      return { ok: false, status: 404, json: async () => ({ error: { code: 404, errors: [{ reason: 'playlistNotFound' }] } }) };
+    }
+    return { ok: true, status: 200, json: async () => page };
+  };
+}
+const ytItem = (videoId, title) => ({ snippet: { title, resourceId: { kind: 'youtube#video', videoId } } });
+
+test('fetchPlaylistVideos follows pages and reports the API\'s reason, never the key', async () => {
+  const calls = [];
+  const f = fakeYouTube({
+    PL1: {
+      '': { items: [ytItem('aaaaaaaaaaa', '01. One')], nextPageToken: 'p2' },
+      p2: { items: [ytItem('bbbbbbbbbbb', '02. Two')] },
+    },
+  }, calls);
+  assert.deepEqual(await fetchPlaylistVideos('PL1', 'k3y', f), [
+    { videoId: 'aaaaaaaaaaa', title: '01. One' },
+    { videoId: 'bbbbbbbbbbb', title: '02. Two' },
+  ]);
+  assert.equal(calls.length, 2);
+  assert.equal(calls[0].searchParams.get('key'), 'k3y');
+  assert.equal(calls[0].searchParams.get('maxResults'), '50');
+  assert.equal(calls[1].searchParams.get('pageToken'), 'p2');
+
+  await assert.rejects(fetchPlaylistVideos('gone', 'k3y', f), (err) => err.reason === 'playlistNotFound' && err.status === 404 && !err.message.includes('k3y'));
+  // The shape Google actually returns for a bad key (2026-11).
+  const badKey = async () => ({
+    ok: false,
+    status: 400,
+    json: async () => ({ error: { code: 400, errors: [{ reason: 'badRequest' }], details: [{ '@type': 'type.googleapis.com/google.rpc.ErrorInfo', reason: 'API_KEY_INVALID' }] } }),
+  });
+  await assert.rejects(fetchPlaylistVideos('PL1', 'k3y', badKey), (err) => err.reason === 'API_KEY_INVALID');
+});
+
+test('enrichYouTube maps playlists to stories, and changes nothing without a key or a readable playlist', async () => {
+  const lang = (code, url) => ({ code, entries: [{ assets: url ? [{ name: 'YouTube', url }] : [] }] });
+  const langs = [
+    lang('bfw', 'https://www.youtube.com/playlist?list=PL1'),
+    lang('ru', 'https://www.youtube.com/watch?v=abcdefghijk'),
+    lang('dhn', 'https://www.youtube.com/playlist?list=EMPTY'),
+    lang('xx', 'https://www.youtube.com/playlist?list=GONE'),
+    lang('en', null),
+  ];
+  const calls = [];
+  const f = fakeYouTube({
+    PL1: { '': { items: [ytItem('bbbbbbbbbbb', '02. Two'), ytItem('aaaaaaaaaaa', '01. One')] } },
+    EMPTY: { '': { items: [] } },
+  }, calls);
+  const logged = [];
+  const log = { log: (m) => logged.push(m), warn: (m) => logged.push(m) };
+
+  const out = await enrichYouTube(langs, 'k3y', f, log);
+  assert.deepEqual(out.find((l) => l.code === 'bfw').storyYoutube, { 1: 'aaaaaaaaaaa', 2: 'bbbbbbbbbbb' });
+  for (const code of ['ru', 'dhn', 'xx', 'en']) assert.ok(!('storyYoutube' in out.find((l) => l.code === code)), code);
+  assert.equal(calls.length, 3, 'only playlists are asked about');
+  assert.ok(logged.some((m) => /1 playlist\(s\) unreadable \(playlistNotFound\): xx/.test(m)));
+  assert.ok(!logged.some((m) => m.includes('k3y')));
+
+  calls.length = 0;
+  const keyless = await enrichYouTube(langs, undefined, f, { log() {} });
+  assert.equal(calls.length, 0);
+  assert.equal(keyless, langs);
+});
+
+test('writeStoryFiles and mergeStoryMedia carry each story\'s YouTube video', async (t) => {
+  const { readFileSync, writeFileSync, rmSync } = await import('node:fs');
+
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const body = { reference: null, frames: [{ image: null, text: 'x' }] };
+  const lang = {
+    code: 'bfw',
+    stories: [{ num: 1, title: 'One', body }, { num: 2, title: 'Two', body }],
+    storyYoutube: { 1: 'aaaaaaaaaaa' },
+  };
+  writeStoryFiles([lang], dir);
+  assert.ok(!('storyYoutube' in lang), 'not left on the snapshot');
+  const file = JSON.parse(readFileSync(join(dir, 'bfw.json'), 'utf8'));
+  assert.deepEqual(file.stories.map((s) => s.youtube), ['aaaaaaaaaaa', null]);
+
+  const [audioOnly] = audioOnlyStories({ 1: { url: 'https://e/1.m4a' } }, {}, { 1: 'ccccccccccc' });
+  assert.equal(audioOnly.youtube, 'ccccccccccc');
+
+  // Text reused from the snapshot: the IDs are merged into the file on disk.
+  writeFileSync(join(dir, 'gdx.json'), JSON.stringify({ code: 'gdx', stories: [{ num: 1, title: null, frames: [] }] }));
+  assert.equal(mergeStoryMedia('gdx', {}, {}, dir, { 1: 'ddddddddddd' }), true);
+  assert.equal(JSON.parse(readFileSync(join(dir, 'gdx.json'), 'utf8')).stories[0].youtube, 'ddddddddddd');
+  assert.equal(mergeStoryMedia('gdx', {}, {}, dir, { 1: 'ddddddddddd' }), false, 'already current');
 });

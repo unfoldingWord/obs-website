@@ -543,13 +543,19 @@
     let maxStory = 1;
     let storyFiles = [];
     let audioByStory = {};
+    // Each story's own YouTube video, where the build matched the language's
+    // playlist to stories (enrichYouTube() in scripts/fetch-catalog.mjs).
+    let youtubeByStory = {};
     // Per-story audio is in the local bundle already; seeding it here means
     // the player works without waiting on (or needing) the release lookup
-    // below, which is only still made for the YouTube embed and the PDF link.
+    // below, which is only still made for the YouTube playlist and the PDF link.
     (localFor(entry) ? localFor(entry).stories : []).forEach((s) => {
       if (s.audio) audioByStory[s.num] = { name: s.audio, browser_download_url: s.audio };
+      if (s.youtube) youtubeByStory[s.num] = s.youtube;
     });
     let audioTag = null;
+    let youtubePlaylist = null; // { embedUrl, tag } from the release lookup
+    let youtubeSrc = null; // what the embed is showing now
 
     // ---- slide-deck state for the currently loaded story ----
     let currentStoryData = null; // {title, reference, frames}
@@ -739,11 +745,48 @@
       mediaEl.innerHTML = parts.join("");
     }
 
+    // The open story's own video when the build matched the playlist to
+    // stories, else the whole playlist. A playlist embed always starts at its
+    // first video, which in 12 languages' playlists is story 50 — so once the
+    // stories are matched, a story with no video of its own shows none rather
+    // than the playlist's first.
+    function updateYoutube(num) {
+      const matched = Object.keys(youtubeByStory).length > 0;
+      let src = null;
+      if (youtubeByStory[num]) {
+        src = `https://www.youtube.com/embed/${encodeURIComponent(youtubeByStory[num])}`;
+      } else if (!matched && youtubePlaylist) {
+        src = youtubePlaylist.embedUrl;
+      }
+      // Rebuilding the iframe would restart a video that is already showing.
+      if (src === youtubeSrc) return;
+      youtubeSrc = src;
+      if (!src) {
+        youtubeEl.innerHTML = "";
+        return;
+      }
+      const tag = youtubePlaylist && src === youtubePlaylist.embedUrl ? youtubePlaylist.tag : null;
+      const tagNote =
+        tag && tag !== entry.branch_or_tag_name
+          ? `<span style="font-size:0.75rem; color:#64747d; display:block; margin-top:4px;">from ${escapeHtml(
+              tag
+            )}</span>`
+          : "";
+      youtubeEl.innerHTML = `
+        <div style="position:relative; padding-top:56.25%; border-radius:12px; overflow:hidden; background:#000;">
+          <iframe src="${src}" loading="lazy" allowfullscreen
+            style="position:absolute; inset:0; width:100%; height:100%; border:none;"></iframe>
+        </div>
+        ${tagNote}
+      `;
+    }
+
     // startAt forwards through to loadStoryText — see its comment above.
     function update(startAt) {
       selectEl.value = current;
       loadStoryText(current, startAt);
       updateMedia(current);
+      updateYoutube(current);
     }
 
     selectEl.addEventListener("change", () => {
@@ -804,20 +847,11 @@
 
       const youtubeFound = latestReleaseWithYouTube(releases);
       if (youtubeFound) {
-        const embedUrl = youtubeEmbedUrl(youtubeFound.asset.browser_download_url);
-        const tagNote =
-          youtubeFound.release.tag_name !== entry.branch_or_tag_name
-            ? `<span style="font-size:0.75rem; color:#64747d; display:block; margin-top:4px;">from ${escapeHtml(
-                youtubeFound.release.tag_name
-              )}</span>`
-            : "";
-        youtubeEl.innerHTML = `
-          <div style="position:relative; padding-top:56.25%; border-radius:12px; overflow:hidden; background:#000;">
-            <iframe src="${embedUrl}" loading="lazy" allowfullscreen
-              style="position:absolute; inset:0; width:100%; height:100%; border:none;"></iframe>
-          </div>
-          ${tagNote}
-        `;
+        youtubePlaylist = {
+          embedUrl: youtubeEmbedUrl(youtubeFound.asset.browser_download_url),
+          tag: youtubeFound.release.tag_name,
+        };
+        updateYoutube(current);
       }
       // Note: direct .mp4 file links (filedn.com) exist for some
       // languages too, but rendering them inline turned out unreliable —

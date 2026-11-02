@@ -55,6 +55,11 @@ export interface Story {
    * omitted when this is missing rather than guessed.
    */
   videoDate?: string | null;
+  /** This story's video in the language's YouTube playlist, as a video ID,
+   *  when the build could read the playlist (enrichYouTube() in
+   *  scripts/fetch-catalog.mjs). The reader embeds it in place of the whole
+   *  playlist. Absent in story files written before it existed. */
+  youtube?: string | null;
 }
 
 interface StoryFile {

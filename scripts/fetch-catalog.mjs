@@ -16,7 +16,7 @@
 // edition — exactly the set Discover shows. Changing the catalog changes the
 // number on the next build. Nothing at runtime fetches a different count.
 //
-// Three sources, in order of importance:
+// Five sources, in order of importance:
 //   1. DCS catalog search (required) — the list of languages and entries.
 //      Same endpoint and filters as public/assets/js/discover.js: no `limit`
 //      (omitting it returns every matching entry), no `metadataType` filter
@@ -36,6 +36,10 @@
 //      ~50 small fetches per language; results are cached in the snapshot
 //      and only re-fetched for entries whose release changed, so after the
 //      first run a build only fetches what actually moved.
+//   5. YouTube playlists (optional enrichment, needs YOUTUBE_API_KEY) — which
+//      video in a language's playlist tells which story, from the number in
+//      each video's title, so the reader can show the open story's video
+//      (enrichYouTube). One API request per playlist per build.
 //
 // Failure policy: a deploy that ships an empty or partial catalog would
 // publish a wrong count and delist translations, so:
@@ -532,6 +536,125 @@ export function videoByStory(releases) {
 export async function fetchStoryVideo(entry, fetchImpl = fetch) {
   if (!entry?.owner || !entry?.name) return {};
   return videoByStory(await fetchReleases(entry, fetchImpl));
+}
+
+/** A language's YouTube link: the first across its entries, which is the one
+ *  youtubeOf() in src/data/catalog.ts gives the hub's Watch button. */
+export function youtubeLinkOf(lang) {
+  for (const e of lang?.entries || []) {
+    for (const a of e?.assets || []) if (YOUTUBE_RE.test(a?.url || '')) return a.url;
+  }
+  return null;
+}
+
+/** The playlist ID in a YouTube link, or null for a link to a single video
+ *  (`ru` publishes one) or anything that is not YouTube. */
+export function youtubePlaylistId(url) {
+  let parsed;
+  try {
+    parsed = new URL(url);
+  } catch {
+    return null;
+  }
+  if (!/^(?:www\.|m\.)?(?:youtube\.com|youtu\.be)$/i.test(parsed.hostname)) return null;
+  const list = parsed.searchParams.get('list');
+  return list && /^[\w-]+$/.test(list) ? list : null;
+}
+
+/**
+ * The value of a run of decimal digits in any script: "50", Gujarati "૫૦",
+ * Odia "୦୧". Unicode encodes every set of decimal digits as ten consecutive
+ * code points, 0 to 9, so a digit's value is its distance from the start of
+ * its run — mod 10, because a few sets sit back to back (checked against the
+ * Unicode 16 data: all 71 runs hold).
+ */
+function decimalValue(digits) {
+  let value = 0;
+  for (const ch of digits) {
+    const cp = ch.codePointAt(0);
+    let offset = 0;
+    while (/\p{Nd}/u.test(String.fromCodePoint(cp - offset - 1))) offset++;
+    value = value * 10 + (offset % 10);
+  }
+  return value;
+}
+
+/**
+ * Which story a video in a language's OBS playlist tells, from the number its
+ * title starts with ("01. सृष्टि", "૫૦. ઈસુ…", "50۔ جناب…"), or null.
+ *
+ * The playlist's order cannot stand in for it. When every playlist was read
+ * (2026-11), 12 of the 71 with videos ran from story 50 down to 1 and one put
+ * story 21 after 24; the number in the title was right in all but one video.
+ * Spaces, punctuation and invisible format characters (word joiners,
+ * zero-width spaces) before it are skipped — one Urdu title reads "۔23", its
+ * full stop typed first. Any script's digits count, including the Bengali "১"
+ * that seven Gujarati-script playlists use for story 1.
+ */
+export function storyNumberFromTitle(title) {
+  const m = String(title ?? '').match(/^[\s\p{Cf}\p{P}]*(\p{Nd}{1,2})(?!\p{Nd})/u);
+  if (!m) return null;
+  const n = decimalValue(m[1]);
+  return n >= 1 && n <= STORY_COUNT ? n : null;
+}
+
+/**
+ * Each story's video in a playlist, `{ [num]: videoId }`, from
+ * `[{ videoId, title }]`. A video whose title carries no story number
+ * ("Private video", "Deleted video", a trailer) is skipped. So is a story
+ * that two different videos claim: `unx` has two videos titled 41 and none
+ * titled 42, and nothing says which is which, so neither story gets one —
+ * no video is better than another story's.
+ */
+export function videosByStory(items) {
+  const claims = {};
+  for (const item of items || []) {
+    const n = storyNumberFromTitle(item?.title);
+    if (n && /^[\w-]{11}$/.test(item.videoId ?? '')) (claims[n] ||= new Set()).add(item.videoId);
+  }
+  const out = {};
+  for (const [n, ids] of Object.entries(claims)) if (ids.size === 1) out[n] = [...ids][0];
+  return out;
+}
+
+export const YOUTUBE_PLAYLIST_ITEMS_URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
+
+/**
+ * Every video in a YouTube playlist, `[{ videoId, title }]` in playlist order,
+ * from the YouTube Data API (playlistItems.list, one quota unit per 50
+ * videos). Throws on failure with the API's reason as `err.reason`
+ * ("API_KEY_INVALID", "quotaExceeded", "playlistNotFound"); the key is never
+ * part of an error message.
+ */
+export async function fetchPlaylistVideos(playlistId, key, fetchImpl = fetch) {
+  const items = [];
+  let pageToken = null;
+  // A story playlist holds 50 videos. Four pages leave room for a few extras
+  // without letting an unrelated, huge playlist spend the quota.
+  for (let page = 0; page < 4; page++) {
+    const params = new URLSearchParams({ part: 'snippet', maxResults: '50', playlistId, key });
+    if (pageToken) params.set('pageToken', pageToken);
+    const res = await fetchImpl(`${YOUTUBE_PLAYLIST_ITEMS_URL}?${params}`, { headers: { accept: 'application/json' } });
+    let body = null;
+    try {
+      body = await res.json();
+    } catch {
+      body = null;
+    }
+    if (!res.ok) {
+      const err = new Error(`YouTube API responded ${res.status}`);
+      err.status = res.status;
+      err.reason =
+        body?.error?.details?.find((d) => d?.reason)?.reason ?? body?.error?.errors?.[0]?.reason ?? null;
+      throw err;
+    }
+    for (const it of body?.items || []) {
+      items.push({ videoId: it?.snippet?.resourceId?.videoId ?? null, title: it?.snippet?.title ?? '' });
+    }
+    pageToken = body?.nextPageToken || null;
+    if (!pageToken) break;
+  }
+  return items;
 }
 
 /** First paragraphs of a story, capped, for the hub's in-language extract. */
@@ -1131,8 +1254,8 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
     }
     // Per-story video files, same rule (#16): a story page should offer that
     // story's own recording rather than sending everyone to a multi-gigabyte
-    // zip of all 50. Playlist links (most languages publish a YouTube
-    // playlist, not files) are not per-story and stay on the hub.
+    // zip of all 50. Most languages publish a YouTube playlist rather than
+    // files; enrichYouTube matches its videos to stories separately.
     let storyVideo;
     if (wanted.video) {
       for (const entry of lang.entries) {
@@ -1152,6 +1275,57 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
   const undated = out.reduce((n, l) => n + l.entries.filter((e) => !e.firstReleased).length, 0);
   const unestablished = out.filter((l) => !l.firstPublished).length;
   log.log(`[catalog] first releases: ${firstLookups} looked up, ${undated} entr${undated === 1 ? 'y' : 'ies'} still undated, ${unestablished} language(s) without an established first publication`);
+  return out;
+}
+
+/**
+ * Each story's own YouTube video, for languages whose YouTube link is a
+ * playlist: sets `storyYoutube` (`{ [num]: videoId }`), which writeStoryFiles
+ * copies onto the story records and the reader embeds in place of the whole
+ * playlist. Without this the reader showed the playlist from its first video
+ * whatever story was open — and in 12 playlists the first video is story 50.
+ *
+ * Needs a YouTube Data API key (YOUTUBE_API_KEY, a secret in the Cloudflare
+ * Pages build settings). Without one, or for a playlist that cannot be read,
+ * the language has no per-story videos and the reader shows the playlist as
+ * before. Not cached in the snapshot: one request per playlist per build is
+ * well inside the API's free daily quota. Never throws.
+ */
+export async function enrichYouTube(languages, key, fetchImpl = fetch, log = console) {
+  if (!key) {
+    log.log('[catalog] youtube: no YOUTUBE_API_KEY, so the reader shows whole playlists rather than each story\'s video');
+    return languages;
+  }
+  let read = 0;
+  let matched = 0;
+  const partial = [];
+  const failures = new Map();
+  const out = await mapLimit(languages, 6, async (lang) => {
+    const list = youtubePlaylistId(youtubeLinkOf(lang));
+    if (!list) return lang;
+    try {
+      const videos = videosByStory(await fetchPlaylistVideos(list, key, fetchImpl));
+      read++;
+      const count = Object.keys(videos).length;
+      if (!count) return lang;
+      matched++;
+      if (count < STORY_COUNT) partial.push(`${lang.code} ${count}/${STORY_COUNT}`);
+      return { ...lang, storyYoutube: videos };
+    } catch (err) {
+      const reason = err?.reason || err?.message || 'unknown error';
+      failures.set(reason, [...(failures.get(reason) || []), lang.code]);
+      return lang;
+    }
+  });
+  log.log(`[catalog] youtube: read ${read} playlist(s), ${matched} language(s) with per-story videos`);
+  const warn = log.warn ? log.warn.bind(log) : log.log.bind(log);
+  // Worth fixing on YouTube: a story listed here plays nothing in the reader.
+  if (partial.length) {
+    warn(`[catalog] youtube: playlists without a video for every story (a title with no number, or two videos with one): ${partial.join(', ')}`);
+  }
+  for (const [reason, codes] of failures) {
+    warn(`[catalog] youtube: ${codes.length} playlist(s) unreadable (${reason}): ${codes.join(', ')}`);
+  }
   return out;
 }
 
@@ -1192,6 +1366,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
   for (const lang of languages) {
     const audio = lang.storyAudio || {};
     const video = lang.storyVideo || {};
+    const youtube = lang.storyYoutube || {};
     const full = (lang.stories || [])
       .filter((s) => s.body && s.body.frames.length)
       .map((s) => ({
@@ -1204,17 +1379,19 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
         video: video[s.num]?.url ?? null,
         videoDate: video[s.num]?.date ?? null,
         videoSize: video[s.num]?.size ?? null,
+        youtube: youtube[s.num] ?? null,
       }));
     lang.stories = (lang.stories || []).map((s) => ({ num: s.num, title: s.title }));
     delete lang.storyAudio;
     delete lang.storyVideo;
+    delete lang.storyYoutube;
     // A placeholder repo has no text, but its recordings are the translation:
     // each story with one gets an audio-only page. Rewritten every run from
     // the fresh media maps, so a story recorded later gains its page. With no
     // map this run (the releases lookup failed), fall through and keep
     // whatever file is already on disk, as a text language does.
     if (!full.length && lang.placeholder && Object.keys(audio).length) {
-      const stories = audioOnlyStories(audio, video);
+      const stories = audioOnlyStories(audio, video, youtube);
       lang.storyNums = stories.map((s) => s.num);
       writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories }) + '\n');
       written++;
@@ -1230,7 +1407,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
       // can still have media the story file predates. Without this, upgrading
       // an existing checkout never gained a video player or an AudioObject
       // until the text release happened to change.
-      if (mergeStoryMedia(lang.code, audio, video, dir)) merged++;
+      if (mergeStoryMedia(lang.code, audio, video, dir, youtube)) merged++;
       continue;
     }
     lang.storyNums = full.map((s) => s.num);
@@ -1252,7 +1429,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
  * illustrations: they are the same files in every language, and following the
  * pictures is how a listener keeps their place in a recording.
  */
-export function audioOnlyStories(audio = {}, video = {}) {
+export function audioOnlyStories(audio = {}, video = {}, youtube = {}) {
   return Object.keys(audio)
     .map(Number)
     .filter((num) => num >= 1 && num <= STORY_COUNT && audio[num]?.url)
@@ -1268,20 +1445,22 @@ export function audioOnlyStories(audio = {}, video = {}) {
       video: video[num]?.url ?? null,
       videoDate: video[num]?.date ?? null,
       videoSize: video[num]?.size ?? null,
+      youtube: youtube[num] ?? null,
     }));
 }
 
 /**
- * Fold freshly discovered per-story audio/video into a story file whose text
- * was reused from the snapshot. Returns true when the file was rewritten.
+ * Fold freshly discovered per-story audio/video (and YouTube video IDs) into a
+ * story file whose text was reused from the snapshot. Returns true when the
+ * file was rewritten.
  *
  * Only fills in or corrects media fields — the text, frames and titles in the
  * file are the authority and are never touched here. Never throws: a story
  * file that cannot be read or parsed simply keeps whatever it has, exactly as
  * the rest of the story pipeline treats it.
  */
-export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR) {
-  if (!Object.keys(audio).length && !Object.keys(video).length) return false;
+export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR, youtube = {}) {
+  if (!Object.keys(audio).length && !Object.keys(video).length && !Object.keys(youtube).length) return false;
   const file = join(dir, `${code}.json`);
   if (!existsSync(file)) return false;
   let data;
@@ -1304,6 +1483,10 @@ export function mergeStoryMedia(code, audio = {}, video = {}, dir = STORIES_DIR)
       story.video = v.url;
       story.videoDate = v.date ?? null;
       story.videoSize = v.size ?? null;
+      changed = true;
+    }
+    if (youtube[story.num] && story.youtube !== youtube[story.num]) {
+      story.youtube = youtube[story.num];
       changed = true;
     }
   }
@@ -1372,7 +1555,10 @@ if (isMain) {
   // Optional enrichment 2: PDFs/audio/video from older releases, incrementally.
   languages = await enrichAssets(languages, previous);
 
-  // Optional enrichment 3: story titles + extract, incrementally.
+  // Optional enrichment 3: each story's video in the language's YouTube playlist.
+  languages = await enrichYouTube(languages, process.env.YOUTUBE_API_KEY);
+
+  // Optional enrichment 4: story titles + extract, incrementally.
   if (fetchStoriesEnabled) {
     languages = await enrichStories(languages, previous);
   } else {
