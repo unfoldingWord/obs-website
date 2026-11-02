@@ -48,7 +48,6 @@ import {
   videosByStory,
   fetchPlaylistVideos,
   enrichYouTube,
-  ASSET_LIST_VERSION,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -192,38 +191,35 @@ test('fetchMissingAssets pulls an advertised PDF from the newest release that ha
   assert.deepEqual(assetFormats(both), { pdf: true, audio: true, video: false });
 });
 
-test('enrichAssets reuses cached assets for unchanged entries', async () => {
+// A release's files can change while its tag and catalog date stay put (see
+// enrichAssets). The previous snapshot cannot tell, so its file lists are
+// never reused; only the first-release date is.
+test('enrichAssets reads release files fresh, even for a release that looks unchanged', async () => {
   clearReleasesCache();
   let calls = 0;
-  const f = fakeFetch(() => { calls++; return '[]'; });
-  const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [{ owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2026-01-01', assets: [] }] };
-  const previous = { assetListVersion: ASSET_LIST_VERSION, languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }], firstReleased: '2025-06-01' }] }] };
+  const f = fakeFetch((url) => url.endsWith('/releases') ? (calls++, JSON.stringify([
+    { tag_name: 'v2', published_at: '2026-02-01T00:00:00Z', assets: [] },
+    { tag_name: 'v1', published_at: '2025-06-01T00:00:00Z', assets: [{ name: 'sw_obs_v1.pdf', browser_download_url: 'https://e/v1/sw_obs_v1.pdf', size: 2 }] },
+  ])) : null);
+  // Today: v2 carries no files, and v1's PDF has been replaced.
+  const entry = { owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v2', released: '2026-02-01', assets: [] };
+  const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [entry] };
+  // The previous build saw a playlist on v2 itself and the old PDF on v1.
+  // assetListVersion 2 is what a snapshot from a build that still cached
+  // file lists carries; that build would have kept both.
+  const previous = { assetListVersion: 2, languages: [{ ...lang, entries: [{ ...entry, firstReleased: '2025-06-01', assets: [
+    { name: 'YouTube - Playlist', url: 'https://www.youtube.com/playlist?list=PLsw', size: 0 },
+    { name: 'old.pdf', url: 'https://e/v1/old.pdf', size: 1, tag: 'v1' },
+  ] }] }] };
   const quiet = { log() {} };
-  const reused = await enrichAssets([lang], previous, f, quiet);
-  assert.equal(calls, 0);
-  assert.equal(reused[0].entries[0].assets[0].name, 'c.pdf');
-  assert.equal(reused[0].entries[0].firstReleased, '2025-06-01', 'a cached first-release date is reused');
-  assert.equal(reused[0].firstPublished, '2025-06-01');
-  await enrichAssets([lang], null, f, quiet);
-  assert.equal(calls, 1, 'assets and first release share the one releases request per repo');
-});
-
-// A snapshot trimmed by an older rule holds lists the current rule would not
-// produce (English's, cut before its YouTube link), and an unchanged release
-// would otherwise keep that list for good.
-test('enrichAssets re-reads cached assets written under an older trimming rule', async () => {
+  const [out] = await enrichAssets([lang], previous, f, quiet);
+  assert.deepEqual(out.entries[0].assets, [{ name: 'sw_obs_v1.pdf', url: 'https://e/v1/sw_obs_v1.pdf', size: 2, tag: 'v1' }]);
+  assert.equal(out.entries[0].firstReleased, '2025-06-01', 'a cached first-release date is reused');
+  assert.equal(out.firstPublished, '2025-06-01');
+  assert.equal(calls, 1);
   clearReleasesCache();
-  const lang = { code: 'en', formats: { pdf: true, audio: false, video: true }, entries: [{ owner: 'o', name: 'en_obs', branch_or_tag_name: 'v9', released: '2023-03-03', assets: [{ name: 'en.pdf', url: 'https://e/en.pdf', size: 1 }] }] };
-  const playlist = 'https://www.youtube.com/playlist?list=PLen';
-  const f = fakeFetch((url) => url.endsWith('/releases') ? JSON.stringify([
-    { tag_name: 'v9', published_at: '2023-03-03T00:00:00Z', assets: [{ name: 'en.pdf', browser_download_url: 'https://e/en.pdf' }] },
-    { tag_name: 'v8', published_at: '2020-04-24T00:00:00Z', assets: [{ name: 'YouTube', browser_download_url: playlist }] },
-  ]) : null);
-  const stale = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'en.pdf', url: 'https://e/en.pdf', size: 1 }], firstReleased: '2015-01-01' }] }] };
-  const logged = [];
-  const [fresh] = await enrichAssets([lang], stale, f, { log: (m) => logged.push(m) });
-  assert.ok(fresh.entries[0].assets.some((a) => a.url === playlist), 'the playlist is found again');
-  assert.ok(logged.some((m) => /older rule/.test(m)), 'and the build log says why every entry was re-read');
+  await enrichAssets([lang], null, f, quiet);
+  assert.equal(calls, 2, 'files and first release share the one releases request per repo');
 });
 
 test('firstReleaseDate is the earliest dated non-draft release', () => {
