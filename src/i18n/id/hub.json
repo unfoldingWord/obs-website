@@ -16,6 +16,7 @@
   "extractTitle": "Dari cerita 1",
   "extractAlt": "Ilustrasi dari Open Bible Stories dalam bahasa {language}",
   "storiesTitle": "Cerita ({n} dari {total})",
+  "audioStoriesTitle": "Cerita untuk didengarkan ({n} dari {total})",
   "version": "v{version}",
   "teams": "{n} tim telah menerbitkan bahasa ini.",
   "allLanguages": "Semua bahasa",
@@ -35,7 +36,8 @@
   "faqStories": {
     "all": "Ke-50 cerita sudah diterjemahkan ke dalam bahasa {language}, dan semuanya dapat dibaca di halaman ini.",
     "some": "Sejauh ini {n} di antaranya dapat dibaca dalam bahasa {language} di halaman ini, dan yang lain sedang diterjemahkan.",
-    "none": "Cerita-cerita ini belum memiliki halaman sendiri di situs ini dalam bahasa {language} — bacalah di pembaca pada halaman ini, atau gunakan unduhan yang tercantum di atas."
+    "none": "Cerita-cerita ini belum memiliki halaman sendiri di situs ini dalam bahasa {language} — bacalah di pembaca pada halaman ini, atau gunakan unduhan yang tercantum di atas.",
+    "audio": "Dalam bahasa {language}, cerita-cerita ini diterbitkan sebagai rekaman, bukan teks tertulis, dan masing-masing memiliki halaman sendiri di situs ini tempat Anda dapat mendengarkannya."
   },
   "faq": [
     {

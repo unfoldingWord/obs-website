@@ -1,6 +1,7 @@
 {
   "meta": {
-    "description": "{story} — القصة {n} من Open Bible Stories باللغة {language}. اقرأ النص كاملاً، وشاهد الرسوم، واستمع إلى الصوت. مجاني بترخيص مفتوح."
+    "description": "{story} — القصة {n} من Open Bible Stories باللغة {language}. اقرأ النص كاملاً، وشاهد الرسوم، واستمع إلى الصوت. مجاني بترخيص مفتوح.",
+    "audioOnlyDescription": "{story} — القصة {n} من Open Bible Stories باللغة {language}، تسجيلاً صوتياً. استمع إليها وتابع الرسوم. مجاني بترخيص مفتوح."
   },
   "storyN": "القصة {n} من {total}",
   "listen": "استمع إلى هذه القصة",
@@ -8,6 +9,7 @@
   "downloadAudio": "تنزيل الصوت",
   "downloadVideo": "تنزيل الفيديو",
   "transcriptNote": "كلمات هذا التسجيل موجودة أدناه باللغة {language}.",
+  "audioOnlyNote": "هذه القصة منشورة باللغة {language} تسجيلاً صوتياً، لا نصاً مكتوباً.",
   "imageAlt": "{story} — صورة {n}",
   "previous": "السابقة",
   "next": "التالية",

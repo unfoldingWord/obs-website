@@ -16,6 +16,7 @@
   "extractTitle": "Kutoka hadithi ya 1",
   "extractAlt": "Picha kutoka Open Bible Stories katika {language}",
   "storiesTitle": "Hadithi ({n} kati ya {total})",
+  "audioStoriesTitle": "Hadithi za kusikiliza ({n} kati ya {total})",
   "version": "v{version}",
   "teams": "Timu {n} zimechapisha lugha hii.",
   "allLanguages": "Lugha zote",
@@ -35,7 +36,8 @@
   "faqStories": {
     "all": "Zote 50 zimetafsiriwa katika {language}, na kila moja inaweza kusomwa kwenye ukurasa huu.",
     "some": "{n} kati yake zinaweza kusomwa katika {language} kwenye ukurasa huu hadi sasa, na nyingine zinaendelea kutafsiriwa.",
-    "none": "Hadithi hizi hazina kurasa zao kwenye tovuti hii katika {language} bado — zisome katika kisomaji kwenye ukurasa huu, au tumia upakuaji uliotajwa juu."
+    "none": "Hadithi hizi hazina kurasa zao kwenye tovuti hii katika {language} bado — zisome katika kisomaji kwenye ukurasa huu, au tumia upakuaji uliotajwa juu.",
+    "audio": "Katika {language} zimechapishwa kama rekodi za sauti badala ya maandishi, na kila moja ina ukurasa wake kwenye tovuti hii ambapo unaweza kuisikiliza."
   },
   "faq": [
     {

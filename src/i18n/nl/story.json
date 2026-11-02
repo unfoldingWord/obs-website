@@ -1,6 +1,7 @@
 {
   "meta": {
-    "description": "{story} — verhaal {n} uit Open Bible Stories in het {language}. Lees de volledige tekst, bekijk de illustraties en luister naar de audio. Gratis onder een open licentie."
+    "description": "{story} — verhaal {n} uit Open Bible Stories in het {language}. Lees de volledige tekst, bekijk de illustraties en luister naar de audio. Gratis onder een open licentie.",
+    "audioOnlyDescription": "{story} — verhaal {n} uit Open Bible Stories in het {language}, als opname. Luister ernaar en volg de illustraties. Gratis onder een open licentie."
   },
   "storyN": "Verhaal {n} van {total}",
   "listen": "Luister naar dit verhaal",
@@ -8,6 +9,7 @@
   "downloadAudio": "Audio downloaden",
   "downloadVideo": "Video downloaden",
   "transcriptNote": "De woorden van deze opname staan hieronder, in het {language}.",
+  "audioOnlyNote": "Dit verhaal is in het {language} uitgegeven als opname, niet als geschreven tekst.",
   "imageAlt": "{story} — illustratie {n}",
   "previous": "Vorige",
   "next": "Volgende",

@@ -12,7 +12,8 @@
 //   6. /llms.txt lists only URLs that were built, and every markdown mirror
 //   7. every chrome string a single-URL page registers for the browser-side
 //      locale swap resolves in all 16 locale bundles
-//   8. no story page is a "Video only" placeholder published as story text
+//   8. no story page is a "Video only" placeholder published as story text,
+//      and every audio-only story page of a placeholder language has a player
 //   9. every retired public route redirects rather than 404s, every redirect
 //      target exists, and no redirect chains
 //  10. /changelog/ and its Atom feed were built, the feed links only hubs that
@@ -270,7 +271,8 @@ if (!existsSync(bundleDir)) {
 // URLs and CreativeWork nodes whose `text` was that sentence — see
 // isStubContent() in fetch-catalog.mjs. This is the assertion that keeps them
 // out, checked against the built HTML rather than the snapshot so a
-// regression anywhere in the pipeline shows up.
+// regression anywhere in the pipeline shows up. The ones that publish
+// recordings DO get story pages now, audio-only ones, and each must play.
 const STUB = /video[\s-]*only/i;
 let stubPages = 0;
 for (const lang of languages) {
@@ -283,6 +285,11 @@ for (const lang of languages) {
     if (h1 && STUB.test(h1[1])) {
       stubPages++;
       errors.push(`/l/${lang.code}/${d.name}/ publishes a placeholder as story text: "${h1[1].trim()}"`);
+    }
+    // A placeholder language's pages are its recordings (audio-only story
+    // pages): with no text on them, a page without a player has nothing.
+    if (lang.placeholder && !/<audio\b[^>]*\bsrc="[^"]+"/.test(html)) {
+      errors.push(`/l/${lang.code}/${d.name}/ is an audio-only story page with no audio player`);
     }
   }
   // The hub must not quote it either — the extract is the "From story 1" block.

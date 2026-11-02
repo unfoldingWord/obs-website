@@ -36,6 +36,7 @@ import {
   videoByStory,
   writeStoryFiles,
   mergeStoryMedia,
+  audioOnlyStories,
   clearReleasesCache,
   sortLanguages,
   firstReleaseDate,
@@ -1022,6 +1023,81 @@ test('writeStoryFiles keeps storyNums for a language reused from the snapshot', 
   const orphan = { code: 'qq', storyNums: [1, 2], stories: [{ num: 1, title: 'x' }] };
   writeStoryFiles([orphan], dir);
   assert.deepEqual(orphan.storyNums, [], 'no file on disk → no story pages claimed');
+});
+
+// A "Video only" placeholder repo has no text, but 12 of them publish every
+// story as a recording (awa, gdx, thf, …). Those recordings are the
+// translation, so each story with one gets an audio-only page.
+test('audioOnlyStories builds one illustrated, text-free record per recorded story', () => {
+  const stories = audioOnlyStories(
+    { 2: { url: 'https://e/2.m4a', size: 5 }, 1: { url: 'https://e/1.m4a', size: 4 }, 51: { url: 'https://e/51.m4a' } },
+    { 1: { url: 'https://e/1.mp4', date: '2026-06-26T00:00:00Z', size: 9 } }
+  );
+  assert.deepEqual(stories.map((s) => s.num), [1, 2], 'story order, and nothing past story 50');
+  assert.equal(stories[0].title, null, 'no title of its own — the page borrows one');
+  assert.equal(stories[0].audioOnly, true);
+  assert.equal(stories[0].audio, 'https://e/1.m4a');
+  assert.equal(stories[0].audioSize, 4);
+  assert.equal(stories[0].video, 'https://e/1.mp4');
+  assert.equal(stories[1].video, null);
+  assert.equal(stories[0].frames.length, 16, 'every illustration story 1 has');
+  assert.equal(stories[0].frames[0].image, 'https://cdn.door43.org/obs/jpg/360px/obs-en-01-01.jpg');
+  assert.ok(stories[0].frames.every((f) => f.text === ''), 'and no text');
+  assert.deepEqual(audioOnlyStories({}), []);
+});
+
+test('writeStoryFiles gives a placeholder with recordings audio-only pages, and only a placeholder', async (t) => {
+  const { readFileSync, existsSync, rmSync } = await import('node:fs');
+
+  const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(dir, { recursive: true, force: true }));
+  const audio = { 1: { url: 'https://e/1.m4a', size: 4 }, 3: { url: 'https://e/3.m4a', size: 6 } };
+
+  const placeholder = { code: 'awa', placeholder: true, stories: null, storyAudio: audio };
+  // Same shape, but not a placeholder: a language whose text could not be
+  // read this run must not have its pages turned into audio-only ones.
+  const unread = { code: 'zz', stories: null, storyAudio: audio };
+  const silent = { code: 'ins', placeholder: true, stories: null };
+
+  assert.equal(writeStoryFiles([placeholder, unread, silent], dir), 1);
+  assert.deepEqual(placeholder.storyNums, [1, 3]);
+  assert.deepEqual(placeholder.stories, [], 'no titles for the hub list');
+  assert.ok(!('storyAudio' in placeholder));
+  const file = JSON.parse(readFileSync(join(dir, 'awa.json'), 'utf8'));
+  assert.deepEqual(file.stories.map((s) => [s.num, s.audio, s.audioOnly]), [[1, 'https://e/1.m4a', true], [3, 'https://e/3.m4a', true]]);
+  assert.deepEqual(unread.storyNums, []);
+  assert.ok(!existsSync(join(dir, 'zz.json')));
+  assert.deepEqual(silent.storyNums, [], 'a placeholder with no recordings still gets no pages');
+
+  // A later run whose releases lookup failed keeps the pages already on disk.
+  const again = { code: 'awa', placeholder: true, stories: [], storyNums: [1, 3] };
+  writeStoryFiles([again], dir);
+  assert.deepEqual(again.storyNums, [1, 3]);
+});
+
+test('enrichStories marks a placeholder, and the mark survives reuse of the snapshot', async (t) => {
+  const { writeFileSync, rmSync } = await import('node:fs');
+
+  const storiesDir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+  t.after(() => rmSync(storiesDir, { recursive: true, force: true }));
+  const f = fakeFetch((url) => (url.endsWith('content/01.md') ? '# Video only\n\nThis version of OBS is video only.\n' : null));
+  const lang = { code: 'awa', script: 'latin', entries: [{ owner: 'o', name: 'awa_obs', branch_or_tag_name: 'v1', released: '2026-06-26', metadata_type: 'rc', contentPath: 'content' }] };
+  const quiet = { log() {} };
+
+  const [fresh] = await enrichStories([lang], null, f, quiet, storiesDir);
+  assert.equal(fresh.placeholder, true);
+  assert.ok(!('stub' in fresh), 'the internal flag is not left on the snapshot');
+
+  // Next build: its audio-only file is on disk, so the record is reused —
+  // and has to come back still marked, or its pages stop being refreshed.
+  writeFileSync(join(storiesDir, 'awa.json'), JSON.stringify({ code: 'awa', stories: [] }));
+  const previous = { languages: [{ ...lang, stories: [], storyNums: [1], extract: null, placeholder: true }] };
+  const [reused] = await enrichStories([lang], previous, f, quiet, storiesDir);
+  assert.equal(reused.placeholder, true);
+  assert.deepEqual(reused.storyNums, [1]);
+
+  const [text] = await enrichStories([{ ...lang, code: 'en' }], null, fakeFetch((url) => (url.endsWith('/01.md') ? STORY_MD : null)), quiet, storiesDir);
+  assert.ok(!('placeholder' in text), 'a language with real text is not marked');
 });
 
 test('enrichStories refetches when the cached entry has no story file on disk', async (t) => {

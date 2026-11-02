@@ -1,6 +1,7 @@
 {
   "meta": {
-    "description": "{story} — história {n} de Open Bible Stories em {language}. Leia o texto completo, veja as ilustrações e ouça o áudio. Grátis sob uma licença aberta."
+    "description": "{story} — história {n} de Open Bible Stories em {language}. Leia o texto completo, veja as ilustrações e ouça o áudio. Grátis sob uma licença aberta.",
+    "audioOnlyDescription": "{story} — história {n} de Open Bible Stories em {language}, em áudio. Ouça e acompanhe as ilustrações. Grátis sob uma licença aberta."
   },
   "storyN": "História {n} de {total}",
   "listen": "Ouvir esta história",
@@ -8,6 +9,7 @@
   "downloadAudio": "Baixar o áudio",
   "downloadVideo": "Baixar o vídeo",
   "transcriptNote": "As palavras desta gravação estão abaixo, em {language}.",
+  "audioOnlyNote": "Esta história está publicada em {language} como gravação, não como texto escrito.",
   "imageAlt": "{story} — ilustração {n}",
   "previous": "Anterior",
   "next": "Próxima",

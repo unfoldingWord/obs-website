@@ -16,6 +16,7 @@
   "extractTitle": "Uit verhaal 1",
   "extractAlt": "Een illustratie uit Open Bible Stories in het {language}",
   "storiesTitle": "Verhalen ({n} van {total})",
+  "audioStoriesTitle": "Verhalen om te beluisteren ({n} van {total})",
   "version": "v{version}",
   "teams": "{n} teams hebben deze taal gepubliceerd.",
   "allLanguages": "Alle talen",
@@ -35,7 +36,8 @@
   "faqStories": {
     "all": "Alle 50 zijn in het {language} vertaald, en elk ervan is op deze pagina te lezen.",
     "some": "{n} ervan zijn tot nu toe in het {language} op deze pagina te lezen, en er worden meer vertaald.",
-    "none": "Deze verhalen hebben op deze site nog geen eigen pagina's in het {language} — lees ze in de lezer op deze pagina, of gebruik de downloads hierboven."
+    "none": "Deze verhalen hebben op deze site nog geen eigen pagina's in het {language} — lees ze in de lezer op deze pagina, of gebruik de downloads hierboven.",
+    "audio": "In het {language} zijn ze uitgegeven als opnames in plaats van geschreven tekst, en elk verhaal heeft op deze site een eigen pagina waar je het kunt beluisteren."
   },
   "faq": [
     {

@@ -91,6 +91,11 @@ export interface CatalogLanguage {
    *  established — see firstPublishedDate(). Absent in snapshots written
    *  before the field existed. */
   firstPublished?: string | null;
+  /** Every team's repo is a "Video only" placeholder rather than story text
+   *  (isStubContent() in scripts/fetch-catalog.mjs). Such a language has no
+   *  text pages; where it publishes recordings, its story pages are
+   *  audio-only. Absent for every other language. */
+  placeholder?: boolean;
 }
 
 export interface CatalogSnapshot {
@@ -287,6 +292,25 @@ export function storyImage(num: number): string {
  *  and its JSON-LD list exactly these — never a padded list of 50. */
 export function readableStories(lang: CatalogLanguage): CatalogStory[] {
   return (lang.stories ?? []).filter((s) => s.title);
+}
+
+/**
+ * A title for an audio-only story, which has none of its own: the same story's
+ * title in the translation of the page's chrome language, else in English.
+ * Returned with that language's code and direction, because it is NOT the
+ * story's language and the page has to mark it as such. Null when neither
+ * translation's titles are in the snapshot.
+ */
+export function audioOnlyTitle(
+  lang: CatalogLanguage,
+  num: number
+): { title: string; code: string; direction: 'ltr' | 'rtl' } | null {
+  for (const code of [hubLocaleFor(lang), 'en']) {
+    const source = languages.find((l) => l.code === code);
+    const title = source?.stories?.find((s) => s.num === num)?.title;
+    if (source && title) return { title, code, direction: source.direction };
+  }
+  return null;
 }
 
 /**

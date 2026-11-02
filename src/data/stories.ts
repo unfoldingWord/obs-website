@@ -22,7 +22,17 @@ export interface StoryFrame {
 
 export interface Story {
   num: number;
-  title: string;
+  /** The story's title in the language. Null only on an audio-only story,
+   *  which has no text of its own — see `audioOnly`. */
+  title: string | null;
+  /**
+   * The language's repo is a "Video only" placeholder and this story exists
+   * only as its recording: `frames` carry the illustrations with empty text
+   * and `audio` is always set. The page borrows a title from its chrome
+   * language (audioOnlyTitle() in catalog.ts); the reader bundle and the
+   * markdown mirror, which are text, leave these out.
+   */
+  audioOnly?: boolean;
   /** "A Bible story from: Genesis 1-2", in the language, when present. */
   reference: string | null;
   frames: StoryFrame[];

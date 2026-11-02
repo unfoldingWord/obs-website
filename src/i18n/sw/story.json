@@ -1,6 +1,7 @@
 {
   "meta": {
-    "description": "{story} — hadithi ya {n} ya Open Bible Stories katika {language}. Soma maandishi kamili, tazama picha na sikiliza sauti. Bila malipo chini ya leseni huria."
+    "description": "{story} — hadithi ya {n} ya Open Bible Stories katika {language}. Soma maandishi kamili, tazama picha na sikiliza sauti. Bila malipo chini ya leseni huria.",
+    "audioOnlyDescription": "{story} — hadithi ya {n} ya Open Bible Stories katika {language}, kwa sauti. Isikilize na ufuate picha. Bila malipo chini ya leseni huria."
   },
   "storyN": "Hadithi {n} kati ya {total}",
   "listen": "Sikiliza hadithi hii",
@@ -8,6 +9,7 @@
   "downloadAudio": "Pakua sauti",
   "downloadVideo": "Pakua video",
   "transcriptNote": "Maneno ya rekodi hii yako hapa chini, katika {language}.",
+  "audioOnlyNote": "Hadithi hii imechapishwa katika {language} kama rekodi ya sauti, si kama maandishi.",
   "imageAlt": "{story} — picha {n}",
   "previous": "Iliyotangulia",
   "next": "Inayofuata",
