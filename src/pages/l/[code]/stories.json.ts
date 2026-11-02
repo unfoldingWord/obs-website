@@ -54,6 +54,7 @@ export const GET: APIRoute = async ({ props }) => {
         title: s.title,
         reference: s.reference,
         audio: s.audio,
+        youtube: s.youtube ?? null,
         frames: s.frames,
       })),
     }),
