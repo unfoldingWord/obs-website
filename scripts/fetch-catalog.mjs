@@ -102,12 +102,26 @@ const pad = (n) => String(n).padStart(2, '0');
 
 // `.m4a` is deliberately absent. It is only ever published as one file per
 // story, which the hub never lists (the story pages play them, via
-// audioByStory), and a release of 50 m4a files with its YouTube playlist
-// link last would push that link past the 40-asset cap in compactAssetList —
-// 71 such releases on DCS when this was checked, all of which would lose
-// their "Watch" button.
+// audioByStory), and 50 of them would fill the file cap below on their own.
 const ASSET_NAME_RE = /\.(pdf|epub|docx|zip|mp3|mp4|3gp)$/i;
 const YOUTUBE_RE = /youtu\.?be/i;
+
+/**
+ * How many files of one release the snapshot keeps. A release can carry
+ * hundreds (en_obs v8 has 263), and the hub lists a handful. YouTube links
+ * do not count and are never cut: they are few, and a release may list its
+ * playlist after all of its files — en_obs v8 lists it 263rd — which cost
+ * English its Watch button and its per-story videos until links were exempt.
+ */
+const MAX_LISTED_FILES = 40;
+
+/**
+ * The rule compactAssetList trims by, recorded in the snapshot. Bump it when
+ * that rule changes: enrichAssets reuses a cached entry's assets only from a
+ * snapshot written under the current rule, or an unchanged release would
+ * keep its old list for good. 2: YouTube links are exempt from the cap.
+ */
+export const ASSET_LIST_VERSION = 2;
 
 /** Downloadable assets worth listing on a hub, from a catalog entry's release. */
 export function compactAssets(entry) {
@@ -116,10 +130,11 @@ export function compactAssets(entry) {
 
 function compactAssetList(assets, tag = null) {
   if (!Array.isArray(assets)) return [];
+  let files = 0;
   return assets
     .filter((a) => a && a.name && a.browser_download_url)
     .filter((a) => ASSET_NAME_RE.test(a.name) || YOUTUBE_RE.test(a.browser_download_url))
-    .slice(0, 40)
+    .filter((a) => YOUTUBE_RE.test(a.browser_download_url) || files++ < MAX_LISTED_FILES)
     .map((a) => ({ name: a.name, url: a.browser_download_url, size: Number.isFinite(a.size) ? a.size : null, ...(tag ? { tag } : {}) }));
 }
 
@@ -1200,11 +1215,18 @@ export async function enrichStories(languages, previous, fetchImpl = fetch, log 
 /**
  * Enrich entries whose release lacks an advertised PDF/audio/video with the
  * newest release that has it (see fetchMissingAssets). Cached per entry in
- * the snapshot: an entry with the same entryKey reuses its previous assets.
+ * the snapshot: an entry with the same entryKey reuses its previous assets,
+ * as long as the snapshot was written under the current ASSET_LIST_VERSION.
  */
 export async function enrichAssets(languages, previous, fetchImpl = fetch, log = console) {
   const prevEntries = new Map();
-  for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
+  const listsCurrent = previous?.assetListVersion === ASSET_LIST_VERSION;
+  if (previous && !listsCurrent) {
+    log.log('[catalog] assets: the previous snapshot trimmed release files by an older rule, so every entry\'s files are re-read');
+  }
+  if (listsCurrent) {
+    for (const l of previous?.languages || []) for (const e of l.entries || []) prevEntries.set(entryKey(e), e);
+  }
   // First-release dates are cached by REPO, not by entryKey: the key above
   // includes the tag and release date, so a new version of the same repo
   // would miss its own cached history and, on a failed lookup, lose a date
@@ -1337,6 +1359,7 @@ export function buildSnapshot(languages) {
     // Date only, for dateModified in JSON-LD.
     fetchedDate: `${now.getUTCFullYear()}-${pad(now.getUTCMonth() + 1)}-${pad(now.getUTCDate())}`,
     languageCount: languages.length,
+    assetListVersion: ASSET_LIST_VERSION,
     languages,
   };
 }
