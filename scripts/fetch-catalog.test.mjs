@@ -48,6 +48,7 @@ import {
   videosByStory,
   fetchPlaylistVideos,
   enrichYouTube,
+  ASSET_LIST_VERSION,
 } from './fetch-catalog.mjs';
 
 const entries = JSON.parse(readFileSync(new URL('./fixtures/catalog-entries.sample.json', import.meta.url), 'utf8'));
@@ -196,7 +197,7 @@ test('enrichAssets reuses cached assets for unchanged entries', async () => {
   let calls = 0;
   const f = fakeFetch(() => { calls++; return '[]'; });
   const lang = { code: 'sw', formats: { pdf: true, audio: false, video: false }, entries: [{ owner: 'o', name: 'sw_obs', branch_or_tag_name: 'v1', released: '2026-01-01', assets: [] }] };
-  const previous = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }], firstReleased: '2025-06-01' }] }] };
+  const previous = { assetListVersion: ASSET_LIST_VERSION, languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'c.pdf', url: 'https://e/c.pdf', size: 1 }], firstReleased: '2025-06-01' }] }] };
   const quiet = { log() {} };
   const reused = await enrichAssets([lang], previous, f, quiet);
   assert.equal(calls, 0);
@@ -205,6 +206,24 @@ test('enrichAssets reuses cached assets for unchanged entries', async () => {
   assert.equal(reused[0].firstPublished, '2025-06-01');
   await enrichAssets([lang], null, f, quiet);
   assert.equal(calls, 1, 'assets and first release share the one releases request per repo');
+});
+
+// A snapshot trimmed by an older rule holds lists the current rule would not
+// produce (English's, cut before its YouTube link), and an unchanged release
+// would otherwise keep that list for good.
+test('enrichAssets re-reads cached assets written under an older trimming rule', async () => {
+  clearReleasesCache();
+  const lang = { code: 'en', formats: { pdf: true, audio: false, video: true }, entries: [{ owner: 'o', name: 'en_obs', branch_or_tag_name: 'v9', released: '2023-03-03', assets: [{ name: 'en.pdf', url: 'https://e/en.pdf', size: 1 }] }] };
+  const playlist = 'https://www.youtube.com/playlist?list=PLen';
+  const f = fakeFetch((url) => url.endsWith('/releases') ? JSON.stringify([
+    { tag_name: 'v9', published_at: '2023-03-03T00:00:00Z', assets: [{ name: 'en.pdf', browser_download_url: 'https://e/en.pdf' }] },
+    { tag_name: 'v8', published_at: '2020-04-24T00:00:00Z', assets: [{ name: 'YouTube', browser_download_url: playlist }] },
+  ]) : null);
+  const stale = { languages: [{ ...lang, entries: [{ ...lang.entries[0], assets: [{ name: 'en.pdf', url: 'https://e/en.pdf', size: 1 }], firstReleased: '2015-01-01' }] }] };
+  const logged = [];
+  const [fresh] = await enrichAssets([lang], stale, f, { log: (m) => logged.push(m) });
+  assert.ok(fresh.entries[0].assets.some((a) => a.url === playlist), 'the playlist is found again');
+  assert.ok(logged.some((m) => /older rule/.test(m)), 'and the build log says why every entry was re-read');
 });
 
 test('firstReleaseDate is the earliest dated non-draft release', () => {
@@ -866,9 +885,8 @@ test('audioByStory reads per-story m4a the same way as mp3', () => {
   assert.deepEqual(audioByStory([{ assets: [{ name: 'x_01.M4A', browser_download_url: 'https://e/1.M4A' }] }])[1].url, 'https://e/1.M4A', 'extension is case-insensitive');
 });
 
-// Why `.m4a` is not in ASSET_NAME_RE: a 50-file m4a release lists its
-// YouTube playlist last, and compactAssets keeps only 40 — counting m4a
-// would cut the playlist and the hub's "Watch" button with it.
+// A 50-file m4a release lists its YouTube playlist last. m4a is not listed
+// at all (the story pages play it, not the hub), and the link survives.
 test('compactAssets keeps a YouTube link that follows 50 per-story m4a files', () => {
   const release = {
     assets: [
@@ -879,6 +897,21 @@ test('compactAssets keeps a YouTube link that follows 50 per-story m4a files', (
   };
   const assets = compactAssets({ release });
   assert.deepEqual(assets.map((a) => a.url), ['https://www.youtube.com/playlist?list=PLx']);
+});
+
+// en_obs v8: 262 files, then its YouTube playlist, 263rd. The file cap
+// used to cut the link, and English lost its Watch button and its
+// per-story videos with it.
+test('compactAssets keeps a YouTube link listed after more files than the cap', () => {
+  const release = {
+    assets: [
+      ...Array.from({ length: 262 }, (_, i) => ({ name: `en_obs_${i}.mp4`, browser_download_url: `https://e/${i}.mp4`, size: 1 })),
+      { name: 'YouTube', browser_download_url: 'https://www.youtube.com/playlist?list=PLen' },
+    ],
+  };
+  const assets = compactAssets({ release });
+  assert.equal(assets.filter((a) => a.url.endsWith('.mp4')).length, 40, 'files are still capped');
+  assert.equal(assets.at(-1).url, 'https://www.youtube.com/playlist?list=PLen');
 });
 
 // Per-story video (#16): same numbering rule as the audio map, but the

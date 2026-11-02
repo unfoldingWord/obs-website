@@ -73,7 +73,7 @@ Discover) now carries them:
 | --- | --- |
 | `https://unfoldingword.org/open-bible-stories/` | the work node's `sameAs` |
 | `https://en.wikisource.org/wiki/Open_Bible_Stories` | the work node's `sameAs` |
-| The English YouTube playlist | the work node's `sameAs`, read from the `en` catalog entry at build time; omitted while the English release does not list one (per-language playlists are already on each hub) |
+| The English YouTube playlist | the work node's `sameAs`, read from the `en` catalog entry at build time (`en_obs` v8 lists it, 263rd of its files; it was missing until YouTube links were exempted from the build's 40-file cap); omitted if no English release lists one (per-language playlists are already on each hub) |
 
 The Organization node (unfoldingWord) carries `door43.org`, the Facebook
 and X profiles that unfoldingword.org declares in its own Organization
