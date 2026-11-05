@@ -1,8 +1,9 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
-import { defaultLocale, localePath } from '../../i18n/config';
-import { languages, languageCount, withCount, languagePath } from '../../data/catalog';
+import { defaultLocale, localePath, byCode } from '../../i18n/config';
+import { languages, languageCount, withCount, languagePath, type CatalogLanguage } from '../../data/catalog';
+import { continentOf, regionCode, type ContinentCode } from '../../data/continents';
 import { workNode, translationListNode } from '../../lib/jsonld';
 
 interface Props {
@@ -22,6 +23,56 @@ const t = content(locale, 'discover');
 // deep links scroll to the row even without JS.
 const title = withCount(t.meta.title);
 const description = withCount(t.meta.description);
+// Print-only facts per row (see `.print-meta` in styles.css): where a
+// language is used and when it was last updated. They are left off the
+// screen layout on purpose — the row stays a compact search result — but a
+// printed list is read away from the site, without the hub one click away.
+// Names and dates are formatted for the page's locale at build time.
+const localeTag = byCode(locale).tag;
+const regionNames = new Intl.DisplayNames([localeTag, 'en'], { type: 'region' });
+const listFormat = new Intl.ListFormat(localeTag, { type: 'conjunction' });
+const dateFormat = new Intl.DateTimeFormat(localeTag, { dateStyle: 'medium', timeZone: 'UTC' });
+/** Up to this many countries are printed by name; beyond it, continents. */
+const MAX_COUNTRIES = 6;
+function nameOf(code: string): string {
+  try {
+    return regionNames.of(code) ?? code;
+  } catch {
+    return code;
+  }
+}
+/**
+ * Where a language is used, for the printed list. A language listed in a
+ * handful of countries prints them by name. A widely spoken one prints
+ * continents instead: the catalog's own region first, then any other
+ * continent at least two of its countries are in. The country list is a
+ * capped sample that includes diaspora communities (French lists French
+ * Guiana and Israel), so a single country is not enough to name a
+ * continent — French reads "Europe and Africa", not every continent.
+ */
+function whereUsed(l: CatalogLanguage): string | null {
+  const ccs = l.countryCodes ?? [];
+  const primary = regionCode(l.region);
+  if (ccs.length > 0 && ccs.length <= MAX_COUNTRIES) return listFormat.format(ccs.map(nameOf));
+  if (ccs.length > MAX_COUNTRIES) {
+    const counts = new Map<ContinentCode, number>();
+    for (const cc of ccs) {
+      const c = continentOf(cc);
+      if (c) counts.set(c, (counts.get(c) ?? 0) + 1);
+    }
+    const others = [...counts]
+      .filter(([c, n]) => c !== primary && n >= 2)
+      .sort((a, b) => b[1] - a[1])
+      .map(([c]) => c);
+    const continents = primary ? [primary, ...others] : others;
+    if (continents.length) return listFormat.format(continents.map(nameOf));
+  }
+  return primary ? nameOf(primary) : l.region;
+}
+function formatDate(iso: string | null): string | null {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+  return dateFormat.format(new Date(`${iso}T00:00:00Z`));
+}
 const status = t.browse.status.replace('{shown}', String(languageCount)).replace('{total}', String(languageCount));
 
 // The ItemList of translations is emitted once, on the canonical (English)
@@ -86,6 +137,17 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
                     <code>{l.code}</code>
                     {l.entries.length > 1 && <span> &middot; {t.browse.teams.replace('{n}', String(l.entries.length))}</span>}
                   </div>
+                  {(() => {
+                    const where = whereUsed(l);
+                    const updated = formatDate(l.updated);
+                    if (!where && !updated) return null;
+                    return (
+                      <div class="print-meta">
+                        {where && <span>{t.browse.print.countries} {where}</span>}
+                        {updated && <span>{t.browse.print.updated} {updated}</span>}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div class="badges">
                   {l.formats.pdf && <span class="badge">{t.browse.filterPrint}</span>}

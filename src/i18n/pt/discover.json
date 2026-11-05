@@ -18,6 +18,10 @@
     "status": "{shown} de {total} idiomas publicados",
     "noMatch": "Nenhum idioma corresponde a essa pesquisa ainda.",
     "noMatchFormat": "Nenhum idioma corresponde a essa pesquisa e a esse formato — tente outro formato.",
-    "teams": "{n} equipes publicaram este idioma"
+    "teams": "{n} equipes publicaram este idioma",
+    "print": {
+      "countries": "Usada em:",
+      "updated": "Última atualização:"
+    }
   }
 }
