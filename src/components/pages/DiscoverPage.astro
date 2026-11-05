@@ -1,8 +1,8 @@
 ---
 import Base from '../../layouts/Base.astro';
 import { content } from '../../i18n/content';
-import { defaultLocale, localePath } from '../../i18n/config';
-import { languages, languageCount, withCount, languagePath } from '../../data/catalog';
+import { defaultLocale, localePath, byCode } from '../../i18n/config';
+import { languages, languageCount, withCount, languagePath, firstPublishedDate, type CatalogLanguage } from '../../data/catalog';
 import { workNode, translationListNode } from '../../lib/jsonld';
 
 interface Props {
@@ -22,6 +22,30 @@ const t = content(locale, 'discover');
 // deep links scroll to the row even without JS.
 const title = withCount(t.meta.title);
 const description = withCount(t.meta.description);
+// Print-only facts per row (see `.print-meta` in styles.css): the countries
+// a language is used in and when it was published. They are left off the
+// screen layout on purpose — the row stays a compact search result — but a
+// printed list is read away from the site, without the hub one click away.
+// Country names and dates are formatted for the page's locale at build time.
+const localeTag = byCode(locale).tag;
+const regionNames = new Intl.DisplayNames([localeTag, 'en'], { type: 'region' });
+const listFormat = new Intl.ListFormat(localeTag, { type: 'conjunction' });
+const dateFormat = new Intl.DateTimeFormat(localeTag, { dateStyle: 'medium', timeZone: 'UTC' });
+function countryNames(l: CatalogLanguage): string | null {
+  const names = l.countryCodes.map((cc) => {
+    try {
+      return regionNames.of(cc) ?? cc;
+    } catch {
+      return cc;
+    }
+  });
+  if (names.length) return listFormat.format(names);
+  return l.region;
+}
+function formatDate(iso: string | null): string | null {
+  if (!iso || !/^\d{4}-\d{2}-\d{2}$/.test(iso)) return null;
+  return dateFormat.format(new Date(`${iso}T00:00:00Z`));
+}
 const status = t.browse.status.replace('{shown}', String(languageCount)).replace('{total}', String(languageCount));
 
 // The ItemList of translations is emitted once, on the canonical (English)
@@ -86,6 +110,19 @@ const jsonLd = locale === defaultLocale ? [workNode(), translationListNode(langu
                     <code>{l.code}</code>
                     {l.entries.length > 1 && <span> &middot; {t.browse.teams.replace('{n}', String(l.entries.length))}</span>}
                   </div>
+                  {(() => {
+                    const where = countryNames(l);
+                    const first = formatDate(firstPublishedDate(l));
+                    const updated = formatDate(l.updated);
+                    if (!where && !first && !updated) return null;
+                    return (
+                      <div class="print-meta">
+                        {where && <span>{t.browse.print.countries} {where}</span>}
+                        {first && <span>{t.browse.print.firstPublished} {first}</span>}
+                        {updated && <span>{t.browse.print.updated} {updated}</span>}
+                      </div>
+                    );
+                  })()}
                 </div>
                 <div class="badges">
                   {l.formats.pdf && <span class="badge">{t.browse.filterPrint}</span>}

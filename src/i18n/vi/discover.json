@@ -18,6 +18,11 @@
     "status": "{shown} trong {total} ngôn ngữ đã phát hành",
     "noMatch": "Chưa có ngôn ngữ nào khớp với tìm kiếm đó.",
     "noMatchFormat": "Không có ngôn ngữ nào khớp với tìm kiếm và định dạng đó — hãy thử định dạng khác.",
-    "teams": "{n} đội ngũ đã phát hành bản này"
+    "teams": "{n} đội ngũ đã phát hành bản này",
+    "print": {
+      "countries": "Được dùng tại:",
+      "firstPublished": "Xuất bản lần đầu:",
+      "updated": "Cập nhật lần cuối:"
+    }
   }
 }

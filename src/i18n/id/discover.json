@@ -18,6 +18,11 @@
     "status": "{shown} dari {total} bahasa yang diterbitkan",
     "noMatch": "Belum ada bahasa yang cocok dengan pencarian itu.",
     "noMatchFormat": "Tidak ada bahasa yang cocok dengan pencarian dan format itu — coba format lain.",
-    "teams": "{n} tim telah menerbitkan ini"
+    "teams": "{n} tim telah menerbitkan ini",
+    "print": {
+      "countries": "Digunakan di:",
+      "firstPublished": "Pertama diterbitkan:",
+      "updated": "Terakhir diperbarui:"
+    }
   }
 }

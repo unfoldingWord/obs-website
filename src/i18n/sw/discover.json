@@ -18,6 +18,11 @@
     "status": "Lugha {shown} kati ya {total} zilizochapishwa",
     "noMatch": "Bado hakuna lugha inayolingana na utafutaji huo.",
     "noMatchFormat": "Hakuna lugha inayolingana na utafutaji huo na muundo huo — jaribu muundo mwingine.",
-    "teams": "Timu {n} zimechapisha hii"
+    "teams": "Timu {n} zimechapisha hii",
+    "print": {
+      "countries": "Inatumika:",
+      "firstPublished": "Ilichapishwa kwanza:",
+      "updated": "Ilisasishwa mwisho:"
+    }
   }
 }

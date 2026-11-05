@@ -18,6 +18,11 @@
     "status": "已发布的 {total} 种语言中显示 {shown} 种",
     "noMatch": "暂时没有语言与该搜索匹配。",
     "noMatchFormat": "没有语言与该搜索和格式匹配——请尝试其他格式。",
-    "teams": "已有 {n} 个团队发布此译本"
+    "teams": "已有 {n} 个团队发布此译本",
+    "print": {
+      "countries": "使用地区：",
+      "firstPublished": "首次发布：",
+      "updated": "最近更新："
+    }
   }
 }

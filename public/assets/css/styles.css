@@ -423,6 +423,31 @@ section{padding:80px 0;}
 .badge{font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:999px; background:var(--panel); color:var(--ocean);}
 .badge.audio{background:#FBEFDB; color:#7a4e10;}
 .badge.video{background:#F5E3EE; color:#7a1a52;}
+/* Countries and publication dates for each language. Screen rows stay a
+   compact search result, so these show only on paper (see @media print
+   below and DiscoverPage.astro). */
+.print-meta{display:none;}
+@media print{
+  /* Discover printed as a reference list: the language rows and nothing a
+     reader could not use on paper. Rows hidden by the search or format
+     filter stay hidden, so printing after a search prints that subset;
+     the status line above the list says how many of the total it holds. */
+  body:has(#lang-list) > header,
+  body:has(#lang-list) > footer,
+  body:has(#lang-list) .skip-link,
+  .discover-map-backdrop,
+  .discover-hero-intro .btn,
+  .library-tools{display:none !important;}
+  body:has(#lang-list) .page-header{padding:0 !important; background:none;}
+  #lang-browse{margin-top:12px !important;}
+  .lib-status{text-align:start; margin-bottom:8px; color:#000;}
+  .lang-list{max-width:none; gap:0;}
+  .lang-list li{break-inside:avoid;}
+  .lang-row{padding:6px 0; border-radius:0; border-bottom:1px solid #bbb; background:none; color:#000;}
+  .lang-row .name, .lang-row .code, .lang-row .code .english{color:#000;}
+  .badge, .badge.audio, .badge.video{background:none; color:#000; border:1px solid #888; padding:1px 6px;}
+  .print-meta{display:flex; flex-wrap:wrap; gap:2px 16px; margin-top:2px; font-size:0.78rem; color:#000;}
+}
 
 /* ---------- STEP LIST (Translate page) ---------- */
 .step-list{display:flex; flex-direction:column; gap:0; max-width:820px; margin:0 auto;}

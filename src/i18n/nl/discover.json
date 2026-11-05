@@ -18,6 +18,11 @@
     "status": "{shown} van {total} gepubliceerde talen",
     "noMatch": "Nog geen taal komt overeen met die zoekopdracht.",
     "noMatchFormat": "Geen taal komt overeen met die zoekopdracht en dat formaat — probeer een ander formaat.",
-    "teams": "{n} teams hebben dit gepubliceerd"
+    "teams": "{n} teams hebben dit gepubliceerd",
+    "print": {
+      "countries": "Gebruikt in:",
+      "firstPublished": "Eerst gepubliceerd:",
+      "updated": "Laatst bijgewerkt:"
+    }
   }
 }

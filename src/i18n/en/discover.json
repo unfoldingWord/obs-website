@@ -18,6 +18,11 @@
     "status": "{shown} of {total} published languages",
     "noMatch": "No languages match that search yet.",
     "noMatchFormat": "No languages match that search and format yet — try a different format.",
-    "teams": "{n} teams have published this"
+    "teams": "{n} teams have published this",
+    "print": {
+      "countries": "Used in:",
+      "firstPublished": "First published:",
+      "updated": "Last updated:"
+    }
   }
 }
