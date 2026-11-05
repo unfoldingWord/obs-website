@@ -21,7 +21,6 @@
     "teams": "{n} teams have published this",
     "print": {
       "countries": "Used in:",
-      "firstPublished": "First published:",
       "updated": "Last updated:"
     }
   }

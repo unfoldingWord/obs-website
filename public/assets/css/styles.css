@@ -423,9 +423,9 @@ section{padding:80px 0;}
 .badge{font-size:0.72rem; font-weight:700; padding:4px 10px; border-radius:999px; background:var(--panel); color:var(--ocean);}
 .badge.audio{background:#FBEFDB; color:#7a4e10;}
 .badge.video{background:#F5E3EE; color:#7a1a52;}
-/* Countries and publication dates for each language. Screen rows stay a
-   compact search result, so these show only on paper (see @media print
-   below and DiscoverPage.astro). */
+/* Where each language is used and when it was last updated. Screen rows
+   stay a compact search result, so these show only on paper (see @media
+   print below and DiscoverPage.astro). */
 .print-meta{display:none;}
 @media print{
   /* Discover printed as a reference list: the language rows and nothing a
@@ -439,14 +439,22 @@ section{padding:80px 0;}
   .discover-hero-intro .btn,
   .library-tools{display:none !important;}
   body:has(#lang-list) .page-header{padding:0 !important; background:none;}
-  #lang-browse{margin-top:12px !important;}
-  .lib-status{text-align:start; margin-bottom:8px; color:#000;}
+  body:has(#lang-list) .page-header h1{margin:4px 0 6px !important;}
+  #lang-browse{margin-top:8px !important;}
+  .lib-status{text-align:start; margin-bottom:4px; color:var(--tech, #231F20);}
+  /* Keep the brand colors on paper: browsers drop backgrounds when
+     printing unless told the colors are part of the content. */
+  .lang-list, .badge{-webkit-print-color-adjust:exact; print-color-adjust:exact;}
   .lang-list{max-width:none; gap:0;}
   .lang-list li{break-inside:avoid;}
-  .lang-row{padding:6px 0; border-radius:0; border-bottom:1px solid #bbb; background:none; color:#000;}
-  .lang-row .name, .lang-row .code, .lang-row .code .english{color:#000;}
-  .badge, .badge.audio, .badge.video{background:none; color:#000; border:1px solid #888; padding:1px 6px;}
-  .print-meta{display:flex; flex-wrap:wrap; gap:2px 16px; margin-top:2px; font-size:0.78rem; color:#000;}
+  /* Two lines per language: name and code, then where and when. */
+  .lang-row{padding:5px 0; border-radius:0; border-bottom:1px solid rgba(1,66,99,0.18); background:none; flex-wrap:nowrap; gap:12px;}
+  .lang-row > div:first-child{display:flex; flex-wrap:wrap; align-items:baseline; column-gap:10px; flex:1; min-width:0;}
+  .lang-row .name{font-size:0.95rem; color:var(--ocean);}
+  .lang-row .code{font-size:0.8rem; color:#3d4b52;}
+  .lang-row .badges{flex:none;}
+  .badge{font-size:0.68rem; padding:2px 8px;}
+  .print-meta{display:flex; flex-wrap:wrap; flex-basis:100%; gap:0 16px; font-size:0.78rem; color:var(--tech, #231F20);}
 }
 
 /* ---------- STEP LIST (Translate page) ---------- */

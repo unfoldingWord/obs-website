@@ -21,7 +21,6 @@
     "teams": "已有 {n} 个团队发布此译本",
     "print": {
       "countries": "使用地区：",
-      "firstPublished": "首次发布：",
       "updated": "最近更新："
     }
   }
