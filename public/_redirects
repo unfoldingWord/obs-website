@@ -6,6 +6,11 @@
 # not attached, this rule never fires. Host rules must come first.
 https://www.openbiblestories.org/*  https://openbiblestories.org/:splat  301
 
+# Crawlers and browsers ask for /favicon.ico at the root no matter what the
+# <link rel="icon"> says; the icon lives under /assets/img/. Without this,
+# Search Console's crawl stats log a 404 for it every day.
+/favicon.ico  /assets/img/favicon.ico  301
+
 # Archived pages (Library browser removed in favor of /discover/, which has
 # its own search, format filters, and inline reader). These keep old
 # bookmarks/links/search results from 404ing. Deep links like
