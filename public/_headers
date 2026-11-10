@@ -63,3 +63,17 @@
 /assets/fonts/*
   ! Cache-Control
   Cache-Control: public, max-age=31536000, immutable
+
+# Agent discovery (RFC 8288 Link headers) on the home page only: where the
+# machine-readable views of the site live. Cloudflare's agent-readiness
+# scan reads these from the home page. Every target is built on every
+# deploy and checked by `npm run check:routes`. `/` matches the home page
+# exactly, not every path.
+/
+  Link: </.well-known/api-catalog>; rel="api-catalog", </llms.txt>; rel="describedby"; type="text/plain", </ai/summary.json>; rel="describedby"; type="application/json", </sitemap-index.xml>; rel="sitemap"; type="application/xml"
+
+# RFC 9727 API catalog. The built file has no extension, so its media type
+# must be set here (src/pages/.well-known/api-catalog.ts).
+/.well-known/api-catalog
+  ! Content-Type
+  Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"

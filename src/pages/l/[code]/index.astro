@@ -16,6 +16,7 @@
 // primary subtag matches the content language, otherwise English; the
 // <html lang>/dir and the font pack follow the CONTENT language.
 import Base from '../../../layouts/Base.astro';
+import { markdownPath, mirroredLanguages } from '../../../lib/markdown';
 import { content } from '../../../i18n/content';
 import { byCode, localePath } from '../../../i18n/config';
 import {
@@ -49,6 +50,7 @@ interface Props {
   lang: CatalogLanguage;
 }
 const { lang } = Astro.props;
+const hasMirror = mirroredLanguages().some((l) => l.code === lang.code);
 
 const uiLocale = hubLocaleFor(lang);
 const ui = byCode(uiLocale);
@@ -294,6 +296,10 @@ label('source', t.source);
   ogImage={image}
   chrome={chrome}
 >
+{/* The plain-text markdown mirror of this language's stories, for agents
+    that prefer markdown to HTML (#20). Only languages that get a mirror
+    link to one, so this never points at a 404. */}
+{hasMirror && <link slot="head" rel="alternate" type="text/markdown" href={markdownPath(lang.code)} />}
 
 <section class="page-header hub-header" lang={ui.tag} dir={ui.dir} data-i18n-scope="hub">
   <div class="wrap">
