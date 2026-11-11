@@ -27,7 +27,8 @@ export const GET: APIRoute = () => {
     ...mirroredLanguages().map((lang) => ({
       href: abs(`/l/${encodeURIComponent(lang.code)}/stories.json`),
       type: 'application/json',
-      hreflang: lang.code,
+      // RFC 9264 §4.2.4.1: hreflang is always an array in a JSON linkset.
+      hreflang: [lang.code],
     })),
   ];
 

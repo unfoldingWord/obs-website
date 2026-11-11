@@ -73,7 +73,9 @@
   Link: </.well-known/api-catalog>; rel="api-catalog", </llms.txt>; rel="describedby"; type="text/plain", </ai/summary.json>; rel="describedby"; type="application/json", </sitemap-index.xml>; rel="sitemap"; type="application/xml"
 
 # RFC 9727 API catalog. The built file has no extension, so its media type
-# must be set here (src/pages/.well-known/api-catalog.ts).
+# must be set here (src/pages/.well-known/api-catalog.ts). RFC 9727 §2 also
+# requires a HEAD of this URL to return a Link with rel="api-catalog".
 /.well-known/api-catalog
+  Link: </.well-known/api-catalog>; rel="api-catalog"
   ! Content-Type
   Content-Type: application/linkset+json; profile="https://www.rfc-editor.org/info/rfc9727"

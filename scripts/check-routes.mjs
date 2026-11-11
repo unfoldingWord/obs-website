@@ -463,8 +463,13 @@ if (!existsSync(catalogFile)) {
   }
   for (const entry of set ?? []) {
     for (const rel of ['item', 'service-doc']) {
-      for (const { href } of entry[rel] ?? []) {
+      for (const target of entry[rel] ?? []) {
+        const { href } = target;
         discovery++;
+        // RFC 9264 §4.2.4.1: hreflang must be an array of strings, even for one.
+        if ('hreflang' in target && !(Array.isArray(target.hreflang) && target.hreflang.every((t) => typeof t === 'string'))) {
+          errors.push(`api-catalog ${rel} ${href}: hreflang must be an array of strings`);
+        }
         if (!href.startsWith(SITE)) errors.push(`api-catalog ${rel} is off-site: ${href}`);
         else if (!existsSync(fileFor(href.slice(SITE.length)))) errors.push(`api-catalog ${rel} ${href} was not built`);
       }
