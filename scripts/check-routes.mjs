@@ -18,6 +18,9 @@
 //      target exists, and no redirect chains
 //  10. /changelog/ and its Atom feed were built, the feed links only hubs that
 //      exist, and the page never dates a language it has no first-release for
+//  11. agent discovery: every /.well-known/api-catalog item, every home-page
+//      Link header target in _headers, and every hub's markdown alternate
+//      resolves to a built file
 import { existsSync, readFileSync, readdirSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -443,6 +446,54 @@ let feedLinks = 0;
   }
 }
 
+// 11. Agent discovery. The API catalog, the home page's Link header and the
+// hubs' <link rel="alternate" type="text/markdown"> all exist to be
+// followed by machines that will not tell anyone when they hit a 404.
+const fileFor = (path) => join(DIST, decodeURIComponent(path).replace(/\/$/, '/index.html'));
+let discovery = 0;
+const catalogFile = join(DIST, '.well-known', 'api-catalog');
+if (!existsSync(catalogFile)) {
+  errors.push('/.well-known/api-catalog was not built');
+} else {
+  let set;
+  try {
+    set = JSON.parse(readFileSync(catalogFile, 'utf8')).linkset;
+  } catch (e) {
+    errors.push(`/.well-known/api-catalog is not valid JSON: ${e.message}`);
+  }
+  for (const entry of set ?? []) {
+    for (const rel of ['item', 'service-doc']) {
+      for (const target of entry[rel] ?? []) {
+        const { href } = target;
+        discovery++;
+        // RFC 9264 §4.2.4.1: hreflang must be an array of strings, even for one.
+        if ('hreflang' in target && !(Array.isArray(target.hreflang) && target.hreflang.every((t) => typeof t === 'string'))) {
+          errors.push(`api-catalog ${rel} ${href}: hreflang must be an array of strings`);
+        }
+        if (!href.startsWith(SITE)) errors.push(`api-catalog ${rel} is off-site: ${href}`);
+        else if (!existsSync(fileFor(href.slice(SITE.length)))) errors.push(`api-catalog ${rel} ${href} was not built`);
+      }
+    }
+  }
+}
+const headersFile = join(DIST, '_headers');
+if (existsSync(headersFile)) {
+  for (const m of readFileSync(headersFile, 'utf8').matchAll(/^\s+Link:\s*(.+)$/gm)) {
+    for (const t of m[1].matchAll(/<(\/[^>]*)>/g)) {
+      discovery++;
+      if (!existsSync(fileFor(t[1]))) errors.push(`_headers Link target ${t[1]} was not built`);
+    }
+  }
+}
+for (const lang of languages) {
+  const hub = join(DIST, 'l', lang.code, 'index.html');
+  if (!existsSync(hub)) continue;
+  const m = readFileSync(hub, 'utf8').match(/<link rel="alternate" type="text\/markdown" href="([^"]+)"/);
+  if (!m) continue;
+  discovery++;
+  if (!existsSync(fileFor(m[1]))) errors.push(`/l/${lang.code}/ names markdown alternate ${m[1]}, which was not built`);
+}
+
 if (errors.length) {
   for (const e of errors.slice(0, 12)) console.error(`✗ ${e}`);
   if (errors.length > 12) console.error(`  …and ${errors.length - 12} more`);
@@ -452,5 +503,5 @@ console.log(
   `✓ routes OK — ${checked} sitemap URLs resolve, ${languages.length} hubs, ${builtStories} story pages, ` +
     `${links} links into /l/ resolve, ${llms} llms.txt URLs resolve, ${swapKeys} chrome keys swap in 16 locales, ` +
     `no placeholder story text, ${RETIRED.length} retired routes redirect, ` +
-    `${all.length}/${MAX_FILES} files, ${feedLinks} changelog feed links resolve, no /discover/read/`
+    `${all.length}/${MAX_FILES} files, ${feedLinks} changelog feed links resolve, ${discovery} agent-discovery links resolve, no /discover/read/`
 );

@@ -168,11 +168,12 @@ The file in this repo is not the whole story. Cloudflare's **managed robots.txt*
 
 ```
 curl -fsS https://openbiblestories.org/robots.txt > /tmp/robots.txt \
-  && ! grep -Ei '^[[:space:]]*(Disallow|Content-Signal)[[:space:]]*:' /tmp/robots.txt \
-  && echo "OK: served robots.txt has no Disallow or Content-Signal directive"
+  && ! grep -Ei '^[[:space:]]*Disallow[[:space:]]*:' /tmp/robots.txt \
+  && [ "$(grep -Ei '^[[:space:]]*Content-Signal[[:space:]]*:' /tmp/robots.txt | tr -d '[:space:]' | tr '[:upper:]' '[:lower:]' | sort -u)" = 'content-signal:search=yes,ai-input=yes,ai-train=yes' ] \
+  && echo "OK: no Disallow, and the only Content-Signal is the all-yes policy"
 ```
 
-It prints `OK` only when the download succeeded **and** no directive matched. It looks at directives, not comments, because the policy note in the file itself mentions `Disallow: /` and `ai-train=no` and a naive `grep -i` would flag them.
+It prints `OK` only when the download succeeded, no `Disallow` directive is present, **and** every `Content-Signal` directive is exactly `search=yes, ai-input=yes, ai-train=yes`. The repo's own file declares that signal on purpose (it is the #15 policy in the [Content Signals](https://contentsignals.org/) format), so any other value — Cloudflare's `ai-train=no`, a `use=reference`, or a second, prepended signal line — fails the check. It looks at directives, not comments, because the policy note in the file itself mentions `Disallow: /` and `ai-train=no` and a naive `grep -i` would flag them.
 
 ## Structure
 
@@ -216,3 +217,5 @@ Current `_redirects` / `_headers` rules:
 - `/assets/img/*` is cached for 1 year (`immutable`) since filenames don't change.
 - `/assets/js/*` and `/assets/css/*` use `no-cache` (always revalidate in the browser) plus `s-maxage` at the edge, since these are served in place under the same filenames — no content hashing.
 - `/assets/fonts/*` is cached for 1 year (`immutable`) like images.
+- `/` (the home page only) sends RFC 8288 `Link` headers for agent discovery: the API catalog (`rel="api-catalog"`), `/llms.txt` and `/ai/summary.json` (`rel="describedby"`) and the sitemap.
+- `/.well-known/api-catalog` is served as `application/linkset+json` (RFC 9727) with its own `rel="api-catalog"` Link header. It lists the machine-readable files the build publishes, and `npm run check:routes` (check 11) fails if any listed file, home-page Link target or hub markdown alternate was not built.

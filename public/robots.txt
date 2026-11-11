@@ -16,7 +16,14 @@
 # in this file, and the served file must match this one. See README →
 # "Crawlers and AI policy".
 
+# Content Signals (contentsignals.org): the same allow-all policy as above,
+# in the machine-readable form. search = index and link to pages;
+# ai-input = use pages to answer a query in real time (RAG, grounding);
+# ai-train = train or fine-tune models. All three are yes per #15. Written
+# here rather than via Cloudflare's managed robots.txt, whose default adds
+# ai-train=no and would silently reverse that decision.
 User-agent: *
+Content-Signal: search=yes, ai-input=yes, ai-train=yes
 Allow: /
 
 # Search engines
