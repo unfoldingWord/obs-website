@@ -1402,6 +1402,18 @@ export function hasStoryFile(code, dir = STORIES_DIR) {
   return existsSync(join(dir, `${code}.json`));
 }
 
+// Use the titles the pages actually render, including when a failed releases
+// lookup leaves yesterday's audio-only story file in place. The snapshot's
+// stories/extract have no text for placeholders, so enrichStories cannot
+// recover their script from those fields. Gujari's titles also override the
+// LTR direction reported by langnames.
+function setAudioOnlyScript(lang, stories) {
+  const sample = stories.filter((s) => s.audioOnly).map((s) => s.title).filter(Boolean).join(' ');
+  if (!sample) return;
+  lang.script = scriptFor(lang.code, sample);
+  lang.direction = lang.script === 'arabic' || lang.script === 'nastaliq' ? 'rtl' : 'ltr';
+}
+
 /**
  * Split the story bodies out of the snapshot into one file per language
  * (src/data/stories/{code}.json, generated and gitignored — together they are
@@ -1449,16 +1461,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
     if (!full.length && lang.placeholder && Object.keys(audio).length) {
       const stories = audioOnlyStories(audio, video, youtube, youtubeTitles);
       lang.storyNums = stories.map((s) => s.num);
-      // With no text, the language's script defaulted to Latin; its video
-      // titles are the only writing it has, so they decide the script — and
-      // so the font pack, the direction, and the hub's chrome language, by
-      // the same rule as every text language (hubLocaleFor). Gujari's
-      // playlist is in Urdu script, though langnames lists gju as ltr.
-      const sample = Object.values(youtubeTitles).join(' ');
-      if (sample) {
-        lang.script = scriptFor(lang.code, sample);
-        if (lang.script === 'arabic' || lang.script === 'nastaliq') lang.direction = 'rtl';
-      }
+      setAudioOnlyScript(lang, stories);
       writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories }) + '\n');
       written++;
       audioOnly++;
@@ -1474,6 +1477,12 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
       // an existing checkout never gained a video player or an AudioObject
       // until the text release happened to change.
       if (mergeStoryMedia(lang.code, audio, video, dir, youtube)) merged++;
+      if (lang.placeholder) {
+        try {
+          const cached = JSON.parse(readFileSync(join(dir, `${lang.code}.json`), 'utf8'));
+          setAudioOnlyScript(lang, cached.stories || []);
+        } catch { /* No readable cached titles: keep the existing metadata. */ }
+      }
       continue;
     }
     lang.storyNums = full.map((s) => s.num);

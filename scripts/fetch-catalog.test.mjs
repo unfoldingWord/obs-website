@@ -1127,6 +1127,44 @@ test('writeStoryFiles gives a placeholder with recordings audio-only pages, and 
   assert.deepEqual(again.storyNums, [1, 3]);
 });
 
+test('cached audio-only titles retain their script and direction when releases cannot be read', async (t) => {
+  const { readFileSync, rmSync } = await import('node:fs');
+  const cases = [
+    { code: 'gju', title: 'تخلیق', script: 'arabic', direction: 'rtl' },
+    { code: 'awa', title: 'सृष्टि', script: 'devanagari', direction: 'ltr' },
+  ];
+  for (const { code, title, script, direction } of cases) {
+    const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+    t.after(() => rmSync(dir, { recursive: true, force: true }));
+    const lang = {
+      code, script: 'latin', direction: 'ltr',
+      entries: [{ owner: 'o', name: `${code}_obs`, branch_or_tag_name: 'v1' }],
+    };
+    const previous = {
+      ...lang, placeholder: true, stories: [], extract: null,
+      storyAudio: { 1: { url: 'https://e/1.m4a' } },
+      storyYoutubeTitles: { 1: title },
+    };
+    writeStoryFiles([previous], dir);
+    const cached = readFileSync(join(dir, `${code}.json`), 'utf8');
+
+    // Releases failed, independently of whether YouTube succeeded. If the
+    // playlist changed its script, the retained file's titles still decide.
+    for (const titles of [undefined, { 1: title }, { 1: 'A replacement title' }]) {
+      const [reused] = await enrichStories(
+        [{ ...lang, storyYoutubeTitles: titles }], { languages: [previous] },
+        () => { throw new Error('unchanged release should reuse the cached stories'); },
+        { log() {} }, dir
+      );
+      assert.equal(reused.script, 'latin', 'placeholder snapshot has no text to detect');
+      writeStoryFiles([reused], dir);
+      assert.deepEqual([reused.script, reused.direction], [script, direction], code);
+      assert.deepEqual(reused.storyNums, [1], 'cached pages remain available');
+      assert.equal(readFileSync(join(dir, `${code}.json`), 'utf8'), cached, 'retained titles and media are unchanged');
+    }
+  }
+});
+
 test('enrichStories marks a placeholder, and the mark survives reuse of the snapshot', async (t) => {
   const { writeFileSync, rmSync } = await import('node:fs');
 

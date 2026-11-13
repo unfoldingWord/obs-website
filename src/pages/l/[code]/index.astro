@@ -444,7 +444,7 @@ label('source', t.source);
   <section class="hub-stories" data-i18n-scope="hub">
     <div class="wrap">
       <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{fill(t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT })}</h2>
-      <p class="hub-audio-only-note" lang={ui.tag} dir={ui.dir}>{fill(t.audioOnlyNote, { language: name })}</p>
+      <p class="hub-audio-only-note" lang={ui.tag} dir={ui.dir} data-i18n-lang>{fill(t.audioOnlyNote, { language: name })}</p>
       <ol class="hub-story-list">
         {storyRecords.map((s) => {
           const borrowed = audioOnlyHeading(lang, s);
