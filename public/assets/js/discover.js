@@ -105,7 +105,8 @@
     }
   }
 
-  // The WebSite SearchAction (JSON-LD in Base.astro) lands here with ?q=.
+  // ?q= prefills the search box, so a shared link can open a search. (The
+  // JSON-LD SearchAction that used to target this was removed; see jsonld.ts.)
   const initialQuery = new URLSearchParams(window.location.search).get("q");
   if (initialQuery && !searchEl.value) searchEl.value = initialQuery;
 
