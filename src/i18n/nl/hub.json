@@ -17,6 +17,7 @@
   "extractAlt": "Een illustratie uit Open Bible Stories in het {language}",
   "storiesTitle": "Verhalen ({n} van {total})",
   "audioStoriesTitle": "Verhalen om te beluisteren ({n} van {total})",
+  "audioOnlyNote": "Deze verhalen zijn in het {language} alleen beschikbaar als audio- en video-opnamen. Er is geen geschreven vertaling in het {language} aangeleverd, dus hier is geen tekst om te lezen. Open hieronder een verhaal om het te beluisteren en te volgen aan de hand van de illustraties, of bekijk de video's.",
   "version": "v{version}",
   "teams": "{n} teams hebben deze taal gepubliceerd.",
   "allLanguages": "Alle talen",

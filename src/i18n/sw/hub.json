@@ -17,6 +17,7 @@
   "extractAlt": "Picha kutoka Open Bible Stories katika {language}",
   "storiesTitle": "Hadithi ({n} kati ya {total})",
   "audioStoriesTitle": "Hadithi za kusikiliza ({n} kati ya {total})",
+  "audioOnlyNote": "Hadithi hizi zinapatikana katika {language} kama rekodi za sauti na video pekee. Hakuna tafsiri iliyoandikwa iliyotolewa katika {language}, kwa hiyo hakuna maandishi ya kusoma hapa. Fungua hadithi yoyote hapa chini ili uisikilize na uifuate kupitia picha zake, au tazama video.",
   "version": "v{version}",
   "teams": "Timu {n} zimechapisha lugha hii.",
   "allLanguages": "Lugha zote",

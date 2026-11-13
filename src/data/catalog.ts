@@ -301,6 +301,21 @@ export function readableStories(lang: CatalogLanguage): CatalogStory[] {
  * story's language and the page has to mark it as such. Null when neither
  * translation's titles are in the snapshot.
  */
+/**
+ * The heading of an audio-only story: its own title in the language, read
+ * from the language's YouTube video titles at build time, or — when the
+ * playlist gave none — the same story's title borrowed from the chrome
+ * language (audioOnlyTitle). `code`/`direction` say which language the
+ * returned title is in, for the element's lang/dir.
+ */
+export function audioOnlyHeading(
+  lang: CatalogLanguage,
+  story: { num: number; title: string | null }
+): { title: string; code: string; direction: 'ltr' | 'rtl' } | null {
+  if (story.title) return { title: story.title, code: lang.code, direction: lang.direction };
+  return audioOnlyTitle(lang, story.num);
+}
+
 export function audioOnlyTitle(
   lang: CatalogLanguage,
   num: number

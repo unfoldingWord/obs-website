@@ -9,7 +9,7 @@
   "downloadAudio": "Descargar el audio",
   "downloadVideo": "Descargar el video",
   "transcriptNote": "Las palabras de esta grabación están abajo, en {language}.",
-  "audioOnlyNote": "Esta historia está publicada en {language} como grabación, no como texto escrito.",
+  "audioOnlyNote": "Esta historia está disponible en {language} solo como grabación de audio y video. No se ha proporcionado una traducción escrita en {language}, así que esta página no tiene texto de la historia para leer. Escucha la grabación de arriba y sigue la historia con las ilustraciones de abajo.",
   "imageAlt": "{story} — ilustración {n}",
   "previous": "Anterior",
   "next": "Siguiente",

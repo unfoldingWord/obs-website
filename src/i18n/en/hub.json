@@ -17,6 +17,7 @@
   "extractAlt": "An illustration from Open Bible Stories in {language}",
   "storiesTitle": "Stories ({n} of {total})",
   "audioStoriesTitle": "Stories to listen to ({n} of {total})",
+  "audioOnlyNote": "These stories are available in {language} only as audio and video recordings. No written translation has been provided in {language}, so there is no text to read here. Open a story below to listen to it and follow along with its illustrations, or watch the videos.",
   "version": "v{version}",
   "teams": "{n} teams have published this language.",
   "allLanguages": "All languages",

@@ -9,7 +9,7 @@
   "downloadAudio": "Pakua sauti",
   "downloadVideo": "Pakua video",
   "transcriptNote": "Maneno ya rekodi hii yako hapa chini, katika {language}.",
-  "audioOnlyNote": "Hadithi hii imechapishwa katika {language} kama rekodi ya sauti, si kama maandishi.",
+  "audioOnlyNote": "Hadithi hii inapatikana katika {language} kama rekodi za sauti na video pekee. Hakuna tafsiri iliyoandikwa iliyotolewa katika {language}, kwa hiyo ukurasa huu hauna maandishi ya hadithi ya kusoma. Sikiliza rekodi iliyo hapo juu na ufuate hadithi kupitia picha zilizo hapa chini.",
   "imageAlt": "{story} — picha {n}",
   "previous": "Iliyotangulia",
   "next": "Inayofuata",

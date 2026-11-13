@@ -9,7 +9,7 @@
   "downloadAudio": "Unduh audio",
   "downloadVideo": "Unduh video",
   "transcriptNote": "Kata-kata dalam rekaman ini ada di bawah, dalam bahasa {language}.",
-  "audioOnlyNote": "Cerita ini diterbitkan dalam bahasa {language} sebagai rekaman, bukan sebagai teks tertulis.",
+  "audioOnlyNote": "Cerita ini tersedia dalam bahasa {language} hanya sebagai rekaman audio dan video. Tidak ada terjemahan tertulis yang disediakan dalam bahasa {language}, jadi halaman ini tidak memiliki teks cerita untuk dibaca. Dengarkan rekaman di atas dan ikuti ceritanya melalui ilustrasi di bawah.",
   "imageAlt": "{story} — ilustrasi {n}",
   "previous": "Sebelumnya",
   "next": "Berikutnya",

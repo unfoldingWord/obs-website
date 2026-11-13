@@ -17,6 +17,7 @@
   "extractAlt": "{language} Open Bible Stories 的一幅插图",
   "storiesTitle": "故事（{n} / {total}）",
   "audioStoriesTitle": "可收听的故事（{n} / {total}）",
+  "audioOnlyNote": "这些故事的 {language} 版本只有音频和视频录音。{language} 没有提供书面译文，所以这里没有可阅读的文字。打开下面任何一个故事即可收听，并通过插图跟随故事，也可以观看视频。",
   "version": "v{version}",
   "teams": "已有 {n} 个团队发布此语言。",
   "allLanguages": "所有语言",

@@ -102,6 +102,16 @@ Left for a native reader: whether Swahili *Vumbua* (used site-wide for
 Discover) should be the more common *Gundua*; Hindi still uses both *टीम*
 and *दल* in the marketing pages outside these four files.
 
+## Added since the September pass
+
+- **`story.audioOnlyNote` and `hub.audioOnlyNote`** (November 2026, all 16
+  locales): the longer note on audio-only languages' story pages and hubs,
+  saying the stories exist there only as audio and video recordings and that
+  no written translation has been provided. Drafted without a native reader,
+  like the rest; worth including in the next sheet. Since these hubs now take
+  their chrome from the script of their YouTube titles, the Hindi (`hi`) and
+  Persian (`fa`) versions are the ones most of their visitors see.
+
 ## Getting a sheet
 
 ```

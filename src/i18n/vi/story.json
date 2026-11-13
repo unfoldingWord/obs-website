@@ -9,7 +9,7 @@
   "downloadAudio": "Tải bản âm thanh",
   "downloadVideo": "Tải video",
   "transcriptNote": "Lời của bản thu âm này ở bên dưới, bằng tiếng {language}.",
-  "audioOnlyNote": "Câu chuyện này được phát hành bằng tiếng {language} dưới dạng bản thu âm, không phải văn bản viết.",
+  "audioOnlyNote": "Câu chuyện này bằng tiếng {language} chỉ có dưới dạng bản thu âm và video. Không có bản dịch viết nào được cung cấp bằng tiếng {language}, nên trang này không có văn bản câu chuyện để đọc. Hãy nghe bản thu âm ở trên và theo dõi câu chuyện qua các hình minh họa bên dưới.",
   "imageAlt": "{story} — tranh {n}",
   "previous": "Trước",
   "next": "Tiếp",

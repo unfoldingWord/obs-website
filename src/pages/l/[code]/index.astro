@@ -36,7 +36,7 @@ import {
   formatSize,
   displayName,
   storyImage,
-  audioOnlyTitle,
+  audioOnlyHeading,
   type CatalogLanguage,
 } from '../../../data/catalog';
 import { hubNodes, LICENSE_URL } from '../../../lib/jsonld';
@@ -120,8 +120,9 @@ const hasAudio = audioStory !== null || Boolean(audioZip);
 const hasVideo = Boolean(youtube) || Boolean(videoFile) || videoStory !== null;
 // A "Video only" placeholder language whose recordings are its translation:
 // its story pages are audio-only (no text, so no reader and no "Read online"),
-// and the hub lists them under their own heading, each with a title borrowed
-// from the chrome language's translation (see audioOnlyTitle()).
+// and the hub lists them under their own heading, each with its title from
+// the language's YouTube videos, or one borrowed from the chrome language's
+// translation when the playlist gave none (see audioOnlyHeading()).
 const audioOnly = storyRecords.length > 0 && storyRecords.every((s) => s.audioOnly);
 // How many stories a visitor can actually READ here — the ones the story list
 // links, not the titles that were read from the repo. The hub FAQ's first
@@ -257,7 +258,10 @@ if (stories.length > 0) {
     label('partialLink', t.partialLink);
   }
 }
-if (audioOnly) label('audioStoriesTitle', t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT });
+if (audioOnly) {
+  label('audioStoriesTitle', t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT });
+  label('audioOnlyNote', t.audioOnlyNote, { language: name });
+}
 label('faqTitle', t.faqTitle, { language: name });
 t.faq.forEach((item: { q: string; a: string }, i: number) => {
   mark(fill(item.q, { language: name }), { k: `hub.faq.${i}.q`, a: { language: name } });
@@ -431,16 +435,19 @@ label('source', t.source);
 )}
 
 {/* An audio-only language's stories: each links its own page, where the
-    recording plays alongside the story's illustrations. The titles are the
-    chrome language's (see audioOnlyTitle()), so they carry its lang, not the
-    content language's. Plain links — this hub has no reader to intercept them. */}
+    recording plays alongside the story's illustrations. Each title is the
+    story's own, from the language's YouTube video titles, or the chrome
+    language's when the playlist gave none (see audioOnlyHeading()), so each
+    carries the lang of whichever it is. Plain links — this hub has no reader
+    to intercept them. */}
 {audioOnly && (
   <section class="hub-stories" data-i18n-scope="hub">
     <div class="wrap">
       <h2 lang={ui.tag} dir={ui.dir} data-i18n-lang>{fill(t.audioStoriesTitle, { n: storyRecords.length, total: STORY_COUNT })}</h2>
+      <p class="hub-audio-only-note" lang={ui.tag} dir={ui.dir}>{fill(t.audioOnlyNote, { language: name })}</p>
       <ol class="hub-story-list">
         {storyRecords.map((s) => {
-          const borrowed = audioOnlyTitle(lang, s.num);
+          const borrowed = audioOnlyHeading(lang, s);
           return (
             <li>
               <a href={storyPath(lang.code, s.num)}>
