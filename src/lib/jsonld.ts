@@ -66,8 +66,12 @@ export function organizationNode() {
   };
 }
 
-/** Marketing-page nodes shared by every route: Organization + WebSite with a
- *  SearchAction that lands on Discover with the query prefilled (?q=). */
+/** Marketing-page nodes shared by every route: Organization + WebSite.
+ *
+ *  No SearchAction: Google retired the sitelinks search box in Nov 2024, so
+ *  the markup did nothing except make Googlebot crawl the literal template
+ *  URL /discover/?q={search_term_string} (Search Console, Nov 2026).
+ *  Discover still honours ?q= for anyone who links to it. */
 export function websiteNode(inLanguage: string) {
   return {
     '@type': 'WebSite',
@@ -77,14 +81,6 @@ export function websiteNode(inLanguage: string) {
     alternateName: PRODUCT_NAME,
     inLanguage,
     publisher: { '@id': PUBLISHER_ID },
-    potentialAction: {
-      '@type': 'SearchAction',
-      target: {
-        '@type': 'EntryPoint',
-        urlTemplate: `${SITE_URL}/discover/?q={search_term_string}`,
-      },
-      'query-input': 'required name=search_term_string',
-    },
   };
 }
 
