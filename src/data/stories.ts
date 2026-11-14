@@ -22,14 +22,15 @@ export interface StoryFrame {
 
 export interface Story {
   num: number;
-  /** The story's title in the language. Null only on an audio-only story,
-   *  which has no text of its own — see `audioOnly`. */
+  /** The story's title in the language. On an audio-only story it comes
+   *  from the language's YouTube video titles, and is null when the playlist
+   *  gave none — see `audioOnly`. */
   title: string | null;
   /**
    * The language's repo is a "Video only" placeholder and this story exists
    * only as its recording: `frames` carry the illustrations with empty text
-   * and `audio` is always set. The page borrows a title from its chrome
-   * language (audioOnlyTitle() in catalog.ts); the reader bundle and the
+   * and `audio` is always set. A null `title` is borrowed from the chrome
+   * language (audioOnlyHeading() in catalog.ts); the reader bundle and the
    * markdown mirror, which are text, leave these out.
    */
   audioOnly?: boolean;

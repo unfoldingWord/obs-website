@@ -17,6 +17,7 @@
   "extractAlt": "Una ilustración de Open Bible Stories en {language}",
   "storiesTitle": "Historias ({n} de {total})",
   "audioStoriesTitle": "Historias para escuchar ({n} de {total})",
+  "audioOnlyNote": "Estas historias están disponibles en {language} solo como grabaciones de audio y video. No se ha proporcionado una traducción escrita en {language}, así que aquí no hay texto para leer. Abre una historia de abajo para escucharla y seguirla con sus ilustraciones, o mira los videos.",
   "version": "v{version}",
   "teams": "{n} equipos han publicado este idioma.",
   "allLanguages": "Todos los idiomas",

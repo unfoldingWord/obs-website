@@ -17,6 +17,7 @@
   "extractAlt": "Một tranh minh họa của Open Bible Stories bằng tiếng {language}",
   "storiesTitle": "Câu chuyện ({n} / {total})",
   "audioStoriesTitle": "Câu chuyện để nghe ({n} / {total})",
+  "audioOnlyNote": "Các câu chuyện bằng tiếng {language} chỉ có dưới dạng bản thu âm và video. Không có bản dịch viết nào được cung cấp bằng tiếng {language}, nên ở đây không có văn bản để đọc. Hãy mở một câu chuyện bên dưới để nghe và theo dõi qua các hình minh họa, hoặc xem các video.",
   "version": "v{version}",
   "teams": "{n} đội ngũ đã phát hành ngôn ngữ này.",
   "allLanguages": "Tất cả ngôn ngữ",

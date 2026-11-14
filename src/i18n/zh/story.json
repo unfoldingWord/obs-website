@@ -9,7 +9,7 @@
   "downloadAudio": "下载音频",
   "downloadVideo": "下载视频",
   "transcriptNote": "这段录音的文字就在下面，用 {language} 写成。",
-  "audioOnlyNote": "这个故事以 {language} 录音的形式发布，没有书面文字。",
+  "audioOnlyNote": "这个故事的 {language} 版本只有音频和视频录音。{language} 没有提供书面译文，所以本页没有可阅读的故事文字。请收听上方的录音，并通过下方的插图跟随故事。",
   "imageAlt": "{story} — 插图 {n}",
   "previous": "上一个",
   "next": "下一个",

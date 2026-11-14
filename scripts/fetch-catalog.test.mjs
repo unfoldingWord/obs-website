@@ -46,6 +46,8 @@ import {
   youtubePlaylistId,
   storyNumberFromTitle,
   videosByStory,
+  storyTitleFromVideoTitle,
+  titlesByStory,
   fetchPlaylistVideos,
   enrichYouTube,
 } from './fetch-catalog.mjs';
@@ -1088,7 +1090,7 @@ test('writeStoryFiles gives a placeholder with recordings audio-only pages, and 
   t.after(() => rmSync(dir, { recursive: true, force: true }));
   const audio = { 1: { url: 'https://e/1.m4a', size: 4 }, 3: { url: 'https://e/3.m4a', size: 6 } };
 
-  const placeholder = { code: 'awa', placeholder: true, stories: null, storyAudio: audio };
+  const placeholder = { code: 'awa', placeholder: true, stories: null, storyAudio: audio, storyYoutubeTitles: { 1: 'सृष्टि' } };
   // Same shape, but not a placeholder: a language whose text could not be
   // read this run must not have its pages turned into audio-only ones.
   const unread = { code: 'zz', stories: null, storyAudio: audio };
@@ -1100,6 +1102,21 @@ test('writeStoryFiles gives a placeholder with recordings audio-only pages, and 
   assert.ok(!('storyAudio' in placeholder));
   const file = JSON.parse(readFileSync(join(dir, 'awa.json'), 'utf8'));
   assert.deepEqual(file.stories.map((s) => [s.num, s.audio, s.audioOnly]), [[1, 'https://e/1.m4a', true], [3, 'https://e/3.m4a', true]]);
+  // Story 1's title came from its video; story 3's playlist gave none, so
+  // the page will borrow one (audioOnlyHeading in src/data/catalog.ts).
+  assert.deepEqual(file.stories.map((s) => s.title), ['सृष्टि', null]);
+  assert.ok(!('storyYoutubeTitles' in placeholder), 'not left on the snapshot');
+  assert.equal(placeholder.script, 'devanagari', 'the titles decide the script');
+
+  // Gujari's playlist is in Urdu script: Arabic font pack, right to left.
+  const gju = { code: 'gju', placeholder: true, script: 'latin', direction: 'ltr', stories: null, storyAudio: audio, storyYoutubeTitles: { 1: 'تخلیق' } };
+  writeStoryFiles([gju], dir);
+  assert.deepEqual([gju.script, gju.direction], ['arabic', 'rtl']);
+
+  // No titles this run (no API key): the script is left alone.
+  const keyless = { code: 'noi', placeholder: true, script: 'latin', direction: 'ltr', stories: null, storyAudio: audio };
+  writeStoryFiles([keyless], dir);
+  assert.deepEqual([keyless.script, keyless.direction], ['latin', 'ltr']);
   assert.deepEqual(unread.storyNums, []);
   assert.ok(!existsSync(join(dir, 'zz.json')));
   assert.deepEqual(silent.storyNums, [], 'a placeholder with no recordings still gets no pages');
@@ -1108,6 +1125,44 @@ test('writeStoryFiles gives a placeholder with recordings audio-only pages, and 
   const again = { code: 'awa', placeholder: true, stories: [], storyNums: [1, 3] };
   writeStoryFiles([again], dir);
   assert.deepEqual(again.storyNums, [1, 3]);
+});
+
+test('cached audio-only titles retain their script and direction when releases cannot be read', async (t) => {
+  const { readFileSync, rmSync } = await import('node:fs');
+  const cases = [
+    { code: 'gju', title: 'تخلیق', script: 'arabic', direction: 'rtl' },
+    { code: 'awa', title: 'सृष्टि', script: 'devanagari', direction: 'ltr' },
+  ];
+  for (const { code, title, script, direction } of cases) {
+    const dir = mkdtempSync(join(tmpdir(), 'obs-stories-'));
+    t.after(() => rmSync(dir, { recursive: true, force: true }));
+    const lang = {
+      code, script: 'latin', direction: 'ltr',
+      entries: [{ owner: 'o', name: `${code}_obs`, branch_or_tag_name: 'v1' }],
+    };
+    const previous = {
+      ...lang, placeholder: true, stories: [], extract: null,
+      storyAudio: { 1: { url: 'https://e/1.m4a' } },
+      storyYoutubeTitles: { 1: title },
+    };
+    writeStoryFiles([previous], dir);
+    const cached = readFileSync(join(dir, `${code}.json`), 'utf8');
+
+    // Releases failed, independently of whether YouTube succeeded. If the
+    // playlist changed its script, the retained file's titles still decide.
+    for (const titles of [undefined, { 1: title }, { 1: 'A replacement title' }]) {
+      const [reused] = await enrichStories(
+        [{ ...lang, storyYoutubeTitles: titles }], { languages: [previous] },
+        () => { throw new Error('unchanged release should reuse the cached stories'); },
+        { log() {} }, dir
+      );
+      assert.equal(reused.script, 'latin', 'placeholder snapshot has no text to detect');
+      writeStoryFiles([reused], dir);
+      assert.deepEqual([reused.script, reused.direction], [script, direction], code);
+      assert.deepEqual(reused.storyNums, [1], 'cached pages remain available');
+      assert.equal(readFileSync(join(dir, `${code}.json`), 'utf8'), cached, 'retained titles and media are unchanged');
+    }
+  }
 });
 
 test('enrichStories marks a placeholder, and the mark survives reuse of the snapshot', async (t) => {
@@ -1267,6 +1322,37 @@ test('fetchPlaylistVideos follows pages and reports the API\'s reason, never the
   await assert.rejects(fetchPlaylistVideos('PL1', 'k3y', badKey), (err) => err.reason === 'API_KEY_INVALID');
 });
 
+test('storyTitleFromVideoTitle keeps the title after the story number', () => {
+  // Real titles from the placeholder languages' playlists (2026-11).
+  const cases = [
+    ['01. सृष्टि', 'सृष्टि'],                                         // awa
+    ['01.  दुनिया बनास', 'दुनिया बनास'],                              // und-x-choudhancy, two spaces
+    ['01. संसार बणावा।', 'संसार बणावा'],                              // und-x-chopali, closing danda
+    ['1.\u2060 \u2060रचना', 'रचना'],                                  // gdx, word joiners
+    ['50۔ جناب یسوع المسیح کی واپسی وے', 'جناب یسوع المسیح کی واپسی وے'], // gju, Urdu full stop
+    ['01.संगसारा रंचणा', 'संगसारा रंचणा'],                            // rnp, no space
+    ['1. The Creation | Open Bible Stories - Indian Sign Language ', 'The Creation'], // ins
+    ['44. پطرس ھور   یوحنا', 'پطرس ھور یوحنا'],                       // runs of spaces collapse
+    ['2. Heyaya yo lauma bwatono', 'Heyaya yo lauma bwatono'],      // ylb
+  ];
+  for (const [input, want] of cases) assert.equal(storyTitleFromVideoTitle(input), want, input);
+  // ZWNJ is part of the spelling (Persian, Urdu, Indic) and must survive.
+  assert.equal(storyTitleFromVideoTitle('3. می\u200cخواهد'), 'می\u200cخواهد');
+  for (const none of ['Private video', 'Trailer', '07.', '', null]) assert.equal(storyTitleFromVideoTitle(none), null, String(none));
+});
+
+test('titlesByStory names only the stories videosByStory gave a video', () => {
+  // The parsed shape fetchPlaylistVideos returns.
+  const items = [
+    { videoId: 'aaaaaaaaaaa', title: '01. One' },
+    { videoId: 'bbbbbbbbbbb', title: '41. Forty-one' },
+    { videoId: 'ccccccccccc', title: '41. Also forty-one' },
+    { videoId: 'ddddddddddd', title: 'Private video' },
+  ];
+  const videos = videosByStory(items);
+  assert.deepEqual(titlesByStory(items, videos), { 1: 'One' }, 'a story two videos claim gets no title either');
+});
+
 test('enrichYouTube maps playlists to stories, and changes nothing without a key or a readable playlist', async () => {
   const lang = (code, url) => ({ code, entries: [{ assets: url ? [{ name: 'YouTube', url }] : [] }] });
   const langs = [
@@ -1286,6 +1372,7 @@ test('enrichYouTube maps playlists to stories, and changes nothing without a key
 
   const out = await enrichYouTube(langs, 'k3y', f, log);
   assert.deepEqual(out.find((l) => l.code === 'bfw').storyYoutube, { 1: 'aaaaaaaaaaa', 2: 'bbbbbbbbbbb' });
+  assert.deepEqual(out.find((l) => l.code === 'bfw').storyYoutubeTitles, { 1: 'One', 2: 'Two' });
   for (const code of ['ru', 'dhn', 'xx', 'en']) assert.ok(!('storyYoutube' in out.find((l) => l.code === code)), code);
   assert.equal(calls.length, 3, 'only playlists are asked about');
   assert.ok(logged.some((m) => /1 playlist\(s\) unreadable \(playlistNotFound\): xx/.test(m)));

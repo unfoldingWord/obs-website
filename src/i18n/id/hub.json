@@ -17,6 +17,7 @@
   "extractAlt": "Ilustrasi dari Open Bible Stories dalam bahasa {language}",
   "storiesTitle": "Cerita ({n} dari {total})",
   "audioStoriesTitle": "Cerita untuk didengarkan ({n} dari {total})",
+  "audioOnlyNote": "Cerita-cerita ini tersedia dalam bahasa {language} hanya sebagai rekaman audio dan video. Tidak ada terjemahan tertulis yang disediakan dalam bahasa {language}, jadi tidak ada teks untuk dibaca di sini. Buka cerita di bawah untuk mendengarkannya dan mengikutinya melalui ilustrasinya, atau tonton videonya.",
   "version": "v{version}",
   "teams": "{n} tim telah menerbitkan bahasa ini.",
   "allLanguages": "Semua bahasa",

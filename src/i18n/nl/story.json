@@ -9,7 +9,7 @@
   "downloadAudio": "Audio downloaden",
   "downloadVideo": "Video downloaden",
   "transcriptNote": "De woorden van deze opname staan hieronder, in het {language}.",
-  "audioOnlyNote": "Dit verhaal is in het {language} uitgegeven als opname, niet als geschreven tekst.",
+  "audioOnlyNote": "Dit verhaal is in het {language} alleen beschikbaar als audio- en video-opname. Er is geen geschreven vertaling in het {language} aangeleverd, dus deze pagina heeft geen verhaaltekst om te lezen. Luister naar de opname hierboven en volg het verhaal aan de hand van de illustraties hieronder.",
   "imageAlt": "{story} — illustratie {n}",
   "previous": "Vorige",
   "next": "Volgende",

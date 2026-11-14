@@ -9,7 +9,7 @@
   "downloadAudio": "Télécharger l'audio",
   "downloadVideo": "Télécharger la vidéo",
   "transcriptNote": "Les paroles de cet enregistrement sont ci-dessous, en {language}.",
-  "audioOnlyNote": "Cette histoire est publiée en {language} sous forme d'enregistrement, et non de texte écrit.",
+  "audioOnlyNote": "Cette histoire est disponible en {language} uniquement sous forme d'enregistrements audio et vidéo. Aucune traduction écrite n'a été fournie en {language} : cette page ne contient donc pas de texte à lire. Écoutez l'enregistrement ci-dessus et suivez l'histoire grâce aux illustrations ci-dessous.",
   "imageAlt": "{story} — illustration {n}",
   "previous": "Précédent",
   "next": "Suivant",

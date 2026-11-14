@@ -927,6 +927,8 @@ html[data-script="nastaliq"] .hub-extract blockquote{line-height:2.1;}
 /* The story text below is the transcript of the recording; saying so is what
    makes the connection legible to a reader as well as to a crawler. */
 .story-transcript-note{color:#4a5960; font-size:0.9rem; margin:0;}
+/* An audio-only language's hub: what the recordings are, above the list. */
+.hub-audio-only-note{color:#4a5960; max-width:42rem; margin:0 0 1rem;}
 .story-frame{margin:0 0 34px;}
 .story-frame img{display:block; width:100%; max-width:480px; height:auto; border-radius:10px; margin-bottom:14px;}
 .story-frame p{font-size:1.15rem; line-height:1.8; margin:0; color:var(--tech);}

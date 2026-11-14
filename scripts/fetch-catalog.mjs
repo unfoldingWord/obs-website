@@ -625,6 +625,48 @@ export function videosByStory(items) {
   return out;
 }
 
+/**
+ * A story's title from its video's title: what follows the story number,
+ * or null. Placeholder languages publish no text, but their playlists name
+ * every video in the language ("01. सृष्टि", "50۔ جناب یسوع المسیح کی واپسی وے",
+ * "1.⁠ ⁠रचना"), so this is the only place their story titles exist.
+ *
+ * Drops the number and the punctuation after it, a " | Open Bible Stories -
+ * …" suffix (the Indian Sign Language playlist), and a closing full stop or
+ * danda ("संसार बणावा।"). Word joiners and zero-width spaces, which some
+ * playlists put around the number, are removed; ZWJ and ZWNJ are not — they
+ * are part of the spelling in Indic and Arabic-script languages.
+ */
+export function storyTitleFromVideoTitle(title) {
+  const s = String(title ?? '').normalize('NFC').replace(/[\u200B\u2060\uFEFF]/g, '');
+  const m = s.match(/^[\s\p{P}]*\p{Nd}{1,2}(?!\p{Nd})/u);
+  if (!m) return null;
+  const rest = s
+    .slice(m[0].length)
+    .split(/\s+[|｜]\s+/u)[0]
+    .replace(/^[\s.:)\]\-–—۔।]+/u, '')
+    .replace(/[\s.。।॥۔]+$/u, '')
+    .replace(/\s+/g, ' ')
+    .trim();
+  return rest || null;
+}
+
+/**
+ * Each story's title from its video, `{ [num]: title }`, for the stories
+ * `videos` (from videosByStory) assigned a video: a story two videos claim
+ * has no video and so no title either.
+ */
+export function titlesByStory(items, videos) {
+  const out = {};
+  for (const item of items || []) {
+    const n = storyNumberFromTitle(item?.title);
+    if (!n || videos[n] !== item.videoId) continue;
+    const title = storyTitleFromVideoTitle(item.title);
+    if (title) out[n] = title;
+  }
+  return out;
+}
+
 export const YOUTUBE_PLAYLIST_ITEMS_URL = 'https://www.googleapis.com/youtube/v3/playlistItems';
 
 /**
@@ -1291,6 +1333,8 @@ export async function enrichAssets(languages, previous, fetchImpl = fetch, log =
  * copies onto the story records and the reader embeds in place of the whole
  * playlist. Without this the reader showed the playlist from its first video
  * whatever story was open — and in 12 playlists the first video is story 50.
+ * Also sets `storyYoutubeTitles` (`{ [num]: title }`): an audio-only
+ * language's story titles, which exist nowhere else (audioOnlyStories).
  *
  * Needs a YouTube Data API key (YOUTUBE_API_KEY, a secret in the Cloudflare
  * Pages build settings). Without one, or for a playlist that cannot be read,
@@ -1311,13 +1355,16 @@ export async function enrichYouTube(languages, key, fetchImpl = fetch, log = con
     const list = youtubePlaylistId(youtubeLinkOf(lang));
     if (!list) return lang;
     try {
-      const videos = videosByStory(await fetchPlaylistVideos(list, key, fetchImpl));
+      const items = await fetchPlaylistVideos(list, key, fetchImpl);
+      const videos = videosByStory(items);
       read++;
       const count = Object.keys(videos).length;
       if (!count) return lang;
       matched++;
       if (count < STORY_COUNT) partial.push(`${lang.code} ${count}/${STORY_COUNT}`);
-      return { ...lang, storyYoutube: videos };
+      // The video titles are the story titles in the language — the only
+      // ones a placeholder language has (see storyTitleFromVideoTitle).
+      return { ...lang, storyYoutube: videos, storyYoutubeTitles: titlesByStory(items, videos) };
     } catch (err) {
       const reason = err?.reason || err?.message || 'unknown error';
       failures.set(reason, [...(failures.get(reason) || []), lang.code]);
@@ -1355,6 +1402,18 @@ export function hasStoryFile(code, dir = STORIES_DIR) {
   return existsSync(join(dir, `${code}.json`));
 }
 
+// Use the titles the pages actually render, including when a failed releases
+// lookup leaves yesterday's audio-only story file in place. The snapshot's
+// stories/extract have no text for placeholders, so enrichStories cannot
+// recover their script from those fields. Gujari's titles also override the
+// LTR direction reported by langnames.
+function setAudioOnlyScript(lang, stories) {
+  const sample = stories.filter((s) => s.audioOnly).map((s) => s.title).filter(Boolean).join(' ');
+  if (!sample) return;
+  lang.script = scriptFor(lang.code, sample);
+  lang.direction = lang.script === 'arabic' || lang.script === 'nastaliq' ? 'rtl' : 'ltr';
+}
+
 /**
  * Split the story bodies out of the snapshot into one file per language
  * (src/data/stories/{code}.json, generated and gitignored — together they are
@@ -1374,6 +1433,7 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
     const audio = lang.storyAudio || {};
     const video = lang.storyVideo || {};
     const youtube = lang.storyYoutube || {};
+    const youtubeTitles = lang.storyYoutubeTitles || {};
     const full = (lang.stories || [])
       .filter((s) => s.body && s.body.frames.length)
       .map((s) => ({
@@ -1392,14 +1452,16 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
     delete lang.storyAudio;
     delete lang.storyVideo;
     delete lang.storyYoutube;
+    delete lang.storyYoutubeTitles;
     // A placeholder repo has no text, but its recordings are the translation:
     // each story with one gets an audio-only page. Rewritten every run from
     // the fresh media maps, so a story recorded later gains its page. With no
     // map this run (the releases lookup failed), fall through and keep
     // whatever file is already on disk, as a text language does.
     if (!full.length && lang.placeholder && Object.keys(audio).length) {
-      const stories = audioOnlyStories(audio, video, youtube);
+      const stories = audioOnlyStories(audio, video, youtube, youtubeTitles);
       lang.storyNums = stories.map((s) => s.num);
+      setAudioOnlyScript(lang, stories);
       writeFileSync(join(dir, `${lang.code}.json`), JSON.stringify({ code: lang.code, stories }) + '\n');
       written++;
       audioOnly++;
@@ -1415,6 +1477,12 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
       // an existing checkout never gained a video player or an AudioObject
       // until the text release happened to change.
       if (mergeStoryMedia(lang.code, audio, video, dir, youtube)) merged++;
+      if (lang.placeholder) {
+        try {
+          const cached = JSON.parse(readFileSync(join(dir, `${lang.code}.json`), 'utf8'));
+          setAudioOnlyScript(lang, cached.stories || []);
+        } catch { /* No readable cached titles: keep the existing metadata. */ }
+      }
       continue;
     }
     lang.storyNums = full.map((s) => s.num);
@@ -1430,20 +1498,21 @@ export function writeStoryFiles(languages, dir = STORIES_DIR) {
  * Story records for a placeholder language that publishes recordings: one per
  * story with audio, in story order.
  *
- * There is no text to put on the page, so `title` is null (the page borrows
- * one from its chrome language — see audioOnlyTitle() in src/data/catalog.ts)
- * and every frame's text is empty. The frames still carry the story's
+ * There is no text to put on the page. `title` is the story's title in the
+ * language from its YouTube video (titlesByStory), or null when the playlist
+ * gave none — then the page borrows one from its chrome language (see
+ * audioOnlyHeading() in src/data/catalog.ts). Every frame's text is empty. The frames still carry the story's
  * illustrations: they are the same files in every language, and following the
  * pictures is how a listener keeps their place in a recording.
  */
-export function audioOnlyStories(audio = {}, video = {}, youtube = {}) {
+export function audioOnlyStories(audio = {}, video = {}, youtube = {}, titles = {}) {
   return Object.keys(audio)
     .map(Number)
     .filter((num) => num >= 1 && num <= STORY_COUNT && audio[num]?.url)
     .sort((a, b) => a - b)
     .map((num) => ({
       num,
-      title: null,
+      title: titles[num] ?? null,
       audioOnly: true,
       reference: null,
       frames: Array.from({ length: FRAMES_PER_STORY[num] ?? 0 }, (_, i) => ({ image: tsStoryImageUrl(num, i + 1), text: '' })),

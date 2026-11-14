@@ -23,7 +23,7 @@ import {
   hubLocaleFor,
   fontHrefForScript,
   displayName,
-  audioOnlyTitle,
+  audioOnlyHeading,
   type CatalogLanguage,
 } from '../../../../data/catalog';
 import { storiesFor, type Story } from '../../../../data/stories';
@@ -67,11 +67,13 @@ const fill = (s: string, vars: Record<string, string | number>) =>
 
 const name = displayName(lang);
 // An audio-only story — a "Video only" placeholder language's recording — has
-// no title or text of its own. Its heading is the same story's title in the
-// chrome language's translation (English when that has none), marked with
-// THAT language, since it is not the language of the recording.
+// no text of its own. Its heading is its title in the language, read from the
+// language's YouTube video titles at build time; when the playlist gave none,
+// the same story's title in the chrome language's translation (English when
+// that has none), marked with THAT language, since it is not the language of
+// the recording. See audioOnlyHeading().
 const audioOnly = story.audioOnly === true;
-const borrowed = audioOnly ? audioOnlyTitle(lang, story.num) : null;
+const borrowed = audioOnly ? audioOnlyHeading(lang, story) : null;
 const heading = audioOnly
   ? borrowed?.title ?? fill(t.storyN, { n: story.num, total: STORY_COUNT })
   : story.title ?? '';
